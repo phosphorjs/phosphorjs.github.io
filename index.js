@@ -21,6 +21,10 @@ Handlebars.registerHelper('ifCond', function(v1, v2, options) {
 });
 
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 default_log = function(files,x, done){
     console.log(files);
     done();
@@ -29,7 +33,7 @@ default_title = function(files, metalsmith, done){
     for(var file in files){
         if(ext(file)=='.md'){
             files[file].ext = ext(file)
-            files[file].title = file.split('/').slice(-1)[0].split('.')[0].replace('-',' ');
+            files[file].title = capitalizeFirstLetter(file.split('/').slice(-1)[0].split('.')[0].replace('-',' '));
             files[file].root = root;
         }
     }
