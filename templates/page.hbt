@@ -37,9 +37,9 @@
         {{#each collections.pages}}
         {{#if this.list_index}}
         <li 
-            {{#ifCond title /title }} class="selected" {{else}} {{/ifCond}}>
+            {{#ifCond title ../../title }} class="selected" {{else}} {{/ifCond}}>
             <a href="{{root}}{{this.path}}" 
-            {{#ifCond title /title }} class="current" {{else}} {{/ifCond}}>{{this.title}}</a>
+            {{#ifCond title ../../title }} class="current" {{else}} {{/ifCond}}>{{this.title}}</a>
         </li>
         {{/if}}
         {{/each}}
