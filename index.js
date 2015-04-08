@@ -18,12 +18,8 @@ Handlebars.registerHelper('ifCond', function(v1, v2, options) {
 
 
 default_log = function(files,x, done){
-    for(var file in files){
-        if(!files[file].title){
-            files[file]._title = file;
-        }
-    }
-    done()
+    console.log(files);
+    done();
 }
 default_title = function(files, metalsmith, done){
     for(var file in files){
