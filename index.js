@@ -55,8 +55,10 @@ Metalsmith(__dirname)
     .use(default_template)
     .use(permalinks({
         //pattern: ':collection/:title'
-        pattern: '/:title'
+        pattern: ':title'
     }))
     .use(templates('handlebars'))
     .destination('./build')
-    .build()
+    .build(function(err) {
+      if (err) throw err;
+    })
