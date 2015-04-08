@@ -4,6 +4,7 @@ node_js:
 sudo: false
 env:
   global:
+    # Matthias token for Carrea/phosphor/website
     - secure: "hbwb8tDcMNqHy5VVfm/+BMrrTPsO5Xvc4jgFP9Qt4xP7jk4yP51uVCyjZ3Lml6P81bKB4LkFRwhYBcumuQYZI4AfJ6M5byH12EF5RwuZdMoybRKsk8npf6qZGbbn46df2burjSzM/DxoOp4XtpQM7TsOPHY2pCIJvV3gZ8zSxUY="
 script:
   - if [[ $GROUP == docs ]]; then gulp examples; gulp docs; fi
