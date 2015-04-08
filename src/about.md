@@ -2,13 +2,12 @@
 
  Phosphor is a few things:
 
-    - A high performance paneled/tabbed/docked layout system. There is truly nothing else out there like this right now.
+  - A high performance paneled/tabbed/docked layout system. There is truly nothing else out there like this right now.
 
-    - A virtual DOM component system that designed for content inside that
-      layout system. It would be simple enough to also use of other component inside it(like react.js components)
-      inside the phosphor layout logic as well.
+  - A virtual DOM component system that designed for content inside that layout
+    system. It would be simple enough to also use of other component inside it
+    (like react.js components) inside the phosphor layout logic as well.
 
-      react.js from the component perspective.
       
      
 ## Examples.
