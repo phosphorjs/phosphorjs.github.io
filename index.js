@@ -45,6 +45,7 @@ default_template = function(files, metalsmith, done){
 }
 
 Metalsmith(__dirname)
+    .clean(false)
     .use(collections({
         pages: {
             pattern: '*.md',
