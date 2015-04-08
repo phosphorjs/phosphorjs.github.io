@@ -6,18 +6,16 @@ https://phosphorjs.github.io
 
 # Install / Publish
 
-typically lcally `$PREFIX='/build/'`
+typically lucally `$PREFIX='/build/'`
 
 ```
+$ PREFIX='/'
 $ npm install
-$ git clone https://github.com/Carreau/phosphor-website.git build
-$ cd build 
-$ git checkout -b gh-pages origin/gh-pages
-$ cd .. 
+$ git clone https://github.com/phosphorjs/phosphorjs.github.io build
 $ node index.js $PREFIX
 $ cd build
 $ git add *
 $ git commit -am'build docs'
-$ git push origin gh-pages:gh-pages
+$ git push origin master:master
 ```
 
