@@ -17,6 +17,8 @@ script:
   - cd ..
   - node index.js '/phosphor-website/'
   - cd build
+  - git config --global user.email "travis@travis-ci.com"
+  - git config --global user.name "Travis Bot"
   - git add *
   - git commit -am'build docs'
 after_success: |
@@ -27,8 +29,6 @@ after_success: |
     git config credential.helper 'store --file=.git/credentials'
     git remote add ghpages https://github.com/carreau/phosphor-website.git
     echo "https://${GHTOKEN}:@github.com" > .git/credentials
-    git config --global user.email "travis@travis-ci.com"
-    git config --global user.name "Travis Bot"
     git push ghpages gh-pages:gh-pages
   else
     echo "Will only deploy docs build from master branch"
