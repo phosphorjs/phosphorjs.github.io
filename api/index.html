@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{title}} || Phosphor</title>
+    <title>Api || Phosphor</title>
 
     <link  rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700|Source+Code+Pro:400,700" />
-    <link  rel="stylesheet" href="{{root}}main.css" />
+    <link  rel="stylesheet" href="/main.css" />
 
 </head>
 <body class="ui">
@@ -18,8 +18,8 @@
         <a href="/" class="logo">Phosphor</a>
         <nav>
             <ul>
-                <li><a class="current" href="{{root}}about/">Docs</a></li>
-                <li><a href="{{root}}/api/">API</a></li>
+                <li><a class="current" href="/about/">Docs</a></li>
+                <li><a href="//api/">API</a></li>
                 <li><a href="https://github.com/PhosphorJS/Phosphor">GitHub</a></li>
             </ul>
         </nav>
@@ -34,21 +34,43 @@
 <nav class="navigation">
     
     <ul>
-        {{#each collections.pages}}
         <li 
-            {{#ifCond title ../title }} class="selected" {{else}} {{/ifCond}}>
-            <a href="{{root}}{{this.path}}" 
-            {{#ifCond title ../title }} class="current" {{else}} {{/ifCond}}>{{this.title}}</a>
+             >
+            <a href="/about" 
+             >About</a>
         </li>
-        {{/each}}
+        <li 
+             class="selected" >
+            <a href="/api" 
+             class="current" >Api</a>
+        </li>
+        <li 
+             >
+            <a href="/blog" 
+             >Blog</a>
+        </li>
+        <li 
+             >
+            <a href="/index" 
+             >Index</a>
+        </li>
+        <li 
+             >
+            <a href="/foo" 
+             >Foo</a>
+        </li>
     </ul>
 
 </nav>
 
         </div>
         <div class="col-9 typography">
-            <h1>{{title}}</h1>
-            {{{contents}}}
+            <h1>Api</h1>
+            <p>Sorry folks, but we don&#39;t auto-build api yet, 
+but we welcome your contribution.</p>
+<p>If you like you can hack on phosphor itself so that Travis build the <code>typedocs</code> on the <code>gh-pages</code> branch of the phosphor website repo in <code>api</code> folder ! </p>
+<p>Thanks !</p>
+
         </div>
     </div>
 </div>
