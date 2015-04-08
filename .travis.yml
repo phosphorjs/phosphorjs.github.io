@@ -4,13 +4,11 @@ node_js:
 sudo: false
 env:
   global:
-    # Matthias token for Carrea/phosphor-website
-    - secure: "hbwb8tDcMNqHy5VVfm/+BMrrTPsO5Xvc4jgFP9Qt4xP7jk4yP51uVCyjZ3Lml6P81bKB4LkFRwhYBcumuQYZI4AfJ6M5byH12EF5RwuZdMoybRKsk8npf6qZGbbn46df2burjSzM/DxoOp4XtpQM7TsOPHY2pCIJvV3gZ8zSxUY="
-    # Matthias token for phosphorjs/phosphorjs.github.iop
+    # Matthias token for phosphorjs/phosphorjs.github.io
     - secure: "IhE0iXr0JHBYLPdRrhEYp3VX30EoJYMSxqbpyOuRYaRZQFv1wmTtEdhEuE1j76tPK8LvsTjgdVs3KqoRdt71gs+LT8jjzf1NYMH2prUt8k4cdcu8vmwISGiCkdXUb+2HoBdYG9lS59U72OZOI+wPIAOwDfLhn2MZO2htHbonKd8="
 script:
   - git clone https://github.com/phosphorjs/phosphorjs.github.io.git build
-  - node index.js '/phosphor-website/'
+  - node index.js '/'
   - cd build
   - git config --global user.email "travis@travis-ci.com"
   - git config --global user.name "Travis Bot"
