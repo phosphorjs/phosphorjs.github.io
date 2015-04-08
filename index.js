@@ -6,7 +6,9 @@ var Metalsmith  = require('metalsmith'),
     Handlebars  = require('handlebars'),
     fs          = require('fs');
 
-var root = '/'||process.argv[2]
+var root = process.argv[2]||'/'
+
+console.log('will use root', root)
 
 var ext = require('path').extname
 
