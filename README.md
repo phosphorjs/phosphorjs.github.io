@@ -6,15 +6,15 @@ https://phosphorjs.github.io
 
 # Install / Publish
 
+typically lcally `$PREFIX='/build/'`
+
 ```
 $ npm install
 $ git clone https://github.com/Carreau/phosphor-website.git build
 $ cd build 
 $ git checkout -b gh-pages origin/gh-pages
 $ cd .. 
-$ # node index will destroy .git, save it
-$ #same for gitignore
-$ node index.js
+$ node index.js $PREFIX
 $ cd build
 $ git add *
 $ git commit -am'build docs'

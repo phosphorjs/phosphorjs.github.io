@@ -6,6 +6,8 @@ var Metalsmith  = require('metalsmith'),
     Handlebars  = require('handlebars'),
     fs          = require('fs');
 
+var root = '/'||process.argv[2]
+
 var ext = require('path').extname
 
 
@@ -26,6 +28,7 @@ default_title = function(files, metalsmith, done){
         if(ext(file)=='.md'){
             files[file].ext = ext(file)
             files[file].title = file.split('/').slice(-1)[0].split('.')[0].replace('-',' ');
+            files[file].root = root;
         }
     }
     done()
