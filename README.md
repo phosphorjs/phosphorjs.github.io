@@ -2,6 +2,8 @@
 
 https://phosphorjs.github.io
 
+(wip: http://carreau.github.io/phosphor-website/about/) 
+
 # Install / Publish
 
 ```
