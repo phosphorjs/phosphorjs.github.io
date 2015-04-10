@@ -2796,11 +2796,11 @@ declare module phosphor.widgets {
          *
          * Returns the index of the added space.
          */
-        addStretch(stretch?: number): number;
+        addStretch(stretch: number): number;
         /**
          * Insert stretchable space at the given index.
          */
-        insertStretch(index: number, stretch?: number): number;
+        insertStretch(index: number, stretch: number): number;
         /**
          * Get the stretch factor for the given widget or index.
          *
@@ -3652,13 +3652,13 @@ declare module phosphor.widgets {
          *
          * Returns the index of the added space.
          */
-        addStretch(stretch?: number): number;
+        addStretch(stretch: number): number;
         /**
          * Insert stretchable space at the given index.
          *
          * Returns the index of the added space.
          */
-        insertStretch(index: number, stretch?: number): number;
+        insertStretch(index: number, stretch: number): number;
         /**
          * Get the stretch factor for the given widget or index.
          *

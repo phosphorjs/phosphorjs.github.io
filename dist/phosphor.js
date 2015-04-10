@@ -5128,14 +5128,12 @@ var phosphor;
              * Returns the index of the added space.
              */
             BoxLayout.prototype.addStretch = function (stretch) {
-                if (stretch === void 0) { stretch = 0; }
                 return this.insertStretch(this.count, stretch);
             };
             /**
              * Insert stretchable space at the given index.
              */
             BoxLayout.prototype.insertStretch = function (index, stretch) {
-                if (stretch === void 0) { stretch = 0; }
                 var spacer;
                 if (isHorizontal(this._direction)) {
                     spacer = new widgets.SpacerItem(0, 0, widgets.SizePolicy.Expanding, widgets.SizePolicy.Minimum);
@@ -7606,7 +7604,6 @@ var phosphor;
              * Returns the index of the added space.
              */
             BoxPanel.prototype.addStretch = function (stretch) {
-                if (stretch === void 0) { stretch = 0; }
                 return this.layout.addStretch(stretch);
             };
             /**
@@ -7615,7 +7612,6 @@ var phosphor;
              * Returns the index of the added space.
              */
             BoxPanel.prototype.insertStretch = function (index, stretch) {
-                if (stretch === void 0) { stretch = 0; }
                 return this.layout.insertStretch(index, stretch);
             };
             /**
