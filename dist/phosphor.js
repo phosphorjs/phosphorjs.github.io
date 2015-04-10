@@ -7566,8 +7566,6 @@ var phosphor;
              * Returns the index of the added widget.
              */
             BoxPanel.prototype.addWidget = function (widget, stretch, alignment) {
-                if (stretch === void 0) { stretch = 0; }
-                if (alignment === void 0) { alignment = 0; }
                 return this.layout.addWidget(widget, stretch, alignment);
             };
             /**
@@ -7578,8 +7576,6 @@ var phosphor;
              * Returns the index of the added widget.
              */
             BoxPanel.prototype.insertWidget = function (index, widget, stretch, alignment) {
-                if (stretch === void 0) { stretch = 0; }
-                if (alignment === void 0) { alignment = 0; }
                 return this.layout.insertWidget(index, widget, stretch, alignment);
             };
             /**
@@ -7733,8 +7729,6 @@ var phosphor;
              * Returns the index of the added widget.
              */
             SplitPanel.prototype.addWidget = function (widget, stretch, alignment) {
-                if (stretch === void 0) { stretch = 0; }
-                if (alignment === void 0) { alignment = 0; }
                 return this.layout.addWidget(widget, stretch, alignment);
             };
             /**
@@ -7745,8 +7739,6 @@ var phosphor;
              * Returns the index of the added widget.
              */
             SplitPanel.prototype.insertWidget = function (index, widget, stretch, alignment) {
-                if (stretch === void 0) { stretch = 0; }
-                if (alignment === void 0) { alignment = 0; }
                 return this.layout.insertWidget(index, widget, stretch, alignment);
             };
             /**
