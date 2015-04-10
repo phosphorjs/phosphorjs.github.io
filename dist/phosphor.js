@@ -1,18 +1,4 @@
 "use strict";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
 |
@@ -24,667 +10,312 @@ var phosphor;
 (function (phosphor) {
     var collections;
     (function (collections) {
-        /**
-         * Create an iterator for an iterable or array.
-         */
-        function iter(iterable) {
-            if (iterable instanceof Array) {
-                return new collections.ArrayIterator(iterable);
-            }
-            return iterable.iterator();
-        }
-        collections.iter = iter;
-        /**
-         * Create an array from the values in an iterable.
-         */
-        function toArray(iterable) {
-            var result = [];
-            for (var it = iter(iterable); it.moveNext();) {
-                result.push(it.current);
-            }
-            return result;
-        }
-        collections.toArray = toArray;
-        /**
-         * Invoke a function once for each element in an iterable.
-         *
-         * If the callback returns anything but `undefined`, iteration
-         * will stop and that value will be returned from the function.
-         */
-        function forEach(iterable, callback) {
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                var result = callback(it.current, i);
-                if (result !== void 0)
-                    return result;
-            }
-            return void 0;
-        }
-        collections.forEach = forEach;
-        /**
-         * Returns true if any element in the iterable passes the given test.
-         */
-        function some(iterable, callback) {
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                if (callback(it.current, i))
-                    return true;
-            }
-            return false;
-        }
-        collections.some = some;
-        /**
-         * Returns true if all elements in the iterable pass the given test.
-         */
-        function every(iterable, callback) {
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                if (!callback(it.current, i))
-                    return false;
-            }
-            return true;
-        }
-        collections.every = every;
-        /**
-         * Create an array of the iterable elements which pass the given test.
-         */
-        function filter(iterable, callback) {
-            var result = [];
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                if (callback(it.current, i))
-                    result.push(it.current);
-            }
-            return result;
-        }
-        collections.filter = filter;
-        /**
-         * Create an array of callback results for each element in an iterable.
-         */
-        function map(iterable, callback) {
-            var result = [];
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                result.push(callback(it.current, i));
-            }
-            return result;
-        }
-        collections.map = map;
-        /**
-         * Find the first element in the iterable which passes the given test.
-         *
-         * Returns `undefined` if no element passes the test.
-         */
-        function find(iterable, callback) {
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                if (callback(it.current, i))
-                    return it.current;
-            }
-            return void 0;
-        }
-        collections.find = find;
-        /**
-         * Find the index of the first element which passes the given test.
-         *
-         * Returns -1 if no element passes the test.
-         */
-        function findIndex(iterable, callback) {
-            for (var i = 0, it = iter(iterable); it.moveNext(); ++i) {
-                if (callback(it.current, i))
-                    return i;
-            }
-            return -1;
-        }
-        collections.findIndex = findIndex;
-        /**
-         * Find the index of the first element which compares `>=` to `value`.
-         *
-         * This uses a binary search algorithm which must be applied to a
-         * sorted list in order for the results to be correct.
-         *
-         * Returns `list.size` if all elements compare `<` than `value`.
-         */
-        function lowerBound(list, value, compare) {
-            var begin = 0;
-            var half;
-            var middle;
-            var n = list.size;
-            while (n > 0) {
-                half = n >> 1;
-                middle = begin + half;
-                if (compare(list.get(middle), value) < 0) {
-                    begin = middle + 1;
-                    n -= half + 1;
+        var algorithm;
+        (function (algorithm) {
+            /**
+             * Find the index of the first element which passes the test.
+             *
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array.
+             * The default index is `0`.
+             *
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the end of the array and continue until
+             * reaching the element just before the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `-1` if no element passes the test.
+             */
+            function findIndex(array, pred, fromIndex, wrap) {
+                if (fromIndex === void 0) { fromIndex = 0; }
+                if (wrap === void 0) { wrap = false; }
+                var len = array.length;
+                if (len === 0) {
+                    return -1;
+                }
+                fromIndex = fromIndex | 0;
+                if (fromIndex < 0) {
+                    fromIndex += len;
+                }
+                if (fromIndex < 0) {
+                    fromIndex = 0;
+                }
+                if (wrap) {
+                    for (var i = 0; i < len; ++i) {
+                        var j = (i + fromIndex) % len;
+                        if (pred(array[j], j)) {
+                            return j;
+                        }
+                    }
                 }
                 else {
-                    n = half;
-                }
-            }
-            return begin;
-        }
-        collections.lowerBound = lowerBound;
-        /**
-         * Find the index of the first element which compares `>` than `value`.
-         *
-         * This uses a binary search algorithm which must be applied to a
-         * sorted list in order for the results to be correct.
-         *
-         * Returns `0` if all elements compare `<=` than `value`.
-         */
-        function upperBound(list, value, compare) {
-            var begin = 0;
-            var half;
-            var middle;
-            var n = list.size;
-            while (n > 0) {
-                half = n >> 1;
-                middle = begin + half;
-                if (compare(list.get(middle), value) > 0) {
-                    n = half;
-                }
-                else {
-                    begin = middle + 1;
-                    n -= half + 1;
-                }
-            }
-            return begin;
-        }
-        collections.upperBound = upperBound;
-        /**
-         * Find the index of the first element which compares `==` to `value`.
-         *
-         * This uses a binary search algorithm which must be applied to a
-         * sorted list in order for the results to be correct.
-         *
-         * Returns `-1` if no matching value is found.
-         */
-        function lowerFind(list, value, compare) {
-            var i = lowerBound(list, value, compare);
-            if (i === list.size) {
-                return -1;
-            }
-            if (compare(list.get(i), value) === 0) {
-                return i;
-            }
-            return -1;
-        }
-        collections.lowerFind = lowerFind;
-        /**
-         * Find the index of the last element which compares `==` to `value`.
-         *
-         * This uses a binary search algorithm which must be applied to a
-         * sorted list in order for the results to be correct.
-         *
-         * Returns `-1` if no matching value is found.
-         */
-        function upperFind(list, value, compare) {
-            var i = upperBound(list, value, compare);
-            if (i === 0) {
-                return -1;
-            }
-            if (compare(list.get(--i), value) === 0) {
-                return i;
-            }
-            return -1;
-        }
-        collections.upperFind = upperFind;
-    })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var collections;
-    (function (collections) {
-        /**
-         * A read only view of a collection.
-         */
-        var ReadOnlyCollection = (function () {
-            /**
-             * Construct a new read only collection.
-             */
-            function ReadOnlyCollection(collection) {
-                this._collection = collection;
-            }
-            Object.defineProperty(ReadOnlyCollection.prototype, "empty", {
-                /**
-                 * True if the collection has elements, false otherwise.
-                 */
-                get: function () {
-                    return this._collection.empty;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ReadOnlyCollection.prototype, "size", {
-                /**
-                 * The number of elements in the collection.
-                 */
-                get: function () {
-                    return this._collection.size;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get an iterator for the elements in the collection.
-             */
-            ReadOnlyCollection.prototype.iterator = function () {
-                return this._collection.iterator();
-            };
-            /**
-             * Test whether the collection contains the given value.
-             */
-            ReadOnlyCollection.prototype.contains = function (value) {
-                return this._collection.contains(value);
-            };
-            /**
-             * Add a value to the collection.
-             *
-             * This method always throws.
-             */
-            ReadOnlyCollection.prototype.add = function (value) {
-                throw new Error('collection is read only');
-            };
-            /**
-             * Remove a value from the collection.
-             *
-             * This method always throws.
-             */
-            ReadOnlyCollection.prototype.remove = function (value) {
-                throw new Error('collection is read only');
-            };
-            /**
-             * Remove all elements from the collection.
-             *
-             * This method always throws.
-             */
-            ReadOnlyCollection.prototype.clear = function () {
-                throw new Error('collection is read only');
-            };
-            return ReadOnlyCollection;
-        })();
-        collections.ReadOnlyCollection = ReadOnlyCollection;
-    })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var collections;
-    (function (collections) {
-        /**
-         * A read only view of a list.
-         */
-        var ReadOnlyList = (function (_super) {
-            __extends(ReadOnlyList, _super);
-            /**
-             * Construct a new read only list.
-             */
-            function ReadOnlyList(list) {
-                _super.call(this, list);
-            }
-            /**
-             * Get the index of the given value.
-             *
-             * Returns -1 if the value is not in the list.
-             */
-            ReadOnlyList.prototype.indexOf = function (value) {
-                return this._collection.indexOf(value);
-            };
-            /**
-             * Get the value at the given index.
-             *
-             * Returns `undefined` if the index is out of range.
-             */
-            ReadOnlyList.prototype.get = function (index) {
-                return this._collection.get(index);
-            };
-            /**
-             * Set the value at the given index.
-             *
-             * This method always throws.
-             */
-            ReadOnlyList.prototype.set = function (index, value) {
-                throw new Error('list is read only');
-            };
-            /**
-             * Insert a value at the given index.
-             *
-             * This method always throws.
-             */
-            ReadOnlyList.prototype.insert = function (index, value) {
-                throw new Error('list is read only');
-            };
-            /**
-             * Remove and return the value at the given index.
-             *
-             * This method always throws.
-             */
-            ReadOnlyList.prototype.removeAt = function (index) {
-                throw new Error('list is read only');
-            };
-            return ReadOnlyList;
-        })(collections.ReadOnlyCollection);
-        collections.ReadOnlyList = ReadOnlyList;
-    })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var collections;
-    (function (collections) {
-        /**
-         * An iterator for a generic array.
-         */
-        var ArrayIterator = (function () {
-            /**
-             * Construct a new array iterator.
-             */
-            function ArrayIterator(array) {
-                this._index = 0;
-                this._current = void 0;
-                this._array = array || null;
-            }
-            Object.defineProperty(ArrayIterator.prototype, "current", {
-                /**
-                 * The current value of the iterable.
-                 *
-                 * Returns `undefined` if there is no current value.
-                 */
-                get: function () {
-                    return this._current;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Move the iterator to the next value.
-             *
-             * Returns true on success, false when the iterator is exhausted.
-             */
-            ArrayIterator.prototype.moveNext = function () {
-                if (this._array === null) {
-                    return false;
-                }
-                if (this._index < this._array.length) {
-                    this._current = this._array[this._index++];
-                    return true;
-                }
-                this._array = null;
-                this._current = void 0;
-                return false;
-            };
-            /**
-             * Returns `this` to make the iterator iterable.
-             */
-            ArrayIterator.prototype.iterator = function () {
-                return this;
-            };
-            return ArrayIterator;
-        })();
-        collections.ArrayIterator = ArrayIterator;
-    })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var collections;
-    (function (collections) {
-        /**
-         * A collection of elements which can be accessed by index.
-         */
-        var List = (function () {
-            /**
-             * Construct a new list.
-             */
-            function List(items) {
-                this._array = items !== void 0 ? collections.toArray(items) : [];
-            }
-            Object.defineProperty(List.prototype, "empty", {
-                /**
-                 * True if the list has elements, false otherwise.
-                 */
-                get: function () {
-                    return this._array.length === 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(List.prototype, "size", {
-                /**
-                 * The number of elements in the list.
-                 */
-                get: function () {
-                    return this._array.length;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(List.prototype, "back", {
-                /**
-                 * The value at the back of the list.
-                 */
-                get: function () {
-                    return this._array[this._array.length - 1];
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get an iterator for the elements in the list.
-             */
-            List.prototype.iterator = function () {
-                return new collections.ArrayIterator(this._array);
-            };
-            /**
-             * Test whether the list contains the given value.
-             */
-            List.prototype.contains = function (value) {
-                return this.indexOf(value) !== -1;
-            };
-            /**
-             * Get the index of the given value.
-             *
-             * Returns -1 if the value is not in the list.
-             */
-            List.prototype.indexOf = function (value) {
-                var array = this._array;
-                for (var i = 0, n = array.length; i < n; ++i) {
-                    if (array[i] === value) {
-                        return i;
+                    for (var i = fromIndex; i < len; ++i) {
+                        if (pred(array[i], i)) {
+                            return i;
+                        }
                     }
                 }
                 return -1;
-            };
+            }
+            algorithm.findIndex = findIndex;
             /**
-             * Get the value at the given index.
+             * Find the index of the last element which passes the test.
              *
-             * Returns `undefined` if the index is out of range.
-             */
-            List.prototype.get = function (index) {
-                return this._array[index];
-            };
-            /**
-             * Set the value at the given index.
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array.
+             * The default index is `-1`.
              *
-             * Returns false if the index is out of range.
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the front of the array and continue until
+             * reaching the element just after the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `-1` if no element passes the test.
              */
-            List.prototype.set = function (index, value) {
-                var array = this._array;
-                if (index < 0 || index >= array.length) {
-                    return false;
+            function findLastIndex(array, pred, fromIndex, wrap) {
+                if (fromIndex === void 0) { fromIndex = -1; }
+                if (wrap === void 0) { wrap = false; }
+                var len = array.length;
+                if (len === 0) {
+                    return -1;
                 }
-                array[index] = value;
-                return true;
-            };
-            /**
-             * Add a value to the end of the list.
-             *
-             * This method always succeeds.
-             */
-            List.prototype.add = function (value) {
-                this._array.push(value);
-                return true;
-            };
-            /**
-             * Push a value onto the back of the list.
-             */
-            List.prototype.pushBack = function (value) {
-                this._array.push(value);
-            };
-            /**
-             * Insert a value at the given index.
-             *
-             * Returns false if the index is out of range.
-             */
-            List.prototype.insert = function (index, value) {
-                var array = this._array;
-                if (index < 0 || index > array.length) {
-                    return false;
+                fromIndex = fromIndex | 0;
+                if (fromIndex < 0) {
+                    fromIndex += len;
                 }
-                for (var i = array.length; i > index; --i) {
+                if (fromIndex >= len) {
+                    fromIndex = len - 1;
+                }
+                if (wrap) {
+                    for (var i = len; i > 0; --i) {
+                        var j = (((i + fromIndex) % len) + len) % len;
+                        if (pred(array[j], j)) {
+                            return j;
+                        }
+                    }
+                }
+                else {
+                    for (var i = fromIndex; i >= 0; --i) {
+                        if (pred(array[i], i)) {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+            algorithm.findLastIndex = findLastIndex;
+            /**
+             * Find the first element in the array which passes the given test.
+             *
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array.
+             * The default index is `0`.
+             *
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the end of the array and continue until
+             * reaching the element just before the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `undefined` if no element passes the test.
+             */
+            function find(array, pred, fromIndex, wrap) {
+                var i = findIndex(array, pred, fromIndex, wrap);
+                return i !== -1 ? array[i] : void 0;
+            }
+            algorithm.find = find;
+            /**
+             * Find the last element in the array which passes the given test.
+             *
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array.
+             * The default index is `-1`.
+             *
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the front of the array and continue until
+             * reaching the element just after the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `undefined` if no element passes the test.
+             */
+            function findLast(array, pred, fromIndex, wrap) {
+                var i = findLastIndex(array, pred, fromIndex, wrap);
+                return i !== -1 ? array[i] : void 0;
+            }
+            algorithm.findLast = findLast;
+            /**
+             * Find the index of the first element which is not less than `value`.
+             *
+             * This function uses a binary search. It must be applied to a sorted
+             * array in order for the results to be correct.
+             *
+             * Returns `array.length` if all elements are less than `value`.
+             */
+            function lowerBound(array, value, cmp) {
+                var begin = 0;
+                var half;
+                var middle;
+                var n = array.length;
+                while (n > 0) {
+                    half = n >> 1;
+                    middle = begin + half;
+                    if (cmp(array[middle], value) < 0) {
+                        begin = middle + 1;
+                        n -= half + 1;
+                    }
+                    else {
+                        n = half;
+                    }
+                }
+                return begin;
+            }
+            algorithm.lowerBound = lowerBound;
+            /**
+             * Find the index of the first element which is greater than `value`.
+             *
+             * This function uses a binary search. It must be applied to a sorted
+             * array in order for the results to be correct.
+             *
+             * Returns `array.length` if no element is greater than `value`.
+             */
+            function upperBound(array, value, cmp) {
+                var begin = 0;
+                var half;
+                var middle;
+                var n = array.length;
+                while (n > 0) {
+                    half = n >> 1;
+                    middle = begin + half;
+                    if (cmp(array[middle], value) > 0) {
+                        n = half;
+                    }
+                    else {
+                        begin = middle + 1;
+                        n -= half + 1;
+                    }
+                }
+                return begin;
+            }
+            algorithm.upperBound = upperBound;
+            /**
+             * Find the index of the first element which is equal to `value`.
+             *
+             * This function uses a binary search. It must be applied to a sorted
+             * array in order for the results to be correct.
+             *
+             * Returns `-1` if no matching value is found.
+             */
+            function findLowerIndex(array, value, cmp) {
+                var i = lowerBound(array, value, cmp);
+                if (i === array.length) {
+                    return -1;
+                }
+                if (cmp(array[i], value) === 0) {
+                    return i;
+                }
+                return -1;
+            }
+            algorithm.findLowerIndex = findLowerIndex;
+            /**
+             * Find the index of the last element which is equal to `value`.
+             *
+             * This function uses a binary search. It must be applied to a sorted
+             * array in order for the results to be correct.
+             *
+             * Returns `-1` if no matching value is found.
+             */
+            function findUpperIndex(array, value, cmp) {
+                var i = upperBound(array, value, cmp);
+                if (i === 0) {
+                    return -1;
+                }
+                if (cmp(array[i - 1], value) === 0) {
+                    return i - 1;
+                }
+                return -1;
+            }
+            algorithm.findUpperIndex = findUpperIndex;
+            /**
+             * Find the first element which is equal to `value`.
+             *
+             * This function uses a binary search. It must be applied to a sorted
+             * array in order for the results to be correct.
+             *
+             * Returns `undefined` if no matching value is found.
+             */
+            function findLower(array, value, cmp) {
+                var i = findLowerIndex(array, value, cmp);
+                return i !== -1 ? array[i] : void 0;
+            }
+            algorithm.findLower = findLower;
+            /**
+             * Find the index of the last element which is equal to `value`.
+             *
+             * This uses a binary search algorithm which must be applied to a
+             * sorted array in order for the results to be correct.
+             *
+             * Returns `-1` if no matching value is found.
+             */
+            function findUpper(array, value, cmp) {
+                var i = findUpperIndex(array, value, cmp);
+                return i !== -1 ? array[i] : void 0;
+            }
+            algorithm.findUpper = findUpper;
+            /**
+             * Insert an element at the given index.
+             *
+             * Returns the clamped index of the inserted element.
+             */
+            function insert(array, index, value) {
+                index = index | 0;
+                var len = array.length;
+                if (index < 0) {
+                    index += len;
+                }
+                if (index < 0) {
+                    index = 0;
+                }
+                if (index > len) {
+                    index = len;
+                }
+                for (var i = len; i > index; --i) {
                     array[i] = array[i - 1];
                 }
                 array[index] = value;
-                return true;
-            };
+                return index;
+            }
+            algorithm.insert = insert;
             /**
-             * Pop and return the value at the back of the list.
-             */
-            List.prototype.popBack = function () {
-                return this._array.pop();
-            };
-            /**
-             * Remove the first matching value from the list.
-             *
-             * Returns false if the value is not in the list.
-             */
-            List.prototype.remove = function (value) {
-                var index = this.indexOf(value);
-                if (index !== -1) {
-                    this.removeAt(index);
-                    return true;
-                }
-                return false;
-            };
-            /**
-             * Remove and return the value at the given index.
+             * Remove and return the element at the given index.
              *
              * Returns `undefined` if the index is out of range.
              */
-            List.prototype.removeAt = function (index) {
-                var array = this._array;
-                if (index < 0 || index >= array.length) {
+            function removeAt(array, index) {
+                index = index | 0;
+                var len = array.length;
+                if (index < 0 || index >= len) {
                     return void 0;
                 }
                 var value = array[index];
-                for (var i = index + 1, n = array.length; i < n; ++i) {
+                for (var i = index + 1; i < len; ++i) {
                     array[i - 1] = array[i];
                 }
                 array.pop();
                 return value;
-            };
-            /**
-             * Remove all elements from the list.
-             */
-            List.prototype.clear = function () {
-                this._array.length = 0;
-            };
-            return List;
-        })();
-        collections.List = List;
-    })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert and Phosphor Contributors
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var collections;
-    (function (collections) {
-        /**
-         * An iterator for a generic list.
-         */
-        var ListIterator = (function () {
-            /**
-             * Construct a new list iterator.
-             */
-            function ListIterator(list) {
-                this._index = 0;
-                this._current = void 0;
-                this._list = list || null;
             }
-            Object.defineProperty(ListIterator.prototype, "current", {
-                /**
-                 * The current value of the iterable.
-                 *
-                 * Returns `undefined` if there is no current value.
-                 */
-                get: function () {
-                    return this._current;
-                },
-                enumerable: true,
-                configurable: true
-            });
+            algorithm.removeAt = removeAt;
             /**
-             * Move the iterator to the next value.
+             * Remove the first occurrence of the element and return its index.
              *
-             * Returns true on success, false when the iterator is exhausted.
+             * Returns the `-1` if the element is not in the array.
              */
-            ListIterator.prototype.moveNext = function () {
-                if (this._list === null) {
-                    return false;
-                }
-                if (this._index < this._list.size) {
-                    this._current = this._list.get(this._index++);
-                    return true;
-                }
-                this._list = null;
-                this._current = void 0;
-                return false;
-            };
-            /**
-             * Returns `this` to make the iterator iterable.
-             */
-            ListIterator.prototype.iterator = function () {
-                return this;
-            };
-            return ListIterator;
-        })();
-        collections.ListIterator = ListIterator;
+            function remove(array, value) {
+                var index = array.indexOf(value);
+                if (index !== -1)
+                    removeAt(array, index);
+                return index;
+            }
+            algorithm.remove = remove;
+        })(algorithm = collections.algorithm || (collections.algorithm = {})); // module algorithm
     })(collections = phosphor.collections || (phosphor.collections = {}));
 })(phosphor || (phosphor = {})); // module phosphor.collections
 
@@ -716,8 +347,8 @@ var phosphor;
                 this._size = 0;
                 this._offset = 0;
                 this._array = new Array(Math.max(1, maxSize));
-                if (items !== void 0)
-                    collections.forEach(items, function (it) {
+                if (items)
+                    items.forEach(function (it) {
                         _this.pushBack(it);
                     });
             }
@@ -731,22 +362,22 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(CircularBuffer.prototype, "empty", {
-                /**
-                 * True if the buffer has elements, false otherwise.
-                 */
-                get: function () {
-                    return this._size === 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
             Object.defineProperty(CircularBuffer.prototype, "size", {
                 /**
                  * The number of elements in the buffer.
                  */
                 get: function () {
                     return this._size;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(CircularBuffer.prototype, "empty", {
+                /**
+                 * True if the buffer has elements, false otherwise.
+                 */
+                get: function () {
+                    return this._size === 0;
                 },
                 enumerable: true,
                 configurable: true
@@ -772,32 +403,7 @@ var phosphor;
                 configurable: true
             });
             /**
-             * Get an iterator for the elements in the buffer.
-             */
-            CircularBuffer.prototype.iterator = function () {
-                return new collections.ListIterator(this);
-            };
-            /**
-             * Test whether the buffer contains the given value.
-             */
-            CircularBuffer.prototype.contains = function (value) {
-                return this.indexOf(value) !== -1;
-            };
-            /**
-             * Get the index of the given value.
-             *
-             * Returns -1 if the value is not in the buffer.
-             */
-            CircularBuffer.prototype.indexOf = function (value) {
-                for (var i = 0, n = this._size; i < n; ++i) {
-                    if (this._get(i) === value) {
-                        return i;
-                    }
-                }
-                return -1;
-            };
-            /**
-             * Get the element at the given index.
+             * Get the value at the given index.
              *
              * Returns `undefined` if the index is out of range.
              */
@@ -852,7 +458,7 @@ var phosphor;
                 if (this._size === 0) {
                     return void 0;
                 }
-                return this._del(--this._size);
+                return this._rem(--this._size);
             };
             /**
              * Pop and return the value at the front of the buffer.
@@ -861,76 +467,86 @@ var phosphor;
                 if (this._size === 0) {
                     return void 0;
                 }
-                var value = this._del(0);
+                var value = this._rem(0);
                 this._increment();
                 this._size--;
                 return value;
             };
             /**
-             * Add a value to the back of the buffer.
-             *
-             * This method always succeeds.
+             * Remove all values from the buffer.
              */
-            CircularBuffer.prototype.add = function (value) {
-                this.pushBack(value);
-                return true;
+            CircularBuffer.prototype.clear = function () {
+                for (var i = 0, n = this._size; i < n; ++i) {
+                    this._set(i, void 0);
+                }
+                this._size = 0;
+                this._offset = 0;
             };
             /**
-             * Insert a value at the given index.
-             *
-             * If the buffer is full, the first element will be overwritten.
-             *
-             * Returns false if the index is out of range.
+             * Create an array from the values in the buffer.
              */
-            CircularBuffer.prototype.insert = function (index, value) {
-                if (index < 0 || index > this._size) {
-                    return false;
+            CircularBuffer.prototype.toArray = function () {
+                var result = new Array(this._size);
+                for (var i = 0, n = this._size; i < n; ++i) {
+                    result[i] = this._get(i);
                 }
-                this.pushBack(void 0);
-                for (var i = this._size - 1; i > index; --i) {
-                    this._set(i, this._get(i - 1));
-                }
-                this._set(index, value);
-                return true;
+                return result;
             };
             /**
-             * Remove the first matching value from the buffer.
-             *
-             * Returns false if the value is not in the buffer.
+             * Returns true if any value in the buffer passes the given test.
              */
-            CircularBuffer.prototype.remove = function (value) {
-                var index = this.indexOf(value);
-                if (index !== -1) {
-                    this.removeAt(index);
-                    return true;
+            CircularBuffer.prototype.some = function (pred) {
+                for (var i = 0; i < this._size; ++i) {
+                    if (pred(this._get(i), i))
+                        return true;
                 }
                 return false;
             };
             /**
-             * Remove and return the value at the given index.
-             *
-             * Returns `undefined` if the index is out of range.
+             * Returns true if all values in the buffer pass the given test.
              */
-            CircularBuffer.prototype.removeAt = function (index) {
-                if (index < 0 || index >= this._size) {
-                    return void 0;
+            CircularBuffer.prototype.every = function (pred) {
+                for (var i = 0; i < this._size; ++i) {
+                    if (!pred(this._get(i), i))
+                        return false;
                 }
-                var value = this._get(index);
-                for (var i = index + 1, n = this._size; i < n; ++i) {
-                    this._set(i - 1, this._get(i));
-                }
-                this.popBack();
-                return value;
+                return true;
             };
             /**
-             * Remove all elements from the buffer.
+             * Create an array of the values which pass the given test.
              */
-            CircularBuffer.prototype.clear = function () {
-                var max = this._array.length;
-                this._array.length = 0;
-                this._array.length = max;
-                this._size = 0;
-                this._offset = 0;
+            CircularBuffer.prototype.filter = function (pred) {
+                var result;
+                for (var i = 0; i < this._size; ++i) {
+                    var value = this._get(i);
+                    if (pred(value, i))
+                        result.push(value);
+                }
+                return result;
+            };
+            /**
+             * Create an array of callback results for each value in the buffer.
+             */
+            CircularBuffer.prototype.map = function (callback) {
+                var result = new Array(this._size);
+                for (var i = 0; i < this._size; ++i) {
+                    result[i] = callback(this._get(i), i);
+                }
+                return result;
+            };
+            /**
+             * Execute a callback for each element in buffer.
+             *
+             * Iteration will terminate if the callbacks returns a value other
+             * than `undefined`. That value will be returned from this method.
+             */
+            CircularBuffer.prototype.forEach = function (callback) {
+                for (var i = 0; i < this._size; ++i) {
+                    var result = callback(this._get(i), i);
+                    if (result !== void 0)
+                        return result;
+                }
+                return void 0;
             };
             /**
              * Get the value for the apparent index.
@@ -953,7 +569,7 @@ var phosphor;
              *
              * The index is assumed to be in-range.
              */
-            CircularBuffer.prototype._del = function (index) {
+            CircularBuffer.prototype._rem = function (index) {
                 var i = (index + this._offset) % this._array.length;
                 var value = this._array[i];
                 this._array[i] = void 0;
@@ -1010,27 +626,27 @@ var phosphor;
                 this._size = 0;
                 this._front = null;
                 this._back = null;
-                if (items !== void 0)
-                    collections.forEach(items, function (it) {
+                if (items)
+                    items.forEach(function (it) {
                         _this.pushBack(it);
                     });
             }
-            Object.defineProperty(Queue.prototype, "empty", {
-                /**
-                 * True if the queue has elements, false otherwise.
-                 */
-                get: function () {
-                    return this._size === 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
             Object.defineProperty(Queue.prototype, "size", {
                 /**
                  * The number of elements in the queue.
                  */
                 get: function () {
                     return this._size;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Queue.prototype, "empty", {
+                /**
+                 * True if the queue has elements, false otherwise.
+                 */
+                get: function () {
+                    return this._size === 0;
                 },
                 enumerable: true,
                 configurable: true
@@ -1055,34 +671,6 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            /**
-             * Get an iterator for the elements in the queue.
-             */
-            Queue.prototype.iterator = function () {
-                return new QueueIterator(this._front);
-            };
-            /**
-             * Test whether the queue contains the given value.
-             */
-            Queue.prototype.contains = function (value) {
-                var link = this._front;
-                while (link !== null) {
-                    if (link.value === value) {
-                        return true;
-                    }
-                    link = link.next;
-                }
-                return false;
-            };
-            /**
-             * Add a value to the end of the queue.
-             *
-             * This method always succeeds.
-             */
-            Queue.prototype.add = function (value) {
-                this.pushBack(value);
-                return true;
-            };
             /**
              * Push a value onto the back of the queue.
              */
@@ -1117,33 +705,6 @@ var phosphor;
                 return link.value;
             };
             /**
-             * Remove the first matching value from the queue.
-             *
-             * Returns false if the value is not in the queue.
-             */
-            Queue.prototype.remove = function (value) {
-                var link = this._front;
-                var prev = null;
-                while (link !== null) {
-                    if (link.value === value) {
-                        if (prev === null) {
-                            this._front = link.next;
-                        }
-                        else {
-                            prev.next = link.next;
-                        }
-                        if (link.next === null) {
-                            this._back = prev;
-                        }
-                        this._size--;
-                        return true;
-                    }
-                    prev = link;
-                    link = link.next;
-                }
-                return false;
-            };
-            /**
              * Remove all values from the queue.
              */
             Queue.prototype.clear = function () {
@@ -1151,57 +712,77 @@ var phosphor;
                 this._front = null;
                 this._back = null;
             };
-            return Queue;
-        })();
-        collections.Queue = Queue;
-        /**
-         * An iterator for a Queue.
-         */
-        var QueueIterator = (function () {
             /**
-             * Construct a new queue iterator.
+             * Create an array from the values in the queue.
              */
-            function QueueIterator(link) {
-                this._current = void 0;
-                this._link = link;
-            }
-            Object.defineProperty(QueueIterator.prototype, "current", {
-                /**
-                 * The current value of the iterable.
-                 *
-                 * Returns `undefined` if there is no current value.
-                 */
-                get: function () {
-                    return this._current;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Move the iterator to the next value.
-             *
-             * Returns true on success, false when the iterator is exhausted.
-             */
-            QueueIterator.prototype.moveNext = function () {
-                if (this._link === null) {
-                    return false;
+            Queue.prototype.toArray = function () {
+                var result = new Array(this._size);
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    result[i] = link.value;
                 }
-                this._current = this._link.value;
-                this._link = this._link.next;
+                return result;
+            };
+            /**
+             * Returns true if any value in the queue passes the given test.
+             */
+            Queue.prototype.some = function (pred) {
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    if (pred(link.value, i))
+                        return true;
+                }
+                return false;
+            };
+            /**
+             * Returns true if all values in the queue pass the given test.
+             */
+            Queue.prototype.every = function (pred) {
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    if (!pred(link.value, i))
+                        return false;
+                }
                 return true;
             };
             /**
-             * Returns `this` to make the iterator iterable.
+             * Create an array of the values which pass the given test.
              */
-            QueueIterator.prototype.iterator = function () {
-                return this;
+            Queue.prototype.filter = function (pred) {
+                var result;
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    var value = link.value;
+                    if (pred(value, i))
+                        result.push(value);
+                }
+                return result;
             };
-            return QueueIterator;
+            /**
+             * Create an array of callback results for each value in the queue.
+             */
+            Queue.prototype.map = function (callback) {
+                var result = new Array(this._size);
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    result[i] = callback(link.value, i);
+                }
+                return result;
+            };
+            /**
+             * Execute a callback for each element in queue.
+             *
+             * Iteration will terminate if the callbacks returns a value other
+             * than `undefined`. That value will be returned from this method.
+             */
+            Queue.prototype.forEach = function (callback) {
+                for (var i = 0, link = this._front; link !== null; link = link.next, ++i) {
+                    var result = callback(link.value, i);
+                    if (result !== void 0)
+                        return result;
+                }
+                return void 0;
+            };
+            return Queue;
         })();
+        collections.Queue = Queue;
     })(collections = phosphor.collections || (phosphor.collections = {}));
 })(phosphor || (phosphor = {})); // module phosphor.collections
-
-
 
 
 
@@ -1220,77 +801,113 @@ var phosphor;
 (function (phosphor) {
     var core;
     (function (core) {
+        /**
+         * A concrete implementation of IMessage.
+         *
+         * This may be subclassed to create complex message types.
+         */
+        var Message = (function () {
+            /**
+             * Construct a new message.
+             */
+            function Message(type) {
+                this._type = type;
+            }
+            Object.defineProperty(Message.prototype, "type", {
+                /**
+                 * The type of the message.
+                 */
+                get: function () {
+                    return this._type;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Message;
+        })();
+        core.Message = Message;
+    })(core = phosphor.core || (phosphor.core = {}));
+})(phosphor || (phosphor = {})); // module phosphor.core
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var core;
+    (function (core) {
         var Queue = phosphor.collections.Queue;
-        var dispatch;
-        (function (dispatch) {
-            /**
-             * Send a message to the message handler to process immediately.
-             */
-            function sendMessage(handler, msg) {
-                getDispatcher(handler).sendMessage(msg);
+        /**
+         * Send a message to the message handler to process immediately.
+         */
+        function sendMessage(handler, msg) {
+            getDispatcher(handler).sendMessage(msg);
+        }
+        core.sendMessage = sendMessage;
+        /**
+         * Post a message to the message handler to process in the future.
+         */
+        function postMessage(handler, msg) {
+            getDispatcher(handler).postMessage(msg);
+        }
+        core.postMessage = postMessage;
+        /**
+         * Test whether the message handler has pending messages.
+         */
+        function hasPendingMessages(handler) {
+            return getDispatcher(handler).hasPendingMessages();
+        }
+        core.hasPendingMessages = hasPendingMessages;
+        /**
+         * Send the first pending message to the message handler.
+         */
+        function sendPendingMessage(handler) {
+            getDispatcher(handler).sendPendingMessage();
+        }
+        core.sendPendingMessage = sendPendingMessage;
+        /**
+         * Install a message filter for a message handler.
+         *
+         * A message filter is invoked before the message handler processes
+         * the message. If the filter returns true from its `filterMessage`
+         * method, processing of the message will stop immediately and no
+         * other filters or the message handler will be invoked.
+         *
+         * The most recently installed filter is executed first.
+         */
+        function installMessageFilter(handler, filter) {
+            getDispatcher(handler).installMessageFilter(filter);
+        }
+        core.installMessageFilter = installMessageFilter;
+        /**
+         * Remove a message filter added for a message handler.
+         *
+         * It is safe to call this function while the filter is executing.
+         *
+         * If the filter is not installed, this is a no-op.
+         */
+        function removeMessageFilter(handler, filter) {
+            getDispatcher(handler).removeMessageFilter(filter);
+        }
+        core.removeMessageFilter = removeMessageFilter;
+        /**
+         * Clear all message data associated with the message handler.
+         *
+         * This removes all pending messages and filters for the handler.
+         */
+        function clearMessageData(handler) {
+            var dispatcher = dispatcherMap.get(handler);
+            if (dispatcher !== void 0) {
+                dispatcherMap.delete(handler);
+                dispatcher.clearPendingMessages();
+                dispatcher.clearMessageFilters();
             }
-            dispatch.sendMessage = sendMessage;
-            /**
-             * Post a message to the message handler to process in the future.
-             */
-            function postMessage(handler, msg) {
-                getDispatcher(handler).postMessage(msg);
-            }
-            dispatch.postMessage = postMessage;
-            /**
-             * Test whether the message handler has pending messages.
-             */
-            function hasPendingMessages(handler) {
-                return getDispatcher(handler).hasPendingMessages();
-            }
-            dispatch.hasPendingMessages = hasPendingMessages;
-            /**
-             * Send the first pending message to the message handler.
-             */
-            function sendPendingMessage(handler) {
-                getDispatcher(handler).sendPendingMessage();
-            }
-            dispatch.sendPendingMessage = sendPendingMessage;
-            /**
-             * Install a message filter for a message handler.
-             *
-             * A message filter is invoked before the message handler processes
-             * the message. If the filter returns true from its `filterMessage`
-             * method, processing of the message will stop immediately and no
-             * other filters or the message handler will be invoked.
-             *
-             * The most recently installed filter is executed first.
-             */
-            function installMessageFilter(handler, filter) {
-                getDispatcher(handler).installMessageFilter(filter);
-            }
-            dispatch.installMessageFilter = installMessageFilter;
-            /**
-             * Remove a message filter added for a message handler.
-             *
-             * It is safe to call this function while the filter is executing.
-             *
-             * If the filter is not installed, this is a no-op.
-             */
-            function removeMessageFilter(handler, filter) {
-                getDispatcher(handler).removeMessageFilter(filter);
-            }
-            dispatch.removeMessageFilter = removeMessageFilter;
-            /**
-             * Clear all message data associated with the message handler.
-             *
-             * This removes all pending messages and filters for the handler.
-             */
-            function clearMessageData(handler) {
-                var dispatcher = dispatcherMap.get(handler);
-                if (dispatcher !== void 0) {
-                    dispatcherMap.delete(handler);
-                    dispatcher.clearPendingMessages();
-                    dispatcher.clearMessageFilters();
-                }
-            }
-            dispatch.clearMessageData = clearMessageData;
-        })(dispatch = core.dispatch || (core.dispatch = {})); // module dispatch
+        }
+        core.clearMessageData = clearMessageData;
         /**
          * The internal mapping of message handler to message dispatcher.
          */
@@ -1601,110 +1218,6 @@ var phosphor;
     var core;
     (function (core) {
         /**
-         * A singleton frozen empty object.
-         */
-        core.emptyObject = Object.freeze({});
-        /**
-         * A singleton frozen empty array.
-         */
-        core.emptyArray = Object.freeze([]);
-        /**
-         * A singleton empty no-op function.
-         */
-        core.emptyFunction = function () {
-        };
-    })(core = phosphor.core || (phosphor.core = {}));
-})(phosphor || (phosphor = {})); // module phosphor.core
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var core;
-    (function (core) {
-        /**
-         * A concrete implementation of IDisposable.
-         *
-         * A Disposable invokes a user provided callback when disposed.
-         */
-        var Disposable = (function () {
-            /**
-             * Construct a new disposable.
-             */
-            function Disposable(callback) {
-                this._callback = callback;
-            }
-            /**
-             * Dispose the object and invoke the user provided callback.
-             */
-            Disposable.prototype.dispose = function () {
-                var callback = this._callback;
-                this._callback = null;
-                if (callback)
-                    callback();
-            };
-            return Disposable;
-        })();
-        core.Disposable = Disposable;
-    })(core = phosphor.core || (phosphor.core = {}));
-})(phosphor || (phosphor = {})); // module phosphor.core
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var core;
-    (function (core) {
-        /**
-         * A concrete implementation of IMessage.
-         *
-         * This may be subclassed to create complex message types.
-         */
-        var Message = (function () {
-            /**
-             * Construct a new message.
-             */
-            function Message(type) {
-                this._type = type;
-            }
-            Object.defineProperty(Message.prototype, "type", {
-                /**
-                 * The type of the message.
-                 */
-                get: function () {
-                    return this._type;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return Message;
-        })();
-        core.Message = Message;
-    })(core = phosphor.core || (phosphor.core = {}));
-})(phosphor || (phosphor = {})); // module phosphor.core
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var core;
-    (function (core) {
-        /**
          * An object used for loosely coupled inter-object communication.
          *
          * A signal is emitted by an object in response to some event. User
@@ -1890,23 +1403,6 @@ var phosphor;
             return Object.freeze({ name: name });
         }
         di.createToken = createToken;
-    })(di = phosphor.di || (phosphor.di = {}));
-})(phosphor || (phosphor = {})); // module phosphor.di
-
-
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var di;
-    (function (di) {
-        di.IContainer = di.createToken('phosphor.di.IContainer');
     })(di = phosphor.di || (phosphor.di = {}));
 })(phosphor || (phosphor = {})); // module phosphor.di
 
@@ -2134,47 +1630,87 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var domutil;
-    (function (domutil) {
+    var di;
+    (function (di) {
+        di.IContainer = di.createToken('phosphor.di.IContainer');
+    })(di = phosphor.di || (phosphor.di = {}));
+})(phosphor || (phosphor = {})); // module phosphor.di
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
         /**
-         * Create a box data object for the given node.
+         * Create a box sizing object for the given node.
          *
          * The values of the returned object are read only.
          */
-        function createBoxData(node) {
+        function createBoxSizing(node) {
+            var proto = boxSizingProto;
             var style = window.getComputedStyle(node);
-            var bt = parseInt(style.borderTopWidth, 10) || 0;
-            var bl = parseInt(style.borderLeftWidth, 10) || 0;
-            var br = parseInt(style.borderRightWidth, 10) || 0;
-            var bb = parseInt(style.borderBottomWidth, 10) || 0;
-            var pt = parseInt(style.paddingTop, 10) || 0;
-            var pl = parseInt(style.paddingLeft, 10) || 0;
-            var pr = parseInt(style.paddingRight, 10) || 0;
-            var pb = parseInt(style.paddingBottom, 10) || 0;
-            var data = Object.create(boxDataProto);
-            if (bt !== 0)
-                data._bt = bt;
-            if (bl !== 0)
-                data._bl = bl;
-            if (br !== 0)
-                data._br = br;
-            if (bb !== 0)
-                data._bb = bb;
-            if (pt !== 0)
-                data._pt = pt;
-            if (pl !== 0)
-                data._pl = pl;
-            if (pr !== 0)
-                data._pr = pr;
-            if (pb !== 0)
-                data._pb = pb;
-            return data;
+            var mw = parseInt(style.minWidth, 10) || proto._mw;
+            var mh = parseInt(style.minHeight, 10) || proto._mh;
+            var xw = parseInt(style.maxWidth, 10) || proto._xw;
+            var xh = parseInt(style.maxHeight, 10) || proto._xh;
+            var bt = parseInt(style.borderTopWidth, 10) || proto._bt;
+            var bl = parseInt(style.borderLeftWidth, 10) || proto._bl;
+            var br = parseInt(style.borderRightWidth, 10) || proto._br;
+            var bb = parseInt(style.borderBottomWidth, 10) || proto._bb;
+            var pt = parseInt(style.paddingTop, 10) || proto._pt;
+            var pl = parseInt(style.paddingLeft, 10) || proto._pl;
+            var pr = parseInt(style.paddingRight, 10) || proto._pr;
+            var pb = parseInt(style.paddingBottom, 10) || proto._pb;
+            var box = Object.create(proto);
+            if (mw !== proto._mw)
+                box._mw = mw;
+            if (mh !== proto._mh)
+                box._mh = mh;
+            if (xw !== proto._xw)
+                box._xw = xw;
+            if (xh !== proto._xh)
+                box._xh = xh;
+            if (bt !== proto._bt)
+                box._bt = bt;
+            if (bl !== proto._bl)
+                box._bl = bl;
+            if (br !== proto._br)
+                box._br = br;
+            if (bb !== proto._bb)
+                box._bb = bb;
+            if (pt !== proto._pt)
+                box._pt = pt;
+            if (pl !== proto._pl)
+                box._pl = pl;
+            if (pr !== proto._pr)
+                box._pr = pr;
+            if (pb !== proto._pb)
+                box._pb = pb;
+            return box;
         }
-        domutil.createBoxData = createBoxData;
+        utility.createBoxSizing = createBoxSizing;
         /**
-         * The box data prototype object used by `createBoxData`.
+         * The box sizing prototype object used by `createBoxSizing`.
          */
-        var boxDataProto = {
+        var boxSizingProto = {
+            get minWidth() {
+                return this._mw;
+            },
+            get minHeight() {
+                return this._mh;
+            },
+            get maxWidth() {
+                return this._xw;
+            },
+            get maxHeight() {
+                return this._xh;
+            },
             get borderTop() {
                 return this._bt;
             },
@@ -2205,6 +1741,10 @@ var phosphor;
             get horizontalSum() {
                 return this._bl + this._br + this._pl + this._pr;
             },
+            _mw: 0,
+            _mh: 0,
+            _xw: Infinity,
+            _xh: Infinity,
             _bt: 0,
             _bl: 0,
             _br: 0,
@@ -2214,8 +1754,8 @@ var phosphor;
             _pr: 0,
             _pb: 0,
         };
-    })(domutil = phosphor.domutil || (phosphor.domutil = {}));
-})(phosphor || (phosphor = {})); // module phosphor.domutil
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -2226,8 +1766,114 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var domutil;
-    (function (domutil) {
+    var utility;
+    (function (utility) {
+        /**
+         * The class name added to the document body on cursor override.
+         */
+        var CURSOR_CLASS = 'p-mod-cursor-override';
+        /**
+         * The token object for the current override.
+         */
+        var overrideToken = null;
+        /**
+         * Override the cursor for the entire document.
+         *
+         * Returns an IDisposable which will clear the override.
+         */
+        function overrideCursor(cursor) {
+            var token = overrideToken = {};
+            var body = document.body;
+            body.style.cursor = cursor;
+            body.classList.add(CURSOR_CLASS);
+            return new utility.Disposable(function () {
+                if (token === overrideToken) {
+                    overrideToken = null;
+                    body.style.cursor = '';
+                    body.classList.remove(CURSOR_CLASS);
+                }
+            });
+        }
+        utility.overrideCursor = overrideCursor;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
+        /**
+         * A concrete implementation of IDisposable.
+         *
+         * This will invoke a user provided callback when it is disposed.
+         */
+        var Disposable = (function () {
+            /**
+             * Construct a new disposable.
+             */
+            function Disposable(callback) {
+                this._callback = callback;
+            }
+            /**
+             * Dispose the object and invoke the user provided callback.
+             */
+            Disposable.prototype.dispose = function () {
+                var callback = this._callback;
+                this._callback = null;
+                if (callback)
+                    callback();
+            };
+            return Disposable;
+        })();
+        utility.Disposable = Disposable;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
+        /**
+         * A singleton frozen empty object.
+         */
+        utility.emptyObject = Object.freeze({});
+        /**
+         * A singleton frozen empty array.
+         */
+        utility.emptyArray = Object.freeze([]);
+        /**
+         * A singleton empty no-op function.
+         */
+        utility.emptyFunction = function () {
+        };
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
         /**
          * Test whether a client position lies within a node.
          */
@@ -2235,9 +1881,9 @@ var phosphor;
             var rect = node.getBoundingClientRect();
             return x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom;
         }
-        domutil.hitTest = hitTest;
-    })(domutil = phosphor.domutil || (phosphor.domutil = {}));
-})(phosphor || (phosphor = {})); // module phosphor.domutil
+        utility.hitTest = hitTest;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -2248,46 +1894,366 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var domutil;
-    (function (domutil) {
-        var Disposable = phosphor.core.Disposable;
+    var utility;
+    (function (utility) {
         /**
-         * The class name added to the document body on cursor override.
+         * A generic pair of values.
          */
-        var CURSOR_CLASS = 'p-mod-cursor-override';
+        var Pair = (function () {
+            /**
+             * Construct a new pair.
+             */
+            function Pair(first, second) {
+                this.first = first;
+                this.second = second;
+            }
+            return Pair;
+        })();
+        utility.Pair = Pair;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
         /**
-         * The current disposable which owns the override.
+         * The position of a two dimensional object.
          */
-        var current = null;
+        var Point = (function () {
+            /**
+             * Construct a new point.
+             */
+            function Point(x, y) {
+                this._x = x;
+                this._y = y;
+            }
+            Object.defineProperty(Point.prototype, "x", {
+                /**
+                 * The X coordinate of the point.
+                 */
+                get: function () {
+                    return this._x;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Point.prototype, "y", {
+                /**
+                 * The Y coordinate of the point.
+                 */
+                get: function () {
+                    return this._y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Test whether the point is equivalent to another.
+             */
+            Point.prototype.equals = function (other) {
+                return this._x === other._x && this._y === other._y;
+            };
+            /**
+             * A static zero point.
+             */
+            Point.Zero = new Point(0, 0);
+            /**
+             * A static infinite point.
+             */
+            Point.Infinite = new Point(Infinity, Infinity);
+            return Point;
+        })();
+        utility.Point = Point;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
         /**
-         * Override the cursor for the entire document.
-         *
-         * Returns an IDisposable which will clear the override.
+         * The position and size of a 2-dimensional object.
          */
-        function overrideCursor(cursor) {
-            if (current)
-                current.dispose();
-            var body = document.body;
-            body.style.cursor = cursor;
-            body.classList.add(CURSOR_CLASS);
-            return current = new Disposable(clearOverride);
+        var Rect = (function () {
+            /**
+             * Construct a new rect.
+             */
+            function Rect(x, y, width, height) {
+                this._x = x;
+                this._y = y;
+                this._width = width;
+                this._height = height;
+            }
+            Object.defineProperty(Rect.prototype, "x", {
+                /**
+                 * The X coordinate of the rect.
+                 *
+                 * This is equivalent to `left`.
+                 */
+                get: function () {
+                    return this._x;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "y", {
+                /**
+                 * The Y coordinate of the rect.
+                 *
+                 * This is equivalent to `top`.
+                 */
+                get: function () {
+                    return this._y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "width", {
+                /**
+                 * The width of the rect.
+                 */
+                get: function () {
+                    return this._width;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "height", {
+                /**
+                 * The height of the rect.
+                 */
+                get: function () {
+                    return this._height;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "pos", {
+                /**
+                 * The position of the rect.
+                 *
+                 * This is equivalent to `topLeft`.
+                 */
+                get: function () {
+                    return new utility.Point(this._x, this._y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "size", {
+                /**
+                 * The size of the rect.
+                 */
+                get: function () {
+                    return new utility.Size(this._width, this._height);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "top", {
+                /**
+                 * The top edge of the rect.
+                 *
+                 * This is equivalent to `y`.
+                 */
+                get: function () {
+                    return this._y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "left", {
+                /**
+                 * The left edge of the rect.
+                 *
+                 * This is equivalent to `x`.
+                 */
+                get: function () {
+                    return this._x;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "right", {
+                /**
+                 * The right edge of the rect.
+                 *
+                 * This is equivalent to `x + width`.
+                 */
+                get: function () {
+                    return this._x + this._width;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "bottom", {
+                /**
+                 * The bottom edge of the rect.
+                 *
+                 * This is equivalent to `y + height`.
+                 */
+                get: function () {
+                    return this._y + this._height;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "topLeft", {
+                /**
+                 * The position of the top left corner of the rect.
+                 *
+                 * This is equivalent to `pos`.
+                 */
+                get: function () {
+                    return new utility.Point(this._x, this._y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "topRight", {
+                /**
+                 * The position of the top right corner of the rect.
+                 */
+                get: function () {
+                    return new utility.Point(this._x + this._width, this._y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "bottomLeft", {
+                /**
+                 * The position bottom left corner of the rect.
+                 */
+                get: function () {
+                    return new utility.Point(this._x, this._y + this._height);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Rect.prototype, "bottomRight", {
+                /**
+                 * The position bottom right corner of the rect.
+                 */
+                get: function () {
+                    return new utility.Point(this._x + this._width, this._y + this._height);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Test whether the rect is equivalent to another.
+             */
+            Rect.prototype.equals = function (other) {
+                return (this._x === other._x && this._y === other._y && this._width === other._width && this._height === other._height);
+            };
+            return Rect;
+        })();
+        utility.Rect = Rect;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
+        /**
+         * The size of a 2-dimensional object.
+         */
+        var Size = (function () {
+            /**
+             * Construct a new size.
+             */
+            function Size(width, height) {
+                this._width = width;
+                this._height = height;
+            }
+            Object.defineProperty(Size.prototype, "width", {
+                /**
+                 * The width of the size.
+                 */
+                get: function () {
+                    return this._width;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Size.prototype, "height", {
+                /**
+                 * The height of the size.
+                 */
+                get: function () {
+                    return this._height;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Test whether the size is equivalent to another.
+             */
+            Size.prototype.equals = function (other) {
+                return this._width === other._width && this._height === other._height;
+            };
+            /**
+             * A static zero size.
+             */
+            Size.Zero = new Size(0, 0);
+            /**
+             * A static infinite size.
+             */
+            Size.Infinite = new Size(Infinity, Infinity);
+            return Size;
+        })();
+        utility.Size = Size;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var utility;
+    (function (utility) {
+        /**
+         * Get the currently visible viewport rect in page coordinates.
+         */
+        function clientViewportRect() {
+            var elem = document.documentElement;
+            var x = window.pageXOffset;
+            var y = window.pageYOffset;
+            var w = x + elem.clientWidth;
+            var h = y + elem.clientHeight;
+            return new utility.Rect(x, y, w, h);
         }
-        domutil.overrideCursor = overrideCursor;
-        /**
-         * Clear the cursor override.
-         */
-        function clearOverride() {
-            current = null;
-            var body = document.body;
-            body.style.cursor = '';
-            body.classList.remove(CURSOR_CLASS);
-        }
-    })(domutil = phosphor.domutil || (phosphor.domutil = {}));
-})(phosphor || (phosphor = {})); // module phosphor.domutil
-
-
-
-
+        utility.clientViewportRect = clientViewportRect;
+    })(utility = phosphor.utility || (phosphor.utility = {}));
+})(phosphor || (phosphor = {})); // module phosphor.utility
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -2300,40 +2266,8 @@ var phosphor;
 (function (phosphor) {
     var virtualdom;
     (function (virtualdom) {
-        /**
-         * An enum of supported virtual element types.
-         */
-        (function (ElementType) {
-            /**
-             * The element represents a text node.
-             */
-            ElementType[ElementType["Text"] = 0] = "Text";
-            /**
-             * The element represents an HTMLElement node.
-             */
-            ElementType[ElementType["Node"] = 1] = "Node";
-            /**
-             * The element represents a component.
-             */
-            ElementType[ElementType["Component"] = 2] = "Component";
-        })(virtualdom.ElementType || (virtualdom.ElementType = {}));
-        var ElementType = virtualdom.ElementType;
-    })(virtualdom = phosphor.virtualdom || (phosphor.virtualdom = {}));
-})(phosphor || (phosphor = {})); // module phosphor.virtualdom
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var virtualdom;
-    (function (virtualdom) {
-        var emptyArray = phosphor.core.emptyArray;
-        var emptyObject = phosphor.core.emptyObject;
+        var emptyArray = phosphor.utility.emptyArray;
+        var emptyObject = phosphor.utility.emptyObject;
         /**
          * Create a virtual element factory function for the given tag.
          *
@@ -2364,13 +2298,13 @@ var phosphor;
         /**
          * Create a new virtual text element.
          */
-        function createTextElement(text) {
+        function createTextElem(text) {
             return new VirtualElement(0 /* Text */, text, emptyObject, emptyArray);
         }
         /**
          * Create a new virtual node element.
          */
-        function createNodeElement(tag, data, children) {
+        function createNodeElem(tag, data, children) {
             data = data || emptyObject;
             children = children || emptyArray;
             return new VirtualElement(1 /* Node */, tag, data, children);
@@ -2378,7 +2312,7 @@ var phosphor;
         /**
          * Create a new virtual component element.
          */
-        function createComponentElement(tag, data, children) {
+        function createCompElem(tag, data, children) {
             data = data || emptyObject;
             children = children || emptyArray;
             return new VirtualElement(2 /* Component */, tag, data, children);
@@ -2398,7 +2332,7 @@ var phosphor;
         /**
          * The virtual element factory function implementation.
          *
-         * When bound to a tag, this function implements IElementFactory.
+         * When bound to a tag, this function implements IFactory.
          */
         function factory(tag, first) {
             var data = null;
@@ -2431,16 +2365,16 @@ var phosphor;
                 for (var i = 0, n = children.length; i < n; ++i) {
                     var child = children[i];
                     if (typeof child === 'string') {
-                        children[i] = createTextElement(child);
+                        children[i] = createTextElem(child);
                     }
                 }
             }
             var elem;
             if (typeof tag === 'string') {
-                elem = createNodeElement(tag, data, children);
+                elem = createNodeElem(tag, data, children);
             }
             else {
-                elem = createComponentElement(tag, data, children);
+                elem = createCompElem(tag, data, children);
             }
             return elem;
         }
@@ -2562,6 +2496,10 @@ var phosphor;
     })(virtualdom = phosphor.virtualdom || (phosphor.virtualdom = {}));
 })(phosphor || (phosphor = {})); // module phosphor.virtualdom
 
+
+
+
+
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
 |
@@ -2573,8 +2511,42 @@ var phosphor;
 (function (phosphor) {
     var virtualdom;
     (function (virtualdom) {
-        var emptyArray = phosphor.core.emptyArray;
-        var emptyObject = phosphor.core.emptyObject;
+        /**
+         * An enum of supported virtual element types.
+         */
+        (function (ElementType) {
+            /**
+             * The element represents a text node.
+             */
+            ElementType[ElementType["Text"] = 0] = "Text";
+            /**
+             * The element represents an HTMLElement node.
+             */
+            ElementType[ElementType["Node"] = 1] = "Node";
+            /**
+             * The element represents a component.
+             */
+            ElementType[ElementType["Component"] = 2] = "Component";
+        })(virtualdom.ElementType || (virtualdom.ElementType = {}));
+        var ElementType = virtualdom.ElementType;
+    })(virtualdom = phosphor.virtualdom || (phosphor.virtualdom = {}));
+})(phosphor || (phosphor = {})); // module phosphor.virtualdom
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var virtualdom;
+    (function (virtualdom) {
+        var algo = phosphor.collections.algorithm;
+        var Pair = phosphor.utility.Pair;
+        var emptyArray = phosphor.utility.emptyArray;
+        var emptyObject = phosphor.utility.emptyObject;
         /**
          * Render virtual content into a host node.
          *
@@ -2623,8 +2595,10 @@ var phosphor;
             for (var i = 0, n = content.length; i < n; ++i) {
                 var elem = content[i];
                 var key = elem.data.key;
-                if (key)
-                    keyed[key] = { elem: elem, node: childNodes[i] };
+                if (key) {
+                    var node = childNodes[i];
+                    keyed[key] = new Pair(elem, node);
+                }
             }
             return keyed;
         }
@@ -2765,14 +2739,12 @@ var phosphor;
                 var newKey = newElem.data.key;
                 if (newKey && newKey in oldKeyed) {
                     var pair = oldKeyed[newKey];
-                    if (pair.elem !== oldElem) {
-                        var k = oldCopy.indexOf(pair.elem);
-                        if (k !== -1)
-                            oldCopy.splice(k, 1);
-                        oldCopy.splice(i, 0, pair.elem);
-                        moveNode(host, pair.node, currNode);
-                        oldElem = pair.elem;
-                        currNode = pair.node;
+                    if (pair.first !== oldElem) {
+                        algo.remove(oldCopy, pair.first);
+                        algo.insert(oldCopy, i, pair.first);
+                        moveNode(host, pair.second, currNode);
+                        oldElem = pair.first;
+                        currNode = pair.second;
                     }
                 }
                 // If both elements are identical, there is nothing to do.
@@ -2785,13 +2757,13 @@ var phosphor;
                 // may be moved forward in the tree at a later point in the diff.
                 var oldKey = oldElem.data.key;
                 if (oldKey && oldKey !== newKey) {
-                    oldCopy.splice(i, 0, newElem);
+                    algo.insert(oldCopy, i, newElem);
                     addNode(host, newElem, currNode);
                     continue;
                 }
                 // If the elements have different types, create a new node.
                 if (oldElem.type !== newElem.type) {
-                    oldCopy.splice(i, 0, newElem);
+                    algo.insert(oldCopy, i, newElem);
                     addNode(host, newElem, currNode);
                     continue;
                 }
@@ -2805,7 +2777,7 @@ var phosphor;
                 // At this point, the element is a Node or Component type.
                 // If the element tags are different, create a new node.
                 if (oldElem.tag !== newElem.tag) {
-                    oldCopy.splice(i, 0, newElem);
+                    algo.insert(oldCopy, i, newElem);
                     addNode(host, newElem, currNode);
                     continue;
                 }
@@ -3081,8 +3053,8 @@ var phosphor;
 (function (phosphor) {
     var components;
     (function (components) {
-        var emptyArray = phosphor.core.emptyArray;
-        var emptyObject = phosphor.core.emptyObject;
+        var emptyArray = phosphor.utility.emptyArray;
+        var emptyObject = phosphor.utility.emptyObject;
         /**
          * A concrete base implementation of IComponent.
          *
@@ -3183,7 +3155,7 @@ var phosphor;
 (function (phosphor) {
     var components;
     (function (components) {
-        var emptyObject = phosphor.core.emptyObject;
+        var emptyObject = phosphor.utility.emptyObject;
         var render = phosphor.virtualdom.render;
         // cache frequently used globals
         var raf = requestAnimationFrame;
@@ -3415,8 +3387,8 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         /**
          * An enum of alignment bit flags.
          */
@@ -3457,10 +3429,70 @@ var phosphor;
              * A mask of vertical alignment values.
              */
             Alignment[Alignment["Vertical_Mask"] = Alignment.Top | Alignment.Bottom | Alignment.VerticalCenter] = "Vertical_Mask";
-        })(panels.Alignment || (panels.Alignment = {}));
-        var Alignment = panels.Alignment;
+        })(widgets.Alignment || (widgets.Alignment = {}));
+        var Alignment = widgets.Alignment;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Message = phosphor.core.Message;
         /**
-         * An enum of direction values.
+         * A class for messages related to child widgets.
+         */
+        var ChildMessage = (function (_super) {
+            __extends(ChildMessage, _super);
+            /**
+             * Construct a new child message.
+             */
+            function ChildMessage(type, child) {
+                _super.call(this, type);
+                this._child = child;
+            }
+            Object.defineProperty(ChildMessage.prototype, "child", {
+                /**
+                 * The child widget for the message.
+                 */
+                get: function () {
+                    return this._child;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return ChildMessage;
+        })(Message);
+        widgets.ChildMessage = ChildMessage;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        /**
+         * An enum of layout directions.
          */
         (function (Direction) {
             /**
@@ -3479,56 +3511,189 @@ var phosphor;
              * Bottom to top direction.
              */
             Direction[Direction["BottomToTop"] = 3] = "BottomToTop";
-        })(panels.Direction || (panels.Direction = {}));
-        var Direction = panels.Direction;
+        })(widgets.Direction || (widgets.Direction = {}));
+        var Direction = widgets.Direction;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
         /**
-         * The available docking modes for a dock area.
+         * An enum of docking modes for a dock area.
          */
         (function (DockMode) {
             /**
-             * Insert the panel at the top of the dock area.
+             * Insert the widget at the top of the dock area.
              */
             DockMode[DockMode["Top"] = 0] = "Top";
             /**
-             * Insert the panel at the left of the dock area.
+             * Insert the widget at the left of the dock area.
              */
             DockMode[DockMode["Left"] = 1] = "Left";
             /**
-             * Insert the panel at the right of the dock area.
+             * Insert the widget at the right of the dock area.
              */
             DockMode[DockMode["Right"] = 2] = "Right";
             /**
-             * Insert the panel at the bottom of the dock area.
+             * Insert the widget at the bottom of the dock area.
              */
             DockMode[DockMode["Bottom"] = 3] = "Bottom";
             /**
-             * Insert the panel as a new split item above the reference.
+             * Insert the widget as a new split item above the reference.
              */
             DockMode[DockMode["SplitTop"] = 4] = "SplitTop";
             /**
-             * Insert the panel as a new split item to the left of the reference.
+             * Insert the widget as a new split item to the left of the reference.
              */
             DockMode[DockMode["SplitLeft"] = 5] = "SplitLeft";
             /**
-             * Insert the panel as a new split item to the right of the reference.
+             * Insert the widget as a new split item to the right of the reference.
              */
             DockMode[DockMode["SplitRight"] = 6] = "SplitRight";
             /**
-             * Insert the panel as a new split item below the reference.
+             * Insert the widget as a new split item below the reference.
              */
             DockMode[DockMode["SplitBottom"] = 7] = "SplitBottom";
             /**
-             * Insert the panel as a new tab before the reference.
+             * Insert the widget as a new tab before the reference.
              */
             DockMode[DockMode["TabBefore"] = 8] = "TabBefore";
             /**
-             * Insert the panel as a new tab after the reference.
+             * Insert the widget as a new tab after the reference.
              */
             DockMode[DockMode["TabAfter"] = 9] = "TabAfter";
-        })(panels.DockMode || (panels.DockMode = {}));
-        var DockMode = panels.DockMode;
+        })(widgets.DockMode || (widgets.DockMode = {}));
+        var DockMode = widgets.DockMode;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+
+
+
+
+
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Message = phosphor.core.Message;
         /**
-         * An enum of orientation values.
+         * A message class for 'move' messages.
+         */
+        var MoveMessage = (function (_super) {
+            __extends(MoveMessage, _super);
+            /**
+             * Construct a new move message.
+             */
+            function MoveMessage(oldX, oldY, x, y) {
+                _super.call(this, 'move');
+                this._oldX = oldX;
+                this._oldY = oldY;
+                this._x = x;
+                this._y = y;
+            }
+            Object.defineProperty(MoveMessage.prototype, "oldX", {
+                /**
+                 * The previous X coordinate of the widget.
+                 */
+                get: function () {
+                    return this._oldX;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MoveMessage.prototype, "oldY", {
+                /**
+                 * The previous Y coordinate of the widget.
+                 */
+                get: function () {
+                    return this._oldY;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MoveMessage.prototype, "x", {
+                /**
+                 * The current X coordinate of the widget.
+                 */
+                get: function () {
+                    return this._x;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MoveMessage.prototype, "y", {
+                /**
+                 * The current Y coordinate of the widget.
+                 */
+                get: function () {
+                    return this._y;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MoveMessage.prototype, "deltaX", {
+                /**
+                 * The change in X coordinate of the widget.
+                 */
+                get: function () {
+                    return this._x - this._oldX;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(MoveMessage.prototype, "deltaY", {
+                /**
+                 * The change in Y coordinate of the widget.
+                 */
+                get: function () {
+                    return this._y - this._oldY;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return MoveMessage;
+        })(Message);
+        widgets.MoveMessage = MoveMessage;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        /**
+         * An enum of layout orientations.
          */
         (function (Orientation) {
             /**
@@ -3539,58 +3704,142 @@ var phosphor;
              * Vertical orientation.
              */
             Orientation[Orientation["Vertical"] = 1] = "Vertical";
-        })(panels.Orientation || (panels.Orientation = {}));
-        var Orientation = panels.Orientation;
+        })(widgets.Orientation || (widgets.Orientation = {}));
+        var Orientation = widgets.Orientation;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Message = phosphor.core.Message;
         /**
-         * An enum of panel bit flags.
-         *
-         * Panel flags are used to control various low-level behaviors of
-         * a panel. They are typcially not used directly by user code.
+         * A message class for 'resize' messages.
          */
-        (function (PanelFlag) {
+        var ResizeMessage = (function (_super) {
+            __extends(ResizeMessage, _super);
             /**
-             * The panel is attached to the DOM.
+             * Construct a new resize message.
              */
-            PanelFlag[PanelFlag["IsAttached"] = 0x1] = "IsAttached";
-            /**
-             * The panel is explicitly hidden.
-             */
-            PanelFlag[PanelFlag["IsHidden"] = 0x2] = "IsHidden";
-            /**
-             * The panel is visible.
-             */
-            PanelFlag[PanelFlag["IsVisible"] = 0x4] = "IsVisible";
-            /**
-             * The panel has been disposed.
-             */
-            PanelFlag[PanelFlag["IsDisposed"] = 0x8] = "IsDisposed";
-            /**
-             * Changing the panel layout is disallowed.
-             */
-            PanelFlag[PanelFlag["DisallowLayoutChange"] = 0x10] = "DisallowLayoutChange";
-        })(panels.PanelFlag || (panels.PanelFlag = {}));
-        var PanelFlag = panels.PanelFlag;
+            function ResizeMessage(oldWidth, oldHeight, width, height) {
+                _super.call(this, 'resize');
+                this._oldWidth = oldWidth;
+                this._oldHeight = oldHeight;
+                this._width = width;
+                this._height = height;
+            }
+            Object.defineProperty(ResizeMessage.prototype, "oldWidth", {
+                /**
+                 * The previous width of the widget.
+                 */
+                get: function () {
+                    return this._oldWidth;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ResizeMessage.prototype, "oldHeight", {
+                /**
+                 * The previous height of the widget.
+                 */
+                get: function () {
+                    return this._oldHeight;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ResizeMessage.prototype, "width", {
+                /**
+                 * The current width of the widget.
+                 */
+                get: function () {
+                    return this._width;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ResizeMessage.prototype, "height", {
+                /**
+                 * The current height of the widget.
+                 */
+                get: function () {
+                    return this._height;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ResizeMessage.prototype, "deltaWidth", {
+                /**
+                 * The change in width of the widget.
+                 */
+                get: function () {
+                    return this._width - this._oldWidth;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(ResizeMessage.prototype, "deltaHeight", {
+                /**
+                 * The change in height of the widget.
+                 */
+                get: function () {
+                    return this._height - this._oldHeight;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return ResizeMessage;
+        })(Message);
+        widgets.ResizeMessage = ResizeMessage;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
         /**
          * An enum of size policy values.
          *
-         * A size policy controls how a layout interprets a panel's `sizeHint`.
+         * A size policy controls how layouts interpret a widget's `sizeHint`.
          */
         (function (SizePolicy) {
             /**
              * A policy indicating that the `sizeHint` is the only acceptable
-             * size for the panel.
+             * size for the widget.
              */
             SizePolicy[SizePolicy["Fixed"] = 0] = "Fixed";
             /**
-             * A bit flag indicating the panel can grow beyond `sizeHint`.
+             * A bit flag indicating the widget can grow beyond `sizeHint`.
              */
             SizePolicy[SizePolicy["GrowFlag"] = 0x1] = "GrowFlag";
             /**
-             * A bit flag indicating the panel can shrink below `sizeHint`.
+             * A bit flag indicating the widget can shrink below `sizeHint`.
              */
             SizePolicy[SizePolicy["ShrinkFlag"] = 0x2] = "ShrinkFlag";
             /**
-             * A bit flag indicating the panel should expand beyond `sizeHint`.
+             * A bit flag indicating the widget should expand beyond `sizeHint`.
              */
             SizePolicy[SizePolicy["ExpandFlag"] = 0x4] = "ExpandFlag";
             /**
@@ -3599,29 +3848,29 @@ var phosphor;
             SizePolicy[SizePolicy["IgnoreFlag"] = 0x8] = "IgnoreFlag";
             /**
              * A policy indicating that the `sizeHint` is a minimum, but the
-             * panel can be expanded if needed and still be useful.
+             * widget can be expanded if needed and still be useful.
              */
             SizePolicy[SizePolicy["Minimum"] = SizePolicy.GrowFlag] = "Minimum";
             /**
              * A policy indicating that the `sizeHint` is a maximum, but the
-             * panel can be shrunk if needed and still be useful.
+             * widget can be shrunk if needed and still be useful.
              */
             SizePolicy[SizePolicy["Maximum"] = SizePolicy.ShrinkFlag] = "Maximum";
             /**
              * A policy indicating that the `sizeHint` is preferred, but the
-             * panel can grow or shrink if needed and still be useful.
+             * widget can grow or shrink if needed and still be useful.
              *
              * This is the default size policy.
              */
             SizePolicy[SizePolicy["Preferred"] = SizePolicy.GrowFlag | SizePolicy.ShrinkFlag] = "Preferred";
             /**
-             * A policy indicating that `sizeHint` is reasonable, but the panel
+             * A policy indicating that `sizeHint` is reasonable, but the widget
              * can shrink if needed and still be useful. It can also make use of
              * extra space and should expand as much as possible.
              */
             SizePolicy[SizePolicy["Expanding"] = SizePolicy.GrowFlag | SizePolicy.ShrinkFlag | SizePolicy.ExpandFlag] = "Expanding";
             /**
-             * A policy indicating that `sizeHint` is a minimum. The panel can
+             * A policy indicating that `sizeHint` is a minimum. The widget can
              * make use of extra space and should expand as much as possible.
              */
             SizePolicy[SizePolicy["MinimumExpanding"] = SizePolicy.GrowFlag | SizePolicy.ExpandFlag] = "MinimumExpanding";
@@ -3629,10 +3878,10 @@ var phosphor;
              * A policy indicating the `sizeHint` is ignored.
              */
             SizePolicy[SizePolicy["Ignored"] = SizePolicy.GrowFlag | SizePolicy.ShrinkFlag | SizePolicy.IgnoreFlag] = "Ignored";
-        })(panels.SizePolicy || (panels.SizePolicy = {}));
-        var SizePolicy = panels.SizePolicy;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        })(widgets.SizePolicy || (widgets.SizePolicy = {}));
+        var SizePolicy = widgets.SizePolicy;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -3643,274 +3892,39 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         /**
-         * The position of a two dimensional object.
+         * An enum of widget bit flags.
+         *
+         * Widget flags are used to control various low-level behaviors of
+         * a widget. They are typically not used directly by user code.
          */
-        var Point = (function () {
+        (function (WidgetFlag) {
             /**
-             * Construct a new point.
+             * The widget is attached to the DOM.
              */
-            function Point(x, y) {
-                this._x = x;
-                this._y = y;
-            }
-            Object.defineProperty(Point.prototype, "x", {
-                /**
-                 * The X coordinate of the point.
-                 */
-                get: function () {
-                    return this._x;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Point.prototype, "y", {
-                /**
-                 * The Y coordinate of the point.
-                 */
-                get: function () {
-                    return this._y;
-                },
-                enumerable: true,
-                configurable: true
-            });
+            WidgetFlag[WidgetFlag["IsAttached"] = 0x1] = "IsAttached";
             /**
-             * Test whether the point is equivalent to another.
+             * The widget is explicitly hidden.
              */
-            Point.prototype.equals = function (other) {
-                return this._x === other._x && this._y === other._y;
-            };
-            return Point;
-        })();
-        panels.Point = Point;
-        /**
-         * The size of a 2-dimensional object.
-         */
-        var Size = (function () {
+            WidgetFlag[WidgetFlag["IsHidden"] = 0x2] = "IsHidden";
             /**
-             * Construct a new size.
+             * The widget is visible.
              */
-            function Size(width, height) {
-                this._width = width;
-                this._height = height;
-            }
-            Object.defineProperty(Size.prototype, "width", {
-                /**
-                 * The width of the size.
-                 */
-                get: function () {
-                    return this._width;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Size.prototype, "height", {
-                /**
-                 * The height of the size.
-                 */
-                get: function () {
-                    return this._height;
-                },
-                enumerable: true,
-                configurable: true
-            });
+            WidgetFlag[WidgetFlag["IsVisible"] = 0x4] = "IsVisible";
             /**
-             * Test whether the size is equivalent to another.
+             * The widget has been disposed.
              */
-            Size.prototype.equals = function (other) {
-                return this._width === other._width && this._height === other._height;
-            };
-            return Size;
-        })();
-        panels.Size = Size;
-        /**
-         * The position and size of a 2-dimensional object.
-         */
-        var Rect = (function () {
+            WidgetFlag[WidgetFlag["IsDisposed"] = 0x8] = "IsDisposed";
             /**
-             * Construct a new rect.
+             * Changing the widget layout is disallowed.
              */
-            function Rect(x, y, width, height) {
-                this._x = x;
-                this._y = y;
-                this._width = width;
-                this._height = height;
-            }
-            Object.defineProperty(Rect.prototype, "x", {
-                /**
-                 * The X coordinate of the rect.
-                 *
-                 * This is equivalent to `left`.
-                 */
-                get: function () {
-                    return this._x;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "y", {
-                /**
-                 * The Y coordinate of the rect.
-                 *
-                 * This is equivalent to `top`.
-                 */
-                get: function () {
-                    return this._y;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "width", {
-                /**
-                 * The width of the rect.
-                 */
-                get: function () {
-                    return this._width;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "height", {
-                /**
-                 * The height of the rect.
-                 */
-                get: function () {
-                    return this._height;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "pos", {
-                /**
-                 * The position of the rect.
-                 *
-                 * This is equivalent to `topLeft`.
-                 */
-                get: function () {
-                    return new Point(this._x, this._y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "size", {
-                /**
-                 * The size of the rect.
-                 */
-                get: function () {
-                    return new Size(this._width, this._height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "top", {
-                /**
-                 * The top edge of the rect.
-                 *
-                 * This is equivalent to `y`.
-                 */
-                get: function () {
-                    return this._y;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "left", {
-                /**
-                 * The left edge of the rect.
-                 *
-                 * This is equivalent to `x`.
-                 */
-                get: function () {
-                    return this._x;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "right", {
-                /**
-                 * The right edge of the rect.
-                 *
-                 * This is equivalent to `x + width`.
-                 */
-                get: function () {
-                    return this._x + this._width;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "bottom", {
-                /**
-                 * The bottom edge of the rect.
-                 *
-                 * This is equivalent to `y + height`.
-                 */
-                get: function () {
-                    return this._y + this._height;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "topLeft", {
-                /**
-                 * The position of the top left corner of the rect.
-                 *
-                 * This is equivalent to `pos`.
-                 */
-                get: function () {
-                    return new Point(this._x, this._y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "topRight", {
-                /**
-                 * The position of the top right corner of the rect.
-                 */
-                get: function () {
-                    return new Point(this._x + this._width, this._y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "bottomLeft", {
-                /**
-                 * The position bottom left corner of the rect.
-                 */
-                get: function () {
-                    return new Point(this._x, this._y + this._height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Rect.prototype, "bottomRight", {
-                /**
-                 * The position bottom right corner of the rect.
-                 */
-                get: function () {
-                    return new Point(this._x + this._width, this._y + this._height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Test whether the rect is equivalent to another.
-             */
-            Rect.prototype.equals = function (other) {
-                return (this._x === other._x && this._y === other._y && this._width === other._width && this._height === other._height);
-            };
-            return Rect;
-        })();
-        panels.Rect = Rect;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-
-
-
-
-
+            WidgetFlag[WidgetFlag["DisallowLayoutChange"] = 0x10] = "DisallowLayoutChange";
+        })(widgets.WidgetFlag || (widgets.WidgetFlag = {}));
+        var WidgetFlag = widgets.WidgetFlag;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -3921,14 +3935,14 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
-        var dispatch = phosphor.core.dispatch;
+    var widgets;
+    (function (widgets) {
         var Message = phosphor.core.Message;
+        var postMessage = phosphor.core.postMessage;
         /**
          * The base class of phosphor layouts.
          *
-         * The Layout class does not define an interface for adding panels to
+         * The Layout class does not define an interface for adding widgets to
          * the layout. A subclass should define that API in a manner suitable
          * for its intended use.
          */
@@ -3947,30 +3961,30 @@ var phosphor;
             };
             Object.defineProperty(Layout.prototype, "parent", {
                 /**
-                 * Get the parent panel of the layout.
+                 * Get the parent widget of the layout.
                  */
                 get: function () {
                     return this._parent;
                 },
                 /**
-                 * Set the parent panel of the layout.
+                 * Set the parent widget of the layout.
                  *
-                 * The parent panel can only be set once, and is done automatically
-                 * when the layout is installed on a panel. This should not be set
+                 * The parent widget can only be set once, and is done automatically
+                 * when the layout is installed on a widget. This should not be set
                  * directly by user code.
                  */
                 set: function (parent) {
                     if (!parent) {
-                        throw new Error('cannot set parent panel to null');
+                        throw new Error('cannot set parent widget to null');
                     }
                     if (parent === this._parent) {
                         return;
                     }
                     if (this._parent) {
-                        throw new Error('layout already installed on a panel');
+                        throw new Error('layout already installed on a widget');
                     }
                     this._parent = parent;
-                    this.reparentChildPanels();
+                    this.reparentChildWidgets();
                     this.invalidate();
                 },
                 enumerable: true,
@@ -4001,11 +4015,11 @@ var phosphor;
              *
              * This must be implemented by a subclass.
              */
-            Layout.prototype.takeAt = function (index) {
+            Layout.prototype.removeAt = function (index) {
                 throw new Error('not implemented');
             };
             /**
-             * Compute the preferred size of the layout.
+             * Compute the size hint for the layout.
              *
              * This must be implemented by a subclass.
              */
@@ -4029,35 +4043,64 @@ var phosphor;
                 throw new Error('not implemented');
             };
             /**
-             * Get the panel at the given index.
+             * Get the widget at the given index.
              *
-             * Returns `undefined` if there is no panel at the given index.
+             * Returns `undefined` if there is no widget at the given index.
              */
-            Layout.prototype.panelAt = function (index) {
+            Layout.prototype.widgetAt = function (index) {
                 var item = this.itemAt(index);
-                return (item && item.panel) || void 0;
+                return (item && item.widget) || void 0;
             };
             /**
-             * Get the index of the given panel or layout item.
+             * Get the index of the given widget or layout item.
              *
-             * Returns -1 if the panel or item does not exist in the layout.
+             * Returns -1 if the widget or item does not exist in the layout.
              */
             Layout.prototype.indexOf = function (value) {
                 for (var i = 0, n = this.count; i < n; ++i) {
                     var item = this.itemAt(i);
-                    if (item === value || item.panel === value) {
+                    if (item === value || item.widget === value) {
                         return i;
                     }
                 }
                 return -1;
             };
             /**
-             * Remove the given panel or layout item from the layout.
+             * Remove an item from the layout and return its index.
+             *
+             * Returns -1 if the item is not in the layout.
              */
             Layout.prototype.remove = function (value) {
                 var i = this.indexOf(value);
                 if (i !== -1)
-                    this.takeAt(i);
+                    this.removeAt(i);
+                return i;
+            };
+            /**
+             * Get the alignment for the given widget.
+             *
+             * Returns 0 if the widget is not found in the layout.
+             */
+            Layout.prototype.alignment = function (widget) {
+                var index = this.indexOf(widget);
+                return index === -1 ? 0 : this.itemAt(index).alignment;
+            };
+            /**
+             * Set the alignment for the given widget.
+             *
+             * Returns true if the alignment was updated, false otherwise.
+             */
+            Layout.prototype.setAlignment = function (widget, alignment) {
+                var index = this.indexOf(widget);
+                if (index === -1) {
+                    return false;
+                }
+                var item = this.itemAt(index);
+                if (item.alignment !== alignment) {
+                    item.alignment = alignment;
+                    this.invalidate();
+                }
+                return true;
             };
             /**
              * Invalidate the cached layout data and enqueue an update.
@@ -4067,31 +4110,47 @@ var phosphor;
             Layout.prototype.invalidate = function () {
                 var parent = this._parent;
                 if (parent) {
-                    dispatch.postMessage(parent, new Message('layout-request'));
+                    postMessage(parent, new Message('layout-request'));
                     parent.updateGeometry();
                 }
             };
             /**
+             * Update the layout for the parent widget immediately.
+             *
+             * This is typically called automatically at the appropriate times.
+             */
+            Layout.prototype.update = function () {
+                var parent = this._parent;
+                if (parent.isVisible) {
+                    var box = parent.boxSizing;
+                    var x = box.paddingLeft;
+                    var y = box.paddingTop;
+                    var w = parent.width - box.horizontalSum;
+                    var h = parent.height - box.verticalSum;
+                    this.layout(x, y, w, h);
+                }
+            };
+            /**
              * Filter a message sent to a message handler.
+             *
+             * This implements the `IMessageFilter` interface.
              */
             Layout.prototype.filterMessage = function (handler, msg) {
                 if (handler === this._parent) {
-                    this.processPanelMessage(msg);
+                    this.processParentMessage(msg);
                 }
                 return false;
             };
             /**
-             * Process a message dispatched to the parent panel.
+             * Process a message dispatched to the parent widget.
              *
              * Subclasses may reimplement this method as needed.
              */
-            Layout.prototype.processPanelMessage = function (msg) {
+            Layout.prototype.processParentMessage = function (msg) {
                 switch (msg.type) {
                     case 'resize':
                     case 'layout-request':
-                        if (this._parent.isVisible) {
-                            this.layout();
-                        }
+                        this.update();
                         break;
                     case 'child-removed':
                         this.remove(msg.child);
@@ -4099,50 +4158,48 @@ var phosphor;
                     case 'before-attach':
                         this.invalidate();
                         break;
-                    default:
-                        break;
                 }
             };
             /**
-             * Ensure a child panel is parented to the layout parent.
+             * A method invoked when widget layout should be updated.
              *
-             * This should be called by a subclass when adding a panel.
+             * The arguments are the content boundaries for the layout which are
+             * already adjusted to account for the parent widget box sizing data.
+             *
+             * The default implementation of this method is a no-op.
              */
-            Layout.prototype.ensureParent = function (panel) {
-                var parent = this._parent;
-                if (parent)
-                    panel.parent = parent;
+            Layout.prototype.layout = function (x, y, width, height) {
             };
             /**
-             * Reparent the child panels to the current layout parent.
+             * Ensure a child widget is parented to the layout's parent.
+             *
+             * This should be called by a subclass when adding a widget.
+             */
+            Layout.prototype.ensureParent = function (widget) {
+                var parent = this._parent;
+                if (parent)
+                    widget.parent = parent;
+            };
+            /**
+             * Reparent the child widgets to the layout's parent.
              *
              * This is typically called automatically at the proper times.
              */
-            Layout.prototype.reparentChildPanels = function () {
-                var parent = this.parent;
-                if (!parent) {
-                    return;
+            Layout.prototype.reparentChildWidgets = function () {
+                var parent = this._parent;
+                if (parent) {
+                    for (var i = 0, n = this.count; i < n; ++i) {
+                        var widget = this.itemAt(i).widget;
+                        if (widget)
+                            widget.parent = parent;
+                    }
                 }
-                for (var i = 0, n = this.count; i < n; ++i) {
-                    var panel = this.itemAt(i).panel;
-                    if (panel)
-                        panel.parent = parent;
-                }
-            };
-            /**
-             * A method invoked on parent 'resize' and 'layout-request' messages.
-             *
-             * Subclasses should reimplement this method to update the layout.
-             *
-             * The default implementation is a no-op.
-             */
-            Layout.prototype.layout = function () {
             };
             return Layout;
         })();
-        panels.Layout = Layout;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        widgets.Layout = Layout;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -4153,8 +4210,8 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         /**
          * A sizer object for the `layoutCalc` function.
          *
@@ -4165,7 +4222,9 @@ var phosphor;
         var LayoutSizer = (function () {
             function LayoutSizer() {
                 /**
-                 * The preferred size of the sizer.
+                 * The size hint for the sizer.
+                 *
+                 * The sizer will be given this initial size subject to its bounds.
                  */
                 this.sizeHint = 0;
                 /**
@@ -4215,7 +4274,7 @@ var phosphor;
             }
             return LayoutSizer;
         })();
-        panels.LayoutSizer = LayoutSizer;
+        widgets.LayoutSizer = LayoutSizer;
         /**
          * Distribute space among the given sizers.
          *
@@ -4282,8 +4341,7 @@ var phosphor;
                 var sizer = sizers[i];
                 var minSize = sizer.minSize;
                 var maxSize = sizer.maxSize;
-                var sizeHint = sizer.sizeHint;
-                var size = Math.max(minSize, Math.min(sizeHint, maxSize));
+                var size = Math.max(minSize, Math.min(sizer.sizeHint, maxSize));
                 sizer.done = false;
                 sizer.size = size;
                 totalSize += size;
@@ -4452,171 +4510,9 @@ var phosphor;
                 }
             }
         }
-        panels.layoutCalc = layoutCalc;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var Message = phosphor.core.Message;
-        /**
-         * A message class for child panel related messages.
-         */
-        var ChildMessage = (function (_super) {
-            __extends(ChildMessage, _super);
-            /**
-             * Construct a new child message.
-             */
-            function ChildMessage(type, child) {
-                _super.call(this, type);
-                this._child = child;
-            }
-            Object.defineProperty(ChildMessage.prototype, "child", {
-                /**
-                 * The child panel for the message.
-                 */
-                get: function () {
-                    return this._child;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return ChildMessage;
-        })(Message);
-        panels.ChildMessage = ChildMessage;
-        /**
-         * A message class for 'move' messages.
-         */
-        var MoveMessage = (function (_super) {
-            __extends(MoveMessage, _super);
-            /**
-             * Construct a new move message.
-             */
-            function MoveMessage(oldX, oldY, x, y) {
-                _super.call(this, 'move');
-                this._oldX = oldX;
-                this._oldY = oldY;
-                this._x = x;
-                this._y = y;
-            }
-            Object.defineProperty(MoveMessage.prototype, "oldX", {
-                /**
-                 * The previous X coordinate of the panel.
-                 */
-                get: function () {
-                    return this._oldX;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MoveMessage.prototype, "oldY", {
-                /**
-                 * The previous Y coordinate of the panel.
-                 */
-                get: function () {
-                    return this._oldY;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MoveMessage.prototype, "x", {
-                /**
-                 * The current X coordinate of the panel.
-                 */
-                get: function () {
-                    return this._x;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(MoveMessage.prototype, "y", {
-                /**
-                 * The current Y coordinate of the panel.
-                 */
-                get: function () {
-                    return this._y;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return MoveMessage;
-        })(Message);
-        panels.MoveMessage = MoveMessage;
-        /**
-         * A message class for 'resize' messages.
-         */
-        var ResizeMessage = (function (_super) {
-            __extends(ResizeMessage, _super);
-            /**
-             * Construct a new resize message.
-             */
-            function ResizeMessage(oldWidth, oldHeight, width, height) {
-                _super.call(this, 'resize');
-                this._oldWidth = oldWidth;
-                this._oldHeight = oldHeight;
-                this._width = width;
-                this._height = height;
-            }
-            Object.defineProperty(ResizeMessage.prototype, "oldWidth", {
-                /**
-                 * The previous width of the panel.
-                 */
-                get: function () {
-                    return this._oldWidth;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ResizeMessage.prototype, "oldHeight", {
-                /**
-                 * The previous height of the panel.
-                 */
-                get: function () {
-                    return this._oldHeight;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ResizeMessage.prototype, "width", {
-                /**
-                 * The current width of the panel.
-                 */
-                get: function () {
-                    return this._width;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ResizeMessage.prototype, "height", {
-                /**
-                 * The current height of the panel.
-                 */
-                get: function () {
-                    return this._height;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return ResizeMessage;
-        })(Message);
-        panels.ResizeMessage = ResizeMessage;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        widgets.layoutCalc = layoutCalc;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -4627,1509 +4523,24 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
-        var some = phosphor.collections.some;
-        var List = phosphor.collections.List;
-        var ReadOnlyList = phosphor.collections.ReadOnlyList;
-        var Message = phosphor.core.Message;
-        var Signal = phosphor.core.Signal;
-        var dispatch = phosphor.core.dispatch;
-        var createBoxData = phosphor.domutil.createBoxData;
+    var widgets;
+    (function (widgets) {
+        var Size = phosphor.utility.Size;
         /**
-         * The class name added to Panel instances.
-         */
-        var PANEL_CLASS = 'p-Panel';
-        /**
-         * The class name added to hidden panels.
-         */
-        var HIDDEN_CLASS = 'p-mod-hidden';
-        /**
-         * The base class of the Phosphor panel hierarchy.
-         *
-         * A panel wraps an absolutely positioned DOM node. It can be used with
-         * a Phosphor layout manager to layout its child panels, or it can also
-         * be used to host any other leaf DOM content.
-         */
-        var Panel = (function () {
-            /**
-             * Construct a new panel.
-             */
-            function Panel() {
-                /**
-                 * A signal emitted when the panel is disposed.
-                 */
-                this.disposed = new Signal();
-                this._flags = 0;
-                this._parent = null;
-                this._layout = null;
-                this._children = new List();
-                this._x = 0;
-                this._y = 0;
-                this._width = 0;
-                this._height = 0;
-                this._minWidth = 0;
-                this._minHeight = 0;
-                this._maxWidth = Infinity;
-                this._maxHeight = Infinity;
-                this._boxData = null;
-                this._stretch = 0;
-                this._alignment = 0;
-                this._sizePolicy = defaultPolicy;
-                this._node = this.createNode();
-                this._node.classList.add(PANEL_CLASS);
-            }
-            /**
-             * Dispose of the panel and its descendants.
-             */
-            Panel.prototype.dispose = function () {
-                dispatch.clearMessageData(this);
-                this.setFlag(8 /* IsDisposed */);
-                this.disposed.emit(this, void 0);
-                this.disposed.disconnect();
-                var parent = this._parent;
-                if (parent) {
-                    this._parent = null;
-                    parent._children.remove(this);
-                    dispatch.sendMessage(parent, new panels.ChildMessage('child-removed', this));
-                }
-                else if (this.isAttached) {
-                    this.detach();
-                }
-                var layout = this._layout;
-                if (layout) {
-                    this._layout = null;
-                    layout.dispose();
-                }
-                var children = this._children;
-                for (var i = 0, n = children.size; i < n; ++i) {
-                    var child = children.get(i);
-                    children.set(i, null);
-                    child._parent = null;
-                    child.dispose();
-                }
-                children.clear();
-                this._node = null;
-            };
-            Object.defineProperty(Panel.prototype, "node", {
-                /**
-                 * Get the DOM node managed by the panel.
-                 */
-                get: function () {
-                    return this._node;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "x", {
-                /**
-                 * Get the X position of the panel.
-                 */
-                get: function () {
-                    return this._x;
-                },
-                /**
-                 * Set the X position of the panel.
-                 */
-                set: function (x) {
-                    this.move(x, this._y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "y", {
-                /**
-                 * Get the Y position of the panel.
-                 */
-                get: function () {
-                    return this._y;
-                },
-                /**
-                 * Set the Y position of the panel.
-                 */
-                set: function (y) {
-                    this.move(this._x, y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "width", {
-                /**
-                 * Get the width of the panel.
-                 */
-                get: function () {
-                    return this._width;
-                },
-                /**
-                 * Set the width of the panel.
-                 */
-                set: function (width) {
-                    this.resize(width, this._height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "height", {
-                /**
-                 * Get the height of the panel.
-                 */
-                get: function () {
-                    return this._height;
-                },
-                /**
-                 * Set the height of the panel.
-                 */
-                set: function (height) {
-                    this.resize(this._width, height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "pos", {
-                /**
-                 * Get the position of the panel.
-                 */
-                get: function () {
-                    return new panels.Point(this._x, this._y);
-                },
-                /**
-                 * Set the position of the panel.
-                 */
-                set: function (pos) {
-                    this.move(pos.x, pos.y);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "size", {
-                /**
-                 * Get the size of the panel.
-                 */
-                get: function () {
-                    return new panels.Size(this._width, this._height);
-                },
-                /**
-                 * Set the size of the panel.
-                 */
-                set: function (size) {
-                    this.resize(size.width, size.height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "geometry", {
-                /**
-                 * Get the geometry of the panel.
-                 */
-                get: function () {
-                    return new panels.Rect(this._x, this._y, this._width, this._height);
-                },
-                /**
-                 * Set the geometry of the panel.
-                 */
-                set: function (geo) {
-                    this.setGeometry(geo.x, geo.y, geo.width, geo.height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "minWidth", {
-                /**
-                 * Get the minimum width of the panel.
-                 */
-                get: function () {
-                    return this._minWidth;
-                },
-                /**
-                 * Set the minimum width of the panel.
-                 */
-                set: function (width) {
-                    this.setMinSize(width, this._minHeight);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "minHeight", {
-                /**
-                 * Get the minimum height of the panel.
-                 */
-                get: function () {
-                    return this._minHeight;
-                },
-                /**
-                 * Set the minimum height of the panel.
-                 */
-                set: function (height) {
-                    this.setMinSize(this._minWidth, height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "maxWidth", {
-                /**
-                 * Get the maximum width of the panel.
-                 */
-                get: function () {
-                    return this._maxWidth;
-                },
-                /**
-                 * Set the maximum width of the panel.
-                 */
-                set: function (width) {
-                    this.setMaxSize(width, this._maxHeight);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "maxHeight", {
-                /**
-                 * Get the maximum height of the panel.
-                 */
-                get: function () {
-                    return this._maxHeight;
-                },
-                /**
-                 * Set the maxmimum height of the panel.
-                 */
-                set: function (height) {
-                    this.setMaxSize(this._maxWidth, height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "minSize", {
-                /**
-                 * Get the minimum size of the panel.
-                 */
-                get: function () {
-                    return new panels.Size(this._minWidth, this._minHeight);
-                },
-                /**
-                 * Set the minimum size of the panel.
-                 */
-                set: function (size) {
-                    this.setMinSize(size.width, size.height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "maxSize", {
-                /**
-                 * Get the maximum size of the panel.
-                 */
-                get: function () {
-                    return new panels.Size(this._maxWidth, this._maxHeight);
-                },
-                /**
-                 * Set the maximum size of the panel.
-                 */
-                set: function (size) {
-                    this.setMaxSize(size.width, size.height);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "horizontalStretch", {
-                /**
-                 * Get the horizontal stretch factor for the panel.
-                 */
-                get: function () {
-                    return this._stretch >> 16;
-                },
-                /**
-                 * Set the horizontal stretch factor for the panel.
-                 */
-                set: function (stretch) {
-                    this.setStretch(stretch, this.verticalStretch);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "verticalStretch", {
-                /**
-                 * Get the vertical stretch factor for the panel.
-                 */
-                get: function () {
-                    return this._stretch & 0xFFFF;
-                },
-                /**
-                 * Set the vertical stretch factor for the panel.
-                 */
-                set: function (stretch) {
-                    this.setStretch(this.horizontalStretch, stretch);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "horizontalSizePolicy", {
-                /**
-                 * Get the horizontal size policy for the panel.
-                 */
-                get: function () {
-                    return this._sizePolicy >> 16;
-                },
-                /**
-                 * Set the horizontal size policy for the panel.
-                 */
-                set: function (policy) {
-                    this.setSizePolicy(policy, this.verticalSizePolicy);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "verticalSizePolicy", {
-                /**
-                 * Get the vertical size policy for the panel.
-                 */
-                get: function () {
-                    return this._sizePolicy & 0xFFFF;
-                },
-                /**
-                 * Set the vertical size policy for the panel.
-                 */
-                set: function (policy) {
-                    this.setSizePolicy(this.horizontalSizePolicy, policy);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "alignment", {
-                /**
-                 * Get the alignment flags for the panel.
-                 */
-                get: function () {
-                    return this._alignment;
-                },
-                /**
-                 * Set the alignment flags for the panel.
-                 */
-                set: function (align) {
-                    if (align !== this._alignment) {
-                        this._alignment = align;
-                        this.updateGeometry();
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "boxData", {
-                /**
-                 * Get the box data for the panel's node.
-                 */
-                get: function () {
-                    return this._boxData || (this._boxData = createBoxData(this._node));
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "isAttached", {
-                /**
-                 * Test whether the panel's node is attached to the DOM.
-                 */
-                get: function () {
-                    return this.testFlag(1 /* IsAttached */);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "isDisposed", {
-                /**
-                 * Test whether the panel has been disposed.
-                 */
-                get: function () {
-                    return this.testFlag(8 /* IsDisposed */);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "isHidden", {
-                /**
-                 * Test whether the panel is explicitly hidden.
-                 */
-                get: function () {
-                    return this.testFlag(2 /* IsHidden */);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "isVisible", {
-                /**
-                 * Test whether the panel is visible.
-                 *
-                 * A panel is visible under the following conditions:
-                 *   - it is attached to the DOM
-                 *   - it is not explicitly hidden
-                 *   - it has no explicitly hidden ancestors
-                 */
-                get: function () {
-                    return this.testFlag(4 /* IsVisible */);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "parent", {
-                /**
-                 * Get the parent panel of the panel.
-                 */
-                get: function () {
-                    return this._parent;
-                },
-                /**
-                 * Set the parent panel of the panel.
-                 */
-                set: function (parent) {
-                    parent = parent || null;
-                    var old = this._parent;
-                    if (old === parent) {
-                        return;
-                    }
-                    if (old) {
-                        this._parent = null;
-                        old._children.remove(this);
-                        dispatch.sendMessage(old, new panels.ChildMessage('child-removed', this));
-                    }
-                    if (parent) {
-                        this._parent = parent;
-                        parent._children.add(this);
-                        dispatch.sendMessage(parent, new panels.ChildMessage('child-added', this));
-                    }
-                    dispatch.sendMessage(this, new Message('parent-changed'));
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "children", {
-                /**
-                 * Get a read only list of the child panels.
-                 */
-                get: function () {
-                    return new ReadOnlyList(this._children);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Panel.prototype, "layout", {
-                /**
-                 * Get the layout attached to the panel.
-                 */
-                get: function () {
-                    return this._layout;
-                },
-                /**
-                 * Set the layout for the panel.
-                 *
-                 * The given layout must be a new layout not assigned to any other
-                 * panel or an exception will be thrown. A null layout is allowed.
-                 *
-                 * The current layout will be disposed and cannot be reused.
-                 */
-                set: function (layout) {
-                    layout = layout || null;
-                    var old = this._layout;
-                    if (old === layout) {
-                        return;
-                    }
-                    if (this.testFlag(16 /* DisallowLayoutChange */)) {
-                        throw new Error('cannot change panel layout');
-                    }
-                    if (layout && layout.parent) {
-                        throw new Error('layout already installed on a panel');
-                    }
-                    if (old) {
-                        this._layout = null;
-                        dispatch.removeMessageFilter(this, old);
-                        old.dispose();
-                    }
-                    if (layout) {
-                        this._layout = layout;
-                        dispatch.installMessageFilter(this, layout);
-                        layout.parent = this;
-                    }
-                    dispatch.sendMessage(this, new Message('layout-changed'));
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Test whether the given panel flag is set.
-             */
-            Panel.prototype.testFlag = function (flag) {
-                return (this._flags & flag) !== 0;
-            };
-            /**
-             * Set the given panel flag.
-             */
-            Panel.prototype.setFlag = function (flag) {
-                this._flags |= flag;
-            };
-            /**
-             * Clear the given panel flag.
-             */
-            Panel.prototype.clearFlag = function (flag) {
-                this._flags &= ~flag;
-            };
-            /**
-             * Make the panel visible to its parent.
-             *
-             * If the panel is not explicitly hidden, this is a no-op.
-             */
-            Panel.prototype.show = function () {
-                if (!this.isHidden) {
-                    return;
-                }
-                var parent = this._parent;
-                if (this.isAttached && (!parent || parent.isVisible)) {
-                    dispatch.sendMessage(this, new Message('before-show'));
-                    this._node.classList.remove(HIDDEN_CLASS);
-                    this.clearFlag(2 /* IsHidden */);
-                    dispatch.sendMessage(this, new Message('after-show'));
-                }
-                else {
-                    this._node.classList.remove(HIDDEN_CLASS);
-                    this.clearFlag(2 /* IsHidden */);
-                }
-                if (parent) {
-                    dispatch.sendMessage(parent, new panels.ChildMessage('child-shown', this));
-                }
-                this.updateGeometry();
-            };
-            /**
-             * Make the panel invisible to its parent.
-             *
-             * If the panel is already hidden, this is a no-op.
-             */
-            Panel.prototype.hide = function () {
-                if (this.isHidden) {
-                    return;
-                }
-                var parent = this._parent;
-                if (this.isAttached && (!parent || parent.isVisible)) {
-                    dispatch.sendMessage(this, new Message('before-hide'));
-                    this._node.classList.add(HIDDEN_CLASS);
-                    this.setFlag(2 /* IsHidden */);
-                    dispatch.sendMessage(this, new Message('after-hide'));
-                }
-                else {
-                    this._node.classList.add(HIDDEN_CLASS);
-                    this.setFlag(2 /* IsHidden */);
-                }
-                if (parent) {
-                    dispatch.sendMessage(parent, new panels.ChildMessage('child-hidden', this));
-                }
-                this.updateGeometry(true);
-            };
-            /**
-             * Close the panel by sending it a 'close' message.
-             *
-             * Subclasses may reimplement the `onClose` method to perform custom
-             * actions before removing the panel from the hierarchy. The default
-             * close message handler will unparent the panel.
-             */
-            Panel.prototype.close = function () {
-                dispatch.sendMessage(this, new Message('close'));
-            };
-            /**
-             * Attach the panel's node to a host DOM element.
-             *
-             * The `fit` method can be called to resize the panel to fill its
-             * host node. It should be called whenever the size of host node
-             * is known to have changed.
-             *
-             * Only a root panel can be attached to a host node.
-             */
-            Panel.prototype.attach = function (host) {
-                if (this._parent) {
-                    throw new Error('can only attach a root panel to the DOM');
-                }
-                dispatch.sendMessage(this, new Message('before-attach'));
-                host.appendChild(this._node);
-                dispatch.sendMessage(this, new Message('after-attach'));
-            };
-            /**
-             * Detach the panel's node from the DOM.
-             *
-             * Only a root panel can be detached from its host node.
-             */
-            Panel.prototype.detach = function () {
-                if (this._parent) {
-                    throw new Error('can only detach a root panel from the DOM');
-                }
-                var node = this._node;
-                var host = node.parentNode;
-                if (!host) {
-                    return;
-                }
-                dispatch.sendMessage(this, new Message('before-detach'));
-                host.removeChild(node);
-                dispatch.sendMessage(this, new Message('after-detach'));
-            };
-            /**
-             * Resize the panel so that its fills its host node.
-             *
-             * Only a root panel can be fit to its host.
-             *
-             * If the size of the host node is known, it can be provided. This
-             * will prevent a read from the DOM and avoid a potential reflow.
-             */
-            Panel.prototype.fit = function (width, height, box) {
-                if (this._parent) {
-                    throw new Error('can only fit a root panel');
-                }
-                var host = this._node.parentNode;
-                if (!host) {
-                    return;
-                }
-                if (width === void 0) {
-                    width = host.offsetWidth;
-                }
-                if (height === void 0) {
-                    height = host.offsetHeight;
-                }
-                if (box === void 0) {
-                    box = createBoxData(host);
-                }
-                var x = box.paddingLeft;
-                var y = box.paddingTop;
-                var w = width - box.horizontalSum;
-                var h = height - box.verticalSum;
-                this.setGeometry(x, y, w, h);
-            };
-            /**
-             * Calculate the preferred size for the panel.
-             *
-             * The default implementation returns the layout size hint if
-             * a layout is installed, otherwise it returns a zero size.
-             */
-            Panel.prototype.sizeHint = function () {
-                if (this._layout) {
-                    return this._layout.sizeHint();
-                }
-                return new panels.Size(0, 0);
-            };
-            /**
-             * Calculate the preferred minimum size for the panel.
-             *
-             * The default implementation returns the layout min size if
-             * a layout is installed, otherwise it returns a zero size.
-             */
-            Panel.prototype.minSizeHint = function () {
-                if (this._layout) {
-                    return this._layout.minSize();
-                }
-                return new panels.Size(0, 0);
-            };
-            /**
-             * Calculate the preferred maximum size for the panel.
-             *
-             * The default implementation returns the layout max size if
-             * a layout is installed, otherwise it returns an inf size.
-             */
-            Panel.prototype.maxSizeHint = function () {
-                if (this._layout) {
-                    return this._layout.maxSize();
-                }
-                return new panels.Size(Infinity, Infinity);
-            };
-            /**
-             * Notify the layout system that the panel geometry needs updating.
-             *
-             * This should be called if the panel's size hint(s) have changed.
-             *
-             * If the `force` flag is false and the panel is explicitly hidden,
-             * this is a no-op. The geometry will update automatically when the
-             * panel is made visible.
-             */
-            Panel.prototype.updateGeometry = function (force) {
-                if (force === void 0) { force = false; }
-                var parent = this._parent;
-                if (!parent || (this.isHidden && !force)) {
-                    return;
-                }
-                if (parent._layout) {
-                    parent._layout.invalidate();
-                }
-                else {
-                    dispatch.postMessage(parent, new Message('layout-request'));
-                    parent.updateGeometry();
-                }
-            };
-            /**
-             * Notify the layout system that the panel box data needs updating.
-             *
-             * This should be called if the node's padding or border has changed.
-             */
-            Panel.prototype.updateBoxData = function () {
-                this._boxData = null;
-                if (this._layout) {
-                    this._layout.invalidate();
-                }
-                else {
-                    dispatch.postMessage(this, new Message('layout-request'));
-                }
-                this.updateGeometry();
-            };
-            /**
-             * Move the panel to the given X-Y position.
-             */
-            Panel.prototype.move = function (x, y) {
-                this.setGeometry(x, y, this._width, this._height);
-            };
-            /**
-             * Resize the panel to the given width and height.
-             */
-            Panel.prototype.resize = function (width, height) {
-                this.setGeometry(this._x, this._y, width, height);
-            };
-            /**
-             * Set the geometry of the panel.
-             */
-            Panel.prototype.setGeometry = function (x, y, width, height) {
-                width = Math.max(this._minWidth, Math.min(width, this._maxWidth));
-                height = Math.max(this._minHeight, Math.min(height, this._maxHeight));
-                var isMove = false;
-                var isResize = false;
-                var oldX = this._x;
-                var oldY = this._y;
-                var oldWidth = this._width;
-                var oldHeight = this._height;
-                var style = this._node.style;
-                if (oldX !== x) {
-                    this._x = x;
-                    style.left = x + 'px';
-                    isMove = true;
-                }
-                if (oldY !== y) {
-                    this._y = y;
-                    style.top = y + 'px';
-                    isMove = true;
-                }
-                if (oldWidth !== width) {
-                    this._width = width;
-                    style.width = width + 'px';
-                    isResize = true;
-                }
-                if (oldHeight !== height) {
-                    this._height = height;
-                    style.height = height + 'px';
-                    isResize = true;
-                }
-                if (isMove) {
-                    var move = new panels.MoveMessage(oldX, oldY, x, y);
-                    dispatch.sendMessage(this, move);
-                }
-                if (isResize) {
-                    var resize = new panels.ResizeMessage(oldWidth, oldHeight, width, height);
-                    dispatch.sendMessage(this, resize);
-                }
-            };
-            /**
-             * Set the minimum size of the panel.
-             */
-            Panel.prototype.setMinSize = function (width, height) {
-                this.setMinMaxSize(width, height, this._maxWidth, this._maxHeight);
-            };
-            /**
-             * Set the maximum size of the panel.
-             */
-            Panel.prototype.setMaxSize = function (width, height) {
-                this.setMinMaxSize(this._minWidth, this._minHeight, width, height);
-            };
-            /**
-             * Set the minimum and maximum size of the panel.
-             */
-            Panel.prototype.setMinMaxSize = function (minW, minH, maxW, maxH) {
-                minW = Math.max(0, minW);
-                minH = Math.max(0, minH);
-                maxW = Math.max(minW, maxW);
-                maxH = Math.max(minH, maxH);
-                var changed = false;
-                if (minW !== this._minWidth) {
-                    this._minWidth = minW;
-                    changed = true;
-                }
-                if (minH !== this._minHeight) {
-                    this._minHeight = minH;
-                    changed = true;
-                }
-                if (maxW !== this._maxWidth) {
-                    this._maxWidth = maxW;
-                    changed = true;
-                }
-                if (maxH !== this._maxHeight) {
-                    this._maxHeight = maxH;
-                    changed = true;
-                }
-                if (changed) {
-                    this.resize(this._width, this._height);
-                    this.updateGeometry();
-                }
-            };
-            /**
-             * Set the stretch factors for the panel.
-             */
-            Panel.prototype.setStretch = function (horizontal, vertical) {
-                horizontal = Math.max(0, Math.min(horizontal, 0x7FFF));
-                vertical = Math.max(0, Math.min(vertical, 0x7FFF));
-                var stretch = (horizontal << 16) | vertical;
-                if (stretch !== this._stretch) {
-                    this._stretch = stretch;
-                    this.updateGeometry();
-                }
-            };
-            /**
-             * Set the size policy values for the panel.
-             */
-            Panel.prototype.setSizePolicy = function (horizontal, vertical) {
-                var policy = (horizontal << 16) | vertical;
-                if (policy !== this._sizePolicy) {
-                    this._sizePolicy = policy;
-                    this.updateGeometry();
-                }
-            };
-            /**
-             * Process a message dispatched to the handler.
-             */
-            Panel.prototype.processMessage = function (msg) {
-                switch (msg.type) {
-                    case 'move':
-                        this.onMove(msg);
-                        break;
-                    case 'resize':
-                        this.onResize(msg);
-                        break;
-                    case 'child-added':
-                        this.onChildAdded(msg);
-                        break;
-                    case 'child-removed':
-                        this.onChildRemoved(msg);
-                        break;
-                    case 'before-show':
-                        this.onBeforeShow(msg);
-                        sendNonHidden(this._children, msg);
-                        break;
-                    case 'after-show':
-                        this.setFlag(4 /* IsVisible */);
-                        this.onAfterShow(msg);
-                        sendNonHidden(this._children, msg);
-                        break;
-                    case 'before-hide':
-                        this.onBeforeHide(msg);
-                        sendNonHidden(this._children, msg);
-                        break;
-                    case 'after-hide':
-                        this.clearFlag(4 /* IsVisible */);
-                        this.onAfterHide(msg);
-                        sendNonHidden(this._children, msg);
-                        break;
-                    case 'before-attach':
-                        this._boxData = null;
-                        this.onBeforeAttach(msg);
-                        sendAll(this._children, msg);
-                        break;
-                    case 'after-attach':
-                        var parent = this._parent;
-                        var visible = !this.isHidden && (!parent || parent.isVisible);
-                        if (visible)
-                            this.setFlag(4 /* IsVisible */);
-                        this.setFlag(1 /* IsAttached */);
-                        this.onAfterAttach(msg);
-                        sendAll(this._children, msg);
-                        break;
-                    case 'before-detach':
-                        this.onBeforeDetach(msg);
-                        sendAll(this._children, msg);
-                        break;
-                    case 'after-detach':
-                        this.clearFlag(4 /* IsVisible */);
-                        this.clearFlag(1 /* IsAttached */);
-                        this.onAfterDetach(msg);
-                        sendAll(this._children, msg);
-                        break;
-                    case 'close':
-                        this.onClose(msg);
-                        break;
-                    default:
-                        break;
-                }
-            };
-            /**
-             * Compress a message posted to the handler.
-             *
-             * By default 'layout-request' messages are compressed.
-             */
-            Panel.prototype.compressEvent = function (msg, posted) {
-                if (msg.type === 'layout-request') {
-                    return some(posted, function (p) { return p.type === msg.type; });
-                }
-                return false;
-            };
-            /**
-             * Create the DOM node which represents the panel.
-             *
-             * The default implementation creates an empty div.
-             */
-            Panel.prototype.createNode = function () {
-                return document.createElement('div');
-            };
-            /**
-             * A method invoked on a 'child-added' message.
-             *
-             * The default implementation attaches the child node.
-             */
-            Panel.prototype.onChildAdded = function (msg) {
-                var child = msg.child;
-                if (this.isAttached) {
-                    dispatch.sendMessage(child, new Message('before-attach'));
-                    this._node.appendChild(child._node);
-                    dispatch.sendMessage(child, new Message('after-attach'));
-                }
-                else {
-                    this._node.appendChild(child._node);
-                }
-            };
-            /**
-             * A method invoked on a 'child-removed' message.
-             *
-             * The default implementation detaches the child node.
-             */
-            Panel.prototype.onChildRemoved = function (msg) {
-                var child = msg.child;
-                if (this.isAttached) {
-                    dispatch.sendMessage(child, new Message('before-detach'));
-                    this._node.removeChild(child._node);
-                    dispatch.sendMessage(child, new Message('after-detach'));
-                }
-                else {
-                    this._node.removeChild(child._node);
-                }
-            };
-            /**
-             * A method invoked on a 'close' message.
-             *
-             * The default implementation sets the parent to null.
-             */
-            Panel.prototype.onClose = function (msg) {
-                this.parent = null;
-            };
-            /**
-             * A method invoked on a 'move' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onMove = function (msg) {
-            };
-            /**
-             * A method invoked on a 'resize' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onResize = function (msg) {
-            };
-            /**
-             * A method invoked on a 'before-show' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onBeforeShow = function (msg) {
-            };
-            /**
-             * A method invoked on an 'after-show' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onAfterShow = function (msg) {
-            };
-            /**
-             * A method invoked on a 'before-hide' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onBeforeHide = function (msg) {
-            };
-            /**
-             * A method invoked on an 'after-hide' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onAfterHide = function (msg) {
-            };
-            /**
-             * A method invoked on a 'before-attach' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onBeforeAttach = function (msg) {
-            };
-            /**
-             * A method invoked on an 'after-attach' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onAfterAttach = function (msg) {
-            };
-            /**
-             * A method invoked on a 'before-detach' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onBeforeDetach = function (msg) {
-            };
-            /**
-             * A method invoked on an 'after-detach' message.
-             *
-             * The default implementation is a no-op.
-             */
-            Panel.prototype.onAfterDetach = function (msg) {
-            };
-            return Panel;
-        })();
-        panels.Panel = Panel;
-        /**
-         * The default panel size policy.
-         */
-        var defaultPolicy = (panels.SizePolicy.Preferred << 16) | panels.SizePolicy.Preferred;
-        /**
-         * Send a message to all panels in a list.
-         */
-        function sendAll(list, msg) {
-            for (var i = 0; i < list.size; ++i) {
-                dispatch.sendMessage(list.get(i), msg);
-            }
-        }
-        /**
-         * Send a message to all non-hidden panels in a list.
-         */
-        function sendNonHidden(list, msg) {
-            for (var i = 0; i < list.size; ++i) {
-                var panel = list.get(i);
-                if (!panel.isHidden) {
-                    dispatch.sendMessage(panel, msg);
-                }
-            }
-        }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var render = phosphor.virtualdom.render;
-        /**
-         * The class name added to element host panels.
-         */
-        var ELEMENT_HOST_CLASS = 'p-ElementHost';
-        /**
-         * A panel which hosts a virtual element.
-         *
-         * This is used to embed a virtual element into a panel hierarchy. This
-         * is a simple panel which disallows an external layout. The intent is
-         * that the element will provide the content for the panel, typically
-         * in the form of a component which manages its own updates.
-         */
-        var ElementHost = (function (_super) {
-            __extends(ElementHost, _super);
-            /**
-             * Construct a new element host.
-             */
-            function ElementHost(element, width, height) {
-                if (element === void 0) { element = null; }
-                if (width === void 0) { width = 0; }
-                if (height === void 0) { height = 0; }
-                _super.call(this);
-                this.node.classList.add(ELEMENT_HOST_CLASS);
-                this.setFlag(16 /* DisallowLayoutChange */);
-                this._size = new panels.Size(Math.max(0, width), Math.max(0, height));
-                this._element = element;
-            }
-            Object.defineProperty(ElementHost.prototype, "element", {
-                /**
-                 * Get the virtual element hosted by the panel.
-                 */
-                get: function () {
-                    return this._element;
-                },
-                /**
-                 * Set the virtual element hosted by the panel.
-                 */
-                set: function (element) {
-                    element = element || null;
-                    if (element === this._element) {
-                        return;
-                    }
-                    this._element = element;
-                    render(element, this.node);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Calculate the preferred size of the panel.
-             */
-            ElementHost.prototype.sizeHint = function () {
-                return this._size;
-            };
-            /**
-             * Set the preferred size for the panel.
-             */
-            ElementHost.prototype.setSizeHint = function (width, height) {
-                width = Math.max(0, width);
-                height = Math.max(0, height);
-                if (width === this._size.width && height === this._size.height) {
-                    return;
-                }
-                this._size = new panels.Size(width, height);
-                this.updateGeometry();
-            };
-            /**
-             * A method invoked on an 'after-attach' message.
-             */
-            ElementHost.prototype.onAfterAttach = function (msg) {
-                render(this._element, this.node);
-            };
-            /**
-             * A method invoked on an 'after-detach' message.
-             */
-            ElementHost.prototype.onAfterDetach = function (msg) {
-                render(null, this.node);
-            };
-            return ElementHost;
-        })(panels.Panel);
-        panels.ElementHost = ElementHost;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * A concrete implementation of ILayoutItem which manages a panel.
+         * A layout item which manages empty space.
          *
          * User code will not typically use this class directly.
-         */
-        var PanelItem = (function () {
-            /**
-             * Construct a new panel item.
-             */
-            function PanelItem(panel) {
-                this._origHint = null;
-                this._sizeHint = null;
-                this._minSize = null;
-                this._maxSize = null;
-                this._panel = panel;
-            }
-            Object.defineProperty(PanelItem.prototype, "isPanel", {
-                /**
-                 * Test whether the item manages a panel.
-                 */
-                get: function () {
-                    return true;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "isSpacer", {
-                /**
-                 * Test whether the item manages empty space.
-                 */
-                get: function () {
-                    return false;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "isHidden", {
-                /**
-                 * Test whether the item should be treated as hidden.
-                 */
-                get: function () {
-                    return this._panel.isHidden;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "panel", {
-                /**
-                 * The panel the item manages, if any.
-                 */
-                get: function () {
-                    return this._panel;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "expandHorizontal", {
-                /**
-                 * Test whether the item should be expanded horizontally.
-                 */
-                get: function () {
-                    if (this._panel.alignment & panels.Alignment.Horizontal_Mask) {
-                        return false;
-                    }
-                    var hPolicy = this._panel.horizontalSizePolicy;
-                    return (hPolicy & 4 /* ExpandFlag */) !== 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "expandVertical", {
-                /**
-                 * Test Whether the item should be expanded vertically.
-                 */
-                get: function () {
-                    if (this._panel.alignment & panels.Alignment.Vertical_Mask) {
-                        return false;
-                    }
-                    var vPolicy = this._panel.verticalSizePolicy;
-                    return (vPolicy & 4 /* ExpandFlag */) !== 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "horizontalStretch", {
-                /**
-                 * The horizontal stretch factor for the item.
-                 */
-                get: function () {
-                    return this._panel.horizontalStretch;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(PanelItem.prototype, "verticalStretch", {
-                /**
-                 * The vertical stretch factor for the item.
-                 */
-                get: function () {
-                    return this._panel.verticalStretch;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Invalidate the cached data for the item.
-             */
-            PanelItem.prototype.invalidate = function () {
-                this._origHint = null;
-                this._sizeHint = null;
-                this._minSize = null;
-                this._maxSize = null;
-            };
-            /**
-             * Compute the preferred size of the item.
-             */
-            PanelItem.prototype.sizeHint = function () {
-                if (!this._sizeHint) {
-                    this._updateSizes();
-                }
-                return this._sizeHint;
-            };
-            /**
-             * Compute the minimum size of the item.
-             */
-            PanelItem.prototype.minSize = function () {
-                if (!this._minSize) {
-                    this._updateSizes();
-                }
-                return this._minSize;
-            };
-            /**
-             * Compute the maximum size of the item.
-             */
-            PanelItem.prototype.maxSize = function () {
-                if (!this._maxSize) {
-                    this._updateSizes();
-                }
-                return this._maxSize;
-            };
-            /**
-             * Set the geometry of the item.
-             */
-            PanelItem.prototype.setGeometry = function (x, y, width, height) {
-                var panel = this._panel;
-                if (panel.isHidden) {
-                    return;
-                }
-                var w = width;
-                var h = height;
-                var alignment = panel.alignment;
-                if (alignment & panels.Alignment.Horizontal_Mask) {
-                    var igW = panel.horizontalSizePolicy === panels.SizePolicy.Ignored;
-                    w = Math.min(w, igW ? this._origHint.width : this._sizeHint.width);
-                }
-                if (alignment & panels.Alignment.Vertical_Mask) {
-                    var igH = panel.verticalSizePolicy === panels.SizePolicy.Ignored;
-                    h = Math.min(h, igH ? this._origHint.height : this._sizeHint.height);
-                }
-                var minSize = this._minSize;
-                var maxSize = this._maxSize;
-                var w = Math.max(minSize.width, Math.min(w, maxSize.width));
-                var h = Math.max(minSize.height, Math.min(h, maxSize.height));
-                if (alignment & 2 /* Right */) {
-                    x += width - w;
-                }
-                else if (alignment & 4 /* HorizontalCenter */) {
-                    x += (width - w) / 2;
-                }
-                if (alignment & 32 /* Bottom */) {
-                    y += height - h;
-                }
-                else if (alignment & 64 /* VerticalCenter */) {
-                    y += (height - h) / 2;
-                }
-                panel.setGeometry(x, y, w, h);
-            };
-            /**
-             * Update the computed sizes for the panel item.
-             */
-            PanelItem.prototype._updateSizes = function () {
-                var panel = this._panel;
-                if (panel.isHidden) {
-                    var zero = new panels.Size(0, 0);
-                    this._origHint = zero;
-                    this._sizeHint = zero;
-                    this._minSize = zero;
-                    this._maxSize = zero;
-                    return;
-                }
-                var min = panel.minSize;
-                var max = panel.maxSize;
-                var sHint = panel.sizeHint();
-                var mHint = panel.minSizeHint();
-                var xHint = panel.maxSizeHint();
-                var vsp = panel.verticalSizePolicy;
-                var hsp = panel.horizontalSizePolicy;
-                var al = panel.alignment;
-                this._origHint = sHint;
-                this._sizeHint = makeSizeHint(sHint, mHint, min, max, hsp, vsp);
-                this._minSize = makeMinSize(sHint, mHint, min, max, hsp, vsp);
-                this._maxSize = makeMaxSize(sHint, mHint, xHint, min, max, hsp, vsp, al);
-            };
-            return PanelItem;
-        })();
-        panels.PanelItem = PanelItem;
-        /**
-         * Make the effective size hint for the given sizing values.
-         */
-        function makeSizeHint(sizeHint, minHint, minSize, maxSize, hPolicy, vPolicy) {
-            var w = 0;
-            var h = 0;
-            if (hPolicy !== panels.SizePolicy.Ignored) {
-                w = Math.max(minHint.width, sizeHint.width);
-            }
-            if (vPolicy !== panels.SizePolicy.Ignored) {
-                h = Math.max(minHint.height, sizeHint.height);
-            }
-            w = Math.max(minSize.width, Math.min(w, maxSize.width));
-            h = Math.max(minSize.height, Math.min(h, maxSize.height));
-            return new panels.Size(w, h);
-        }
-        /**
-         * Make the effective minimum size for the given sizing values.
-         */
-        function makeMinSize(sizeHint, minHint, minSize, maxSize, hPolicy, vPolicy) {
-            var w = 0;
-            var h = 0;
-            if (hPolicy !== panels.SizePolicy.Ignored) {
-                if (hPolicy & 2 /* ShrinkFlag */) {
-                    w = minHint.width;
-                }
-                else {
-                    w = Math.max(minHint.width, sizeHint.width);
-                }
-            }
-            if (vPolicy !== panels.SizePolicy.Ignored) {
-                if (vPolicy & 2 /* ShrinkFlag */) {
-                    h = minHint.height;
-                }
-                else {
-                    h = Math.max(minHint.height, sizeHint.height);
-                }
-            }
-            w = Math.max(minSize.width, Math.min(w, maxSize.width));
-            h = Math.max(minSize.height, Math.min(h, maxSize.height));
-            return new panels.Size(w, h);
-        }
-        /**
-         * Make the effective maximum size for the given sizing values.
-         */
-        function makeMaxSize(sizeHint, minHint, maxHint, minSize, maxSize, hPolicy, vPolicy, alignment) {
-            var w = Infinity;
-            var h = Infinity;
-            if ((alignment & panels.Alignment.Horizontal_Mask) === 0) {
-                if (hPolicy !== panels.SizePolicy.Ignored) {
-                    if (hPolicy & 1 /* GrowFlag */) {
-                        w = Math.max(minHint.width, maxHint.width);
-                    }
-                    else {
-                        w = Math.max(minHint.width, sizeHint.width);
-                    }
-                }
-                w = Math.max(minSize.width, Math.min(w, maxSize.width));
-            }
-            if ((alignment & panels.Alignment.Vertical_Mask) === 0) {
-                if (vPolicy !== panels.SizePolicy.Ignored) {
-                    if (vPolicy & 1 /* GrowFlag */) {
-                        h = Math.max(minHint.height, maxHint.height);
-                    }
-                    else {
-                        h = Math.max(minHint.height, sizeHint.height);
-                    }
-                }
-                h = Math.max(minSize.height, Math.min(h, maxSize.height));
-            }
-            return new panels.Size(w, h);
-        }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * A concrete implementation of ILayoutItem which manages empty space.
-         *
-         * User code will not typically create instances of this class directly.
          */
         var SpacerItem = (function () {
             /**
              * Construct a new spacer item.
              */
-            function SpacerItem(width, height, hStretch, vStretch, hPolicy, vPolicy) {
-                this.setSizing(width, height, hStretch, vStretch, hPolicy, vPolicy);
+            function SpacerItem(width, height, hPolicy, vPolicy) {
+                this.setSizing(width, height, hPolicy, vPolicy);
             }
-            Object.defineProperty(SpacerItem.prototype, "isPanel", {
+            Object.defineProperty(SpacerItem.prototype, "isWidget", {
                 /**
-                 * Test whether the item manages a panel.
+                 * Test whether the item manages a widget.
                  */
                 get: function () {
                     return false;
@@ -6157,12 +4568,22 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(SpacerItem.prototype, "panel", {
+            Object.defineProperty(SpacerItem.prototype, "widget", {
                 /**
-                 * The panel the item manages, if any.
+                 * The widget the item manages, if any.
                  */
                 get: function () {
                     return null;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SpacerItem.prototype, "alignment", {
+                /**
+                 * Get the alignment for the item in its layout cell.
+                 */
+                get: function () {
+                    return 0;
                 },
                 enumerable: true,
                 configurable: true
@@ -6189,38 +4610,15 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(SpacerItem.prototype, "horizontalStretch", {
-                /**
-                 * The horizontal stretch factor for the item.
-                 */
-                get: function () {
-                    return this._stretch >> 16;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SpacerItem.prototype, "verticalStretch", {
-                /**
-                 * The vertical stretch factor for the item.
-                 */
-                get: function () {
-                    return this._stretch & 0xFFFF;
-                },
-                enumerable: true,
-                configurable: true
-            });
             /**
              * Change the sizing of the spacer item.
              *
              * The owner layout must be invalidated to reflect the change.
              */
-            SpacerItem.prototype.setSizing = function (width, height, hStretch, vStretch, hPolicy, vPolicy) {
+            SpacerItem.prototype.setSizing = function (width, height, hPolicy, vPolicy) {
                 var w = Math.max(0, width);
                 var h = Math.max(0, height);
-                hStretch = Math.max(0, Math.min(hStretch, 0x7FFF));
-                vStretch = Math.max(0, Math.min(vStretch, 0x7FFF));
-                this._size = new panels.Size(w, h);
-                this._stretch = (hStretch << 16) | vStretch;
+                this._size = new Size(w, h);
                 this._sizePolicy = (hPolicy << 16) | vPolicy;
             };
             /**
@@ -6228,12 +4626,9 @@ var phosphor;
              */
             SpacerItem.prototype.transpose = function () {
                 var size = this._size;
-                var hStretch = this._stretch >> 16;
-                var vStretch = this._stretch & 0xFFFF;
                 var hPolicy = this._sizePolicy >> 16;
                 var vPolicy = this._sizePolicy & 0xFFFF;
-                this._size = new panels.Size(size.height, size.width);
-                this._stretch = (vStretch << 16) | hStretch;
+                this._size = new Size(size.height, size.width);
                 this._sizePolicy = (vPolicy << 16) | hPolicy;
             };
             /**
@@ -6256,7 +4651,7 @@ var phosphor;
                 var vPolicy = this._sizePolicy & 0xFFFF;
                 var w = hPolicy & 2 /* ShrinkFlag */ ? 0 : size.width;
                 var h = vPolicy & 2 /* ShrinkFlag */ ? 0 : size.height;
-                return new panels.Size(w, h);
+                return new Size(w, h);
             };
             /**
              * Compute the maximum size of the item.
@@ -6267,18 +4662,294 @@ var phosphor;
                 var vPolicy = this._sizePolicy & 0xFFFF;
                 var w = hPolicy & 1 /* GrowFlag */ ? Infinity : size.width;
                 var h = vPolicy & 1 /* GrowFlag */ ? Infinity : size.height;
-                return new panels.Size(w, h);
+                return new Size(w, h);
             };
             /**
-             * Set the geometry of the item.
+             * Set the geometry of the item using the given values.
              */
             SpacerItem.prototype.setGeometry = function (x, y, width, height) {
             };
             return SpacerItem;
         })();
-        panels.SpacerItem = SpacerItem;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        widgets.SpacerItem = SpacerItem;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Size = phosphor.utility.Size;
+        /**
+         * A layout item which manages a widget.
+         *
+         * User code will not typically use this class directly.
+         */
+        var WidgetItem = (function () {
+            /**
+             * Construct a new widget item.
+             */
+            function WidgetItem(widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                this._origHint = null;
+                this._sizeHint = null;
+                this._minSize = null;
+                this._maxSize = null;
+                this._widget = widget;
+                this._alignment = alignment;
+            }
+            Object.defineProperty(WidgetItem.prototype, "isWidget", {
+                /**
+                 * Test whether the item manages a widget.
+                 */
+                get: function () {
+                    return true;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "isSpacer", {
+                /**
+                 * Test whether the item manages empty space.
+                 */
+                get: function () {
+                    return false;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "isHidden", {
+                /**
+                 * Test whether the item should be treated as hidden.
+                 */
+                get: function () {
+                    return this._widget.isHidden;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "widget", {
+                /**
+                 * The widget the item manages, if any.
+                 */
+                get: function () {
+                    return this._widget;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "alignment", {
+                /**
+                 * Get the alignment for the item in its layout cell.
+                 */
+                get: function () {
+                    return this._alignment;
+                },
+                /**
+                 * Set the alignment for the item in its layout cell.
+                 *
+                 * The owner layout must be invalidated to reflect the change.
+                 */
+                set: function (alignment) {
+                    this._alignment = alignment;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "expandHorizontal", {
+                /**
+                 * Test whether the item should be expanded horizontally.
+                 */
+                get: function () {
+                    if (this._alignment & widgets.Alignment.Horizontal_Mask) {
+                        return false;
+                    }
+                    var horizontalPolicy = this._widget.horizontalSizePolicy;
+                    return (horizontalPolicy & 4 /* ExpandFlag */) !== 0;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(WidgetItem.prototype, "expandVertical", {
+                /**
+                 * Test Whether the item should be expanded vertically.
+                 */
+                get: function () {
+                    if (this._alignment & widgets.Alignment.Vertical_Mask) {
+                        return false;
+                    }
+                    var verticalPolicy = this._widget.verticalSizePolicy;
+                    return (verticalPolicy & 4 /* ExpandFlag */) !== 0;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Invalidate the cached data for the item.
+             */
+            WidgetItem.prototype.invalidate = function () {
+                this._origHint = null;
+                this._sizeHint = null;
+                this._minSize = null;
+                this._maxSize = null;
+            };
+            /**
+             * Compute the preferred size of the item.
+             */
+            WidgetItem.prototype.sizeHint = function () {
+                if (!this._sizeHint) {
+                    this._updateSizes();
+                }
+                return this._sizeHint;
+            };
+            /**
+             * Compute the minimum size of the item.
+             */
+            WidgetItem.prototype.minSize = function () {
+                if (!this._minSize) {
+                    this._updateSizes();
+                }
+                return this._minSize;
+            };
+            /**
+             * Compute the maximum size of the item.
+             */
+            WidgetItem.prototype.maxSize = function () {
+                if (!this._maxSize) {
+                    this._updateSizes();
+                }
+                return this._maxSize;
+            };
+            /**
+             * Set the geometry of the item using the given values.
+             */
+            WidgetItem.prototype.setGeometry = function (x, y, width, height) {
+                var widget = this._widget;
+                if (widget.isHidden) {
+                    return;
+                }
+                var w = width;
+                var h = height;
+                var alignment = this._alignment;
+                if (alignment & widgets.Alignment.Horizontal_Mask) {
+                    var ignW = widget.horizontalSizePolicy === widgets.SizePolicy.Ignored;
+                    w = Math.min(w, ignW ? this._origHint.width : this._sizeHint.width);
+                }
+                if (alignment & widgets.Alignment.Vertical_Mask) {
+                    var ignH = widget.verticalSizePolicy === widgets.SizePolicy.Ignored;
+                    h = Math.min(h, ignH ? this._origHint.height : this._sizeHint.height);
+                }
+                var minSize = this._minSize;
+                var maxSize = this._maxSize;
+                w = Math.max(minSize.width, Math.min(w, maxSize.width));
+                h = Math.max(minSize.height, Math.min(h, maxSize.height));
+                if (alignment & 2 /* Right */) {
+                    x += width - w;
+                }
+                else if (alignment & 4 /* HorizontalCenter */) {
+                    x += (width - w) / 2;
+                }
+                if (alignment & 32 /* Bottom */) {
+                    y += height - h;
+                }
+                else if (alignment & 64 /* VerticalCenter */) {
+                    y += (height - h) / 2;
+                }
+                widget.setGeometry(x, y, w, h);
+            };
+            /**
+             * Update the computed sizes for the widget item.
+             */
+            WidgetItem.prototype._updateSizes = function () {
+                var widget = this._widget;
+                if (widget.isHidden) {
+                    this._origHint = Size.Zero;
+                    this._sizeHint = Size.Zero;
+                    this._minSize = Size.Zero;
+                    this._maxSize = Size.Zero;
+                    return;
+                }
+                var box = widget.boxSizing;
+                var sizeHint = widget.sizeHint();
+                var minHint = widget.minSizeHint();
+                var maxHint = widget.maxSizeHint();
+                var verticalPolicy = widget.verticalSizePolicy;
+                var horizontalPolicy = widget.horizontalSizePolicy;
+                // computed size hint
+                var hintW = 0;
+                var hintH = 0;
+                if (horizontalPolicy !== widgets.SizePolicy.Ignored) {
+                    hintW = Math.max(minHint.width, sizeHint.width);
+                }
+                if (verticalPolicy !== widgets.SizePolicy.Ignored) {
+                    hintH = Math.max(minHint.height, sizeHint.height);
+                }
+                hintW = Math.max(box.minWidth, Math.min(hintW, box.maxWidth));
+                hintH = Math.max(box.minHeight, Math.min(hintH, box.maxHeight));
+                // computed min size
+                var minW = 0;
+                var minH = 0;
+                if (horizontalPolicy !== widgets.SizePolicy.Ignored) {
+                    if (horizontalPolicy & 2 /* ShrinkFlag */) {
+                        minW = minHint.width;
+                    }
+                    else {
+                        minW = Math.max(minHint.width, sizeHint.width);
+                    }
+                }
+                if (verticalPolicy !== widgets.SizePolicy.Ignored) {
+                    if (verticalPolicy & 2 /* ShrinkFlag */) {
+                        minH = minHint.height;
+                    }
+                    else {
+                        minH = Math.max(minHint.height, sizeHint.height);
+                    }
+                }
+                minW = Math.max(box.minWidth, Math.min(minW, box.maxWidth));
+                minH = Math.max(box.minHeight, Math.min(minH, box.maxHeight));
+                // computed max size
+                var maxW = Infinity;
+                var maxH = Infinity;
+                var alignment = this._alignment;
+                if (!(alignment & widgets.Alignment.Horizontal_Mask)) {
+                    if (horizontalPolicy !== widgets.SizePolicy.Ignored) {
+                        if (horizontalPolicy & 1 /* GrowFlag */) {
+                            maxW = Math.max(minHint.width, maxHint.width);
+                        }
+                        else {
+                            maxW = Math.max(minHint.width, sizeHint.width);
+                        }
+                    }
+                    maxW = Math.max(box.minWidth, Math.min(maxW, box.maxWidth));
+                }
+                if (!(alignment & widgets.Alignment.Vertical_Mask)) {
+                    if (verticalPolicy !== widgets.SizePolicy.Ignored) {
+                        if (verticalPolicy & 1 /* GrowFlag */) {
+                            maxH = Math.max(minHint.height, maxHint.height);
+                        }
+                        else {
+                            maxH = Math.max(minHint.height, sizeHint.height);
+                        }
+                    }
+                    maxH = Math.max(box.minHeight, Math.min(maxH, box.maxHeight));
+                }
+                this._origHint = sizeHint;
+                this._sizeHint = new Size(hintW, hintH);
+                this._minSize = new Size(minW, minH);
+                this._maxSize = new Size(maxW, maxH);
+            };
+            return WidgetItem;
+        })();
+        widgets.WidgetItem = WidgetItem;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -6295,10 +4966,12 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var Size = phosphor.utility.Size;
         /**
-         * A layout which arranges panels in a row or column.
+         * A layout which arranges widgets in a row or column.
          */
         var BoxLayout = (function (_super) {
             __extends(BoxLayout, _super);
@@ -6343,7 +5016,7 @@ var phosphor;
                     }
                     if (isHorizontal(this._direction) !== isHorizontal(direction)) {
                         this._items.forEach(function (item) {
-                            if (item instanceof panels.SpacerItem)
+                            if (item instanceof widgets.SpacerItem)
                                 item.transpose();
                         });
                     }
@@ -6393,37 +5066,38 @@ var phosphor;
             /**
              * Remove and return the layout item at the specified index.
              */
-            BoxLayout.prototype.takeAt = function (index) {
-                index = index | 0;
-                if (index < 0 || index >= this._items.length) {
-                    return void 0;
-                }
-                var item = this._items.splice(index, 1)[0];
-                this._sizers.splice(index, 1);
-                this.invalidate();
+            BoxLayout.prototype.removeAt = function (index) {
+                var item = algo.removeAt(this._items, index);
+                algo.removeAt(this._sizers, index);
+                if (item)
+                    this.invalidate();
                 return item;
             };
             /**
-             * Add a panel as the last item in the layout.
+             * Add a widget as the last item in the layout.
              *
-             * If the panel already exists in the layout, it will be moved.
+             * If the widget already exists in the layout, it will be moved.
              *
-             * Returns the index of the added panel.
+             * Returns the index of the added widget.
              */
-            BoxLayout.prototype.addPanel = function (panel) {
-                return this.insertPanel(this.count, panel);
+            BoxLayout.prototype.addWidget = function (widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.insertWidget(this.count, widget, stretch, alignment);
             };
             /**
-             * Insert a panel into the layout at the given index.
+             * Insert a widget into the layout at the given index.
              *
-             * If the panel already exists in the layout, it will be moved.
+             * If the widget already exists in the layout, it will be moved.
              *
-             * Returns the index of the added panel.
+             * Returns the index of the added widget.
              */
-            BoxLayout.prototype.insertPanel = function (index, panel) {
-                this.remove(panel);
-                this.ensureParent(panel);
-                return this._insert(index, new panels.PanelItem(panel));
+            BoxLayout.prototype.insertWidget = function (index, widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                this.remove(widget);
+                this.ensureParent(widget);
+                return this._insert(index, new widgets.WidgetItem(widget, alignment), stretch);
             };
             /**
              * Add a fixed amount of spacing to the end of the layout.
@@ -6439,16 +5113,14 @@ var phosphor;
              * Returns the index of the added space.
              */
             BoxLayout.prototype.insertSpacing = function (index, size) {
-                var item;
-                var fixed = 0 /* Fixed */;
-                var minimum = panels.SizePolicy.Minimum;
+                var spacer;
                 if (isHorizontal(this._direction)) {
-                    item = new panels.SpacerItem(size, 0, 0, 0, fixed, minimum);
+                    spacer = new widgets.SpacerItem(size, 0, 0 /* Fixed */, widgets.SizePolicy.Minimum);
                 }
                 else {
-                    item = new panels.SpacerItem(0, size, 0, 0, minimum, fixed);
+                    spacer = new widgets.SpacerItem(0, size, widgets.SizePolicy.Minimum, 0 /* Fixed */);
                 }
-                return this._insert(index, item);
+                return this._insert(index, spacer, 0);
             };
             /**
              * Add stretchable space to the end of the layout.
@@ -6464,16 +5136,42 @@ var phosphor;
              */
             BoxLayout.prototype.insertStretch = function (index, stretch) {
                 if (stretch === void 0) { stretch = 0; }
-                var item;
-                var expanding = panels.SizePolicy.Expanding;
-                var minimum = panels.SizePolicy.Minimum;
+                var spacer;
                 if (isHorizontal(this._direction)) {
-                    item = new panels.SpacerItem(0, 0, stretch, stretch, expanding, minimum);
+                    spacer = new widgets.SpacerItem(0, 0, widgets.SizePolicy.Expanding, widgets.SizePolicy.Minimum);
                 }
                 else {
-                    item = new panels.SpacerItem(0, 0, stretch, stretch, minimum, expanding);
+                    spacer = new widgets.SpacerItem(0, 0, widgets.SizePolicy.Minimum, widgets.SizePolicy.Expanding);
                 }
-                return this._insert(index, item);
+                return this._insert(index, spacer, stretch);
+            };
+            /**
+             * Get the stretch factor for the given widget or index.
+             *
+             * Returns -1 if the given widget or index is invalid.
+             */
+            BoxLayout.prototype.stretch = function (which) {
+                var index = typeof which === 'number' ? which : this.indexOf(which);
+                var sizer = this._sizers[index];
+                return sizer ? sizer.stretch : -1;
+            };
+            /**
+             * Set the stretch factor for the given widget or index.
+             *
+             * Returns true if the stretch was updated, false otherwise.
+             */
+            BoxLayout.prototype.setStretch = function (which, stretch) {
+                var index = typeof which === 'number' ? which : this.indexOf(which);
+                var sizer = this._sizers[index];
+                if (!sizer) {
+                    return false;
+                }
+                stretch = Math.max(0, stretch | 0);
+                if (sizer.stretch !== stretch) {
+                    sizer.stretch = stretch;
+                    this.invalidate();
+                }
+                return true;
             };
             /**
              * Invalidate the cached layout data and enqueue an update.
@@ -6512,37 +5210,31 @@ var phosphor;
             /**
              * Update the geometry of the child layout items.
              */
-            BoxLayout.prototype.layout = function () {
+            BoxLayout.prototype.layout = function (x, y, width, height) {
                 // Bail early when no work needs to be done.
-                var parent = this.parent;
                 var items = this._items;
-                if (!parent || items.length === 0) {
+                if (items.length === 0) {
                     return;
                 }
                 // Refresh the layout items if needed.
                 if (this._dirty) {
                     this._setupGeometry();
                 }
-                // Setup commonly used variables.
-                var boxD = parent.boxData;
-                var width = parent.width - boxD.horizontalSum;
-                var height = parent.height - boxD.verticalSum;
+                // Commonly used variables.
                 var dir = this._direction;
                 var sizers = this._sizers;
                 var lastSpaceIndex = this._lastSpaceIndex;
                 // Distribute the layout space to the sizers.
                 var mainSpace = isHorizontal(dir) ? width : height;
-                panels.layoutCalc(sizers, mainSpace - this._fixedSpace);
+                widgets.layoutCalc(sizers, Math.max(0, mainSpace - this._fixedSpace));
                 // Update the geometry of the items according to the layout
                 // direction. Fixed spacing is added before each item which
-                // immediately follows a non-hidden panel item. This has the
+                // immediately follows a non-hidden widget item. This has the
                 // effect of of collapsing all sibling spacers and ensuring
                 // that only one fixed spacing increment occurs between any
-                // two panels. It also prevents fixed spacing from being
+                // two widgets. It also prevents fixed spacing from being
                 // added before the first item or after the last item.
-                var y = boxD.paddingTop;
-                var x = boxD.paddingLeft;
-                var lastWasPanel = false;
+                var lastWasWidget = false;
                 var spacing = this._spacing;
                 var count = items.length;
                 if (dir === 0 /* LeftToRight */) {
@@ -6551,12 +5243,12 @@ var phosphor;
                         if (item.isHidden) {
                             continue;
                         }
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             x += spacing;
                         }
                         var size = sizers[i].size;
                         item.setGeometry(x, y, size, height);
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                         x += size;
                     }
                 }
@@ -6566,12 +5258,12 @@ var phosphor;
                         if (item.isHidden) {
                             continue;
                         }
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             y += spacing;
                         }
                         var size = sizers[i].size;
                         item.setGeometry(x, y, width, size);
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                         y += size;
                     }
                 }
@@ -6582,12 +5274,12 @@ var phosphor;
                         if (item.isHidden) {
                             continue;
                         }
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             x -= spacing;
                         }
                         var size = sizers[i].size;
                         item.setGeometry(x - size, y, size, height);
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                         x -= size;
                     }
                 }
@@ -6598,12 +5290,12 @@ var phosphor;
                         if (item.isHidden) {
                             continue;
                         }
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             y -= spacing;
                         }
                         var size = sizers[i].size;
                         item.setGeometry(x, y - size, width, size);
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                         y -= size;
                     }
                 }
@@ -6620,24 +5312,23 @@ var phosphor;
                 // No parent means the layout is not yet attached.
                 var parent = this.parent;
                 if (!parent) {
-                    var zero = new panels.Size(0, 0);
-                    this._sizeHint = zero;
-                    this._minSize = zero;
-                    this._maxSize = zero;
+                    this._sizeHint = Size.Zero;
+                    this._minSize = Size.Zero;
+                    this._maxSize = Size.Zero;
                     this._fixedSpace = 0;
                     return;
                 }
                 // Invalidate the layout items. This is done here instead of the
                 // `invalidate` method as this method is invoked only when needed,
                 // typically on a collapsed event. It also finds the last visible
-                // panel item index, which is needed for fixed spacing allocation.
+                // widget item index, which is needed for fixed spacing allocation.
                 var lastSpaceIndex = -1;
                 var items = this._items;
                 var count = items.length;
                 for (var i = 0; i < count; ++i) {
                     var item = items[i];
                     item.invalidate();
-                    if (item.isPanel && !item.isHidden) {
+                    if (item.isWidget && !item.isHidden) {
                         lastSpaceIndex = i;
                     }
                 }
@@ -6649,14 +5340,14 @@ var phosphor;
                 var maxW;
                 var maxH;
                 var fixedSpace = 0;
-                var lastWasPanel = false;
+                var lastWasWidget = false;
                 var dir = this._direction;
                 var spacing = this._spacing;
                 var sizers = this._sizers;
                 // Compute the size bounds according to the layout orientation.
                 // Empty layout items behave as if they don't exist and fixed
                 // spacing is before items which immediately follow a non-hidden
-                // panel item. This prevents leading and trailing fixed spacing
+                // widget item. This prevents leading and trailing fixed spacing
                 // as well as fixed spacing after spacers. Sizers are initialized
                 // according to their corresponding layout item.
                 if (isHorizontal(dir)) {
@@ -6666,11 +5357,10 @@ var phosphor;
                         var item = items[i];
                         var sizer = sizers[i];
                         if (item.isHidden) {
-                            sizer.expansive = false;
-                            sizer.stretch = 0;
                             sizer.sizeHint = 0;
                             sizer.minSize = 0;
                             sizer.maxSize = 0;
+                            sizer.expansive = false;
                             continue;
                         }
                         var itemHint = item.sizeHint();
@@ -6682,15 +5372,14 @@ var phosphor;
                         hintW += itemHint.width;
                         minW += itemMin.width;
                         maxW += itemMax.width;
-                        sizer.expansive = item.expandHorizontal;
-                        sizer.stretch = item.horizontalStretch;
                         sizer.sizeHint = itemHint.width;
                         sizer.minSize = itemMin.width;
                         sizer.maxSize = itemMax.width;
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        sizer.expansive = item.expandHorizontal;
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             fixedSpace += spacing;
                         }
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                     }
                     hintW += fixedSpace;
                     minW += fixedSpace;
@@ -6703,11 +5392,10 @@ var phosphor;
                         var item = items[i];
                         var sizer = sizers[i];
                         if (item.isHidden) {
-                            sizer.expansive = false;
-                            sizer.stretch = 0;
                             sizer.sizeHint = 0;
                             sizer.minSize = 0;
                             sizer.maxSize = 0;
+                            sizer.expansive = false;
                             continue;
                         }
                         var itemHint = item.sizeHint();
@@ -6719,24 +5407,23 @@ var phosphor;
                         hintH += itemHint.height;
                         minH += itemMin.height;
                         maxH += itemMax.height;
-                        sizer.expansive = item.expandVertical;
-                        sizer.stretch = item.verticalStretch;
                         sizer.sizeHint = itemHint.height;
                         sizer.minSize = itemMin.height;
                         sizer.maxSize = itemMax.height;
-                        if (lastWasPanel && i <= lastSpaceIndex) {
+                        sizer.expansive = item.expandVertical;
+                        if (lastWasWidget && i <= lastSpaceIndex) {
                             fixedSpace += spacing;
                         }
-                        lastWasPanel = item.isPanel;
+                        lastWasWidget = item.isWidget;
                     }
                     hintH += fixedSpace;
                     minH += fixedSpace;
                     maxH += fixedSpace;
                 }
                 // Account for padding and border on the parent.
-                var boxD = parent.boxData;
-                var boxW = boxD.horizontalSum;
-                var boxH = boxD.verticalSum;
+                var box = parent.boxSizing;
+                var boxW = box.horizontalSum;
+                var boxH = box.verticalSum;
                 hintW += boxW;
                 hintH += boxH;
                 minW += boxW;
@@ -6744,9 +5431,9 @@ var phosphor;
                 maxW += boxW;
                 maxH += boxH;
                 // Update the internal sizes.
-                this._sizeHint = new panels.Size(hintW, hintH);
-                this._minSize = new panels.Size(minW, minH);
-                this._maxSize = new panels.Size(maxW, maxH);
+                this._sizeHint = new Size(hintW, hintH);
+                this._minSize = new Size(minW, minH);
+                this._maxSize = new Size(maxW, maxH);
                 this._fixedSpace = fixedSpace;
                 this._lastSpaceIndex = lastSpaceIndex;
             };
@@ -6755,24 +5442,148 @@ var phosphor;
              *
              * Returns the index of the added item.
              */
-            BoxLayout.prototype._insert = function (index, item) {
-                index = Math.max(0, Math.min(index, this._items.length));
-                this._items.splice(index, 0, item);
-                this._sizers.splice(index, 0, new panels.LayoutSizer());
+            BoxLayout.prototype._insert = function (index, item, stretch) {
+                var sizer = new widgets.LayoutSizer();
+                sizer.stretch = Math.max(0, stretch | 0);
+                index = Math.max(0, Math.min(index | 0, this._items.length));
+                algo.insert(this._items, index, item);
+                algo.insert(this._sizers, index, sizer);
                 this.invalidate();
                 return index;
             };
             return BoxLayout;
-        })(panels.Layout);
-        panels.BoxLayout = BoxLayout;
+        })(widgets.Layout);
+        widgets.BoxLayout = BoxLayout;
         /**
          * Test whether the given direction is horizontal.
          */
         function isHorizontal(dir) {
             return dir === 0 /* LeftToRight */ || dir === 1 /* RightToLeft */;
         }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        /**
+         * The class name assigned to a split handle.
+         */
+        var HANDLE_CLASS = 'p-SplitHandle';
+        /**
+         * The class name assigned to a split handle overlay.
+         */
+        var OVERLAY_CLASS = 'p-SplitHandle-overlay';
+        /**
+         * The class name added to horizontal split handles.
+         */
+        var HORIZONTAL_CLASS = 'p-mod-horizontal';
+        /**
+         * The class name added to vertical split handles.
+         */
+        var VERTICAL_CLASS = 'p-mod-vertical';
+        /**
+         * The class name added to hidden split handles.
+         */
+        var HIDDEN_CLASS = 'p-mod-hidden';
+        /**
+         * A class which manages a handle node for a split panel.
+         */
+        var SplitHandle = (function () {
+            /**
+             * Construct a new split handle.
+             */
+            function SplitHandle(orientation) {
+                this._hidden = false;
+                this._node = this.createNode();
+                this.orientation = orientation;
+            }
+            Object.defineProperty(SplitHandle.prototype, "hidden", {
+                /**
+                 * Get whether the handle is hidden.
+                 */
+                get: function () {
+                    return this._hidden;
+                },
+                /**
+                 * Set whether the handle is hidden.
+                 */
+                set: function (hidden) {
+                    if (hidden === this._hidden) {
+                        return;
+                    }
+                    this._hidden = hidden;
+                    if (hidden) {
+                        this._node.classList.add(HIDDEN_CLASS);
+                    }
+                    else {
+                        this._node.classList.remove(HIDDEN_CLASS);
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SplitHandle.prototype, "orientation", {
+                /**
+                 * Get the orientation of the handle.
+                 */
+                get: function () {
+                    return this._orientation;
+                },
+                /**
+                 * Set the orientation of the handle.
+                 */
+                set: function (value) {
+                    if (value === this._orientation) {
+                        return;
+                    }
+                    this._orientation = value;
+                    if (value === 0 /* Horizontal */) {
+                        this._node.classList.remove(VERTICAL_CLASS);
+                        this._node.classList.add(HORIZONTAL_CLASS);
+                    }
+                    else {
+                        this._node.classList.remove(HORIZONTAL_CLASS);
+                        this._node.classList.add(VERTICAL_CLASS);
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SplitHandle.prototype, "node", {
+                /**
+                 * Get the DOM node for the handle.
+                 */
+                get: function () {
+                    return this._node;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Create the DOM node for the handle.
+             */
+            SplitHandle.prototype.createNode = function () {
+                var node = document.createElement('div');
+                var overlay = document.createElement('div');
+                node.className = HANDLE_CLASS;
+                overlay.className = OVERLAY_CLASS;
+                node.appendChild(overlay);
+                return node;
+            };
+            return SplitHandle;
+        })();
+        widgets.SplitHandle = SplitHandle;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -6789,17 +5600,1922 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var Size = phosphor.utility.Size;
+        /**
+         * A layout which arranges widgets in resizable sections.
+         */
+        var SplitLayout = (function (_super) {
+            __extends(SplitLayout, _super);
+            /**
+             * Construct a new split layout.
+             */
+            function SplitLayout(orientation) {
+                _super.call(this);
+                this._dirty = true;
+                this._handleSize = 3;
+                this._fixedSpace = 0;
+                this._sizeHint = null;
+                this._minSize = null;
+                this._maxSize = null;
+                this._items = [];
+                this._sizers = [];
+                this._orientation = orientation;
+            }
+            /**
+             * Dispose of the resources held by the layout.
+             */
+            SplitLayout.prototype.dispose = function () {
+                this._items = null;
+                this._sizers = null;
+                _super.prototype.dispose.call(this);
+            };
+            Object.defineProperty(SplitLayout.prototype, "orientation", {
+                /**
+                 * Get the orientation of the split layout.
+                 */
+                get: function () {
+                    return this._orientation;
+                },
+                /**
+                 * Set the orientation of the split layout.
+                 */
+                set: function (orient) {
+                    if (orient === this._orientation) {
+                        return;
+                    }
+                    this._orientation = orient;
+                    this.invalidate();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SplitLayout.prototype, "handleSize", {
+                /**
+                 * Get the size of the split handles.
+                 */
+                get: function () {
+                    return this._handleSize;
+                },
+                /**
+                 * Set the the size of the split handles.
+                 */
+                set: function (size) {
+                    size = Math.max(0, size | 0);
+                    if (size === this._handleSize) {
+                        return;
+                    }
+                    this._handleSize = size;
+                    this.invalidate();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SplitLayout.prototype, "count", {
+                /**
+                 * Get the number of layout items in the layout.
+                 */
+                get: function () {
+                    return this._items.length;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Get the normalized sizes of the items in the layout.
+             */
+            SplitLayout.prototype.sizes = function () {
+                return normalize(this._sizers.map(function (sizer) { return sizer.size; }));
+            };
+            /**
+             * Set the relative sizes for the split items.
+             *
+             * Extra values are ignored, too few will yield an undefined layout.
+             */
+            SplitLayout.prototype.setSizes = function (sizes) {
+                var parent = this.parent;
+                if (!parent) {
+                    return;
+                }
+                var totalSize;
+                var box = parent.boxSizing;
+                if (this._orientation === 0 /* Horizontal */) {
+                    totalSize = parent.width - box.horizontalSum - this._fixedSpace;
+                }
+                else {
+                    totalSize = parent.height - box.verticalSum - this._fixedSpace;
+                }
+                var sizers = this._sizers;
+                var normed = normalize(sizes);
+                var n = Math.min(sizers.length, normed.length);
+                for (var i = 0; i < n; ++i) {
+                    var hint = Math.round(normed[i] * totalSize);
+                    var sizer = sizers[i];
+                    sizer.size = hint;
+                    sizer.sizeHint = hint;
+                }
+                if (parent.isVisible) {
+                    this.update();
+                }
+            };
+            /**
+             * Get the splitter handle at the given index.
+             */
+            SplitLayout.prototype.handleAt = function (index) {
+                var item = this._items[index];
+                return item ? item.handle : void 0;
+            };
+            /**
+             * Move the handle at the given index to the offset position.
+             *
+             * This will move the handle as close as possible to the given
+             * offset position, without violating item size constraints.
+             */
+            SplitLayout.prototype.moveHandle = function (index, pos) {
+                var item = this._items[index];
+                if (!item || item.handle.hidden) {
+                    return;
+                }
+                var delta;
+                if (this._orientation === 0 /* Horizontal */) {
+                    delta = pos - item.handle.node.offsetLeft;
+                }
+                else {
+                    delta = pos - item.handle.node.offsetTop;
+                }
+                if (delta === 0) {
+                    return;
+                }
+                var sizers = this._sizers;
+                storeSizes(sizers); // Prevent item resizing unless needed.
+                if (delta > 0) {
+                    growSizer(sizers, index, delta);
+                }
+                else {
+                    sizers.reverse();
+                    growSizer(sizers, sizers.length - (index + 2), -delta);
+                    sizers.reverse();
+                }
+                this.update();
+            };
+            /**
+             * Get the layout item at the specified index.
+             */
+            SplitLayout.prototype.itemAt = function (index) {
+                return this._items[index];
+            };
+            /**
+             * Remove and return the layout item at the specified index.
+             */
+            SplitLayout.prototype.removeAt = function (index) {
+                var item = algo.removeAt(this._items, index);
+                algo.removeAt(this._sizers, index);
+                if (item) {
+                    var hNode = item.handle.node;
+                    var pNode = hNode.parentNode;
+                    if (pNode)
+                        pNode.removeChild(hNode);
+                    this.invalidate();
+                }
+                return item;
+            };
+            /**
+             * Add a widget as the last item in the layout.
+             *
+             * If the widget already exists in the layout, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            SplitLayout.prototype.addWidget = function (widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.insertWidget(this.count, widget, stretch, alignment);
+            };
+            /**
+             * Insert a widget into the layout at the given index.
+             *
+             * If the widget already exists in the layout, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            SplitLayout.prototype.insertWidget = function (index, widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                this.remove(widget);
+                this.ensureParent(widget);
+                var handle = new widgets.SplitHandle(this._orientation);
+                var item = new SplitItem(handle, widget, alignment);
+                var sizer = new widgets.LayoutSizer();
+                sizer.stretch = Math.max(0, stretch | 0);
+                index = Math.max(0, Math.min(index | 0, this._items.length));
+                algo.insert(this._items, index, item);
+                algo.insert(this._sizers, index, sizer);
+                this.invalidate();
+                return index;
+            };
+            /**
+             * Get the stretch factor for the given widget or index.
+             *
+             * Returns -1 if the given widget or index is invalid.
+             */
+            SplitLayout.prototype.stretch = function (which) {
+                var index = typeof which === 'number' ? which : this.indexOf(which);
+                var sizer = this._sizers[index];
+                return sizer ? sizer.stretch : -1;
+            };
+            /**
+             * Set the stretch factor for the given widget or index.
+             *
+             * Returns true if the stretch was updated, false otherwise.
+             */
+            SplitLayout.prototype.setStretch = function (which, stretch) {
+                var index = typeof which === 'number' ? which : this.indexOf(which);
+                var sizer = this._sizers[index];
+                if (!sizer) {
+                    return false;
+                }
+                stretch = Math.max(0, stretch | 0);
+                if (sizer.stretch !== stretch) {
+                    sizer.stretch = stretch;
+                    this.invalidate();
+                }
+                return true;
+            };
+            /**
+             * Invalidate the cached layout data and enqueue an update.
+             */
+            SplitLayout.prototype.invalidate = function () {
+                this._dirty = true;
+                _super.prototype.invalidate.call(this);
+            };
+            /**
+             * Compute the preferred size of the layout.
+             */
+            SplitLayout.prototype.sizeHint = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._sizeHint;
+            };
+            /**
+             * Compute the minimum size of the layout.
+             */
+            SplitLayout.prototype.minSize = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._minSize;
+            };
+            /**
+             * Compute the maximum size of the layout.
+             */
+            SplitLayout.prototype.maxSize = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._maxSize;
+            };
+            /**
+             * Update the geometry of the child layout items.
+             */
+            SplitLayout.prototype.layout = function (x, y, width, height) {
+                // Bail early when no work needs to be done.
+                var items = this._items;
+                if (items.length === 0) {
+                    return;
+                }
+                // Refresh the layout items if needed.
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                // Commonly used variables.
+                var orient = this._orientation;
+                var sizers = this._sizers;
+                // Distribute the layout space to the sizers.
+                var mainSpace = orient === 0 /* Horizontal */ ? width : height;
+                widgets.layoutCalc(sizers, Math.max(0, mainSpace - this._fixedSpace));
+                // Update the geometry of the items according to the orientation.
+                var hSize = this._handleSize;
+                var count = items.length;
+                if (orient === 0 /* Horizontal */) {
+                    for (var i = 0; i < count; ++i) {
+                        var item = items[i];
+                        if (item.isHidden) {
+                            continue;
+                        }
+                        var size = sizers[i].size;
+                        var hStyle = item.handle.node.style;
+                        item.setGeometry(x, y, size, height);
+                        hStyle.top = y + 'px';
+                        hStyle.left = x + size + 'px';
+                        hStyle.width = hSize + 'px';
+                        hStyle.height = height + 'px';
+                        x += size + hSize;
+                    }
+                }
+                else {
+                    for (var i = 0; i < count; ++i) {
+                        var item = items[i];
+                        if (item.isHidden) {
+                            continue;
+                        }
+                        var size = sizers[i].size;
+                        var hStyle = item.handle.node.style;
+                        item.setGeometry(x, y, width, size);
+                        hStyle.top = y + size + 'px';
+                        hStyle.left = x + 'px';
+                        hStyle.width = width + 'px';
+                        hStyle.height = hSize + 'px';
+                        y += size + hSize;
+                    }
+                }
+            };
+            /**
+             * Initialize the layout items and internal sizes for the layout.
+             */
+            SplitLayout.prototype._setupGeometry = function () {
+                // Bail early when no work needs to be done.
+                if (!this._dirty) {
+                    return;
+                }
+                this._dirty = false;
+                // No parent means the layout is not yet attached.
+                var parent = this.parent;
+                if (!parent) {
+                    this._sizeHint = Size.Zero;
+                    this._minSize = Size.Zero;
+                    this._maxSize = Size.Zero;
+                    this._fixedSpace = 0;
+                    return;
+                }
+                // Invalidate the layout items and reset the handles for the current
+                // orientation. Hide the handles associated with a hidden item and
+                // ensure the handle node is attached to the parent node. Traverse
+                // the items backwards and hide the first visible item handle.
+                var hidFirst = false;
+                var pNode = parent.node;
+                var orient = this._orientation;
+                var items = this._items;
+                var count = items.length;
+                for (var i = count - 1; i >= 0; --i) {
+                    var item = items[i];
+                    var handle = item.handle;
+                    var hNode = handle.node;
+                    item.invalidate();
+                    handle.orientation = orient;
+                    handle.hidden = item.isHidden;
+                    if (hNode.parentNode !== pNode) {
+                        pNode.appendChild(hNode);
+                    }
+                    if (!hidFirst && !item.isHidden) {
+                        item.handle.hidden = true;
+                        hidFirst = true;
+                    }
+                }
+                // Setup commonly used variables.
+                var hintW = 0;
+                var hintH = 0;
+                var minW = 0;
+                var minH = 0;
+                var maxW;
+                var maxH;
+                var fixedSpace = 0;
+                var handleSize = this._handleSize;
+                var sizers = this._sizers;
+                // Prevent item resizing unless needed.
+                storeSizes(sizers);
+                // Compute the size bounds according to the splitter orientation.
+                //
+                // A visible item with a zero size hint indicates a newly added
+                // item. Its layout size hint is initialized to the item's hint.
+                if (orient === 0 /* Horizontal */) {
+                    maxH = Infinity;
+                    maxW = count > 0 ? 0 : Infinity;
+                    for (var i = 0; i < count; ++i) {
+                        var item = items[i];
+                        var sizer = sizers[i];
+                        if (item.isHidden) {
+                            sizer.minSize = 0;
+                            sizer.maxSize = 0;
+                            sizer.expansive = false;
+                            continue;
+                        }
+                        var itemHint = item.sizeHint();
+                        var itemMin = item.minSize();
+                        var itemMax = item.maxSize();
+                        hintH = Math.max(hintH, itemHint.height);
+                        minH = Math.max(minH, itemMin.height);
+                        maxH = Math.min(maxH, itemMax.height);
+                        hintW += itemHint.width;
+                        minW += itemMin.width;
+                        maxW += itemMax.width;
+                        sizer.minSize = itemMin.width;
+                        sizer.maxSize = itemMax.width;
+                        sizer.expansive = item.expandHorizontal;
+                        if (sizer.sizeHint === 0) {
+                            sizer.sizeHint = itemHint.width;
+                        }
+                        if (!item.handle.hidden) {
+                            fixedSpace += handleSize;
+                        }
+                    }
+                    hintW += fixedSpace;
+                    minW += fixedSpace;
+                    maxW += fixedSpace;
+                }
+                else {
+                    maxW = Infinity;
+                    maxH = count > 0 ? 0 : Infinity;
+                    for (var i = 0; i < count; ++i) {
+                        var item = items[i];
+                        var sizer = sizers[i];
+                        if (item.isHidden) {
+                            sizer.minSize = 0;
+                            sizer.maxSize = 0;
+                            sizer.expansive = false;
+                            continue;
+                        }
+                        var itemHint = item.sizeHint();
+                        var itemMin = item.minSize();
+                        var itemMax = item.maxSize();
+                        hintW = Math.max(hintW, itemHint.width);
+                        minW = Math.max(minW, itemMin.width);
+                        maxW = Math.min(maxW, itemMax.width);
+                        hintH += itemHint.height;
+                        minH += itemMin.height;
+                        maxH += itemMax.height;
+                        sizer.minSize = itemMin.height;
+                        sizer.maxSize = itemMax.height;
+                        sizer.expansive = item.expandVertical;
+                        if (sizer.sizeHint === 0) {
+                            sizer.sizeHint = itemHint.height;
+                        }
+                        if (!item.handle.hidden) {
+                            fixedSpace += handleSize;
+                        }
+                    }
+                    hintH += fixedSpace;
+                    minH += fixedSpace;
+                    maxH += fixedSpace;
+                }
+                // Account for padding and border on the parent.
+                var box = parent.boxSizing;
+                var boxW = box.horizontalSum;
+                var boxH = box.verticalSum;
+                hintW += boxW;
+                hintH += boxH;
+                minW += boxW;
+                minH += boxH;
+                maxW += boxW;
+                maxH += boxH;
+                // Update the internal sizes.
+                this._sizeHint = new Size(hintW, hintH);
+                this._minSize = new Size(minW, minH);
+                this._maxSize = new Size(maxW, maxH);
+                this._fixedSpace = fixedSpace;
+            };
+            return SplitLayout;
+        })(widgets.Layout);
+        widgets.SplitLayout = SplitLayout;
+        /**
+         * A custom widget item used by a split layout.
+         */
+        var SplitItem = (function (_super) {
+            __extends(SplitItem, _super);
+            /**
+             * Construct a new split item.
+             */
+            function SplitItem(handle, widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                _super.call(this, widget, alignment);
+                this._handle = handle;
+            }
+            Object.defineProperty(SplitItem.prototype, "handle", {
+                /**
+                 * Get the split handle for the item.
+                 */
+                get: function () {
+                    return this._handle;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return SplitItem;
+        })(widgets.WidgetItem);
+        widgets.SplitItem = SplitItem;
+        /**
+         * Store the current layout sizes of the sizers.
+         *
+         * This will set the layout size hint to the current layout size for
+         * every sizer with a current size greater than zero. This ensures
+         * that an item will not be resized on the next layout unless its
+         * size limits force a resize.
+         */
+        function storeSizes(sizers) {
+            for (var i = 0, n = sizers.length; i < n; ++i) {
+                var sizer = sizers[i];
+                if (sizer.size > 0) {
+                    sizer.sizeHint = sizer.size;
+                }
+            }
+        }
+        /**
+         * Grow a sizer to the right by a positive delta.
+         *
+         * This will adjust the sizer's neighbors if required.
+         */
+        function growSizer(sizers, index, delta) {
+            var growLimit = 0;
+            for (var i = 0; i <= index; ++i) {
+                var sizer = sizers[i];
+                growLimit += sizer.maxSize - sizer.size;
+            }
+            var shrinkLimit = 0;
+            for (var i = index + 1, n = sizers.length; i < n; ++i) {
+                var sizer = sizers[i];
+                shrinkLimit += sizer.size - sizer.minSize;
+            }
+            delta = Math.min(delta, growLimit, shrinkLimit);
+            var grow = delta;
+            for (var i = index; i >= 0 && grow > 0; --i) {
+                var sizer = sizers[i];
+                var limit = sizer.maxSize - sizer.size;
+                if (limit >= grow) {
+                    sizer.sizeHint = sizer.size + grow;
+                    grow = 0;
+                }
+                else {
+                    sizer.sizeHint = sizer.size + limit;
+                    grow -= limit;
+                }
+            }
+            var shrink = delta;
+            for (var i = index + 1, n = sizers.length; i < n && shrink > 0; ++i) {
+                var sizer = sizers[i];
+                var limit = sizer.size - sizer.minSize;
+                if (limit >= shrink) {
+                    sizer.sizeHint = sizer.size - shrink;
+                    shrink = 0;
+                }
+                else {
+                    sizer.sizeHint = sizer.size - limit;
+                    shrink -= limit;
+                }
+            }
+        }
+        /**
+         * Normalize an array of positive values.
+         */
+        function normalize(values) {
+            var n = values.length;
+            if (n === 0) {
+                return [];
+            }
+            var sum = 0;
+            for (var i = 0; i < n; ++i) {
+                sum += values[i];
+            }
+            var result = new Array(n);
+            if (sum === 0) {
+                for (var i = 0; i < n; ++i) {
+                    result[i] = 1 / n;
+                }
+            }
+            else {
+                for (var i = 0; i < n; ++i) {
+                    result[i] = values[i] / sum;
+                }
+            }
+            return result;
+        }
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var Signal = phosphor.core.Signal;
+        var Pair = phosphor.utility.Pair;
+        var Size = phosphor.utility.Size;
+        /**
+         * A layout in which only one widget is visible at a time.
+         *
+         * User code is responsible for managing the current layout index. The
+         * index defaults to -1, which means no widget will be shown. The index
+         * must be set to a valid index in order for a widget to be displayed.
+         *
+         * If the current widget is removed, the current index is reset to -1.
+         *
+         * This layout will typically be used in conjunction with another
+         * widget, such as a tab bar, which manipulates the layout index.
+         */
+        var StackedLayout = (function (_super) {
+            __extends(StackedLayout, _super);
+            /**
+             * Construct a new stack layout.
+             */
+            function StackedLayout() {
+                _super.call(this);
+                /**
+                 * A signal emitted when a widget is removed from the layout.
+                 */
+                this.widgetRemoved = new Signal();
+                this._dirty = true;
+                this._currentIndex = -1;
+                this._sizeHint = null;
+                this._minSize = null;
+                this._maxSize = null;
+                this._items = [];
+            }
+            /**
+             * Dispose of the resources held by the layout.
+             */
+            StackedLayout.prototype.dispose = function () {
+                this._items = null;
+                this.widgetRemoved.disconnect();
+                _super.prototype.dispose.call(this);
+            };
+            Object.defineProperty(StackedLayout.prototype, "currentIndex", {
+                /**
+                 * Get the current index of the layout.
+                 */
+                get: function () {
+                    return this._currentIndex;
+                },
+                /**
+                 * Set the current index of the layout.
+                 */
+                set: function (index) {
+                    var prev = this.currentWidget;
+                    var next = this.widgetAt(index);
+                    if (prev === next) {
+                        return;
+                    }
+                    index = next ? index : -1;
+                    this._currentIndex = index;
+                    if (prev)
+                        prev.hide();
+                    if (next)
+                        next.show();
+                    // IE repaints before firing the animation frame which processes
+                    // the layout update triggered by the show/hide calls above. This
+                    // causes a double paint flicker when changing the visible widget.
+                    // The workaround is to update the layout immediately.
+                    this.update();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(StackedLayout.prototype, "currentWidget", {
+                /**
+                 * Get the current widget in the layout.
+                 */
+                get: function () {
+                    return this.widgetAt(this.currentIndex);
+                },
+                /**
+                 * Set the current widget in the layout.
+                 */
+                set: function (widget) {
+                    this.currentIndex = this.indexOf(widget);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(StackedLayout.prototype, "count", {
+                /**
+                 * Get the number of layout items in the layout.
+                 */
+                get: function () {
+                    return this._items.length;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Get the layout item at the specified index.
+             */
+            StackedLayout.prototype.itemAt = function (index) {
+                return this._items[index];
+            };
+            /**
+             * Remove and return the layout item at the specified index.
+             */
+            StackedLayout.prototype.removeAt = function (index) {
+                index = index | 0;
+                var item = algo.removeAt(this._items, index);
+                if (!item) {
+                    return void 0;
+                }
+                if (index === this._currentIndex) {
+                    this._currentIndex = -1;
+                    item.widget.hide();
+                    this.invalidate();
+                }
+                else if (index < this._currentIndex) {
+                    this._currentIndex--;
+                }
+                this.widgetRemoved.emit(this, new Pair(index, item.widget));
+                return item;
+            };
+            /**
+             * Add a widget as the last item in the layout.
+             *
+             * If the widget already exists in the layout, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            StackedLayout.prototype.addWidget = function (widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                return this.insertWidget(this.count, widget, alignment);
+            };
+            /**
+             * Insert a widget into the layout at the given index.
+             *
+             * If the widget already exists in the layout, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            StackedLayout.prototype.insertWidget = function (index, widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                widget.hide();
+                this.remove(widget);
+                this.ensureParent(widget);
+                index = Math.max(0, Math.min(index | 0, this._items.length));
+                algo.insert(this._items, index, new widgets.WidgetItem(widget, alignment));
+                if (index <= this._currentIndex) {
+                    this._currentIndex++;
+                }
+                return index;
+            };
+            /**
+             * Move a widget from one index to another.
+             *
+             * This method is more efficient for moving a widget than calling
+             * `insertWidget` for an already added widget. It will not remove
+             * the widget before moving it and will not emit `widgetRemoved`.
+             *
+             * Returns -1 if `fromIndex` is out of range.
+             */
+            StackedLayout.prototype.moveWidget = function (fromIndex, toIndex) {
+                fromIndex = fromIndex | 0;
+                var n = this._items.length;
+                if (fromIndex < 0 || fromIndex >= n) {
+                    return -1;
+                }
+                toIndex = Math.max(0, Math.min(toIndex | 0, n - 1));
+                if (fromIndex === toIndex) {
+                    return toIndex;
+                }
+                var item = algo.removeAt(this._items, fromIndex);
+                algo.insert(this._items, toIndex, item);
+                var current = this._currentIndex;
+                if (fromIndex === current) {
+                    current = toIndex;
+                }
+                else {
+                    if (fromIndex < current)
+                        current--;
+                    if (toIndex <= current)
+                        current++;
+                }
+                this._currentIndex = current;
+                return toIndex;
+            };
+            /**
+             * Invalidate the cached layout data and enqueue an update.
+             */
+            StackedLayout.prototype.invalidate = function () {
+                this._dirty = true;
+                _super.prototype.invalidate.call(this);
+            };
+            /**
+             * Compute the preferred size of the layout.
+             */
+            StackedLayout.prototype.sizeHint = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._sizeHint;
+            };
+            /**
+             * Compute the minimum size of the layout.
+             */
+            StackedLayout.prototype.minSize = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._minSize;
+            };
+            /**
+             * Compute the maximum size of the layout.
+             */
+            StackedLayout.prototype.maxSize = function () {
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                return this._maxSize;
+            };
+            /**
+             * Update the geometry of the child layout items.
+             */
+            StackedLayout.prototype.layout = function (x, y, width, height) {
+                var item = this._items[this._currentIndex];
+                if (!item) {
+                    return;
+                }
+                if (this._dirty) {
+                    this._setupGeometry();
+                }
+                item.setGeometry(x, y, width, height);
+            };
+            /**
+             * Initialize the layout items and internal sizes for the layout.
+             */
+            StackedLayout.prototype._setupGeometry = function () {
+                // Bail early when no work needs to be done.
+                if (!this._dirty) {
+                    return;
+                }
+                this._dirty = false;
+                // No parent means the layout is not yet attached.
+                var parent = this.parent;
+                if (!parent) {
+                    this._sizeHint = Size.Zero;
+                    this._minSize = Size.Zero;
+                    this._maxSize = Size.Zero;
+                    return;
+                }
+                // Compute the size bounds based on the visible item.
+                var hintW = 0;
+                var hintH = 0;
+                var minW = 0;
+                var minH = 0;
+                var maxW = Infinity;
+                var maxH = Infinity;
+                var item = this._items[this._currentIndex];
+                if (item) {
+                    item.invalidate();
+                    var itemHint = item.sizeHint();
+                    var itemMin = item.minSize();
+                    var itemMax = item.maxSize();
+                    hintW = Math.max(hintW, itemHint.width);
+                    hintH = Math.max(hintH, itemHint.height);
+                    minW = Math.max(minW, itemMin.width);
+                    minH = Math.max(minH, itemMin.height);
+                    maxW = Math.min(maxW, itemMax.width);
+                    maxH = Math.min(maxH, itemMax.height);
+                }
+                // Account for padding and border on the parent.
+                var box = parent.boxSizing;
+                var boxW = box.horizontalSum;
+                var boxH = box.verticalSum;
+                hintW += boxW;
+                hintH += boxH;
+                minW += boxW;
+                minH += boxH;
+                maxW += boxW;
+                maxH += boxH;
+                // Update the internal sizes.
+                this._sizeHint = new Size(hintW, hintH);
+                this._minSize = new Size(minW, minH);
+                this._maxSize = new Size(maxW, maxH);
+            };
+            return StackedLayout;
+        })(widgets.Layout);
+        widgets.StackedLayout = StackedLayout;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var Message = phosphor.core.Message;
+        var Signal = phosphor.core.Signal;
+        var clearMessageData = phosphor.core.clearMessageData;
+        var installMessageFilter = phosphor.core.installMessageFilter;
+        var postMessage = phosphor.core.postMessage;
+        var removeMessageFilter = phosphor.core.removeMessageFilter;
+        var sendMessage = phosphor.core.sendMessage;
+        var Size = phosphor.utility.Size;
+        var createBoxSizing = phosphor.utility.createBoxSizing;
+        /**
+         * The class name added to Widget instances.
+         */
+        var WIDGET_CLASS = 'p-Widget';
+        /**
+         * The class name added to hidden widgets.
+         */
+        var HIDDEN_CLASS = 'p-mod-hidden';
+        /**
+         * The base class of the Phosphor widget hierarchy.
+         *
+         * A widget wraps an absolutely positioned DOM node. It can act as a
+         * container for child widgets which can be arranged with a Phosphor
+         * layout manager, or it can act as a leaf control which manipulates
+         * its DOM node directly.
+         *
+         * A root widget (a widget with no parent) can be mounted anywhere
+         * in the DOM by calling its `attach` method and passing the DOM
+         * node which should be used as the parent of the widget's node.
+         */
+        var Widget = (function () {
+            /**
+             * Construct a new widget.
+             */
+            function Widget() {
+                /**
+                 * A signal emitted when the widget is disposed.
+                 */
+                this.disposed = new Signal();
+                this._layout = null;
+                this._parent = null;
+                this._children = [];
+                this._sizePolicy = defaultSizePolicy;
+                this._boxSizing = null;
+                this._x = 0;
+                this._y = 0;
+                this._width = 0;
+                this._height = 0;
+                this._flags = 0;
+                this._node = this.createNode();
+                this.addClass(WIDGET_CLASS);
+            }
+            /**
+             * Dispose of the widget and its descendants.
+             */
+            Widget.prototype.dispose = function () {
+                clearMessageData(this);
+                this.setFlag(8 /* IsDisposed */);
+                this.disposed.emit(this, void 0);
+                this.disposed.disconnect();
+                var layout = this._layout;
+                if (layout) {
+                    this._layout = null;
+                    layout.dispose();
+                }
+                var parent = this._parent;
+                if (parent) {
+                    this._parent = null;
+                    algo.remove(parent._children, this);
+                    sendMessage(parent, new widgets.ChildMessage('child-removed', this));
+                }
+                else if (this.isAttached) {
+                    this.detach();
+                }
+                var children = this._children;
+                for (var i = 0; i < children.length; ++i) {
+                    var child = children[i];
+                    children[i] = null;
+                    child._parent = null;
+                    child.dispose();
+                }
+                children.length = 0;
+                this._node = null;
+            };
+            Object.defineProperty(Widget.prototype, "node", {
+                /**
+                 * Get the DOM node managed by the widget.
+                 */
+                get: function () {
+                    return this._node;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "x", {
+                /**
+                 * Get the X position set for the widget.
+                 */
+                get: function () {
+                    return this._x;
+                },
+                /**
+                 * Set the X position for the widget.
+                 *
+                 * This is equivalent to `move(x, this.y)`.
+                 */
+                set: function (x) {
+                    this.move(x, this._y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "y", {
+                /**
+                 * Get the Y position set for the widget.
+                 */
+                get: function () {
+                    return this._y;
+                },
+                /**
+                 * Set the Y position for the widget.
+                 *
+                 * This is equivalent to `move(this.x, y)`.
+                 */
+                set: function (y) {
+                    this.move(this._x, y);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "width", {
+                /**
+                 * Get the width set for the widget.
+                 */
+                get: function () {
+                    return this._width;
+                },
+                /**
+                 * Set the width for the widget.
+                 *
+                 * This is equivalent to `resize(width, this.height)`.
+                 */
+                set: function (width) {
+                    this.resize(width, this._height);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "height", {
+                /**
+                 * Get the height set for the widget.
+                 */
+                get: function () {
+                    return this._height;
+                },
+                /**
+                 * Set the height for the widget.
+                 *
+                 * This is equivalent to `resize(this.width, height)`.
+                 */
+                set: function (height) {
+                    this.resize(this._width, height);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "horizontalSizePolicy", {
+                /**
+                 * Get the horizontal size policy for the widget.
+                 */
+                get: function () {
+                    return this._sizePolicy >> 16;
+                },
+                /**
+                 * Set the horizontal size policy for the widget.
+                 *
+                 * This is equivalent to `setSizePolicy(policy, this.verticalSizePolicy)`.
+                 */
+                set: function (policy) {
+                    this.setSizePolicy(policy, this.verticalSizePolicy);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "verticalSizePolicy", {
+                /**
+                 * Get the vertical size policy for the widget.
+                 */
+                get: function () {
+                    return this._sizePolicy & 0xFFFF;
+                },
+                /**
+                 * Set the vertical size policy for the widget.
+                 *
+                 * This is equivalent to `setSizePolicy(this.horizontalPolicy, policy)`.
+                 */
+                set: function (policy) {
+                    this.setSizePolicy(this.horizontalSizePolicy, policy);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "boxSizing", {
+                /**
+                 * Get the CSS box sizing for the widget.
+                 *
+                 * This method computes the data once, then caches it. The cached
+                 * data can be cleared by calling the `invalidateBoxSizing` method.
+                 */
+                get: function () {
+                    if (!this._boxSizing) {
+                        this._boxSizing = createBoxSizing(this._node);
+                    }
+                    return this._boxSizing;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "isAttached", {
+                /**
+                 * Test whether the widget's node is attached to the DOM.
+                 */
+                get: function () {
+                    return this.testFlag(1 /* IsAttached */);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "isDisposed", {
+                /**
+                 * Test whether the widget has been disposed.
+                 */
+                get: function () {
+                    return this.testFlag(8 /* IsDisposed */);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "isHidden", {
+                /**
+                 * Test whether the widget is explicitly hidden.
+                 */
+                get: function () {
+                    return this.testFlag(2 /* IsHidden */);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "isVisible", {
+                /**
+                 * Test whether the widget is visible.
+                 *
+                 * A widget is visible under the following conditions:
+                 *   - it is attached to the DOM
+                 *   - it is not explicitly hidden
+                 *   - it has no explicitly hidden ancestors
+                 */
+                get: function () {
+                    return this.testFlag(4 /* IsVisible */);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "layout", {
+                /**
+                 * Get the layout manager attached to the widget.
+                 *
+                 * Returns null if the widget has no layout manager.
+                 */
+                get: function () {
+                    return this._layout;
+                },
+                /**
+                 * Set the layout manager for the widget.
+                 *
+                 * A layout is single-use only. The current layout can be set to null
+                 * or to a new layout instance, but not to a layout which is already
+                 * installed on another widget.
+                 *
+                 * The current layout will be disposed and cannot be reused.
+                 */
+                set: function (layout) {
+                    layout = layout || null;
+                    var oldLayout = this._layout;
+                    if (oldLayout === layout) {
+                        return;
+                    }
+                    if (this.testFlag(16 /* DisallowLayoutChange */)) {
+                        throw new Error('cannot change widget layout');
+                    }
+                    if (layout && layout.parent) {
+                        throw new Error('layout already installed on a widget');
+                    }
+                    if (oldLayout) {
+                        this._layout = null;
+                        removeMessageFilter(this, oldLayout);
+                        oldLayout.dispose();
+                    }
+                    if (layout) {
+                        this._layout = layout;
+                        installMessageFilter(this, layout);
+                        layout.parent = this;
+                    }
+                    sendMessage(this, new Message('layout-changed'));
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Widget.prototype, "parent", {
+                /**
+                 * Get the parent of the widget.
+                 *
+                 * Returns null if the widget has no parent.
+                 */
+                get: function () {
+                    return this._parent;
+                },
+                /**
+                 * Set the parent of the widget.
+                 *
+                 * Setting the parent to null will detach the widget from the DOM
+                 * and automatically remove it from the relevant layout manager.
+                 */
+                set: function (parent) {
+                    parent = parent || null;
+                    var oldParent = this._parent;
+                    if (oldParent === parent) {
+                        return;
+                    }
+                    if (oldParent) {
+                        this._parent = null;
+                        algo.remove(oldParent._children, this);
+                        sendMessage(oldParent, new widgets.ChildMessage('child-removed', this));
+                    }
+                    if (parent) {
+                        this._parent = parent;
+                        parent._children.push(this);
+                        sendMessage(parent, new widgets.ChildMessage('child-added', this));
+                    }
+                    sendMessage(this, new Message('parent-changed'));
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Get an array of the widget's children.
+             */
+            Widget.prototype.children = function () {
+                return this._children.slice();
+            };
+            /**
+             * Test whether the widget's DOM node has the given class name.
+             */
+            Widget.prototype.hasClass = function (name) {
+                return this._node.classList.contains(name);
+            };
+            /**
+             * Add a class name to the widget's DOM node.
+             */
+            Widget.prototype.addClass = function (name) {
+                this._node.classList.add(name);
+            };
+            /**
+             * Remove a class name from the widget's DOM node.
+             */
+            Widget.prototype.removeClass = function (name) {
+                this._node.classList.remove(name);
+            };
+            /**
+             * Test whether the given widget flag is set.
+             */
+            Widget.prototype.testFlag = function (flag) {
+                return (this._flags & flag) !== 0;
+            };
+            /**
+             * Set the given widget flag.
+             */
+            Widget.prototype.setFlag = function (flag) {
+                this._flags |= flag;
+            };
+            /**
+             * Clear the given widget flag.
+             */
+            Widget.prototype.clearFlag = function (flag) {
+                this._flags &= ~flag;
+            };
+            /**
+             * Make the widget visible to its parent.
+             *
+             * If the widget is not explicitly hidden, this is a no-op.
+             */
+            Widget.prototype.show = function () {
+                if (!this.isHidden) {
+                    return;
+                }
+                var parent = this._parent;
+                if (this.isAttached && (!parent || parent.isVisible)) {
+                    sendMessage(this, new Message('before-show'));
+                    this.removeClass(HIDDEN_CLASS);
+                    this.clearFlag(2 /* IsHidden */);
+                    sendMessage(this, new Message('after-show'));
+                }
+                else {
+                    this.removeClass(HIDDEN_CLASS);
+                    this.clearFlag(2 /* IsHidden */);
+                }
+                if (parent) {
+                    sendMessage(parent, new widgets.ChildMessage('child-shown', this));
+                }
+                this.updateGeometry();
+            };
+            /**
+             * Make the widget invisible to its parent.
+             *
+             * If the widget is already hidden, this is a no-op.
+             */
+            Widget.prototype.hide = function () {
+                if (this.isHidden) {
+                    return;
+                }
+                var parent = this._parent;
+                if (this.isAttached && (!parent || parent.isVisible)) {
+                    sendMessage(this, new Message('before-hide'));
+                    this.addClass(HIDDEN_CLASS);
+                    this.setFlag(2 /* IsHidden */);
+                    sendMessage(this, new Message('after-hide'));
+                }
+                else {
+                    this.addClass(HIDDEN_CLASS);
+                    this.setFlag(2 /* IsHidden */);
+                }
+                if (parent) {
+                    sendMessage(parent, new widgets.ChildMessage('child-hidden', this));
+                }
+                this.updateGeometry(true);
+            };
+            /**
+             * Close the widget by sending it a 'close' message.
+             *
+             * Subclasses should reimplement `onClose` to perform custom actions.
+             */
+            Widget.prototype.close = function () {
+                sendMessage(this, new Message('close'));
+            };
+            /**
+             * Attach the widget's node to a host DOM element.
+             *
+             * The `fit` method can be called to resize the widget to fill its
+             * host node. It should be called whenever the size of host node is
+             * known to have changed.
+             *
+             * Only a root widget can be attached to a host node.
+             */
+            Widget.prototype.attach = function (host) {
+                if (this._parent) {
+                    throw new Error('cannot attach a non-root widget to the DOM');
+                }
+                sendMessage(this, new Message('before-attach'));
+                host.appendChild(this._node);
+                sendMessage(this, new Message('after-attach'));
+            };
+            /**
+             * Detach the widget's node from the DOM.
+             *
+             * Only a root widget can be detached from its host node.
+             */
+            Widget.prototype.detach = function () {
+                if (this._parent) {
+                    throw new Error('cannot dettach a non-root widget from the DOM');
+                }
+                var host = this._node.parentNode;
+                if (!host) {
+                    return;
+                }
+                sendMessage(this, new Message('before-detach'));
+                host.removeChild(this._node);
+                sendMessage(this, new Message('after-detach'));
+            };
+            /**
+             * Resize the widget so that it fills its host node.
+             *
+             * Only a root widget can be fit to its host.
+             *
+             * If the size of the host node is known, it can be provided. This
+             * will prevent a DOM geometry read and avoid a potential reflow.
+             */
+            Widget.prototype.fit = function (width, height, box) {
+                if (this._parent) {
+                    throw new Error('cannot fit a non-root widget');
+                }
+                var host = this._node.parentNode;
+                if (!host) {
+                    return;
+                }
+                if (width === void 0) {
+                    width = host.offsetWidth;
+                }
+                if (height === void 0) {
+                    height = host.offsetHeight;
+                }
+                if (box === void 0) {
+                    box = createBoxSizing(host);
+                }
+                var x = box.paddingLeft;
+                var y = box.paddingTop;
+                var w = width - box.horizontalSum;
+                var h = height - box.verticalSum;
+                this.setGeometry(x, y, w, h);
+            };
+            /**
+             * Calculate the preferred size for the widget.
+             *
+             * This is used by Phosphor's layout machinery to compute the natural
+             * space required for the widget and its children. A subclass which
+             * provides leaf content should reimplement this method.
+             *
+             * The default implementation of this method delegates to the layout
+             * manager if installed, otherwise it returns a zero size.
+             */
+            Widget.prototype.sizeHint = function () {
+                if (this._layout) {
+                    return this._layout.sizeHint();
+                }
+                return Size.Zero;
+            };
+            /**
+             * Calculate the preferred minimum size for the widget.
+             *
+             * This is used by Phosphor's layout machinery to compute the minimum
+             * space required for the widget and its children. This is independent
+             * of and subordinate to the minimum size specified in CSS. User code
+             * will not typically interact with this method.
+             *
+             * The default implementation of this method delegates to the layout
+             * manager if installed, otherwise it returns a zero size.
+             */
+            Widget.prototype.minSizeHint = function () {
+                if (this._layout) {
+                    return this._layout.minSize();
+                }
+                return Size.Zero;
+            };
+            /**
+             * Calculate the preferred maximum size for the widget.
+             *
+             * This is used by Phosphor's layout machinery to compute the maximum
+             * space allowed for the widget and its children. This is independent
+             * of and subordinate to the maximum size specified in CSS. User code
+             * will not typically interact with this method.
+             *
+             * The default implementation of this method delegates to the layout
+             * manager if installed, otherwise it returns an infinite size.
+             */
+            Widget.prototype.maxSizeHint = function () {
+                if (this._layout) {
+                    return this._layout.maxSize();
+                }
+                return Size.Infinite;
+            };
+            /**
+             * Invalidate the cached CSS box sizing for the widget.
+             *
+             * User code should invoke this method when it makes a change to the
+             * node's style which changes its border, padding, or size limits.
+             */
+            Widget.prototype.invalidateBoxSizing = function () {
+                this._boxSizing = null;
+                if (this._layout) {
+                    this._layout.invalidate();
+                }
+                else {
+                    postMessage(this, new Message('layout-request'));
+                }
+                this.updateGeometry();
+            };
+            /**
+             * Notify the layout system that the widget's geometry is dirty.
+             *
+             * This is typically called automatically at the proper times, but
+             * a custom leaf widget should call this method when its size hint
+             * changes so that the ancestor layout will refresh.
+             *
+             * If the `force` flag is false and the widget is explicitly hidden,
+             * this is a no-op. The geometry will update automatically when the
+             * widget is made visible.
+             */
+            Widget.prototype.updateGeometry = function (force) {
+                if (force === void 0) { force = false; }
+                var parent = this._parent;
+                if (!parent || (this.isHidden && !force)) {
+                    return;
+                }
+                if (parent._layout) {
+                    parent._layout.invalidate();
+                }
+                else {
+                    postMessage(parent, new Message('layout-request'));
+                    parent.updateGeometry();
+                }
+            };
+            /**
+             * Move the widget to the specified X-Y coordinate.
+             */
+            Widget.prototype.move = function (x, y) {
+                this.setGeometry(x, y, this._width, this._height);
+            };
+            /**
+             * Resize the widget to the specified width and height.
+             */
+            Widget.prototype.resize = function (width, height) {
+                this.setGeometry(this._x, this._y, width, height);
+            };
+            /**
+             * Set the position and size of the widget.
+             *
+             * The size is clipped to the limits specified by the node's style.
+             *
+             * This method will send 'move' and 'resize' messages to the widget if
+             * the new geometry changes the position or size of the widget's node.
+             */
+            Widget.prototype.setGeometry = function (x, y, width, height) {
+                var isMove = false;
+                var isResize = false;
+                var oldX = this._x;
+                var oldY = this._y;
+                var oldW = this._width;
+                var oldH = this._height;
+                var box = this.boxSizing;
+                var style = this._node.style;
+                var w = Math.max(box.minWidth, Math.min(width, box.maxWidth));
+                var h = Math.max(box.minHeight, Math.min(height, box.maxHeight));
+                if (oldX !== x) {
+                    this._x = x;
+                    style.left = x + 'px';
+                    isMove = true;
+                }
+                if (oldY !== y) {
+                    this._y = y;
+                    style.top = y + 'px';
+                    isMove = true;
+                }
+                if (oldW !== w) {
+                    this._width = w;
+                    style.width = w + 'px';
+                    isResize = true;
+                }
+                if (oldH !== h) {
+                    this._height = h;
+                    style.height = h + 'px';
+                    isResize = true;
+                }
+                if (isMove) {
+                    sendMessage(this, new widgets.MoveMessage(oldX, oldY, x, y));
+                }
+                if (isResize) {
+                    sendMessage(this, new widgets.ResizeMessage(oldW, oldH, w, h));
+                }
+            };
+            /**
+             * Set the size policy for the widget.
+             */
+            Widget.prototype.setSizePolicy = function (horizontal, vertical) {
+                var policy = (horizontal << 16) | vertical;
+                if (policy !== this._sizePolicy) {
+                    this._sizePolicy = policy;
+                    this.updateGeometry();
+                }
+            };
+            /**
+             * Process a message sent to the widget.
+             *
+             * This implements the IMessageHandler interface.
+             *
+             * Subclasses may reimplement this method as needed.
+             */
+            Widget.prototype.processMessage = function (msg) {
+                switch (msg.type) {
+                    case 'move':
+                        this.onMove(msg);
+                        break;
+                    case 'resize':
+                        this.onResize(msg);
+                        break;
+                    case 'child-added':
+                        this.onChildAdded(msg);
+                        break;
+                    case 'child-removed':
+                        this.onChildRemoved(msg);
+                        break;
+                    case 'before-show':
+                        this.onBeforeShow(msg);
+                        sendNonHidden(this._children, msg);
+                        break;
+                    case 'after-show':
+                        this.setFlag(4 /* IsVisible */);
+                        this.onAfterShow(msg);
+                        sendNonHidden(this._children, msg);
+                        break;
+                    case 'before-hide':
+                        this.onBeforeHide(msg);
+                        sendNonHidden(this._children, msg);
+                        break;
+                    case 'after-hide':
+                        this.clearFlag(4 /* IsVisible */);
+                        this.onAfterHide(msg);
+                        sendNonHidden(this._children, msg);
+                        break;
+                    case 'before-attach':
+                        this._boxSizing = null;
+                        this.onBeforeAttach(msg);
+                        sendAll(this._children, msg);
+                        break;
+                    case 'after-attach':
+                        var parent = this._parent;
+                        var visible = !this.isHidden && (!parent || parent.isVisible);
+                        if (visible)
+                            this.setFlag(4 /* IsVisible */);
+                        this.setFlag(1 /* IsAttached */);
+                        this.onAfterAttach(msg);
+                        sendAll(this._children, msg);
+                        break;
+                    case 'before-detach':
+                        this.onBeforeDetach(msg);
+                        sendAll(this._children, msg);
+                        break;
+                    case 'after-detach':
+                        this.clearFlag(4 /* IsVisible */);
+                        this.clearFlag(1 /* IsAttached */);
+                        this.onAfterDetach(msg);
+                        sendAll(this._children, msg);
+                        break;
+                    case 'close':
+                        this.onClose(msg);
+                        break;
+                }
+            };
+            /**
+             * Compress a message posted to the widget.
+             *
+             * This implements the IMessageHandler interface.
+             *
+             * Subclasses may reimplement this method as needed.
+             */
+            Widget.prototype.compressMessage = function (msg, pending) {
+                if (msg.type === 'layout-request') {
+                    return pending.some(function (other) { return other.type === 'layout-request'; });
+                }
+                return false;
+            };
+            /**
+             * Create the DOM node for the widget.
+             *
+             * This can be reimplemented by subclasses as needed.
+             *
+             * The default implementation creates an empty div.
+             */
+            Widget.prototype.createNode = function () {
+                return document.createElement('div');
+            };
+            /**
+             * A method invoked when a 'close' message is received.
+             *
+             * The default implementation sets the parent to null.
+             */
+            Widget.prototype.onClose = function (msg) {
+                this.parent = null;
+            };
+            /**
+             * A method invoked when a 'child-added' message is received.
+             *
+             * The default implementation appends the child node to the DOM.
+             */
+            Widget.prototype.onChildAdded = function (msg) {
+                var child = msg.child;
+                if (this.isAttached) {
+                    sendMessage(child, new Message('before-attach'));
+                    this._node.appendChild(child._node);
+                    sendMessage(child, new Message('after-attach'));
+                }
+                else {
+                    this._node.appendChild(child._node);
+                }
+            };
+            /**
+             * A method invoked when a 'child-removed' message is received.
+             *
+             * The default implementation removes the child node from the DOM.
+             */
+            Widget.prototype.onChildRemoved = function (msg) {
+                var child = msg.child;
+                if (this.isAttached) {
+                    sendMessage(child, new Message('before-detach'));
+                    this._node.removeChild(child._node);
+                    sendMessage(child, new Message('after-detach'));
+                }
+                else {
+                    this._node.removeChild(child._node);
+                }
+            };
+            /**
+             * A method invoked when a 'move' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onMove = function (msg) {
+            };
+            /**
+             * A method invoked when a 'resize' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onResize = function (msg) {
+            };
+            /**
+             * A method invoked when a 'before-show' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onBeforeShow = function (msg) {
+            };
+            /**
+             * A method invoked when an 'after-show' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onAfterShow = function (msg) {
+            };
+            /**
+             * A method invoked when a 'before-hide' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onBeforeHide = function (msg) {
+            };
+            /**
+             * A method invoked when an 'after-hide' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onAfterHide = function (msg) {
+            };
+            /**
+             * A method invoked when a 'before-attach' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onBeforeAttach = function (msg) {
+            };
+            /**
+             * A method invoked when an 'after-attach' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onAfterAttach = function (msg) {
+            };
+            /**
+             * A method invoked when a 'before-detach' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onBeforeDetach = function (msg) {
+            };
+            /**
+             * A method invoked when an 'after-detach' message is received.
+             *
+             * The default implementation is a no-op.
+             */
+            Widget.prototype.onAfterDetach = function (msg) {
+            };
+            return Widget;
+        })();
+        widgets.Widget = Widget;
+        /**
+         * The default widget size policy.
+         */
+        var defaultSizePolicy = (widgets.SizePolicy.Preferred << 16) | widgets.SizePolicy.Preferred;
+        /**
+         * Send a message to all widgets in an array.
+         */
+        function sendAll(array, msg) {
+            for (var i = 0; i < array.length; ++i) {
+                sendMessage(array[i], msg);
+            }
+        }
+        /**
+         * Send a message to all non-hidden widgets in an array.
+         */
+        function sendNonHidden(array, msg) {
+            for (var i = 0; i < array.length; ++i) {
+                var widget = array[i];
+                if (!widget.isHidden) {
+                    sendMessage(widget, msg);
+                }
+            }
+        }
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        /**
+         * A widget which delegates to a permanently installed layout.
+         *
+         * This is used as a base class for common panel widgets.
+         */
+        var Panel = (function (_super) {
+            __extends(Panel, _super);
+            /**
+             * Construct a new panel.
+             */
+            function Panel(layout) {
+                _super.call(this);
+                this.layout = layout;
+                this.setFlag(16 /* DisallowLayoutChange */);
+            }
+            Object.defineProperty(Panel.prototype, "count", {
+                /**
+                 * Get the number of items (widgets + spacers) in the panel.
+                 */
+                get: function () {
+                    return this.layout.count;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Get the index of the given widget.
+             *
+             * Returns -1 if the widget is not found.
+             */
+            Panel.prototype.indexOf = function (widget) {
+                return this.layout.indexOf(widget);
+            };
+            /**
+             * Get the widget at the given index.
+             *
+             * Returns `undefined` if there is no widget at the given index.
+             */
+            Panel.prototype.widgetAt = function (index) {
+                return this.layout.widgetAt(index);
+            };
+            /**
+             * Get the alignment for the given widget.
+             *
+             * Returns 0 if the widget is not found in the panel.
+             */
+            Panel.prototype.alignment = function (widget) {
+                return this.layout.alignment(widget);
+            };
+            /**
+             * Set the alignment for the given widget.
+             *
+             * Returns true if the alignment was updated, false otherwise.
+             */
+            Panel.prototype.setAlignment = function (widget, alignment) {
+                return this.layout.setAlignment(widget, alignment);
+            };
+            return Panel;
+        })(widgets.Widget);
+        widgets.Panel = Panel;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
         /**
          * The class name added to BoxPanel instances.
          */
         var BOX_PANEL_CLASS = 'p-BoxPanel';
         /**
-         * A panel which arranges its children in a row or column
-         *
-         * This panel delegates to a permanently installed box layout and
-         * can be used as a more convenient interface to a box layout.
+         * A panel which arranges its children in a row or column.
          */
         var BoxPanel = (function (_super) {
             __extends(BoxPanel, _super);
@@ -6809,20 +7525,18 @@ var phosphor;
             function BoxPanel(direction, spacing) {
                 if (direction === void 0) { direction = 2 /* TopToBottom */; }
                 if (spacing === void 0) { spacing = 8; }
-                _super.call(this);
-                this.node.classList.add(BOX_PANEL_CLASS);
-                this.layout = new panels.BoxLayout(direction, spacing);
-                this.setFlag(16 /* DisallowLayoutChange */);
+                _super.call(this, new widgets.BoxLayout(direction, spacing));
+                this.addClass(BOX_PANEL_CLASS);
             }
             Object.defineProperty(BoxPanel.prototype, "direction", {
                 /**
-                 * Get the layout direction for the box.
+                 * Get the layout direction for the panel.
                  */
                 get: function () {
                     return this.layout.direction;
                 },
                 /**
-                 * Set the layout direction for the box.
+                 * Set the layout direction for the panel.
                  */
                 set: function (direction) {
                     this.layout.direction = direction;
@@ -6832,13 +7546,13 @@ var phosphor;
             });
             Object.defineProperty(BoxPanel.prototype, "spacing", {
                 /**
-                 * Get the inter-element fixed spacing for the box.
+                 * Get the inter-element fixed spacing for the panel.
                  */
                 get: function () {
                     return this.layout.spacing;
                 },
                 /**
-                 * Set the inter-element fixed spacing for the box.
+                 * Set the inter-element fixed spacing for the panel.
                  */
                 set: function (spacing) {
                     this.layout.spacing = spacing;
@@ -6846,54 +7560,32 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(BoxPanel.prototype, "count", {
-                /**
-                 * Get the number of items (panels + spacers) in the box.
-                 */
-                get: function () {
-                    return this.layout.count;
-                },
-                enumerable: true,
-                configurable: true
-            });
             /**
-             * Get the index of the given panel.
+             * Add a child widget to the end of the panel.
              *
-             * Returns -1 if the panel is not found.
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
              */
-            BoxPanel.prototype.indexOf = function (panel) {
-                return this.layout.indexOf(panel);
+            BoxPanel.prototype.addWidget = function (widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.addWidget(widget, stretch, alignment);
             };
             /**
-             * Get the panel at the given index.
+             * Insert a child widget into the panel at the given index.
              *
-             * Returns `undefined` if there is no panel at the given index.
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
              */
-            BoxPanel.prototype.panelAt = function (index) {
-                return this.layout.panelAt(index);
+            BoxPanel.prototype.insertWidget = function (index, widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.insertWidget(index, widget, stretch, alignment);
             };
             /**
-             * Add a child panel to the end of the split panel.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            BoxPanel.prototype.addPanel = function (panel) {
-                return this.layout.addPanel(panel);
-            };
-            /**
-             * Insert a child panel into the split panel at the given index.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            BoxPanel.prototype.insertPanel = function (index, panel) {
-                return this.layout.insertPanel(index, panel);
-            };
-            /**
-             * Add a fixed amount of spacing to the end of the box.
+             * Add a fixed amount of spacing to the end of the panel.
              *
              * Returns the index of the added space.
              */
@@ -6909,7 +7601,7 @@ var phosphor;
                 return this.layout.insertSpacing(index, size);
             };
             /**
-             * Add stretchable space to the end of the box.
+             * Add stretchable space to the end of the panel.
              *
              * Returns the index of the added space.
              */
@@ -6926,11 +7618,1509 @@ var phosphor;
                 if (stretch === void 0) { stretch = 0; }
                 return this.layout.insertStretch(index, stretch);
             };
+            /**
+             * Get the stretch factor for the given widget or index.
+             *
+             * Returns -1 if the given widget or index is invalid.
+             */
+            BoxPanel.prototype.stretch = function (which) {
+                return this.layout.stretch(which);
+            };
+            /**
+             * Set the stretch factor for the given widget or index.
+             *
+             * Returns true if the stretch was updated, false otherwise.
+             */
+            BoxPanel.prototype.setStretch = function (which, stretch) {
+                return this.layout.setStretch(which, stretch);
+            };
             return BoxPanel;
-        })(panels.Panel);
-        panels.BoxPanel = BoxPanel;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        })(widgets.Panel);
+        widgets.BoxPanel = BoxPanel;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var overrideCursor = phosphor.utility.overrideCursor;
+        /**
+         * The class name added to SplitPanel instances.
+         */
+        var SPLIT_PANEL_CLASS = 'p-SplitPanel';
+        /**
+         * A panel which arranges its children into resizable sections.
+         */
+        var SplitPanel = (function (_super) {
+            __extends(SplitPanel, _super);
+            /**
+             * Construct a new split panel.
+             */
+            function SplitPanel(orientation) {
+                if (orientation === void 0) { orientation = 0 /* Horizontal */; }
+                _super.call(this, new widgets.SplitLayout(orientation));
+                this._pressData = null;
+                this.addClass(SPLIT_PANEL_CLASS);
+            }
+            /**
+             * Dispose of the resources held by the panel.
+             */
+            SplitPanel.prototype.dispose = function () {
+                this._releaseMouse();
+                _super.prototype.dispose.call(this);
+            };
+            Object.defineProperty(SplitPanel.prototype, "orientation", {
+                /**
+                 * Get the orientation of the split panel.
+                 */
+                get: function () {
+                    return this.layout.orientation;
+                },
+                /**
+                 * Set the orientation of the split panel.
+                 */
+                set: function (orient) {
+                    this.layout.orientation = orient;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(SplitPanel.prototype, "handleSize", {
+                /**
+                 * Get the size of the split handles.
+                 */
+                get: function () {
+                    return this.layout.handleSize;
+                },
+                /**
+                 * Set the the size of the split handles.
+                 */
+                set: function (size) {
+                    this.layout.handleSize = size;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Get the normalized sizes of the widgets in the split panel.
+             */
+            SplitPanel.prototype.sizes = function () {
+                return this.layout.sizes();
+            };
+            /**
+             * Set the relative sizes for the split panel widgets.
+             *
+             * Extra values are ignored, too few will yield an undefined layout.
+             */
+            SplitPanel.prototype.setSizes = function (sizes) {
+                this.layout.setSizes(sizes);
+            };
+            /**
+             * Add a child widget to the end of the split panel.
+             *
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            SplitPanel.prototype.addWidget = function (widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.addWidget(widget, stretch, alignment);
+            };
+            /**
+             * Insert a child widget into the split panel at the given index.
+             *
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            SplitPanel.prototype.insertWidget = function (index, widget, stretch, alignment) {
+                if (stretch === void 0) { stretch = 0; }
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.insertWidget(index, widget, stretch, alignment);
+            };
+            /**
+             * Get the stretch factor for the given widget or index.
+             *
+             * Returns -1 if the given widget or index is invalid.
+             */
+            SplitPanel.prototype.stretch = function (which) {
+                return this.layout.stretch(which);
+            };
+            /**
+             * Set the stretch factor for the given widget or index.
+             *
+             * Returns true if the stretch was updated, false otherwise.
+             */
+            SplitPanel.prototype.setStretch = function (which, stretch) {
+                return this.layout.setStretch(which, stretch);
+            };
+            /**
+             * A method invoked after the node is attached to the DOM.
+             */
+            SplitPanel.prototype.onAfterAttach = function (msg) {
+                this.node.addEventListener('mousedown', this);
+            };
+            /**
+             * A method invoked after the node is detached from the DOM.
+             */
+            SplitPanel.prototype.onAfterDetach = function (msg) {
+                this.node.removeEventListener('mousedown', this);
+            };
+            /**
+             * Handle the DOM events for the split panel.
+             */
+            SplitPanel.prototype.handleEvent = function (event) {
+                switch (event.type) {
+                    case 'mousedown':
+                        this._evtMouseDown(event);
+                        break;
+                    case 'mouseup':
+                        this._evtMouseUp(event);
+                        break;
+                    case 'mousemove':
+                        this._evtMouseMove(event);
+                        break;
+                }
+            };
+            /**
+             * Handle the 'mousedown' event for the split panel.
+             */
+            SplitPanel.prototype._evtMouseDown = function (event) {
+                if (event.button !== 0) {
+                    return;
+                }
+                var data = this._findHandle(event.target);
+                if (!data) {
+                    return;
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                document.addEventListener('mouseup', this, true);
+                document.addEventListener('mousemove', this, true);
+                var delta;
+                var node = data.handle.node;
+                var rect = node.getBoundingClientRect();
+                if (this.orientation === 0 /* Horizontal */) {
+                    delta = event.clientX - rect.left;
+                }
+                else {
+                    delta = event.clientY - rect.top;
+                }
+                var cursor = overrideCursor(window.getComputedStyle(node).cursor);
+                this._pressData = { index: data.index, delta: delta, cursor: cursor };
+            };
+            /**
+             * Handle the 'mouseup' event for the split panel.
+             */
+            SplitPanel.prototype._evtMouseUp = function (event) {
+                if (event.button !== 0) {
+                    return;
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                this._releaseMouse();
+            };
+            /**
+             * Handle the 'mousemove' event for the split panel.
+             */
+            SplitPanel.prototype._evtMouseMove = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var pos;
+                var data = this._pressData;
+                var layout = this.layout;
+                var rect = this.node.getBoundingClientRect();
+                if (layout.orientation === 0 /* Horizontal */) {
+                    pos = event.clientX - data.delta - rect.left;
+                }
+                else {
+                    pos = event.clientY - data.delta - rect.top;
+                }
+                layout.moveHandle(data.index, pos);
+            };
+            /**
+             * Find the index of the handle which contains a target element.
+             */
+            SplitPanel.prototype._findHandle = function (target) {
+                var layout = this.layout;
+                for (var i = 0, n = layout.count; i < n; ++i) {
+                    var handle = layout.handleAt(i);
+                    if (handle.node.contains(target)) {
+                        return { index: i, handle: handle };
+                    }
+                }
+                return null;
+            };
+            /**
+             * Release the mouse grab for the split panel.
+             */
+            SplitPanel.prototype._releaseMouse = function () {
+                if (!this._pressData) {
+                    return;
+                }
+                this._pressData.cursor.dispose();
+                this._pressData = null;
+                document.removeEventListener('mouseup', this, true);
+                document.removeEventListener('mousemove', this, true);
+            };
+            return SplitPanel;
+        })(widgets.Panel);
+        widgets.SplitPanel = SplitPanel;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Signal = phosphor.core.Signal;
+        /**
+         * The class name added to StackedPanel instances.
+         */
+        var STACKED_PANEL_CLASS = 'p-StackedPanel';
+        /**
+         * A panel where only one child widget is visible at a time.
+         */
+        var StackedPanel = (function (_super) {
+            __extends(StackedPanel, _super);
+            /**
+             * Construct a new stacked panel.
+             */
+            function StackedPanel() {
+                _super.call(this, new widgets.StackedLayout());
+                /**
+                 * A signal emitted when a widget is removed from the panel.
+                 */
+                this.widgetRemoved = new Signal();
+                this.addClass(STACKED_PANEL_CLASS);
+                var layout = this.layout;
+                layout.widgetRemoved.connect(this._sl_widgetRemoved, this);
+            }
+            /**
+             * Dispose of the resources held by the panel.
+             */
+            StackedPanel.prototype.dispose = function () {
+                this.widgetRemoved.disconnect();
+                _super.prototype.dispose.call(this);
+            };
+            Object.defineProperty(StackedPanel.prototype, "currentIndex", {
+                /**
+                 * Get the current index of the panel.
+                 */
+                get: function () {
+                    return this.layout.currentIndex;
+                },
+                /**
+                 * Set the current index of the panel.
+                 */
+                set: function (index) {
+                    this.layout.currentIndex = index;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(StackedPanel.prototype, "currentWidget", {
+                /**
+                 * Get the current widget of the panel.
+                 */
+                get: function () {
+                    return this.layout.currentWidget;
+                },
+                /**
+                 * Set the current widget of the panel.
+                 */
+                set: function (widget) {
+                    this.layout.currentWidget = widget;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Add a child widget to the end of the panel.
+             *
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            StackedPanel.prototype.addWidget = function (widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.addWidget(widget, alignment);
+            };
+            /**
+             * Insert a child widget into the panel at the given index.
+             *
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
+             */
+            StackedPanel.prototype.insertWidget = function (index, widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                return this.layout.insertWidget(index, widget, alignment);
+            };
+            /**
+             * Move a child widget from one index to another.
+             *
+             * This method is more efficient for moving a widget than calling
+             * `insertWidget` for an already added widget. It will not remove
+             * the widget before moving it and will not emit `widgetRemoved`.
+             *
+             * Returns -1 if `fromIndex` is out of range.
+             */
+            StackedPanel.prototype.moveWidget = function (fromIndex, toIndex) {
+                return this.layout.moveWidget(fromIndex, toIndex);
+            };
+            /**
+             * Handle the `widgetRemoved` signal for the stacked layout.
+             */
+            StackedPanel.prototype._sl_widgetRemoved = function (sender, args) {
+                this.widgetRemoved.emit(this, args);
+            };
+            return StackedPanel;
+        })(widgets.Panel);
+        widgets.StackedPanel = StackedPanel;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var hitTest = phosphor.utility.hitTest;
+        var overrideCursor = phosphor.utility.overrideCursor;
+        /**
+         * The class name added to DockArea instances.
+         */
+        var DOCK_AREA_CLASS = 'p-DockArea';
+        /**
+         * The class name added to DockSplitter instances.
+         */
+        var DOCK_SPLITTER_CLASS = 'p-DockSplitter';
+        /**
+         * The class name added to DockPanel instances.
+         */
+        var DOCK_PANEL_CLASS = 'p-DockPanel';
+        /**
+         * The class name added to the DockPanel overlay div.
+         */
+        var OVERLAY_CLASS = 'p-DockPanel-overlay';
+        /**
+         * The class name added to floating tabs.
+         */
+        var FLOATING_CLASS = 'p-mod-floating';
+        /**
+         * A widget which provides a flexible docking layout area for widgets.
+         */
+        var DockArea = (function (_super) {
+            __extends(DockArea, _super);
+            /**
+             * Construct a new dock area.
+             */
+            function DockArea() {
+                _super.call(this);
+                this._handleSize = 3;
+                this._tabWidth = 175;
+                this._tabOverlap = 0;
+                this._minTabWidth = 45;
+                this._ignoreRemoved = false;
+                this._root = null;
+                this._dragData = null;
+                this._items = [];
+                this.addClass(DOCK_AREA_CLASS);
+                this._root = this._createSplitter(0 /* Horizontal */);
+                var layout = new widgets.BoxLayout(2 /* TopToBottom */, 0);
+                layout.addWidget(this._root);
+                this.layout = layout;
+                this.setFlag(16 /* DisallowLayoutChange */);
+            }
+            /**
+             * Dispose of the resources held by the widget.
+             */
+            DockArea.prototype.dispose = function () {
+                this._abortDrag();
+                this._root = null;
+                this._items = null;
+                _super.prototype.dispose.call(this);
+            };
+            Object.defineProperty(DockArea.prototype, "tabWidth", {
+                /**
+                 * Get the width of the tabs in the dock area.
+                 */
+                get: function () {
+                    return this._tabWidth;
+                },
+                /**
+                 * Get the width of the tabs in the dock area.
+                 */
+                set: function (width) {
+                    width = Math.max(0, width);
+                    if (width === this._tabWidth) {
+                        return;
+                    }
+                    this._tabWidth = width;
+                    iterPanels(this._root, function (panel) {
+                        panel.tabBar.tabWidth = width;
+                    });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DockArea.prototype, "minTabWidth", {
+                /**
+                 * Get the minimum tab width in pixels.
+                 */
+                get: function () {
+                    return this._minTabWidth;
+                },
+                /**
+                 * Set the minimum tab width in pixels.
+                 */
+                set: function (width) {
+                    width = Math.max(0, width);
+                    if (width === this._minTabWidth) {
+                        return;
+                    }
+                    this._minTabWidth = width;
+                    iterPanels(this._root, function (panel) {
+                        panel.tabBar.minTabWidth = width;
+                    });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DockArea.prototype, "tabOverlap", {
+                /**
+                 * Get the tab overlap amount in pixels.
+                 */
+                get: function () {
+                    return this._tabOverlap;
+                },
+                /**
+                 * Set the tab overlap amount in pixels.
+                 */
+                set: function (overlap) {
+                    if (overlap === this._tabOverlap) {
+                        return;
+                    }
+                    this._tabOverlap = overlap;
+                    iterPanels(this._root, function (panel) {
+                        panel.tabBar.tabOverlap = overlap;
+                    });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DockArea.prototype, "handleSize", {
+                /**
+                 * Get the handle size of the dock splitters.
+                 */
+                get: function () {
+                    return this._handleSize;
+                },
+                /**
+                 * Set the handle size of the dock splitters.
+                 */
+                set: function (size) {
+                    if (size === this._handleSize) {
+                        return;
+                    }
+                    this._handleSize = size;
+                    iterSplitters(this._root, function (splitter) {
+                        splitter.handleSize = size;
+                    });
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Add a widget to the dock area.
+             *
+             * The widget is positioned in the area according to the given dock
+             * mode and reference widget. If the dock widget is already added to
+             * the area, it will be moved to the new location.
+             *
+             * The default mode inserts the widget on the left side of the area.
+             */
+            DockArea.prototype.addWidget = function (widget, mode, ref) {
+                switch (mode) {
+                    case 0 /* Top */:
+                        this._addWidget(widget, 1 /* Vertical */, false);
+                        break;
+                    case 1 /* Left */:
+                        this._addWidget(widget, 0 /* Horizontal */, false);
+                        break;
+                    case 2 /* Right */:
+                        this._addWidget(widget, 0 /* Horizontal */, true);
+                        break;
+                    case 3 /* Bottom */:
+                        this._addWidget(widget, 1 /* Vertical */, true);
+                        break;
+                    case 4 /* SplitTop */:
+                        this._splitWidget(widget, ref, 1 /* Vertical */, false);
+                        break;
+                    case 5 /* SplitLeft */:
+                        this._splitWidget(widget, ref, 0 /* Horizontal */, false);
+                        break;
+                    case 6 /* SplitRight */:
+                        this._splitWidget(widget, ref, 0 /* Horizontal */, true);
+                        break;
+                    case 7 /* SplitBottom */:
+                        this._splitWidget(widget, ref, 1 /* Vertical */, true);
+                        break;
+                    case 8 /* TabBefore */:
+                        this._tabifyWidget(widget, ref, false);
+                        break;
+                    case 9 /* TabAfter */:
+                        this._tabifyWidget(widget, ref, true);
+                        break;
+                    default:
+                        this._addWidget(widget, 0 /* Horizontal */, false);
+                        break;
+                }
+            };
+            // /**
+            //  * Ensure the given widget is activated.
+            //  *
+            //  * If the widget does not exist, this is a no-op.
+            //  *
+            //  * Returns true if the widget was activated, false otherwise.
+            //  */
+            // activateWidget(widget: Widget): boolean {
+            //   var item = find(this._items, it => it.widget === widget);
+            //   if (!item) {
+            //     return false;
+            //   }
+            //   item.panel.tabBar.currentTab = item.widget.tab;
+            //   return true;
+            // }
+            // /**
+            //  * Get an array of the active widgets in the dock area.
+            //  */
+            // activeWidgets(): Widget[] {
+            //   var result: Widget[] = [];
+            //   iterPanels(this._root, panel => {
+            //     var current = panel.stackPanel.currentPanel;
+            //     if (current) result.push(current);
+            //   });
+            //   return result;
+            // }
+            /**
+             * Handle the DOM events for the dock area.
+             */
+            DockArea.prototype.handleEvent = function (event) {
+                switch (event.type) {
+                    case 'mousemove':
+                        this._evtMouseMove(event);
+                        break;
+                    case 'mouseup':
+                        this._evtMouseUp(event);
+                        break;
+                    case 'contextmenu':
+                        event.preventDefault();
+                        event.stopPropagation();
+                        break;
+                }
+            };
+            /**
+             * Handle the 'mousemove' event for the dock area.
+             *
+             * This is triggered on the document during a tab move operation.
+             */
+            DockArea.prototype._evtMouseMove = function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var dragData = this._dragData;
+                if (!dragData) {
+                    return;
+                }
+                // Hit test the panels using the current mouse position.
+                var clientX = event.clientX;
+                var clientY = event.clientY;
+                var hitPanel = iterPanels(this._root, function (p) {
+                    return hitTest(p.node, clientX, clientY) ? p : void 0;
+                });
+                // If the last hit panel is not this hit panel, clear the overlay.
+                if (dragData.lastHitPanel && dragData.lastHitPanel !== hitPanel) {
+                    dragData.lastHitPanel.hideOverlay();
+                }
+                // Clear the reference to the hit panel. It will be updated again
+                // if the mouse is over a panel, but not over the panel's tab bar.
+                dragData.lastHitPanel = null;
+                // Compute the new X and Y tab coordinates.
+                var x = clientX - dragData.offsetX;
+                var y = clientY - dragData.offsetY;
+                // If the mouse is not over a dock panel, simply update the tab.
+                var item = dragData.item;
+                var itemTab = item.widget.tab;
+                var tabStyle = itemTab.node.style;
+                if (!hitPanel) {
+                    tabStyle.left = x + 'px';
+                    tabStyle.top = y + 'px';
+                    return;
+                }
+                // Handle the case where the mouse is not over a tab bar. This
+                // saves a reference to the hit panel so that its overlay can be
+                // hidden once the mouse leaves the area, and shows the overlay
+                // provided that the split target is not the current widget.
+                if (!hitTest(hitPanel.tabBar.node, clientX, clientY)) {
+                    dragData.lastHitPanel = hitPanel;
+                    if (hitPanel !== item.panel || hitPanel.tabBar.count > 0) {
+                        hitPanel.showOverlay(clientX, clientY);
+                    }
+                    tabStyle.left = x + 'px';
+                    tabStyle.top = y + 'px';
+                    return;
+                }
+                // Otherwise the mouse is positioned over a tab bar. Hide the
+                // overlay before attaching the tab to the new tab bar.
+                hitPanel.hideOverlay();
+                // If the hit panel is not the current owner, the current hit
+                // panel and tab are saved so that they can be restored later.
+                if (hitPanel !== item.panel) {
+                    dragData.tempPanel = hitPanel;
+                    dragData.tempTab = hitPanel.tabBar.currentTab;
+                }
+                // Reset the tab style before attaching the tab to the tab bar.
+                floatTab(itemTab, false);
+                tabStyle.top = '';
+                tabStyle.left = '';
+                tabStyle.width = '';
+                // Attach the tab to the hit tab bar.
+                hitPanel.tabBar.attachTab(itemTab, clientX);
+                // The tab bar takes over movement of the tab. The dock area still
+                // listens for the mouseup event in order to complete the move.
+                document.removeEventListener('mousemove', this, true);
+            };
+            /**
+             * Handle the 'mouseup' event for the dock area.
+             *
+             * This is triggered on the document during a tab move operation.
+             */
+            DockArea.prototype._evtMouseUp = function (event) {
+                if (event.button !== 0) {
+                    return;
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                document.removeEventListener('mouseup', this, true);
+                document.removeEventListener('mousemove', this, true);
+                document.removeEventListener('contextmenu', this, true);
+                var dragData = this._dragData;
+                if (!dragData) {
+                    return;
+                }
+                this._dragData = null;
+                // Restore the application cursor and hide the overlay.
+                dragData.cursorGrab.dispose();
+                if (dragData.lastHitPanel) {
+                    dragData.lastHitPanel.hideOverlay();
+                }
+                // Fetch common variables.
+                var item = dragData.item;
+                var ownPanel = item.panel;
+                var ownBar = ownPanel.tabBar;
+                var ownCount = ownBar.count;
+                var itemTab = item.widget.tab;
+                // If the tab was being temporarily borrowed by another panel,
+                // make that relationship permanent by moving the dock widget.
+                // If the original owner panel becomes empty, it is removed.
+                // Otherwise, its current index is updated to the next widget.
+                // The ignoreRemoved flag is set during the widget swap since
+                // the widget is not actually being removed from the area.
+                if (dragData.tempPanel) {
+                    this._ignoreRemoved = true;
+                    item.panel = dragData.tempPanel;
+                    item.panel.stackedPanel.addWidget(item.widget);
+                    item.panel.stackedPanel.currentWidget = item.widget;
+                    this._ignoreRemoved = false;
+                    if (ownPanel.stackedPanel.count === 0) {
+                        this._removePanel(ownPanel);
+                    }
+                    else {
+                        var i = ownBar.indexOf(dragData.prevTab);
+                        if (i === -1)
+                            i = Math.min(dragData.index, ownCount - 1);
+                        ownBar.currentIndex = i;
+                    }
+                    return;
+                }
+                // Snap the split mode before modifying the DOM with the tab insert.
+                var mode = 4 /* Invalid */;
+                var hitPanel = dragData.lastHitPanel;
+                if (hitPanel && (hitPanel !== ownPanel || ownCount !== 0)) {
+                    mode = hitPanel.splitModeAt(event.clientX, event.clientY);
+                }
+                // If the mouse was not released over a panel, or if the hit panel
+                // is the empty owner panel, restore the tab to its position.
+                var tabStyle = itemTab.node.style;
+                if (mode === 4 /* Invalid */) {
+                    if (ownBar.currentTab !== itemTab) {
+                        floatTab(itemTab, false);
+                        tabStyle.top = '';
+                        tabStyle.left = '';
+                        tabStyle.width = '';
+                        ownBar.insertTab(dragData.index, itemTab);
+                    }
+                    return;
+                }
+                // Remove the tab from the document body and reset its style.
+                document.body.removeChild(itemTab.node);
+                floatTab(itemTab, false);
+                tabStyle.top = '';
+                tabStyle.left = '';
+                tabStyle.width = '';
+                // Split the target panel with the dock widget.
+                var after = mode === 2 /* Right */ || mode === 3 /* Bottom */;
+                var horiz = mode === 1 /* Left */ || mode === 2 /* Right */;
+                var orientation = horiz ? 0 /* Horizontal */ : 1 /* Vertical */;
+                this._splitPanel(hitPanel, item.widget, orientation, after);
+                var i = ownBar.indexOf(dragData.prevTab);
+                if (i === -1)
+                    i = Math.min(dragData.index, ownCount - 1);
+                ownBar.currentIndex = i;
+            };
+            /**
+             * Add the widget to a new root dock panel along the given orientation.
+             *
+             * If the widget already exists in the area, it will be removed.
+             */
+            DockArea.prototype._addWidget = function (widget, orientation, after) {
+                widget.parent = null;
+                var panel = this._createPanel();
+                this._items.push({ widget: widget, panel: panel });
+                panel.stackedPanel.addWidget(widget);
+                panel.tabBar.addTab(widget.tab);
+                this._ensureRoot(orientation);
+                if (after) {
+                    this._root.addWidget(panel);
+                }
+                else {
+                    this._root.insertWidget(0, panel);
+                }
+            };
+            /**
+             * Add the dock widget as a new split panel next to the reference.
+             *
+             * If the reference does not exist in the area, this is a no-op.
+             *
+             * If the dock widget already exists in the area, it will be moved.
+             */
+            DockArea.prototype._splitWidget = function (widget, ref, orientation, after) {
+                if (widget === ref) {
+                    return;
+                }
+                var refItem = algo.find(this._items, function (it) { return it.widget === ref; });
+                if (!refItem) {
+                    return;
+                }
+                this._splitPanel(refItem.panel, widget, orientation, after);
+            };
+            /**
+             * Split the panel with the given widget along the given orientation.
+             *
+             * If the widget already exists in the area, it will be moved.
+             */
+            DockArea.prototype._splitPanel = function (panel, widget, orientation, after) {
+                widget.parent = null;
+                var newPanel = this._createPanel();
+                this._items.push({ widget: widget, panel: newPanel });
+                newPanel.stackedPanel.addWidget(widget);
+                newPanel.tabBar.addTab(widget.tab);
+                var splitter = panel.parent;
+                if (splitter.orientation !== orientation) {
+                    if (splitter.count <= 1) {
+                        splitter.orientation = orientation;
+                        splitter.insertWidget(after ? 1 : 0, newPanel);
+                        splitter.setSizes([1, 1]);
+                    }
+                    else {
+                        var sizes = splitter.sizes();
+                        var index = splitter.indexOf(panel);
+                        var newSplitter = this._createSplitter(orientation);
+                        newSplitter.addWidget(panel);
+                        newSplitter.insertWidget(after ? 1 : 0, newPanel);
+                        splitter.insertWidget(index, newSplitter);
+                        splitter.setSizes(sizes);
+                        newSplitter.setSizes([1, 1]);
+                    }
+                }
+                else {
+                    var index = splitter.indexOf(panel);
+                    var i = after ? index + 1 : index;
+                    var sizes = splitter.sizes();
+                    var size = sizes[index] = sizes[index] / 2;
+                    splitter.insertWidget(i, newPanel);
+                    algo.insert(sizes, i, size);
+                    splitter.setSizes(sizes);
+                }
+            };
+            /**
+             * Add the dock widget as a tab next to the reference.
+             *
+             * If the reference does not exist in the area, this is a no-op.
+             *
+             * If the dock widget already exists in the area, it will be moved.
+             */
+            DockArea.prototype._tabifyWidget = function (widget, ref, after) {
+                if (widget === ref) {
+                    return;
+                }
+                var refItem = algo.find(this._items, function (it) { return it.widget === ref; });
+                if (!refItem) {
+                    return;
+                }
+                widget.parent = null;
+                var panel = refItem.panel;
+                var index = panel.tabBar.indexOf(ref.tab) + (after ? 1 : 0);
+                this._items.push({ widget: widget, panel: panel });
+                panel.stackedPanel.addWidget(widget);
+                panel.tabBar.insertTab(index, widget.tab);
+            };
+            /**
+             * Ensure the root splitter has the given orientation.
+             *
+             * If the current root has the given orientation, this is a no-op.
+             *
+             * If the root has <= 1 child, its orientation will be updated.
+             *
+             * Otherwise, a new root will be created with the proper orientation
+             * and the current root will be added as the new root's first child.
+             */
+            DockArea.prototype._ensureRoot = function (orientation) {
+                var root = this._root;
+                if (root.orientation === orientation) {
+                    return;
+                }
+                if (root.count <= 1) {
+                    root.orientation = orientation;
+                }
+                else {
+                    this._root = this._createSplitter(orientation);
+                    this._root.addWidget(root);
+                    this.layout.addWidget(this._root);
+                }
+            };
+            /**
+             * Create a new panel and setup the signal handlers.
+             */
+            DockArea.prototype._createPanel = function () {
+                var panel = new DockPanel();
+                var tabBar = panel.tabBar;
+                tabBar.tabWidth = this._tabWidth;
+                tabBar.tabOverlap = this._tabOverlap;
+                tabBar.minTabWidth = this._minTabWidth;
+                tabBar.currentChanged.connect(this._tb_currentChanged, this);
+                tabBar.tabCloseRequested.connect(this._tb_tabCloseRequested, this);
+                tabBar.tabDetachRequested.connect(this._tb_tabDetachRequested, this);
+                panel.stackedPanel.widgetRemoved.connect(this._sw_widgetRemoved, this);
+                return panel;
+            };
+            /**
+             * Create a new dock splitter for the dock area.
+             */
+            DockArea.prototype._createSplitter = function (orientation) {
+                var splitter = new DockSplitter(orientation);
+                splitter.handleSize = this._handleSize;
+                return splitter;
+            };
+            /**
+             * Remove an empty dock panel from the hierarchy.
+             *
+             * This ensures that the hierarchy is kept consistent by merging an
+             * ancestor splitter when it contains only a single child widget.
+             */
+            DockArea.prototype._removePanel = function (panel) {
+                // The parent of a dock panel is always a splitter.
+                var splitter = panel.parent;
+                // Dispose the panel. It is possible that this method is executing
+                // on the path of the panel's child stack widget event handler, so
+                // the panel is disposed in a deferred fashion to avoid disposing
+                // the child stack widget while its processing events.
+                panel.parent = null;
+                setTimeout(function () { return panel.dispose(); }, 0);
+                // If the splitter still has multiple children after removing
+                // the target panel, nothing else needs to be done.
+                if (splitter.count > 1) {
+                    return;
+                }
+                // If the splitter is the root splitter and has a remaining
+                // child which is a splitter, that child becomes the root.
+                if (splitter === this._root) {
+                    if (splitter.count === 1) {
+                        var child = splitter.widgetAt(0);
+                        if (child instanceof DockSplitter) {
+                            var layout = this.layout;
+                            var sizes = child.sizes();
+                            this._root = child;
+                            splitter.parent = null;
+                            layout.addWidget(child);
+                            child.setSizes(sizes);
+                            splitter.dispose();
+                        }
+                    }
+                    return;
+                }
+                // Non-root splitters always have a splitter parent and are always
+                // created with 2 children, so the splitter is guaranteed to have
+                // a single child at this point. Furthermore, splitters always have
+                // an orthogonal orientation to their parent, so a grandparent and
+                // a grandhild splitter will have the same orientation. This means
+                // the children of the granchild can be merged into the grandparent.
+                var gParent = splitter.parent;
+                var gSizes = gParent.sizes();
+                var gChild = splitter.widgetAt(0);
+                var index = gParent.indexOf(splitter);
+                splitter.parent = null;
+                if (gChild instanceof DockPanel) {
+                    gParent.insertWidget(index, gChild);
+                }
+                else {
+                    var gcsp = gChild;
+                    var gcspSizes = gcsp.sizes();
+                    var sizeShare = algo.removeAt(gSizes, index);
+                    for (var i = 0; gcsp.count !== 0; ++i) {
+                        gParent.insertWidget(index + i, gcsp.widgetAt(0));
+                        algo.insert(gSizes, index + i, sizeShare * gcspSizes[i]);
+                    }
+                }
+                gParent.setSizes(gSizes);
+                splitter.dispose();
+            };
+            /**
+             * Abort the tab drag operation if one is in progress.
+             */
+            DockArea.prototype._abortDrag = function () {
+                var dragData = this._dragData;
+                if (!dragData) {
+                    return;
+                }
+                this._dragData = null;
+                // Release the mouse grab and restore the application cursor.
+                document.removeEventListener('mouseup', this, true);
+                document.removeEventListener('mousemove', this, true);
+                document.removeEventListener('contextmenu', this, true);
+                dragData.cursorGrab.dispose();
+                // Hide the overlay for the last hit panel.
+                if (dragData.lastHitPanel) {
+                    dragData.lastHitPanel.hideOverlay();
+                }
+                // If the tab is borrowed by another tab bar, remove it from
+                // that tab bar and restore that tab bar's previous tab.
+                if (dragData.tempPanel) {
+                    var tabBar = dragData.tempPanel.tabBar;
+                    tabBar.detachAt(tabBar.currentIndex);
+                    tabBar.currentTab = dragData.tempTab;
+                }
+                // Restore the tab to its original location in its owner panel.
+                var item = dragData.item;
+                var itemTab = item.widget.tab;
+                var ownBar = item.panel.tabBar;
+                if (ownBar.currentTab !== itemTab) {
+                    var tabStyle = itemTab.node.style;
+                    floatTab(itemTab, false);
+                    tabStyle.top = '';
+                    tabStyle.left = '';
+                    tabStyle.width = '';
+                    ownBar.insertTab(dragData.index, itemTab);
+                }
+            };
+            /**
+             * Handle the `currentChanged` signal from a tab bar.
+             */
+            DockArea.prototype._tb_currentChanged = function (sender, args) {
+                var item = algo.find(this._items, function (it) { return it.widget.tab === args.second; });
+                if (item && item.panel.tabBar === sender) {
+                    item.panel.stackedPanel.currentWidget = item.widget;
+                }
+            };
+            /**
+             * Handle the `tabCloseRequested` signal from a tab bar.
+             */
+            DockArea.prototype._tb_tabCloseRequested = function (sender, args) {
+                var item = algo.find(this._items, function (it) { return it.widget.tab === args.second; });
+                if (item)
+                    item.widget.close();
+            };
+            /**
+             * Handle the `tabDetachRequested` signal from the tab bar.
+             */
+            DockArea.prototype._tb_tabDetachRequested = function (sender, args) {
+                // Find the dock item for the detach operation.
+                var tab = args.tab;
+                var item = algo.find(this._items, function (it) { return it.widget.tab === tab; });
+                if (!item) {
+                    return;
+                }
+                // Create the drag data the first time a tab is detached.
+                // The drag data will be cleared on the mouse up event.
+                if (!this._dragData) {
+                    var prevTab = sender.previousTab;
+                    this._dragData = {
+                        item: item,
+                        index: args.index,
+                        offsetX: 0,
+                        offsetY: 0,
+                        prevTab: prevTab,
+                        lastHitPanel: null,
+                        cursorGrab: null,
+                        tempPanel: null,
+                        tempTab: null,
+                    };
+                }
+                // Update the drag data with the current tab geometry.
+                var dragData = this._dragData;
+                dragData.offsetX = (0.4 * this._tabWidth) | 0;
+                dragData.offsetY = (0.6 * tab.node.offsetHeight) | 0;
+                // Grab the cursor for the drag operation.
+                dragData.cursorGrab = overrideCursor('default');
+                // The tab being detached will have one of two states:
+                //
+                // 1) The tab is being detached from its owner tab bar. The current
+                //    index is unset before detaching the tab so that the content
+                //    widget does not change during the drag operation.
+                // 2) The tab is being detached from a tab bar which was borrowing
+                //    the tab temporarily. Its previously selected tab is restored.
+                if (item.panel.tabBar === sender) {
+                    sender.currentIndex = -1;
+                    sender.detachAt(args.index);
+                }
+                else {
+                    sender.detachAt(args.index);
+                    sender.currentTab = dragData.tempTab;
+                }
+                // Clear the temp panel and tab
+                dragData.tempPanel = null;
+                dragData.tempTab = null;
+                // Setup the initial style and position for the floating tab.
+                var style = tab.node.style;
+                style.left = args.clientX - dragData.offsetX + 'px';
+                style.top = args.clientY - dragData.offsetY + 'px';
+                style.width = this._tabWidth + 'px';
+                style.zIndex = '';
+                // Add the floating tab to the document body.
+                floatTab(tab, true);
+                document.body.appendChild(tab.node);
+                // Attach the necessary mouse event listeners.
+                document.addEventListener('mouseup', this, true);
+                document.addEventListener('mousemove', this, true);
+                document.addEventListener('contextmenu', this, true);
+            };
+            /**
+             * Handle the `widgetRemoved` signal from a stack widget.
+             */
+            DockArea.prototype._sw_widgetRemoved = function (sender, args) {
+                if (this._ignoreRemoved) {
+                    return;
+                }
+                var i = algo.findIndex(this._items, function (it) { return it.widget === args.second; });
+                if (i === -1) {
+                    return;
+                }
+                this._abortDrag();
+                var item = algo.removeAt(this._items, i);
+                item.panel.tabBar.removeTab(item.widget.tab);
+                if (item.panel.stackedPanel.count === 0) {
+                    this._removePanel(item.panel);
+                }
+            };
+            return DockArea;
+        })(widgets.Widget);
+        widgets.DockArea = DockArea;
+        /**
+         * Set or remove the floating class on the given tab.
+         */
+        function floatTab(tab, on) {
+            if (on) {
+                tab.node.style.position = 'absolute';
+                tab.node.classList.add(FLOATING_CLASS);
+            }
+            else {
+                tab.node.style.position = '';
+                tab.node.classList.remove(FLOATING_CLASS);
+            }
+        }
+        /**
+         * Iterate over the DockPanels starting with the given root splitter.
+         *
+         * Iteration stops when the callback returns anything but undefined.
+         */
+        function iterPanels(root, cb) {
+            for (var i = 0, n = root.count; i < n; ++i) {
+                var result;
+                var panel = root.widgetAt(i);
+                if (panel instanceof DockPanel) {
+                    result = cb(panel);
+                }
+                else {
+                    result = iterPanels(panel, cb);
+                }
+                if (result !== void 0) {
+                    return result;
+                }
+            }
+            return void 0;
+        }
+        /**
+         * Iterate over the DockSplitters starting with the given root splitter.
+         *
+         * Iteration stops when the callback returns anything but undefined.
+         */
+        function iterSplitters(root, cb) {
+            var result = cb(root);
+            if (result !== void 0) {
+                return result;
+            }
+            for (var i = 0, n = root.count; i < n; ++i) {
+                var panel = root.widgetAt(i);
+                if (panel instanceof DockSplitter) {
+                    result = iterSplitters(panel, cb);
+                    if (result !== void 0) {
+                        return result;
+                    }
+                }
+            }
+            return void 0;
+        }
+        /**
+         * The split modes used to indicate a dock panel split direction.
+         */
+        var SplitMode;
+        (function (SplitMode) {
+            SplitMode[SplitMode["Top"] = 0] = "Top";
+            SplitMode[SplitMode["Left"] = 1] = "Left";
+            SplitMode[SplitMode["Right"] = 2] = "Right";
+            SplitMode[SplitMode["Bottom"] = 3] = "Bottom";
+            SplitMode[SplitMode["Invalid"] = 4] = "Invalid";
+        })(SplitMode || (SplitMode = {}));
+        /**
+         * A panel used by a DockArea.
+         *
+         * A dock panel acts as a simple container for a tab bar and stack
+         * panel, plus a bit of logic to manage a drop indicator overlay.
+         * The dock area manages the tab bar and stack panel directly, as
+         * there is not always a 1:1 association between a tab and panel.
+         *
+         * This class is not part of the public Phosphor API.
+         */
+        var DockPanel = (function (_super) {
+            __extends(DockPanel, _super);
+            /**
+             * Construct a new dock panel.
+             */
+            function DockPanel() {
+                _super.call(this);
+                this._overlayTimer = 0;
+                this._overlayHidden = true;
+                this._overlayNode = null;
+                this.addClass(DOCK_PANEL_CLASS);
+                this._tabBar = new widgets.TabBar();
+                this._stackedPanel = new widgets.StackedPanel();
+                this._overlayNode = this.createOverlay();
+                var layout = new widgets.BoxLayout(2 /* TopToBottom */, 0);
+                layout.addWidget(this._tabBar);
+                layout.addWidget(this._stackedPanel);
+                this.layout = layout;
+                this.setFlag(16 /* DisallowLayoutChange */);
+                this.node.appendChild(this._overlayNode);
+            }
+            Object.defineProperty(DockPanel.prototype, "tabBar", {
+                /**
+                 * Get the tab bar child of the dock panel.
+                 */
+                get: function () {
+                    return this._tabBar;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(DockPanel.prototype, "stackedPanel", {
+                /**
+                 * Get the stack panel child of the dock panel.
+                 */
+                get: function () {
+                    return this._stackedPanel;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Dispose of the resources held by the panel.
+             */
+            DockPanel.prototype.dispose = function () {
+                this._clearOverlayTimer();
+                this._tabBar = null;
+                this._stackedPanel = null;
+                this._overlayNode = null;
+                _super.prototype.dispose.call(this);
+            };
+            /**
+             * Compute the split mode for the given client position.
+             */
+            DockPanel.prototype.splitModeAt = function (clientX, clientY) {
+                var rect = this.node.getBoundingClientRect();
+                var fracX = (clientX - rect.left) / rect.width;
+                var fracY = (clientY - rect.top) / rect.height;
+                if (fracX < 0.0 || fracX > 1.0 || fracY < 0.0 || fracY > 1.0) {
+                    return 4 /* Invalid */;
+                }
+                var mode;
+                var normX = fracX > 0.5 ? 1 - fracX : fracX;
+                var normY = fracY > 0.5 ? 1 - fracY : fracY;
+                if (normX < normY) {
+                    mode = fracX <= 0.5 ? 1 /* Left */ : 2 /* Right */;
+                }
+                else {
+                    mode = fracY <= 0.5 ? 0 /* Top */ : 3 /* Bottom */;
+                }
+                return mode;
+            };
+            /**
+             * Show the dock overlay for the given client position.
+             *
+             * If the overlay is already visible, it will be adjusted.
+             */
+            DockPanel.prototype.showOverlay = function (clientX, clientY) {
+                this._clearOverlayTimer();
+                var box = this.boxSizing;
+                var top = box.paddingTop;
+                var left = box.paddingLeft;
+                var right = box.paddingRight;
+                var bottom = box.paddingBottom;
+                switch (this.splitModeAt(clientX, clientY)) {
+                    case 1 /* Left */:
+                        right = this.width / 2;
+                        break;
+                    case 2 /* Right */:
+                        left = this.width / 2;
+                        break;
+                    case 0 /* Top */:
+                        bottom = this.height / 2;
+                        break;
+                    case 3 /* Bottom */:
+                        top = this.height / 2;
+                        break;
+                }
+                // The first time the overlay is made visible, it is positioned at
+                // the cursor with zero size before being displayed. This allows
+                // for a nice transition to the normally computed size. Since the
+                // elements starts with display: none, a restyle must be forced.
+                var style = this._overlayNode.style;
+                if (this._overlayHidden) {
+                    this._overlayHidden = false;
+                    var rect = this.node.getBoundingClientRect();
+                    style.top = clientY - rect.top + 'px';
+                    style.left = clientX - rect.left + 'px';
+                    style.right = rect.right - clientX + 'px';
+                    style.bottom = rect.bottom - clientY + 'px';
+                    style.display = '';
+                    this._overlayNode.offsetWidth; // force layout
+                }
+                style.opacity = '1';
+                style.top = top + 'px';
+                style.left = left + 'px';
+                style.right = right + 'px';
+                style.bottom = bottom + 'px';
+            };
+            /**
+             * Hide the dock overlay.
+             *
+             * If the overlay is already hidden, this is a no-op.
+             */
+            DockPanel.prototype.hideOverlay = function () {
+                var _this = this;
+                if (this._overlayHidden) {
+                    return;
+                }
+                this._clearOverlayTimer();
+                this._overlayHidden = true;
+                this._overlayNode.style.opacity = '0';
+                this._overlayTimer = setTimeout(function () {
+                    _this._overlayTimer = 0;
+                    _this._overlayNode.style.display = 'none';
+                }, 150);
+            };
+            /**
+             * Create the overlay node for the dock panel.
+             */
+            DockPanel.prototype.createOverlay = function () {
+                var overlay = document.createElement('div');
+                overlay.className = OVERLAY_CLASS;
+                overlay.style.display = 'none';
+                return overlay;
+            };
+            /**
+             * Clear the overlay timer.
+             */
+            DockPanel.prototype._clearOverlayTimer = function () {
+                if (this._overlayTimer) {
+                    clearTimeout(this._overlayTimer);
+                    this._overlayTimer = 0;
+                }
+            };
+            return DockPanel;
+        })(widgets.Widget);
+        /**
+         * A split panel used by a DockArea.
+         *
+         * This class is not part of the public Phosphor API.
+         */
+        var DockSplitter = (function (_super) {
+            __extends(DockSplitter, _super);
+            /**
+             * Construct a new dock splitter.
+             */
+            function DockSplitter(orientation) {
+                _super.call(this, orientation);
+                this.addClass(DOCK_SPLITTER_CLASS);
+            }
+            return DockSplitter;
+        })(widgets.SplitPanel);
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var widgets;
+    (function (widgets) {
+        var Size = phosphor.utility.Size;
+        var render = phosphor.virtualdom.render;
+        /**
+         * The class name added to element host panels.
+         */
+        var ELEMENT_HOST_CLASS = 'p-ElementHost';
+        /**
+         * A leaf widget which hosts a virtual element.
+         *
+         * This is used to embed a virtual element into a widget hierarchy. This
+         * is a simple widget which disallows an external layout. The intent is
+         * that the element will provide the content for the widget, typically
+         * in the form of a component which manages its own updates.
+         */
+        var ElementHost = (function (_super) {
+            __extends(ElementHost, _super);
+            /**
+             * Construct a new element host.
+             */
+            function ElementHost(element, width, height) {
+                if (element === void 0) { element = null; }
+                if (width === void 0) { width = 0; }
+                if (height === void 0) { height = 0; }
+                _super.call(this);
+                this.addClass(ELEMENT_HOST_CLASS);
+                this.setFlag(16 /* DisallowLayoutChange */);
+                this._size = new Size(Math.max(0, width), Math.max(0, height));
+                this._element = element;
+            }
+            Object.defineProperty(ElementHost.prototype, "element", {
+                /**
+                 * Get the virtual element hosted by the panel.
+                 */
+                get: function () {
+                    return this._element;
+                },
+                /**
+                 * Set the virtual element hosted by the panel.
+                 */
+                set: function (element) {
+                    element = element || null;
+                    if (element === this._element) {
+                        return;
+                    }
+                    this._element = element;
+                    render(element, this.node);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Calculate the preferred size of the panel.
+             */
+            ElementHost.prototype.sizeHint = function () {
+                return this._size;
+            };
+            /**
+             * Set the preferred size for the panel.
+             */
+            ElementHost.prototype.setSizeHint = function (width, height) {
+                width = Math.max(0, width);
+                height = Math.max(0, height);
+                if (width === this._size.width && height === this._size.height) {
+                    return;
+                }
+                this._size = new Size(width, height);
+                this.updateGeometry();
+            };
+            /**
+             * A method invoked on an 'after-attach' message.
+             */
+            ElementHost.prototype.onAfterAttach = function (msg) {
+                render(this._element, this.node);
+            };
+            /**
+             * A method invoked on an 'after-detach' message.
+             */
+            ElementHost.prototype.onAfterDetach = function (msg) {
+                render(null, this.node);
+            };
+            return ElementHost;
+        })(widgets.Widget);
+        widgets.ElementHost = ElementHost;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -6941,17 +9131,17 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         var Signal = phosphor.core.Signal;
         /**
-         * An object which can be added to a menu or menu bar.
+         * An item which can be added to a menu or menu bar.
          */
         var MenuItem = (function () {
             /**
              * Construct a new menu item.
              */
-            function MenuItem(opts) {
+            function MenuItem(options) {
                 /**
                  * A signal emitted when the state of the menu item is changed.
                  */
@@ -6964,6 +9154,7 @@ var phosphor;
                  * A signal emitted when the menu item is triggered.
                  */
                 this.triggered = new Signal();
+                this._text = '';
                 this._mnemonic = '';
                 this._shortcut = '';
                 this._className = '';
@@ -6971,8 +9162,8 @@ var phosphor;
                 this._type = 'normal';
                 this._checked = false;
                 this._submenu = null;
-                if (opts)
-                    this._initFrom(opts);
+                if (options)
+                    this._initFrom(options);
             }
             Object.defineProperty(MenuItem.prototype, "type", {
                 /**
@@ -7155,50 +9346,44 @@ var phosphor;
             /**
              * Initialize the menu item from the given options object.
              */
-            MenuItem.prototype._initFrom = function (opts) {
-                if (opts.type !== void 0) {
-                    this.type = opts.type;
+            MenuItem.prototype._initFrom = function (options) {
+                if (options.type !== void 0) {
+                    this.type = options.type;
                 }
-                if (opts.text !== void 0) {
-                    this._text = opts.text;
+                if (options.text !== void 0) {
+                    this._text = options.text;
                 }
-                if (opts.mnemonic !== void 0) {
-                    this.mnemonic = opts.mnemonic;
+                if (options.mnemonic !== void 0) {
+                    this.mnemonic = options.mnemonic;
                 }
-                if (opts.shortcut !== void 0) {
-                    this._shortcut = opts.shortcut;
+                if (options.shortcut !== void 0) {
+                    this._shortcut = options.shortcut;
                 }
-                if (opts.enabled !== void 0) {
-                    this._enabled = opts.enabled;
+                if (options.enabled !== void 0) {
+                    this._enabled = options.enabled;
                 }
-                if (opts.checked !== void 0) {
-                    this.checked = opts.checked;
+                if (options.checked !== void 0) {
+                    this.checked = options.checked;
                 }
-                if (opts.submenu !== void 0) {
-                    this._submenu = opts.submenu;
+                if (options.submenu !== void 0) {
+                    this._submenu = options.submenu;
                 }
-                if (opts.className !== void 0) {
-                    this._className = opts.className;
+                if (options.className !== void 0) {
+                    this._className = options.className;
                 }
-                if (opts.onTriggered !== void 0) {
-                    this.triggered.connect(opts.onTriggered);
+                if (options.onTriggered !== void 0) {
+                    this.triggered.connect(options.onTriggered);
                 }
-                if (opts.onToggled !== void 0) {
-                    this.toggled.connect(opts.onToggled);
+                if (options.onToggled !== void 0) {
+                    this.toggled.connect(options.onToggled);
                 }
             };
             return MenuItem;
         })();
-        panels.MenuItem = MenuItem;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        widgets.MenuItem = MenuItem;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
 |
@@ -7208,14 +9393,22 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
         var Signal = phosphor.core.Signal;
-        var hitTest = phosphor.domutil.hitTest;
+        var Size = phosphor.utility.Size;
+        var clientViewportRect = phosphor.utility.clientViewportRect;
+        var createBoxSizing = phosphor.utility.createBoxSizing;
+        var hitTest = phosphor.utility.hitTest;
         /**
-         * The class name added to a menu panel.
+         * The class name added to menu instances.
          */
         var MENU_CLASS = 'p-Menu';
+        /**
+         * The class name added to a menu content node.
+         */
+        var CONTENT_CLASS = 'p-Menu-content';
         /**
          * The class name assigned to a menu item.
          */
@@ -7273,29 +9466,28 @@ var phosphor;
          */
         var SUBMENU_OVERLAP = 3;
         /**
-         * A panel which displays an array of menu items as a menu.
+         * An object which displays menu items as a popup menu.
          */
-        var Menu = (function (_super) {
-            __extends(Menu, _super);
+        var Menu = (function () {
             /**
              * Construct a new menu.
              */
             function Menu(items) {
                 var _this = this;
-                _super.call(this);
                 /**
                  * A signal emitted when the menu is closed.
                  */
                 this.closed = new Signal();
-                this._childItem = null;
-                this._childMenu = null;
                 this._parentMenu = null;
+                this._childMenu = null;
+                this._childItem = null;
                 this._items = [];
                 this._nodes = [];
                 this._activeIndex = -1;
                 this._openTimer = 0;
                 this._closeTimer = 0;
-                this.node.classList.add(MENU_CLASS);
+                this._node = this.createNode();
+                this._node.classList.add(MENU_CLASS);
                 if (items)
                     items.forEach(function (it) { return _this.addItem(it); });
             }
@@ -7309,7 +9501,7 @@ var phosphor;
                 return menu;
             };
             /**
-             * Find the leaf menu of the menu hierarchy.
+             * Find the leaf menu of a menu hierarchy.
              */
             Menu.leafMenu = function (menu) {
                 while (menu._childMenu) {
@@ -7317,16 +9509,16 @@ var phosphor;
                 }
                 return menu;
             };
-            /**
-             * Dispose of the resources held by the panel.
-             */
-            Menu.prototype.dispose = function () {
-                this._reset();
-                this._removeFromParentMenu();
-                this.closed.disconnect();
-                this.clearItems();
-                _super.prototype.dispose.call(this);
-            };
+            Object.defineProperty(Menu.prototype, "node", {
+                /**
+                 * Get the DOM node for the menu.
+                 */
+                get: function () {
+                    return this._node;
+                },
+                enumerable: true,
+                configurable: true
+            });
             Object.defineProperty(Menu.prototype, "parentMenu", {
                 /**
                  * Get the parent menu of the menu.
@@ -7353,7 +9545,7 @@ var phosphor;
             });
             Object.defineProperty(Menu.prototype, "activeIndex", {
                 /**
-                 * Get the index of the active (highlighted) item.
+                 * Get the index of the active (highlighted) menu item.
                  */
                 get: function () {
                     return this._activeIndex;
@@ -7373,13 +9565,13 @@ var phosphor;
             });
             Object.defineProperty(Menu.prototype, "activeItem", {
                 /**
-                 * Get the active (highlighted) item.
+                 * Get the active (highlighted) menu item.
                  */
                 get: function () {
                     return this._items[this._activeIndex];
                 },
                 /**
-                 * Set the active (highlighted) item.
+                 * Set the active (highlighted) menu item.
                  *
                  * Only a non-separator item can be set as the active item.
                  */
@@ -7408,7 +9600,7 @@ var phosphor;
             /**
              * Get the index of the given menu item.
              */
-            Menu.prototype.itemIndex = function (item) {
+            Menu.prototype.indexOf = function (item) {
                 return this._items.indexOf(item);
             };
             /**
@@ -7417,7 +9609,7 @@ var phosphor;
              * Returns the new index of the item.
              */
             Menu.prototype.addItem = function (item) {
-                return this.insertItem(this._items.length, item);
+                return this.insertItem(this.count, item);
             };
             /**
              * Insert a menu item into the menu at the given index.
@@ -7425,36 +9617,36 @@ var phosphor;
              * Returns the new index of the item.
              */
             Menu.prototype.insertItem = function (index, item) {
-                var items = this._items;
-                index = Math.max(0, Math.min(index | 0, items.length));
-                if (index === items.length) {
-                    items.push(item);
+                this.removeItem(item);
+                if (this._activeIndex !== -1) {
+                    this._reset();
                 }
-                else {
-                    items.splice(index, 0, item);
-                }
-                this.itemInserted(index, item);
+                var node = this.createItemNode(item);
+                index = Math.max(0, Math.min(index | 0, this.count));
+                algo.insert(this._items, index, item);
+                algo.insert(this._nodes, index, node);
+                item.changed.connect(this._mi_changed, this);
+                node.addEventListener('mouseenter', this);
+                this.insertItemNode(index, node);
                 return index;
             };
             /**
-             * Remove the menu item at the given index from the menu.
-             *
-             * Returns the removed item.
+             * Remove and return the menu item at the given index.
              */
-            Menu.prototype.takeItem = function (index) {
+            Menu.prototype.removeAt = function (index) {
+                if (this._activeIndex !== -1) {
+                    this._reset();
+                }
                 index = index | 0;
-                var items = this._items;
-                if (index < 0 || index >= items.length) {
-                    return void 0;
+                var item = algo.removeAt(this._items, index);
+                var node = algo.removeAt(this._nodes, index);
+                if (item) {
+                    item.changed.disconnect(this._mi_changed, this);
                 }
-                var item;
-                if (index === items.length - 1) {
-                    item = items.pop();
+                if (node) {
+                    node.removeEventListener('mouseenter', this);
+                    this.removeItemNode(index, node);
                 }
-                else {
-                    item = items.splice(index, 1)[0];
-                }
-                this.itemRemoved(index, item);
                 return item;
             };
             /**
@@ -7463,22 +9655,17 @@ var phosphor;
              * Returns the index of the removed item.
              */
             Menu.prototype.removeItem = function (item) {
-                var index = this._items.indexOf(item);
-                if (index === -1) {
-                    return -1;
-                }
-                this.takeItem(index);
+                var index = this.indexOf(item);
+                if (index !== -1)
+                    this.removeAt(index);
                 return index;
             };
             /**
              * Remove all menu items from the menu.
              */
             Menu.prototype.clearItems = function () {
-                var items = this._items;
-                while (items.length) {
-                    var item = items.pop();
-                    var index = items.length;
-                    this.itemRemoved(index, item);
+                while (this.count) {
+                    this.removeAt(this.count - 1);
                 }
             };
             /**
@@ -7487,8 +9674,8 @@ var phosphor;
              * This is equivalent to pressing the down arrow key.
              */
             Menu.prototype.activateNextItem = function () {
-                var k = this._activeIndex + 1;
-                var i = firstWrap(this._items, function (it) { return it.type !== 'separator'; }, k);
+                var fromIndex = this._activeIndex + 1;
+                var i = algo.findIndex(this._items, isSelectable, fromIndex, true);
                 this._setActiveIndex(i);
             };
             /**
@@ -7497,8 +9684,8 @@ var phosphor;
              * This is equivalent to pressing the up arrow key.
              */
             Menu.prototype.activatePreviousItem = function () {
-                var k = this._activeIndex - 1;
-                var i = lastWrap(this._items, function (it) { return it.type !== 'separator'; }, k);
+                var fromIndex = Math.max(-1, this._activeIndex - 1);
+                var i = algo.findLastIndex(this._items, isSelectable, fromIndex, true);
                 this._setActiveIndex(i);
             };
             /**
@@ -7508,12 +9695,9 @@ var phosphor;
              */
             Menu.prototype.activateMnemonicItem = function (key) {
                 key = key.toUpperCase();
-                var i = firstWrap(this._items, function (it) {
-                    if (it.type !== 'separator' && it.enabled) {
-                        return it.mnemonic.toUpperCase() === key;
-                    }
-                    return false;
-                }, this._activeIndex + 1);
+                var i = algo.findIndex(this._items, function (it) {
+                    return isKeyable(it) && it.mnemonic.toUpperCase() === key;
+                }, this._activeIndex + 1, true);
                 this._setActiveIndex(i);
             };
             /**
@@ -7572,9 +9756,13 @@ var phosphor;
             Menu.prototype.popup = function (x, y, forceX, forceY) {
                 if (forceX === void 0) { forceX = false; }
                 if (forceY === void 0) { forceY = false; }
-                if (this.isAttached) {
+                var node = this._node;
+                if (node.parentNode) {
                     return;
                 }
+                node.addEventListener('mouseup', this);
+                node.addEventListener('mouseleave', this);
+                node.addEventListener('contextmenu', this);
                 document.addEventListener('keydown', this, true);
                 document.addEventListener('keypress', this, true);
                 document.addEventListener('mousedown', this, true);
@@ -7597,77 +9785,118 @@ var phosphor;
             Menu.prototype.open = function (x, y, forceX, forceY) {
                 if (forceX === void 0) { forceX = false; }
                 if (forceY === void 0) { forceY = false; }
-                if (!this.isAttached)
-                    openRootMenu(this, x, y, forceX, forceY);
-            };
-            /**
-             * Handle the 'close' message for the menu.
-             *
-             * If the menu is currently attached, this will detach the menu
-             * and emit the `closed` signal. The super handler is not called.
-             */
-            Menu.prototype.onClose = function (msg) {
-                if (!this.isAttached) {
+                var node = this._node;
+                if (node.parentNode) {
                     return;
                 }
-                this.hide();
-                this._reset();
-                this._removeFromParentMenu();
-                this.closed.emit(this, void 0);
-                this.detach();
-            };
-            /**
-             * A method invoked when a menu item is inserted into the menu.
-             */
-            Menu.prototype.itemInserted = function (index, item) {
-                if (this._activeIndex !== -1) {
-                    this._reset();
-                }
-                var node = createItemNode(item);
-                var next = this._nodes[index];
-                this.node.insertBefore(node, next);
-                this._nodes.splice(index, 0, node);
-                node.addEventListener('mouseenter', this);
-                item.changed.connect(this._mi_changed, this);
-            };
-            /**
-             * A method invoked when a menu item is removed from the menu.
-             */
-            Menu.prototype.itemRemoved = function (index, item) {
-                if (this._activeIndex !== -1) {
-                    this._reset();
-                }
-                var node = this._nodes.splice(index, 1)[0];
-                this.node.removeChild(node);
-                node.removeEventListener('mouseenter', this);
-                item.changed.disconnect(this._mi_changed, this);
-            };
-            /**
-             * Create the DOM node for the panel.
-             */
-            Menu.prototype.createNode = function () {
-                return document.createElement('ul');
-            };
-            /**
-             * A method invoked on an 'after-attach' message.
-             */
-            Menu.prototype.onAfterAttach = function (msg) {
-                var node = this.node;
                 node.addEventListener('mouseup', this);
                 node.addEventListener('mouseleave', this);
                 node.addEventListener('contextmenu', this);
+                openRootMenu(this, x, y, forceX, forceY);
             };
             /**
-             * A method invoked on an 'after-detach' message.
+             * Close the menu and remove it's node from the DOM.
              */
-            Menu.prototype.onAfterDetach = function (msg) {
-                var node = this.node;
+            Menu.prototype.close = function () {
+                var node = this._node;
+                var pnode = node.parentNode;
+                if (pnode)
+                    pnode.removeChild(node);
                 node.removeEventListener('mouseup', this);
                 node.removeEventListener('mouseleave', this);
                 node.removeEventListener('contextmenu', this);
-                document.removeEventListener('mousedown', this, true);
                 document.removeEventListener('keydown', this, true);
                 document.removeEventListener('keypress', this, true);
+                document.removeEventListener('mousedown', this, true);
+                this._reset();
+                this._removeFromParent();
+                this.closed.emit(this, void 0);
+            };
+            /**
+             * Create the DOM node for the panel.
+             *
+             * This can be reimplemented to create a custom menu node.
+             */
+            Menu.prototype.createNode = function () {
+                var node = document.createElement('div');
+                var content = document.createElement('content');
+                content.className = CONTENT_CLASS;
+                node.appendChild(content);
+                return node;
+            };
+            /**
+             * Create a DOM node for the given MenuItem.
+             *
+             * This can be reimplemented to create custom menu item nodes.
+             */
+            Menu.prototype.createItemNode = function (item) {
+                var node = document.createElement('li');
+                var icon = document.createElement('span');
+                var text = document.createElement('span');
+                var shortcut = document.createElement('span');
+                var submenu = document.createElement('span');
+                icon.className = ICON_CLASS;
+                text.className = TEXT_CLASS;
+                shortcut.className = SHORTCUT_CLASS;
+                submenu.className = SUBMENU_ICON_CLASS;
+                node.appendChild(icon);
+                node.appendChild(text);
+                node.appendChild(shortcut);
+                node.appendChild(submenu);
+                this.initItemNode(item, node);
+                return node;
+            };
+            /**
+             * Initialize the item node for the given menu item.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createItemNode` method. It should initialize the node using the
+             * given menu item. It will be called any time the item changes.
+             */
+            Menu.prototype.initItemNode = function (item, node) {
+                var parts = [MENU_ITEM_CLASS];
+                if (item.className) {
+                    parts.push(item.className);
+                }
+                if (item.type === 'check') {
+                    parts.push(CHECK_TYPE_CLASS);
+                }
+                else if (item.type === 'separator') {
+                    parts.push(SEPARATOR_TYPE_CLASS);
+                }
+                if (item.checked) {
+                    parts.push(CHECKED_CLASS);
+                }
+                if (!item.enabled) {
+                    parts.push(DISABLED_CLASS);
+                }
+                if (item.submenu) {
+                    parts.push(HAS_SUBMENU_CLASS);
+                }
+                node.className = parts.join(' ');
+                node.children[1].textContent = item.text;
+                node.children[2].textContent = item.shortcut;
+            };
+            /**
+             * A method invoked when a menu item is inserted into the menu.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createNode` method. It should insert the item node into the menu
+             * at the specified location.
+             */
+            Menu.prototype.insertItemNode = function (index, node) {
+                var content = this.node.firstChild;
+                content.insertBefore(node, content.childNodes[index]);
+            };
+            /**
+             * A method invoked when a menu item is removed from the menu.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createNode` method. It should remove the item node from the menu.
+             */
+            Menu.prototype.removeItemNode = function (index, node) {
+                var content = this.node.firstChild;
+                content.removeChild(node);
             };
             /**
              * Handle the DOM events for the menu.
@@ -7675,27 +9904,25 @@ var phosphor;
             Menu.prototype.handleEvent = function (event) {
                 switch (event.type) {
                     case 'mouseenter':
-                        this.domEvent_mouseenter(event);
+                        this._evtMouseEnter(event);
                         break;
                     case 'mouseleave':
-                        this.domEvent_mouseleave(event);
+                        this._evtMouseLeave(event);
                         break;
                     case 'mousedown':
-                        this.domEvent_mousedown(event);
+                        this._evtMouseDown(event);
                         break;
                     case 'mouseup':
-                        this.domEvent_mouseup(event);
+                        this._evtMouseUp(event);
                         break;
                     case 'contextmenu':
-                        this.domEvent_contextmenu(event);
+                        this._evtContextMenu(event);
                         break;
                     case 'keydown':
-                        this.domEvent_keydown(event);
+                        this._evtKeyDown(event);
                         break;
                     case 'keypress':
-                        this.domEvent_keypress(event);
-                        break;
-                    default:
+                        this._evtKeyPress(event);
                         break;
                 }
             };
@@ -7704,22 +9931,32 @@ var phosphor;
              *
              * This event listener is attached to the child item nodes.
              */
-            Menu.prototype.domEvent_mouseenter = function (event) {
+            Menu.prototype._evtMouseEnter = function (event) {
+                // Ensure the ancestor chain is properly highlighted.
                 this._syncAncestors();
+                // Schedule a close for the open child menu, if any.
                 this._closeChildMenu();
+                // Cancel the previous open request, if any.
                 this._cancelPendingOpen();
+                // Find the item index corresponding to the node.
                 var node = event.currentTarget;
                 var index = this._nodes.indexOf(node);
+                // Clear the active item if the node is not tracked.
                 if (index === -1) {
                     this._setActiveIndex(-1);
                     return;
                 }
+                // Clear the active item if the target item is a separator.
                 var item = this._items[index];
                 if (item.type === 'separator') {
                     this._setActiveIndex(-1);
                     return;
                 }
+                // Otherwise, activate the new item.
                 this._setActiveIndex(index);
+                // If the item has a submenu, it should be opened. If the item
+                // is already open, the close request from above is cancelled.
+                // Otherwise, the new item is scheduled to be opened.
                 if (item.submenu && item.enabled) {
                     if (item === this._childItem) {
                         this._cancelPendingClose();
@@ -7732,14 +9969,12 @@ var phosphor;
             /**
              * Handle the 'mouseleave' event for the menu.
              *
-             * The event listener is only attached to the menu node.
+             * This event listener is only attached to the menu node.
              */
-            Menu.prototype.domEvent_mouseleave = function (event) {
+            Menu.prototype._evtMouseLeave = function (event) {
                 this._cancelPendingOpen();
-                var x = event.clientX;
-                var y = event.clientY;
                 var child = this._childMenu;
-                if (!child || !hitTest(child.node, x, y)) {
+                if (!child || !hitTest(child.node, event.clientX, event.clientY)) {
                     this._setActiveIndex(-1);
                     this._closeChildMenu();
                 }
@@ -7749,29 +9984,35 @@ var phosphor;
              *
              * This event listener is attached to the menu node.
              */
-            Menu.prototype.domEvent_mouseup = function (event) {
+            Menu.prototype._evtMouseUp = function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                if (event.button === 0) {
+                if (event.button !== 0) {
+                    return;
+                }
+                var x = event.clientX;
+                var y = event.clientY;
+                var i = algo.findIndex(this._nodes, function (node) { return hitTest(node, x, y); });
+                if (i === this._activeIndex) {
                     this.triggerActiveItem();
                 }
             };
             /**
              * Handle the 'contextmenu' event for the menu.
              *
-             * This event listener is attached to the menu node.
+             * This event listener is attached to the menu node and disables
+             * the default browser context menu.
              */
-            Menu.prototype.domEvent_contextmenu = function (event) {
+            Menu.prototype._evtContextMenu = function (event) {
                 event.preventDefault();
                 event.stopPropagation();
             };
             /**
              * Handle the 'mousedown' event for the menu.
              *
-             * This event listener is attached to the document for the root
-             * menu only when it is opened as a popup menu.
+             * This event listener is attached to the document for a popup menu.
              */
-            Menu.prototype.domEvent_mousedown = function (event) {
+            Menu.prototype._evtMouseDown = function (event) {
                 var menu = this;
                 var hit = false;
                 var x = event.clientX;
@@ -7786,10 +10027,9 @@ var phosphor;
             /**
              * Handle the key down event for the menu.
              *
-             * This event listener is attached to the document for the root
-             * menu only when it is opened as a popup menu.
+             * This event listener is attached to the document for a popup menu.
              */
-            Menu.prototype.domEvent_keydown = function (event) {
+            Menu.prototype._evtKeyDown = function (event) {
                 event.stopPropagation();
                 var leaf = Menu.leafMenu(this);
                 switch (event.keyCode) {
@@ -7818,17 +10058,14 @@ var phosphor;
                         event.preventDefault();
                         leaf.activateNextItem();
                         break;
-                    default:
-                        break;
                 }
             };
             /**
              * Handle the 'keypress' event for the menu.
              *
-             * This event listener is attached to the document for the root
-             * menu only when it is opened as a popup menu.
+             * This event listener is attached to the document for a popup menu.
              */
-            Menu.prototype.domEvent_keypress = function (event) {
+            Menu.prototype._evtKeyPress = function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var str = String.fromCharCode(event.charCode);
@@ -7873,15 +10110,10 @@ var phosphor;
              * This ensures that the active item is the child menu item.
              */
             Menu.prototype._syncChildItem = function () {
-                var menu = this._childMenu;
-                if (!menu) {
-                    return;
-                }
                 var index = this._items.indexOf(this._childItem);
-                if (index === -1) {
-                    return;
+                if (index !== -1) {
+                    this._setActiveIndex(index);
                 }
-                this._setActiveIndex(index);
             };
             /**
              * Open the menu item's submenu using the node for location.
@@ -7904,7 +10136,7 @@ var phosphor;
                         _this._childItem = item;
                         _this._childMenu = menu;
                         menu._parentMenu = _this;
-                        openSubmenu(menu, node);
+                        menu._openAsSubmenu(node);
                     }, OPEN_DELAY);
                 }
                 else {
@@ -7912,8 +10144,18 @@ var phosphor;
                     this._childItem = item;
                     this._childMenu = menu;
                     menu._parentMenu = this;
-                    openSubmenu(menu, node);
+                    menu._openAsSubmenu(node);
                 }
+            };
+            /**
+             * Open the menu as a child menu.
+             */
+            Menu.prototype._openAsSubmenu = function (item) {
+                var node = this._node;
+                node.addEventListener('mouseup', this);
+                node.addEventListener('mouseleave', this);
+                node.addEventListener('contextmenu', this);
+                openSubmenu(this, item);
             };
             /**
              * Close the currently open child menu using a delayed task.
@@ -7952,7 +10194,7 @@ var phosphor;
             /**
              * Remove the menu from its parent menu.
              */
-            Menu.prototype._removeFromParentMenu = function () {
+            Menu.prototype._removeFromParent = function () {
                 var parent = this._parentMenu;
                 if (!parent) {
                     return;
@@ -7985,178 +10227,106 @@ var phosphor;
              * Handle the `changed` signal from a menu item.
              */
             Menu.prototype._mi_changed = function (sender) {
-                var items = this._items;
-                var nodes = this._nodes;
-                for (var i = 0, n = items.length; i < n; ++i) {
-                    if (items[i] !== sender) {
-                        continue;
-                    }
-                    if (i === this._activeIndex) {
-                        this._reset();
-                    }
-                    initItemNode(sender, nodes[i]);
+                var i = this._items.indexOf(sender);
+                if (i === -1) {
+                    return;
                 }
+                if (i === this._activeIndex) {
+                    this._reset();
+                }
+                this.initItemNode(sender, this._nodes[i]);
             };
             return Menu;
-        })(panels.Panel);
-        panels.Menu = Menu;
+        })();
+        widgets.Menu = Menu;
         /**
-         * Compute the offset of the first menu item.
+         * Test whether the menu item is selectable.
          *
-         * This returns the distance from the top of the menu to the top
-         * of the first item in the menu.
+         * Returns true if the item is not a separator.
          */
-        function firstItemOffset(node) {
-            var item = node.firstChild;
-            if (!item) {
-                return 0;
-            }
-            var menuRect = node.getBoundingClientRect();
-            var itemRect = item.getBoundingClientRect();
-            return itemRect.top - menuRect.top;
+        function isSelectable(item) {
+            return item && item.type !== 'separator';
         }
         /**
-         * Compute the offset of the last menu item.
+         * Test whether the menu item is keyable for a mnemonic.
          *
-         * This returns the distance from the bottom of the menu to the
-         * bottom of the last item in the menu.
+         * Returns true if the item is selectable and enabled.
          */
-        function lastItemOffset(node) {
-            var item = node.lastChild;
-            if (!item) {
-                return 0;
+        function isKeyable(item) {
+            return isSelectable(item) && item.enabled;
+        }
+        /**
+         * Mount the menu as hidden and compute its optimal size.
+         */
+        function measureMenu(menu, vpRect, minY) {
+            var node = menu.node;
+            var style = node.style;
+            style.top = '';
+            style.left = '';
+            style.width = '';
+            style.height = '';
+            style.visibility = 'hidden';
+            document.body.appendChild(menu.node);
+            var rect = node.getBoundingClientRect();
+            var width = Math.ceil(rect.width);
+            var height = Math.ceil(rect.height);
+            var maxHeight = vpRect.height - minY;
+            if (height > maxHeight) {
+                height = maxHeight;
+                width += 17; // adjust for scrollbar
             }
-            var menuRect = node.getBoundingClientRect();
-            var itemRect = item.getBoundingClientRect();
-            return menuRect.bottom - itemRect.bottom;
+            return new Size(width, height);
+        }
+        /**
+         * Show the menu with the specified geometry.
+         */
+        function showMenu(menu, x, y, w, h) {
+            var style = menu.node.style;
+            style.top = Math.max(0, y) + 'px';
+            style.left = Math.max(0, x) + 'px';
+            style.width = w + 'px';
+            style.height = h + 'px';
+            style.visibility = '';
         }
         /**
          * Open the menu as a root menu at the target location.
          */
         function openRootMenu(menu, x, y, forceX, forceY) {
-            // mount far offscreen for measurement
-            var node = menu.node;
-            var style = node.style;
-            style.visibility = 'hidden';
-            menu.attach(document.body);
-            menu.show();
-            // compute the adjusted coordinates
-            var elem = document.documentElement;
-            var maxX = elem.clientWidth;
-            var maxY = elem.clientHeight;
-            var rect = node.getBoundingClientRect();
-            if (!forceX && x + rect.width > maxX) {
-                x = maxX - rect.width;
+            var vpRect = clientViewportRect();
+            var size = measureMenu(menu, vpRect, forceY ? y : 0);
+            if (!forceX && (x + size.width > vpRect.right)) {
+                x = vpRect.right - size.width;
             }
-            if (!forceY && y + rect.height > maxY) {
-                if (y > maxY) {
-                    y = maxY - rect.height;
+            if (!forceY && (y + size.height > vpRect.bottom)) {
+                if (y > vpRect.bottom) {
+                    y = vpRect.bottom - size.height;
                 }
                 else {
-                    y = y - rect.height;
+                    y = y - size.height;
                 }
             }
-            // move to adjusted position
-            style.top = Math.max(0, y) + 'px';
-            style.left = Math.max(0, x) + 'px';
-            style.visibility = '';
+            showMenu(menu, x, y, size.width, size.height);
         }
         /**
          * Open a the menu as a submenu using the item node for positioning.
          */
         function openSubmenu(menu, item) {
-            // mount far offscreen for measurement
-            var node = menu.node;
-            var style = node.style;
-            style.visibility = 'hidden';
-            menu.attach(document.body);
-            menu.show();
-            // compute the adjusted coordinates
-            var elem = document.documentElement;
-            var maxX = elem.clientWidth;
-            var maxY = elem.clientHeight;
-            var menuRect = node.getBoundingClientRect();
+            var vpRect = clientViewportRect();
+            var size = measureMenu(menu, vpRect, 0);
+            var box = createBoxSizing(menu.node);
             var itemRect = item.getBoundingClientRect();
             var x = itemRect.right - SUBMENU_OVERLAP;
-            var y = itemRect.top - firstItemOffset(node);
-            if (x + menuRect.width > maxX) {
-                x = itemRect.left + SUBMENU_OVERLAP - menuRect.width;
+            var y = itemRect.top - box.borderTop - box.paddingTop;
+            if (x + size.width > vpRect.right) {
+                x = itemRect.left + SUBMENU_OVERLAP - size.width;
             }
-            if (y + menuRect.height > maxY) {
-                y = itemRect.bottom + lastItemOffset(node) - menuRect.height;
+            if (y + size.height > vpRect.bottom) {
+                y = itemRect.bottom + box.borderBottom + box.paddingBottom - size.height;
             }
-            // move to adjusted position
-            style.top = Math.max(0, y) + 'px';
-            style.left = Math.max(0, x) + 'px';
-            style.visibility = '';
+            showMenu(menu, x, y, size.width, size.height);
         }
-        /**
-         * Create an initialize the node for a menu item.
-         */
-        function createItemNode(item) {
-            var node = document.createElement('li');
-            var icon = document.createElement('span');
-            var text = document.createElement('span');
-            var shortcut = document.createElement('span');
-            var submenu = document.createElement('span');
-            icon.className = ICON_CLASS;
-            text.className = TEXT_CLASS;
-            shortcut.className = SHORTCUT_CLASS;
-            submenu.className = SUBMENU_ICON_CLASS;
-            node.appendChild(icon);
-            node.appendChild(text);
-            node.appendChild(shortcut);
-            node.appendChild(submenu);
-            initItemNode(item, node);
-            return node;
-        }
-        /**
-         * Initialize the node for a menu item.
-         *
-         * This can be called again to update the node state.
-         */
-        function initItemNode(item, node) {
-            var classParts = [MENU_ITEM_CLASS];
-            if (item.className) {
-                classParts.push(item.className);
-            }
-            if (item.type === 'check') {
-                classParts.push(CHECK_TYPE_CLASS);
-            }
-            else if (item.type === 'separator') {
-                classParts.push(SEPARATOR_TYPE_CLASS);
-            }
-            if (item.checked) {
-                classParts.push(CHECKED_CLASS);
-            }
-            if (!item.enabled) {
-                classParts.push(DISABLED_CLASS);
-            }
-            if (item.submenu) {
-                classParts.push(HAS_SUBMENU_CLASS);
-            }
-            node.className = classParts.join(' ');
-            node.children[1].textContent = item.text;
-            node.children[2].textContent = item.shortcut;
-        }
-        function firstWrap(items, cb, s) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var j = (s + i) % n;
-                if (cb(items[j]))
-                    return j;
-            }
-            return -1;
-        }
-        function lastWrap(items, cb, s) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var j = (((s - i) % n) + n) % n;
-                if (cb(items[j]))
-                    return j;
-            }
-            return -1;
-        }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -8173,13 +10343,19 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
-        var hitTest = phosphor.domutil.hitTest;
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
+        var Size = phosphor.utility.Size;
+        var hitTest = phosphor.utility.hitTest;
         /**
-         * The class name added to a menu bar panel.
+         * The class name added to a menu bar widget.
          */
         var MENU_BAR_CLASS = 'p-MenuBar';
+        /**
+         * The class name added to a menu bar content node.
+         */
+        var CONTENT_CLASS = 'p-MenuBar-content';
         /**
          * The class name assigned to an open menu bar menu.
          */
@@ -8213,7 +10389,7 @@ var phosphor;
          */
         var DISABLED_CLASS = 'p-mod-disabled';
         /**
-         * A panel which displays menu items as a menu bar.
+         * A leaf widget which displays menu items as a menu bar.
          */
         var MenuBar = (function (_super) {
             __extends(MenuBar, _super);
@@ -8228,7 +10404,7 @@ var phosphor;
                 this._nodes = [];
                 this._state = 0 /* Inactive */;
                 this._activeIndex = -1;
-                this.node.classList.add(MENU_BAR_CLASS);
+                this.addClass(MENU_BAR_CLASS);
                 this.verticalSizePolicy = 0 /* Fixed */;
                 if (items)
                     items.forEach(function (it) { return _this.addItem(it); });
@@ -8238,7 +10414,8 @@ var phosphor;
              */
             MenuBar.prototype.dispose = function () {
                 this._closeChildMenu();
-                this.clearItems();
+                this._items = null;
+                this._nodes = null;
                 _super.prototype.dispose.call(this);
             };
             Object.defineProperty(MenuBar.prototype, "childMenu", {
@@ -8255,7 +10432,7 @@ var phosphor;
             });
             Object.defineProperty(MenuBar.prototype, "activeIndex", {
                 /**
-                 * Get the index of the active (highlighted) item.
+                 * Get the index of the active (highlighted) menu item.
                  */
                 get: function () {
                     return this._activeIndex;
@@ -8274,13 +10451,13 @@ var phosphor;
             });
             Object.defineProperty(MenuBar.prototype, "activeItem", {
                 /**
-                 * Get the active (highlighted) item.
+                 * Get the active (highlighted) menu item.
                  */
                 get: function () {
                     return this._items[this._activeIndex];
                 },
                 /**
-                 * Set the active (highlighted) item.
+                 * Set the active (highlighted) menu item.
                  *
                  * Only an enabled non-separator item can be set as the active item.
                  */
@@ -8309,7 +10486,7 @@ var phosphor;
             /**
              * Get the index of the given menu item.
              */
-            MenuBar.prototype.itemIndex = function (item) {
+            MenuBar.prototype.indexOf = function (item) {
                 return this._items.indexOf(item);
             };
             /**
@@ -8318,7 +10495,7 @@ var phosphor;
              * Returns the new index of the item.
              */
             MenuBar.prototype.addItem = function (item) {
-                return this.insertItem(this._items.length, item);
+                return this.insertItem(this.count, item);
             };
             /**
              * Insert a menu item into the menu bar at the given index.
@@ -8326,36 +10503,36 @@ var phosphor;
              * Returns the new index of the item.
              */
             MenuBar.prototype.insertItem = function (index, item) {
-                var items = this._items;
-                index = Math.max(0, Math.min(index | 0, items.length));
-                if (index === items.length) {
-                    items.push(item);
+                this.removeItem(item);
+                if (this._activeIndex !== -1) {
+                    this._setState(0 /* Inactive */);
+                    this._setActiveIndex(-1);
                 }
-                else {
-                    items.splice(index, 0, item);
-                }
-                this.itemInserted(index, item);
+                var node = this.createItemNode(item);
+                index = Math.max(0, Math.min(index | 0, this.count));
+                algo.insert(this._items, index, item);
+                algo.insert(this._nodes, index, node);
+                item.changed.connect(this._mi_changed, this);
+                this.insertItemNode(index, node);
                 return index;
             };
             /**
-             * Remove the menu item at the given index from the menu bar.
-             *
-             * Returns the removed item.
+             * Remove and return the menu item at the given index.
              */
-            MenuBar.prototype.takeItem = function (index) {
+            MenuBar.prototype.removeAt = function (index) {
+                if (this._activeIndex !== -1) {
+                    this._setState(0 /* Inactive */);
+                    this._setActiveIndex(-1);
+                }
                 index = index | 0;
-                var items = this._items;
-                if (index < 0 || index >= items.length) {
-                    return void 0;
+                var item = algo.removeAt(this._items, index);
+                var node = algo.removeAt(this._nodes, index);
+                if (item) {
+                    item.changed.disconnect(this._mi_changed, this);
                 }
-                var item;
-                if (index === items.length - 1) {
-                    item = items.pop();
+                if (node) {
+                    this.removeItemNode(index, node);
                 }
-                else {
-                    item = items.splice(index, 1)[0];
-                }
-                this.itemRemoved(index, item);
                 return item;
             };
             /**
@@ -8365,21 +10542,16 @@ var phosphor;
              */
             MenuBar.prototype.removeItem = function (item) {
                 var index = this._items.indexOf(item);
-                if (index === -1) {
-                    return -1;
-                }
-                this.takeItem(index);
+                if (index !== -1)
+                    this.removeAt(index);
                 return index;
             };
             /**
              * Remove all menu items from the menu bar.
              */
             MenuBar.prototype.clearItems = function () {
-                var items = this._items;
-                while (items.length) {
-                    var item = items.pop();
-                    var index = items.length;
-                    this.itemRemoved(index, item);
+                while (this.count) {
+                    this.removeAt(this.count - 1);
                 }
             };
             /**
@@ -8388,8 +10560,8 @@ var phosphor;
              * This is equivalent to pressing the right arrow key.
              */
             MenuBar.prototype.activateNextItem = function () {
-                var from = this._activeIndex + 1;
-                var i = firstWrap(this._items, isSelectable, from);
+                var fromIndex = this._activeIndex + 1;
+                var i = algo.findIndex(this._items, isSelectable, fromIndex, true);
                 this._setActiveIndex(i);
                 var menu = this._childMenu;
                 if (menu)
@@ -8401,8 +10573,8 @@ var phosphor;
              * This is equivalent to pressing the left arrow key.
              */
             MenuBar.prototype.activatePreviousItem = function () {
-                var from = this._activeIndex - 1;
-                var i = lastWrap(this._items, isSelectable, from);
+                var fromIndex = Math.max(-1, this._activeIndex - 1);
+                var i = algo.findLastIndex(this._items, isSelectable, fromIndex, true);
                 this._setActiveIndex(i);
                 var menu = this._childMenu;
                 if (menu)
@@ -8415,9 +10587,9 @@ var phosphor;
              */
             MenuBar.prototype.activateMnemonicItem = function (key) {
                 key = key.toUpperCase();
-                var i = firstWrap(this._items, function (it) {
+                var i = algo.findIndex(this._items, function (it) {
                     return isSelectable(it) && it.mnemonic.toUpperCase() === key;
-                }, this._activeIndex + 1);
+                }, this._activeIndex + 1, true);
                 this._setActiveIndex(i);
                 var menu = this._childMenu;
                 if (menu)
@@ -8453,44 +10625,78 @@ var phosphor;
              * Compute the minimum size hint for the menu bar.
              */
             MenuBar.prototype.minSizeHint = function () {
-                var style = window.getComputedStyle(this.node);
-                var height = parseInt(style.minHeight, 10) || 0;
-                return new panels.Size(0, height);
+                return new Size(0, this.boxSizing.minHeight);
             };
             /**
-             * A method called when a menu item is inserted into the menu bar.
-             */
-            MenuBar.prototype.itemInserted = function (index, item) {
-                if (this._activeIndex !== -1) {
-                    this._setState(0 /* Inactive */);
-                    this._setActiveIndex(-1);
-                }
-                var node = createItemNode(item);
-                var next = this._nodes[index];
-                this.node.insertBefore(node, next);
-                this._nodes.splice(index, 0, node);
-                item.changed.connect(this._mi_changed, this);
-            };
-            /**
-             * A method called when a menu item is removed from the menu bar.
-             */
-            MenuBar.prototype.itemRemoved = function (index, item) {
-                if (this._activeIndex !== -1) {
-                    this._setState(0 /* Inactive */);
-                    this._setActiveIndex(-1);
-                }
-                var node = this._nodes.splice(index, 1)[0];
-                this.node.removeChild(node);
-                item.changed.disconnect(this._mi_changed, this);
-            };
-            /**
-             * Create the DOM node for the panel.
+             * Create the DOM node for the widget.
              */
             MenuBar.prototype.createNode = function () {
-                return document.createElement('ul');
+                var node = document.createElement('div');
+                var content = document.createElement('ul');
+                content.className = CONTENT_CLASS;
+                node.appendChild(content);
+                return node;
             };
             /**
-             * A method invoked on the 'after-attach' event.
+             * Create a DOM node for the given MenuItem.
+             *
+             * This can be reimplemented to create custom menu item nodes.
+             */
+            MenuBar.prototype.createItemNode = function (item) {
+                var node = document.createElement('li');
+                var icon = document.createElement('span');
+                var text = document.createElement('span');
+                icon.className = ICON_CLASS;
+                text.className = TEXT_CLASS;
+                node.appendChild(icon);
+                node.appendChild(text);
+                this.initItemNode(item, node);
+                return node;
+            };
+            /**
+             * Initialize the item node for the given menu item.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createItemNode` method. It should initialize the node using the
+             * given menu item. It will be called any time the item changes.
+             */
+            MenuBar.prototype.initItemNode = function (item, node) {
+                var parts = [MENU_ITEM_CLASS];
+                if (item.className) {
+                    parts.push(item.className);
+                }
+                if (item.type === 'separator') {
+                    parts.push(SEPARATOR_TYPE_CLASS);
+                }
+                if (!item.enabled) {
+                    parts.push(DISABLED_CLASS);
+                }
+                node.className = parts.join(' ');
+                node.children[1].textContent = item.text;
+            };
+            /**
+             * A method invoked when a menu item is inserted into the menu.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createNode` method. It should insert the item node into the menu
+             * at the specified location.
+             */
+            MenuBar.prototype.insertItemNode = function (index, node) {
+                var content = this.node.firstChild;
+                content.insertBefore(node, content.childNodes[index]);
+            };
+            /**
+             * A method invoked when a menu item is removed from the menu.
+             *
+             * This method should be reimplemented if a subclass reimplements the
+             * `createNode` method. It should remove the item node from the menu.
+             */
+            MenuBar.prototype.removeItemNode = function (index, node) {
+                var content = this.node.firstChild;
+                content.removeChild(node);
+            };
+            /**
+             * A method invoked on the 'after-attach' message.
              */
             MenuBar.prototype.onAfterAttach = function (msg) {
                 this.node.addEventListener('mousedown', this);
@@ -8498,7 +10704,7 @@ var phosphor;
                 this.node.addEventListener('mouseleave', this);
             };
             /**
-             * A method invoked on the 'after-detach' event.
+             * A method invoked on the 'after-detach' message.
              */
             MenuBar.prototype.onAfterDetach = function (msg) {
                 this.node.removeEventListener('mousedown', this);
@@ -8511,35 +10717,33 @@ var phosphor;
             MenuBar.prototype.handleEvent = function (event) {
                 switch (event.type) {
                     case 'mousedown':
-                        this.domEvent_mousedown(event);
+                        this._evtMouseDown(event);
                         break;
                     case 'mousemove':
-                        this.domEvent_mousemove(event);
+                        this._evtMouseMove(event);
                         break;
                     case 'mouseleave':
-                        this.domEvent_mouseleave(event);
+                        this._evtMouseLeave(event);
                         break;
                     case 'keydown':
-                        this.domEvent_keydown(event);
+                        this._evtKeyDown(event);
                         break;
                     case 'keypress':
-                        this.domEvent_keypress(event);
-                        break;
-                    default:
+                        this._evtKeyPress(event);
                         break;
                 }
             };
             /**
              * Handle the 'mousedown' event for the menu bar.
              */
-            MenuBar.prototype.domEvent_mousedown = function (event) {
+            MenuBar.prototype._evtMouseDown = function (event) {
                 var x = event.clientX;
                 var y = event.clientY;
                 if (this._state === 0 /* Inactive */) {
                     if (event.button !== 0) {
                         return;
                     }
-                    var index = firstWrap(this._nodes, function (n) { return hitTest(n, x, y); }, 0);
+                    var index = algo.findIndex(this._nodes, function (n) { return hitTest(n, x, y); });
                     if (!isSelectable(this._items[index])) {
                         return;
                     }
@@ -8551,7 +10755,7 @@ var phosphor;
                         return;
                     }
                     this._setState(0 /* Inactive */);
-                    var index = firstWrap(this._nodes, function (n) { return hitTest(n, x, y); }, 0);
+                    var index = algo.findIndex(this._nodes, function (n) { return hitTest(n, x, y); });
                     var ok = isSelectable(this._items[index]);
                     this._setActiveIndex(ok ? index : -1);
                 }
@@ -8559,10 +10763,10 @@ var phosphor;
             /**
              * Handle the 'mousemove' event for the menu bar.
              */
-            MenuBar.prototype.domEvent_mousemove = function (event) {
+            MenuBar.prototype._evtMouseMove = function (event) {
                 var x = event.clientX;
                 var y = event.clientY;
-                var index = firstWrap(this._nodes, function (n) { return hitTest(n, x, y); }, 0);
+                var index = algo.findIndex(this._nodes, function (n) { return hitTest(n, x, y); });
                 if (index === this._activeIndex) {
                     return;
                 }
@@ -8575,7 +10779,7 @@ var phosphor;
             /**
              * Handle the 'mouseleave' event for the menu bar.
              */
-            MenuBar.prototype.domEvent_mouseleave = function (event) {
+            MenuBar.prototype._evtMouseLeave = function (event) {
                 if (this._state === 0 /* Inactive */) {
                     this._setActiveIndex(-1);
                 }
@@ -8583,10 +10787,10 @@ var phosphor;
             /**
              * Handle the 'keydown' event for the menu bar.
              */
-            MenuBar.prototype.domEvent_keydown = function (event) {
+            MenuBar.prototype._evtKeyDown = function (event) {
                 event.stopPropagation();
                 var menu = this._childMenu;
-                var leaf = menu && panels.Menu.leafMenu(menu);
+                var leaf = menu && widgets.Menu.leafMenu(menu);
                 switch (event.keyCode) {
                     case 13:
                         event.preventDefault();
@@ -8628,19 +10832,17 @@ var phosphor;
                         if (leaf)
                             leaf.activateNextItem();
                         break;
-                    default:
-                        break;
                 }
             };
             /**
              * Handle the 'keypress' event for the menu bar.
              */
-            MenuBar.prototype.domEvent_keypress = function (event) {
+            MenuBar.prototype._evtKeyPress = function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var str = String.fromCharCode(event.charCode);
                 if (this._childMenu) {
-                    panels.Menu.leafMenu(this._childMenu).activateMnemonicItem(str);
+                    widgets.Menu.leafMenu(this._childMenu).activateMnemonicItem(str);
                 }
                 else {
                     this.activateMnemonicItem(str);
@@ -8753,22 +10955,19 @@ var phosphor;
              * Handle the `changed` signal from a menu item.
              */
             MenuBar.prototype._mi_changed = function (sender) {
-                var items = this._items;
-                var nodes = this._nodes;
-                for (var i = 0, n = items.length; i < n; ++i) {
-                    if (items[i] !== sender) {
-                        continue;
-                    }
-                    if (i === this._activeIndex) {
-                        this._setState(0 /* Inactive */);
-                        this._setActiveIndex(-1);
-                    }
-                    initItemNode(sender, nodes[i]);
+                var i = this._items.indexOf(sender);
+                if (i === -1) {
+                    return;
                 }
+                if (i === this._activeIndex) {
+                    this._setState(0 /* Inactive */);
+                    this._setActiveIndex(-1);
+                }
+                this.initItemNode(sender, this._nodes[i]);
             };
             return MenuBar;
-        })(panels.Panel);
-        panels.MenuBar = MenuBar;
+        })(widgets.Widget);
+        widgets.MenuBar = MenuBar;
         /**
          * An internal enum describing the current state of the menu bar.
          */
@@ -8798,336 +10997,8 @@ var phosphor;
             }
             return false;
         }
-        /**
-         * Create and initialize the node for a menu item.
-         */
-        function createItemNode(item) {
-            var node = document.createElement('li');
-            var icon = document.createElement('span');
-            var text = document.createElement('span');
-            icon.className = ICON_CLASS;
-            text.className = TEXT_CLASS;
-            node.appendChild(icon);
-            node.appendChild(text);
-            initItemNode(item, node);
-            return node;
-        }
-        /**
-         * Initialize the node for a menu item.
-         *
-         * This can be called again to update the node state.
-         */
-        function initItemNode(item, node) {
-            var classParts = [MENU_ITEM_CLASS];
-            if (item.className) {
-                classParts.push(item.className);
-            }
-            if (item.type === 'separator') {
-                classParts.push(SEPARATOR_TYPE_CLASS);
-            }
-            if (!item.enabled) {
-                classParts.push(DISABLED_CLASS);
-            }
-            node.className = classParts.join(' ');
-            node.children[1].textContent = item.text;
-        }
-        function firstWrap(items, cb, s) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var j = (s + i) % n;
-                if (cb(items[j]))
-                    return j;
-            }
-            return -1;
-        }
-        function lastWrap(items, cb, s) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var j = (((s - i) % n) + n) % n;
-                if (cb(items[j]))
-                    return j;
-            }
-            return -1;
-        }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // modulephosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * A layout in which positions a single child at time.
-         *
-         * This is useful for panels which hold a single content child.
-         */
-        var SingleLayout = (function (_super) {
-            __extends(SingleLayout, _super);
-            /**
-             * Construct a new single layout.
-             */
-            function SingleLayout(panel) {
-                _super.call(this);
-                this._dirty = true;
-                this._sizeHint = null;
-                this._minSize = null;
-                this._maxSize = null;
-                this._item = null;
-                if (panel)
-                    this.panel = panel;
-            }
-            /**
-             * Dispose of the resources held by the layout.
-             */
-            SingleLayout.prototype.dispose = function () {
-                this._item = null;
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(SingleLayout.prototype, "panel", {
-                /**
-                 * Get the panel managed by the layout.
-                 */
-                get: function () {
-                    var item = this._item;
-                    return item ? item.panel : null;
-                },
-                /**
-                 * Set the panel managed by the layout.
-                 */
-                set: function (panel) {
-                    var item = this._item;
-                    if (item && item.panel === panel) {
-                        return;
-                    }
-                    if (panel) {
-                        this._item = new panels.PanelItem(panel);
-                        this.ensureParent(panel);
-                    }
-                    else {
-                        this._item = null;
-                    }
-                    this.invalidate();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SingleLayout.prototype, "count", {
-                /**
-                 * Get the number of layout items in the layout.
-                 */
-                get: function () {
-                    return this._item ? 1 : 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get the layout item at the specified index.
-             */
-            SingleLayout.prototype.itemAt = function (index) {
-                var item = this._item;
-                if (item && index === 0) {
-                    return item;
-                }
-                return void 0;
-            };
-            /**
-             * Remove and return the layout item at the specified index.
-             */
-            SingleLayout.prototype.takeAt = function (index) {
-                var item = this._item;
-                if (item && index === 0) {
-                    this._item = null;
-                    this.invalidate();
-                    return item;
-                }
-                return void 0;
-            };
-            /**
-             * Invalidate the cached layout data and enqueue an update.
-             */
-            SingleLayout.prototype.invalidate = function () {
-                this._dirty = true;
-                _super.prototype.invalidate.call(this);
-            };
-            /**
-             * Compute the preferred size of the layout.
-             */
-            SingleLayout.prototype.sizeHint = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._sizeHint;
-            };
-            /**
-             * Compute the minimum size of the layout.
-             */
-            SingleLayout.prototype.minSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._minSize;
-            };
-            /**
-             * Compute the maximum size of the layout.
-             */
-            SingleLayout.prototype.maxSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._maxSize;
-            };
-            /**
-             * Update the geometry of the child layout items.
-             */
-            SingleLayout.prototype.layout = function () {
-                // Bail early when no work needs to be done.
-                var parent = this.parent;
-                var item = this._item;
-                if (!parent || !item) {
-                    return;
-                }
-                // Refresh the layout items if needed.
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                // Update the geometry of the visible item.
-                var boxD = parent.boxData;
-                var x = boxD.paddingLeft;
-                var y = boxD.paddingTop;
-                var w = parent.width - boxD.horizontalSum;
-                var h = parent.height - boxD.verticalSum;
-                item.setGeometry(x, y, w, h);
-            };
-            /**
-             * Initialize the layout items and internal sizes for the layout.
-             */
-            SingleLayout.prototype._setupGeometry = function () {
-                // Bail early when no work needs to be done.
-                if (!this._dirty) {
-                    return;
-                }
-                this._dirty = false;
-                // No parent means the layout is not yet attached.
-                var parent = this.parent;
-                if (!parent) {
-                    var zero = new panels.Size(0, 0);
-                    this._sizeHint = zero;
-                    this._minSize = zero;
-                    this._maxSize = zero;
-                    return;
-                }
-                // Compute the size bounds based on the panel item.
-                var hintW = 0;
-                var hintH = 0;
-                var minW = 0;
-                var minH = 0;
-                var maxW = Infinity;
-                var maxH = Infinity;
-                var item = this._item;
-                if (item) {
-                    item.invalidate();
-                    var itemHint = item.sizeHint();
-                    var itemMin = item.minSize();
-                    var itemMax = item.maxSize();
-                    hintW = Math.max(hintW, itemHint.width);
-                    hintH = Math.max(hintH, itemHint.height);
-                    minW = Math.max(minW, itemMin.width);
-                    minH = Math.max(minH, itemMin.height);
-                    maxW = Math.min(maxW, itemMax.width);
-                    maxH = Math.min(maxH, itemMax.height);
-                }
-                // Account for padding and border on the parent.
-                var boxD = parent.boxData;
-                var boxW = boxD.horizontalSum;
-                var boxH = boxD.verticalSum;
-                hintW += boxW;
-                hintH += boxH;
-                minW += boxW;
-                minH += boxH;
-                maxW += boxW;
-                maxH += boxH;
-                // Update the internal sizes.
-                this._sizeHint = new panels.Size(hintW, hintH);
-                this._minSize = new panels.Size(minW, minH);
-                this._maxSize = new panels.Size(maxW, maxH);
-            };
-            return SingleLayout;
-        })(panels.Layout);
-        panels.SingleLayout = SingleLayout;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * The class name added to SinglePanel instances.
-         */
-        var SINGLE_PANEL_CLASS = 'p-SinglePanel';
-        /**
-         * A panel which holds a single child.
-         *
-         * This panel delegates to a permanently installed single layout and
-         * can be used as a more convenient interface to a single layout.
-         */
-        var SinglePanel = (function (_super) {
-            __extends(SinglePanel, _super);
-            /**
-             * Construct a new single panel.
-             */
-            function SinglePanel(panel) {
-                _super.call(this);
-                this.node.classList.add(SINGLE_PANEL_CLASS);
-                this.layout = new panels.SingleLayout(panel);
-                this.setFlag(16 /* DisallowLayoutChange */);
-            }
-            Object.defineProperty(SinglePanel.prototype, "panel", {
-                /**
-                 * Get the managed child panel.
-                 */
-                get: function () {
-                    return this.layout.panel;
-                },
-                /**
-                 * Set the managed child panel.
-                 */
-                set: function (panel) {
-                    this.layout.panel = panel;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return SinglePanel;
-        })(panels.Panel);
-        panels.SinglePanel = SinglePanel;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -9138,1428 +11009,8 @@ var phosphor;
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * The class name assigned to a split handle.
-         */
-        var HANDLE_CLASS = 'p-SplitHandle';
-        /**
-         * The class name assigned to a split handle overlay.
-         */
-        var OVERLAY_CLASS = 'p-SplitHandle-overlay';
-        /**
-         * The class name added to horizontal split handles.
-         */
-        var HORIZONTAL_CLASS = 'p-mod-horizontal';
-        /**
-         * The class name added to vertical split handles.
-         */
-        var VERTICAL_CLASS = 'p-mod-vertical';
-        /**
-         * The class name added to hidden split handles.
-         */
-        var HIDDEN_CLASS = 'p-mod-hidden';
-        /**
-         * A class which manages a handle node for a split panel.
-         */
-        var SplitHandle = (function () {
-            /**
-             * Construct a new split handle.
-             */
-            function SplitHandle(orientation) {
-                this._hidden = false;
-                this._node = this.createNode();
-                this.orientation = orientation;
-            }
-            Object.defineProperty(SplitHandle.prototype, "hidden", {
-                /**
-                 * Get whether the handle is hidden.
-                 */
-                get: function () {
-                    return this._hidden;
-                },
-                /**
-                 * Set whether the handle is hidden.
-                 */
-                set: function (hidden) {
-                    if (hidden === this._hidden) {
-                        return;
-                    }
-                    this._hidden = hidden;
-                    if (hidden) {
-                        this._node.classList.add(HIDDEN_CLASS);
-                    }
-                    else {
-                        this._node.classList.remove(HIDDEN_CLASS);
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitHandle.prototype, "orientation", {
-                /**
-                 * Get the orientation of the handle.
-                 */
-                get: function () {
-                    return this._orientation;
-                },
-                /**
-                 * Set the orientation of the handle.
-                 */
-                set: function (value) {
-                    if (value === this._orientation) {
-                        return;
-                    }
-                    this._orientation = value;
-                    if (value === 0 /* Horizontal */) {
-                        this._node.classList.remove(VERTICAL_CLASS);
-                        this._node.classList.add(HORIZONTAL_CLASS);
-                    }
-                    else {
-                        this._node.classList.remove(HORIZONTAL_CLASS);
-                        this._node.classList.add(VERTICAL_CLASS);
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitHandle.prototype, "node", {
-                /**
-                 * Get the DOM node for the handle.
-                 */
-                get: function () {
-                    return this._node;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Create the DOM node for the handle.
-             */
-            SplitHandle.prototype.createNode = function () {
-                var node = document.createElement('div');
-                var overlay = document.createElement('div');
-                node.className = HANDLE_CLASS;
-                overlay.className = OVERLAY_CLASS;
-                node.appendChild(overlay);
-                return node;
-            };
-            return SplitHandle;
-        })();
-        panels.SplitHandle = SplitHandle;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // modulephosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        /**
-         * A layout which arranges its panels in resizable sections.
-         */
-        var SplitLayout = (function (_super) {
-            __extends(SplitLayout, _super);
-            /**
-             * Construct a new split layout.
-             */
-            function SplitLayout(orientation) {
-                _super.call(this);
-                this._dirty = true;
-                this._handleSize = 3;
-                this._fixedSpace = 0;
-                this._sizeHint = null;
-                this._minSize = null;
-                this._maxSize = null;
-                this._items = [];
-                this._sizers = [];
-                this._orientation = orientation;
-            }
-            /**
-             * Dispose of the resources held by the layout.
-             */
-            SplitLayout.prototype.dispose = function () {
-                this._items = null;
-                this._sizers = null;
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(SplitLayout.prototype, "orientation", {
-                /**
-                 * Get the orientation of the split layout.
-                 */
-                get: function () {
-                    return this._orientation;
-                },
-                /**
-                 * Set the orientation of the split layout.
-                 */
-                set: function (orient) {
-                    if (orient === this._orientation) {
-                        return;
-                    }
-                    this._orientation = orient;
-                    this.invalidate();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitLayout.prototype, "handleSize", {
-                /**
-                 * Get the size of the split handles.
-                 */
-                get: function () {
-                    return this._handleSize;
-                },
-                /**
-                 * Set the the size of the split handles.
-                 */
-                set: function (size) {
-                    size = Math.max(0, size | 0);
-                    if (size === this._handleSize) {
-                        return;
-                    }
-                    this._handleSize = size;
-                    this.invalidate();
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitLayout.prototype, "count", {
-                /**
-                 * Get the number of layout items in the layout.
-                 */
-                get: function () {
-                    return this._items.length;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get the normalized sizes of the items in the layout.
-             */
-            SplitLayout.prototype.sizes = function () {
-                return normalize(this._sizers.map(function (it) { return it.size; }));
-            };
-            /**
-             * Set the relative sizes for the split items.
-             *
-             * Extra values are ignored, too few will yield an undefined layout.
-             */
-            SplitLayout.prototype.setSizes = function (sizes) {
-                var parent = this.parent;
-                if (!parent) {
-                    return;
-                }
-                var totalSize;
-                var boxD = parent.boxData;
-                if (this._orientation === 0 /* Horizontal */) {
-                    totalSize = parent.width - boxD.horizontalSum - this._fixedSpace;
-                }
-                else {
-                    totalSize = parent.height - boxD.verticalSum - this._fixedSpace;
-                }
-                var sizers = this._sizers;
-                var normed = normalize(sizes);
-                var n = Math.min(sizers.length, normed.length);
-                for (var i = 0; i < n; ++i) {
-                    sizers[i].sizeHint = Math.round(normed[i] * totalSize);
-                }
-                if (parent.isVisible) {
-                    this.layout();
-                }
-            };
-            /**
-             * Get the splitter handle at the given index.
-             */
-            SplitLayout.prototype.handleAt = function (index) {
-                var item = this._items[index];
-                return item ? item.handle : void 0;
-            };
-            /**
-             * Get the layout item at the specified index.
-             */
-            SplitLayout.prototype.itemAt = function (index) {
-                return this._items[index];
-            };
-            /**
-             * Remove and return the layout item at the specified index.
-             */
-            SplitLayout.prototype.takeAt = function (index) {
-                index = index | 0;
-                if (index < 0 || index >= this._items.length) {
-                    return void 0;
-                }
-                var item = this._items.splice(index, 1)[0];
-                this._sizers.splice(index, 1);
-                var hNode = item.handle.node;
-                var pNode = hNode.parentNode;
-                if (pNode)
-                    pNode.removeChild(hNode);
-                this.invalidate();
-                return item;
-            };
-            /**
-             * Add a panel as the last item in the layout.
-             *
-             * If the panel already exists in the layout, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            SplitLayout.prototype.addPanel = function (panel) {
-                return this.insertPanel(this.count, panel);
-            };
-            /**
-             * Insert a panel into the layout at the given index.
-             *
-             * If the panel already exists in the layout, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            SplitLayout.prototype.insertPanel = function (index, panel) {
-                this.remove(panel);
-                this.ensureParent(panel);
-                var handle = new panels.SplitHandle(this._orientation);
-                var item = new SplitItem(panel, handle);
-                var sizer = new panels.LayoutSizer();
-                index = Math.max(0, Math.min(index, this._items.length));
-                this._items.splice(index, 0, item);
-                this._sizers.splice(index, 0, sizer);
-                this.invalidate();
-                return index;
-            };
-            /**
-             * Move the handle at the given index to the offset position.
-             *
-             * This will move the handle as close as possible to the given
-             * offset position, without violating item size constraints.
-             */
-            SplitLayout.prototype.moveHandle = function (index, pos) {
-                var item = this._items[index];
-                if (!item || item.handle.hidden) {
-                    return;
-                }
-                var delta;
-                if (this._orientation === 0 /* Horizontal */) {
-                    delta = pos - item.handle.node.offsetLeft;
-                }
-                else {
-                    delta = pos - item.handle.node.offsetTop;
-                }
-                if (delta === 0) {
-                    return;
-                }
-                var sizers = this._sizers;
-                if (delta > 0) {
-                    growSizer(sizers, index, delta);
-                }
-                else {
-                    sizers.reverse();
-                    growSizer(sizers, sizers.length - (index + 2), -delta);
-                    sizers.reverse();
-                }
-                this.layout();
-            };
-            /**
-             * Invalidate the cached layout data and enqueue an update.
-             */
-            SplitLayout.prototype.invalidate = function () {
-                this._dirty = true;
-                _super.prototype.invalidate.call(this);
-            };
-            /**
-             * Compute the preferred size of the layout.
-             */
-            SplitLayout.prototype.sizeHint = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._sizeHint;
-            };
-            /**
-             * Compute the minimum size of the layout.
-             */
-            SplitLayout.prototype.minSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._minSize;
-            };
-            /**
-             * Compute the maximum size of the layout.
-             */
-            SplitLayout.prototype.maxSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._maxSize;
-            };
-            /**
-             * Update the geometry of the child layout items.
-             */
-            SplitLayout.prototype.layout = function () {
-                // Bail early when no work needs to be done.
-                var parent = this.parent;
-                var items = this._items;
-                if (!parent || items.length === 0) {
-                    return;
-                }
-                // Refresh the layout items if needed.
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                // Setup commonly used variables.
-                var boxD = parent.boxData;
-                var width = parent.width - boxD.horizontalSum;
-                var height = parent.height - boxD.verticalSum;
-                var orient = this._orientation;
-                var sizers = this._sizers;
-                // Distribute the layout space to the sizers.
-                var mainSpace = orient === 0 /* Horizontal */ ? width : height;
-                panels.layoutCalc(sizers, mainSpace - this._fixedSpace);
-                // Update the geometry of the items according to the orientation.
-                var y = boxD.paddingTop;
-                var x = boxD.paddingLeft;
-                var hSize = this._handleSize;
-                var count = items.length;
-                if (orient === 0 /* Horizontal */) {
-                    for (var i = 0; i < count; ++i) {
-                        var item = items[i];
-                        if (item.isHidden) {
-                            continue;
-                        }
-                        var size = sizers[i].size;
-                        var hStyle = item.handle.node.style;
-                        item.setGeometry(x, y, size, height);
-                        hStyle.top = y + 'px';
-                        hStyle.left = x + size + 'px';
-                        hStyle.width = hSize + 'px';
-                        hStyle.height = height + 'px';
-                        x += size + hSize;
-                    }
-                }
-                else {
-                    for (var i = 0; i < count; ++i) {
-                        var item = items[i];
-                        if (item.isHidden) {
-                            continue;
-                        }
-                        var size = sizers[i].size;
-                        var hStyle = item.handle.node.style;
-                        item.setGeometry(x, y, width, size);
-                        hStyle.top = y + size + 'px';
-                        hStyle.left = x + 'px';
-                        hStyle.width = width + 'px';
-                        hStyle.height = hSize + 'px';
-                        y += size + hSize;
-                    }
-                }
-            };
-            /**
-             * Initialize the layout items and internal sizes for the layout.
-             */
-            SplitLayout.prototype._setupGeometry = function () {
-                // Bail early when no work needs to be done.
-                if (!this._dirty) {
-                    return;
-                }
-                this._dirty = false;
-                // No parent means the layout is not yet attached.
-                var parent = this.parent;
-                if (!parent) {
-                    var zero = new panels.Size(0, 0);
-                    this._sizeHint = zero;
-                    this._minSize = zero;
-                    this._maxSize = zero;
-                    this._fixedSpace = 0;
-                    return;
-                }
-                // Invalidate the layout items and reset the handles for the current
-                // orientation. Hide the handles associated with a hidden item and
-                // the handle node is attached to the parent node. Traverse the
-                // items backwards and hide the first visible item handle.
-                var hidFirst = false;
-                var pNode = parent.node;
-                var orient = this._orientation;
-                var items = this._items;
-                var count = items.length;
-                for (var i = count - 1; i >= 0; --i) {
-                    var item = items[i];
-                    var handle = item.handle;
-                    var hNode = handle.node;
-                    item.invalidate();
-                    handle.orientation = orient;
-                    handle.hidden = item.isHidden;
-                    if (hNode.parentNode !== pNode) {
-                        pNode.appendChild(hNode);
-                    }
-                    if (!hidFirst && !item.isHidden) {
-                        item.handle.hidden = true;
-                        hidFirst = true;
-                    }
-                }
-                // Setup commonly used variables.
-                var hintW = 0;
-                var hintH = 0;
-                var minW = 0;
-                var minH = 0;
-                var maxW;
-                var maxH;
-                var fixedSpace = 0;
-                var handleSize = this._handleSize;
-                var sizers = this._sizers;
-                // Compute the size bounds according to the splitter orientation.
-                // The size hints for the sizers are explicitly not updated. The
-                // size hint for a panel is only adjusted when the user moves a
-                // handle. This allows the panels to remain well-sized when their
-                // siblings panels are added of removed or when the panel is shown
-                // or hidden (see the growItem function).
-                if (orient === 0 /* Horizontal */) {
-                    maxH = Infinity;
-                    maxW = count > 0 ? 0 : Infinity;
-                    for (var i = 0; i < count; ++i) {
-                        var item = items[i];
-                        var sizer = sizers[i];
-                        if (item.isHidden) {
-                            sizer.expansive = false;
-                            sizer.stretch = 0;
-                            sizer.minSize = 0;
-                            sizer.maxSize = 0;
-                            continue;
-                        }
-                        var itemHint = item.sizeHint();
-                        var itemMin = item.minSize();
-                        var itemMax = item.maxSize();
-                        hintH = Math.max(hintH, itemHint.height);
-                        minH = Math.max(minH, itemMin.height);
-                        maxH = Math.min(maxH, itemMax.height);
-                        hintW += itemHint.width;
-                        minW += itemMin.width;
-                        maxW += itemMax.width;
-                        sizer.expansive = item.expandHorizontal;
-                        sizer.stretch = item.horizontalStretch;
-                        sizer.minSize = itemMin.width;
-                        sizer.maxSize = itemMax.width;
-                        if (!item.handle.hidden) {
-                            fixedSpace += handleSize;
-                        }
-                    }
-                    hintW += fixedSpace;
-                    minW += fixedSpace;
-                    maxW += fixedSpace;
-                }
-                else {
-                    maxW = Infinity;
-                    maxH = count > 0 ? 0 : Infinity;
-                    for (var i = 0; i < count; ++i) {
-                        var item = items[i];
-                        var sizer = sizers[i];
-                        if (item.isHidden) {
-                            sizer.expansive = false;
-                            sizer.stretch = 0;
-                            sizer.minSize = 0;
-                            sizer.maxSize = 0;
-                            continue;
-                        }
-                        var itemHint = item.sizeHint();
-                        var itemMin = item.minSize();
-                        var itemMax = item.maxSize();
-                        hintW = Math.max(hintW, itemHint.width);
-                        minW = Math.max(minW, itemMin.width);
-                        maxW = Math.min(maxW, itemMax.width);
-                        hintH += itemHint.height;
-                        minH += itemMin.height;
-                        maxH += itemMax.height;
-                        sizer.expansive = item.expandVertical;
-                        sizer.stretch = item.verticalStretch;
-                        sizer.minSize = itemMin.height;
-                        sizer.maxSize = itemMax.height;
-                        if (!item.handle.hidden) {
-                            fixedSpace += handleSize;
-                        }
-                    }
-                    hintH += fixedSpace;
-                    minH += fixedSpace;
-                    maxH += fixedSpace;
-                }
-                // Account for padding and border on the parent.
-                var boxD = parent.boxData;
-                var boxW = boxD.horizontalSum;
-                var boxH = boxD.verticalSum;
-                hintW += boxW;
-                hintH += boxH;
-                minW += boxW;
-                minH += boxH;
-                maxW += boxW;
-                maxH += boxH;
-                // Update the internal sizes.
-                this._sizeHint = new panels.Size(hintW, hintH);
-                this._minSize = new panels.Size(minW, minH);
-                this._maxSize = new panels.Size(maxW, maxH);
-                this._fixedSpace = fixedSpace;
-            };
-            return SplitLayout;
-        })(panels.Layout);
-        panels.SplitLayout = SplitLayout;
-        /**
-         * A custom panel item used by a split layout.
-         */
-        var SplitItem = (function (_super) {
-            __extends(SplitItem, _super);
-            /**
-             * Construct a new split item.
-             */
-            function SplitItem(panel, handle) {
-                _super.call(this, panel);
-                this._handle = handle;
-            }
-            Object.defineProperty(SplitItem.prototype, "handle", {
-                /**
-                 * Get the split handle for the item.
-                 */
-                get: function () {
-                    return this._handle;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return SplitItem;
-        })(panels.PanelItem);
-        panels.SplitItem = SplitItem;
-        /**
-         * Grow a sizer to the right by a positive delta.
-         *
-         * This will adjust the sizer's neighbors if required.
-         *
-         * Before adjusting the sizer, the size hints of all sizers will be
-         * updated to their current size. This allows the sections to remain
-         * well sized on the subsequent layout since the size hint is the
-         * effective input to the `layoutCalc` function.
-         */
-        function growSizer(sizers, index, delta) {
-            for (var i = 0, n = sizers.length; i < n; ++i) {
-                var sizer = sizers[i];
-                sizer.sizeHint = sizer.size;
-            }
-            var growLimit = 0;
-            for (var i = 0; i <= index; ++i) {
-                var sizer = sizers[i];
-                growLimit += sizer.maxSize - sizer.size;
-            }
-            var shrinkLimit = 0;
-            for (var i = index + 1, n = sizers.length; i < n; ++i) {
-                var sizer = sizers[i];
-                shrinkLimit += sizer.size - sizer.minSize;
-            }
-            delta = Math.min(delta, growLimit, shrinkLimit);
-            var grow = delta;
-            for (var i = index; i >= 0 && grow > 0; --i) {
-                var sizer = sizers[i];
-                var limit = sizer.maxSize - sizer.size;
-                if (limit >= grow) {
-                    sizer.sizeHint = sizer.size + grow;
-                    grow = 0;
-                }
-                else {
-                    sizer.sizeHint = sizer.size + limit;
-                    grow -= limit;
-                }
-            }
-            var shrink = delta;
-            for (var i = index + 1, n = sizers.length; i < n && shrink > 0; ++i) {
-                var sizer = sizers[i];
-                var limit = sizer.size - sizer.minSize;
-                if (limit >= shrink) {
-                    sizer.sizeHint = sizer.size - shrink;
-                    shrink = 0;
-                }
-                else {
-                    sizer.sizeHint = sizer.size - limit;
-                    shrink -= limit;
-                }
-            }
-        }
-        /**
-         * Normalize an array of positive values.
-         */
-        function normalize(values) {
-            var n = values.length;
-            if (n === 0) {
-                return [];
-            }
-            var sum = 0;
-            for (var i = 0; i < n; ++i) {
-                sum += values[i];
-            }
-            var result = new Array(n);
-            if (sum === 0) {
-                for (var i = 0; i < n; ++i) {
-                    result[i] = 1 / n;
-                }
-            }
-            else {
-                for (var i = 0; i < n; ++i) {
-                    result[i] = values[i] / sum;
-                }
-            }
-            return result;
-        }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var overrideCursor = phosphor.domutil.overrideCursor;
-        /**
-         * The class name added to SplitPanel instances.
-         */
-        var SPLIT_PANEL_CLASS = 'p-SplitPanel';
-        /**
-         * A panel which separates its children into resizable sections.
-         *
-         * This panel delegates to a permanently installed split layout and
-         * can be used as a more convenient interface to a split layout.
-         */
-        var SplitPanel = (function (_super) {
-            __extends(SplitPanel, _super);
-            /**
-             * Construct a new split panel.
-             */
-            function SplitPanel(orientation) {
-                if (orientation === void 0) { orientation = 0 /* Horizontal */; }
-                _super.call(this);
-                this._pressData = null;
-                this.node.classList.add(SPLIT_PANEL_CLASS);
-                this.layout = new panels.SplitLayout(orientation);
-                this.setFlag(16 /* DisallowLayoutChange */);
-            }
-            /**
-             * Dispose of the resources held by the panel.
-             */
-            SplitPanel.prototype.dispose = function () {
-                this._releaseMouse();
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(SplitPanel.prototype, "orientation", {
-                /**
-                 * Get the orientation of the split panel.
-                 */
-                get: function () {
-                    return this.layout.orientation;
-                },
-                /**
-                 * Set the orientation of the split panel.
-                 */
-                set: function (orient) {
-                    this.layout.orientation = orient;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitPanel.prototype, "handleSize", {
-                /**
-                 * Get the size of the split handles.
-                 */
-                get: function () {
-                    return this.layout.handleSize;
-                },
-                /**
-                 * Set the the size of the split handles.
-                 */
-                set: function (size) {
-                    this.layout.handleSize = size;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(SplitPanel.prototype, "count", {
-                /**
-                 * Get the number of child panels in the split panel.
-                 */
-                get: function () {
-                    return this.layout.count;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get the normalized sizes of the children in the split panel.
-             */
-            SplitPanel.prototype.sizes = function () {
-                return this.layout.sizes();
-            };
-            /**
-             * Set the relative sizes for the split panel children.
-             *
-             * Extra values are ignored, too few will yield an undefined layout.
-             */
-            SplitPanel.prototype.setSizes = function (sizes) {
-                this.layout.setSizes(sizes);
-            };
-            /**
-             * Get the index of the given panel.
-             *
-             * Returns -1 if the panel is not found.
-             */
-            SplitPanel.prototype.indexOf = function (panel) {
-                return this.layout.indexOf(panel);
-            };
-            /**
-             * Get the panel at the given index.
-             *
-             * Returns `undefined` if there is no panel at the given index.
-             */
-            SplitPanel.prototype.panelAt = function (index) {
-                return this.layout.panelAt(index);
-            };
-            /**
-             * Add a child panel to the end of the split panel.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            SplitPanel.prototype.addPanel = function (panel) {
-                return this.layout.addPanel(panel);
-            };
-            /**
-             * Insert a child panel into the split panel at the given index.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            SplitPanel.prototype.insertPanel = function (index, panel) {
-                return this.layout.insertPanel(index, panel);
-            };
-            /**
-             * A method invoked after the node is attached to the DOM.
-             */
-            SplitPanel.prototype.onAfterAttach = function (msg) {
-                this.node.addEventListener('mousedown', this);
-            };
-            /**
-             * A method invoked after the node is detached from the DOM.
-             */
-            SplitPanel.prototype.onAfterDetach = function (msg) {
-                this.node.removeEventListener('mousedown', this);
-            };
-            /**
-             * Handle the DOM events for the splitter.
-             */
-            SplitPanel.prototype.handleEvent = function (event) {
-                switch (event.type) {
-                    case 'mousedown':
-                        this.domEvent_mousedown(event);
-                        break;
-                    case 'mouseup':
-                        this.domEvent_mouseup(event);
-                        break;
-                    case 'mousemove':
-                        this.domEvent_mousemove(event);
-                        break;
-                    default:
-                        break;
-                }
-            };
-            /**
-             * Handle the 'mousedown' event for the splitter.
-             */
-            SplitPanel.prototype.domEvent_mousedown = function (event) {
-                if (event.button !== 0) {
-                    return;
-                }
-                var data = this._findHandle(event.target);
-                if (!data) {
-                    return;
-                }
-                event.preventDefault();
-                event.stopPropagation();
-                document.addEventListener('mouseup', this, true);
-                document.addEventListener('mousemove', this, true);
-                var delta;
-                var node = data.handle.node;
-                var rect = node.getBoundingClientRect();
-                if (this.orientation === 0 /* Horizontal */) {
-                    delta = event.clientX - rect.left;
-                }
-                else {
-                    delta = event.clientY - rect.top;
-                }
-                var grab = overrideCursor(window.getComputedStyle(node).cursor);
-                this._pressData = { index: data.index, delta: delta, grab: grab };
-            };
-            /**
-             * Handle the 'mouseup' event for the splitter.
-             */
-            SplitPanel.prototype.domEvent_mouseup = function (event) {
-                if (event.button !== 0) {
-                    return;
-                }
-                event.preventDefault();
-                event.stopPropagation();
-                this._releaseMouse();
-            };
-            /**
-             * Handle the 'mousemove' event for the splitter.
-             */
-            SplitPanel.prototype.domEvent_mousemove = function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                var pos;
-                var data = this._pressData;
-                var rect = this.node.getBoundingClientRect();
-                var layout = this.layout;
-                if (layout.orientation === 0 /* Horizontal */) {
-                    pos = event.clientX - data.delta - rect.left;
-                }
-                else {
-                    pos = event.clientY - data.delta - rect.top;
-                }
-                layout.moveHandle(data.index, pos);
-            };
-            /**
-             * Find the index of the handle which contains a target element.
-             */
-            SplitPanel.prototype._findHandle = function (target) {
-                var layout = this.layout;
-                for (var i = 0, n = layout.count; i < n; ++i) {
-                    var handle = layout.handleAt(i);
-                    if (handle.node.contains(target)) {
-                        return { index: i, handle: handle };
-                    }
-                }
-                return null;
-            };
-            /**
-             * Release the mouse grab for the splitter.
-             */
-            SplitPanel.prototype._releaseMouse = function () {
-                if (!this._pressData) {
-                    return;
-                }
-                this._pressData.grab.dispose();
-                this._pressData = null;
-                document.removeEventListener('mouseup', this, true);
-                document.removeEventListener('mousemove', this, true);
-            };
-            return SplitPanel;
-        })(panels.Panel);
-        panels.SplitPanel = SplitPanel;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var Signal = phosphor.core.Signal;
-        /**
-         * A layout in which only one child panel is visible at a time.
-         */
-        var StackLayout = (function (_super) {
-            __extends(StackLayout, _super);
-            /**
-             * Construct a new stack layout.
-             */
-            function StackLayout() {
-                _super.call(this);
-                /**
-                 * A signal emitted when the current index is changed.
-                 */
-                this.currentChanged = new Signal();
-                /**
-                 * A signal emitted when a panel is removed from the layout.
-                 */
-                this.panelRemoved = new Signal();
-                this._dirty = true;
-                this._currentIndex = -1;
-                this._sizeHint = null;
-                this._minSize = null;
-                this._maxSize = null;
-                this._items = [];
-            }
-            /**
-             * Dispose of the resources held by the layout.
-             */
-            StackLayout.prototype.dispose = function () {
-                this._items = null;
-                this.currentChanged.disconnect();
-                this.panelRemoved.disconnect();
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(StackLayout.prototype, "currentIndex", {
-                /**
-                 * Get the current index of the stack.
-                 */
-                get: function () {
-                    return this._currentIndex;
-                },
-                /**
-                 * Set the current index of the stack.
-                 */
-                set: function (index) {
-                    var prev = this.currentPanel;
-                    var next = this.panelAt(index);
-                    if (prev === next) {
-                        return;
-                    }
-                    index = next ? index : -1;
-                    this._currentIndex = index;
-                    if (prev)
-                        prev.hide();
-                    if (next)
-                        next.show();
-                    // IE repaints before firing the animation frame which processes
-                    // the layout event triggered by the show/hide calls above. This
-                    // causes unsightly flicker when changing the visible panel. To
-                    // avoid this, the layout is updated immediately.
-                    this.layout();
-                    this.currentChanged.emit(this, { index: index, panel: next });
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(StackLayout.prototype, "currentPanel", {
-                /**
-                 * Get the current panel in the stack.
-                 */
-                get: function () {
-                    return this.panelAt(this.currentIndex);
-                },
-                /**
-                 * Set the current panel in the stack.
-                 */
-                set: function (panel) {
-                    this.currentIndex = this.indexOf(panel);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(StackLayout.prototype, "count", {
-                /**
-                 * Get the number of layout items in the layout.
-                 */
-                get: function () {
-                    return this._items.length;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get the layout item at the specified index.
-             */
-            StackLayout.prototype.itemAt = function (index) {
-                return this._items[index];
-            };
-            /**
-             * Remove and return the layout item at the specified index.
-             */
-            StackLayout.prototype.takeAt = function (index) {
-                index = index | 0;
-                if (index < 0 || index >= this._items.length) {
-                    return void 0;
-                }
-                var item = this._items.splice(index, 1)[0];
-                if (index === this._currentIndex) {
-                    this._currentIndex = -1;
-                    this.invalidate();
-                    this.currentChanged.emit(this, { index: -1, panel: void 0 });
-                }
-                else if (index < this._currentIndex) {
-                    this._currentIndex--;
-                }
-                this.panelRemoved.emit(this, { index: index, panel: item.panel });
-                return item;
-            };
-            /**
-             * Add a panel as the last item in the layout.
-             *
-             * If the panel already exists in the layout, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            StackLayout.prototype.addPanel = function (panel) {
-                return this.insertPanel(this.count, panel);
-            };
-            /**
-             * Insert a panel into the layout at the given index.
-             *
-             * If the panel already exists in the layout, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            StackLayout.prototype.insertPanel = function (index, panel) {
-                var i = this.indexOf(panel);
-                if (i !== -1) {
-                    return this.movePanel(i, index);
-                }
-                panel.hide();
-                this.ensureParent(panel);
-                index = Math.max(0, Math.min(index, this._items.length));
-                this._items.splice(index, 0, new panels.PanelItem(panel));
-                if (index <= this._currentIndex) {
-                    this._currentIndex++;
-                }
-                return index;
-            };
-            /**
-             * Move a panel from one index to another.
-             *
-             * Returns the new index of the panel.
-             */
-            StackLayout.prototype.movePanel = function (fromIndex, toIndex) {
-                fromIndex = fromIndex | 0;
-                var n = this._items.length;
-                if (fromIndex < 0 || fromIndex >= n) {
-                    return -1;
-                }
-                toIndex = Math.max(0, Math.min(toIndex | 0, n - 1));
-                if (fromIndex === toIndex) {
-                    return toIndex;
-                }
-                var item = this._items.splice(fromIndex, 1)[0];
-                this._items.splice(toIndex, 0, item);
-                var current = this._currentIndex;
-                if (fromIndex === current) {
-                    current = toIndex;
-                }
-                else {
-                    if (fromIndex < current)
-                        current--;
-                    if (toIndex <= current)
-                        current++;
-                }
-                this._currentIndex = current;
-                return toIndex;
-            };
-            /**
-             * Invalidate the cached layout data and enqueue an update.
-             */
-            StackLayout.prototype.invalidate = function () {
-                this._dirty = true;
-                _super.prototype.invalidate.call(this);
-            };
-            /**
-             * Compute the preferred size of the layout.
-             */
-            StackLayout.prototype.sizeHint = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._sizeHint;
-            };
-            /**
-             * Compute the minimum size of the layout.
-             */
-            StackLayout.prototype.minSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._minSize;
-            };
-            /**
-             * Compute the maximum size of the layout.
-             */
-            StackLayout.prototype.maxSize = function () {
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                return this._maxSize;
-            };
-            /**
-             * Update the geometry of the child layout items.
-             */
-            StackLayout.prototype.layout = function () {
-                // Bail early when no work needs to be done.
-                var parent = this.parent;
-                var item = this._items[this._currentIndex];
-                if (!parent || !item) {
-                    return;
-                }
-                // Refresh the layout items if needed.
-                if (this._dirty) {
-                    this._setupGeometry();
-                }
-                // Update the geometry of the visible item.
-                var boxD = parent.boxData;
-                var x = boxD.paddingLeft;
-                var y = boxD.paddingTop;
-                var w = parent.width - boxD.horizontalSum;
-                var h = parent.height - boxD.verticalSum;
-                item.setGeometry(x, y, w, h);
-            };
-            /**
-             * Initialize the layout items and internal sizes for the layout.
-             */
-            StackLayout.prototype._setupGeometry = function () {
-                // Bail early when no work needs to be done.
-                if (!this._dirty) {
-                    return;
-                }
-                this._dirty = false;
-                // No parent means the layout is not yet attached.
-                var parent = this.parent;
-                if (!parent) {
-                    var zero = new panels.Size(0, 0);
-                    this._sizeHint = zero;
-                    this._minSize = zero;
-                    this._maxSize = zero;
-                    return;
-                }
-                // Compute the size bounds based on the visible item.
-                var hintW = 0;
-                var hintH = 0;
-                var minW = 0;
-                var minH = 0;
-                var maxW = Infinity;
-                var maxH = Infinity;
-                var item = this._items[this._currentIndex];
-                if (item) {
-                    item.invalidate();
-                    var itemHint = item.sizeHint();
-                    var itemMin = item.minSize();
-                    var itemMax = item.maxSize();
-                    hintW = Math.max(hintW, itemHint.width);
-                    hintH = Math.max(hintH, itemHint.height);
-                    minW = Math.max(minW, itemMin.width);
-                    minH = Math.max(minH, itemMin.height);
-                    maxW = Math.min(maxW, itemMax.width);
-                    maxH = Math.min(maxH, itemMax.height);
-                }
-                // Account for padding and border on the parent.
-                var boxD = parent.boxData;
-                var boxW = boxD.horizontalSum;
-                var boxH = boxD.verticalSum;
-                hintW += boxW;
-                hintH += boxH;
-                minW += boxW;
-                minH += boxH;
-                maxW += boxW;
-                maxH += boxH;
-                // Update the internal sizes.
-                this._sizeHint = new panels.Size(hintW, hintH);
-                this._minSize = new panels.Size(minW, minH);
-                this._maxSize = new panels.Size(maxW, maxH);
-            };
-            return StackLayout;
-        })(panels.Layout);
-        panels.StackLayout = StackLayout;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var Signal = phosphor.core.Signal;
-        /**
-         * The class name added to StackPanel instances.
-         */
-        var STACK_PANEL_CLASS = 'p-StackPanel';
-        /**
-         * A panel where only one child is visible at a time.
-         *
-         * This panel delegates to a permanently installed stack layout and
-         * can be used as a more convenient interface to a stack layout.
-         */
-        var StackPanel = (function (_super) {
-            __extends(StackPanel, _super);
-            /**
-             * Construct a new stack panel.
-             */
-            function StackPanel() {
-                _super.call(this);
-                /**
-                 * A signal emitted when the current index changes.
-                 */
-                this.currentChanged = new Signal();
-                /**
-                 * A signal emitted when a panel is removed from the stack.
-                 */
-                this.panelRemoved = new Signal();
-                this.node.classList.add(STACK_PANEL_CLASS);
-                var layout = this.layout = new panels.StackLayout();
-                this.setFlag(16 /* DisallowLayoutChange */);
-                layout.currentChanged.connect(this._sl_currentChanged, this);
-                layout.panelRemoved.connect(this._sl_panelRemoved, this);
-            }
-            /**
-             * Dispose of the resources held by the panel.
-             */
-            StackPanel.prototype.dispose = function () {
-                this.currentChanged.disconnect();
-                this.panelRemoved.disconnect();
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(StackPanel.prototype, "currentIndex", {
-                /**
-                 * Get the current index of the stack.
-                 */
-                get: function () {
-                    return this.layout.currentIndex;
-                },
-                /**
-                 * Set the current index of the stack.
-                 */
-                set: function (index) {
-                    this.layout.currentIndex = index;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(StackPanel.prototype, "currentPanel", {
-                /**
-                 * Get the current panel in the stack.
-                 */
-                get: function () {
-                    return this.layout.currentPanel;
-                },
-                /**
-                 * Set the current panel in the stack.
-                 */
-                set: function (panel) {
-                    this.layout.currentPanel = panel;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(StackPanel.prototype, "count", {
-                /**
-                 * Get the number of panels in the stack.
-                 */
-                get: function () {
-                    return this.layout.count;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Get the index of the given panel.
-             *
-             * Returns -1 if the panel is not found.
-             */
-            StackPanel.prototype.indexOf = function (panel) {
-                return this.layout.indexOf(panel);
-            };
-            /**
-             * Get the panel at the given index.
-             *
-             * Returns `undefined` if there is no panel at the given index.
-             */
-            StackPanel.prototype.panelAt = function (index) {
-                return this.layout.panelAt(index);
-            };
-            /**
-             * Add a child panel to the end of the split panel.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            StackPanel.prototype.addPanel = function (panel) {
-                return this.layout.addPanel(panel);
-            };
-            /**
-             * Insert a child panel into the split panel at the given index.
-             *
-             * If the panel already exists, it will be moved.
-             *
-             * Returns the index of the added panel.
-             */
-            StackPanel.prototype.insertPanel = function (index, panel) {
-                return this.layout.insertPanel(index, panel);
-            };
-            /**
-             * Move a child panel from one index to another.
-             *
-             * Returns the new index of the panel.
-             */
-            StackPanel.prototype.movePanel = function (fromIndex, toIndex) {
-                return this.layout.movePanel(fromIndex, toIndex);
-            };
-            /**
-             * Handle the `currentChanged` signal for the stack layout.
-             */
-            StackPanel.prototype._sl_currentChanged = function (sender, args) {
-                this.currentChanged.emit(this, args);
-            };
-            /**
-             * Handle the `panelChanged` signal for the stack layout.
-             */
-            StackPanel.prototype._sl_panelRemoved = function (sender, args) {
-                this.panelRemoved.emit(this, args);
-            };
-            return StackPanel;
-        })(panels.Panel);
-        panels.StackPanel = StackPanel;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         /**
          * The class name added to Tab instances.
          */
@@ -10693,9 +11144,9 @@ var phosphor;
             };
             return Tab;
         })();
-        panels.Tab = Tab;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        widgets.Tab = Tab;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -10712,21 +11163,32 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
+        var algo = phosphor.collections.algorithm;
         var Signal = phosphor.core.Signal;
-        var hitTest = phosphor.domutil.hitTest;
-        var overrideCursor = phosphor.domutil.overrideCursor;
+        var Pair = phosphor.utility.Pair;
+        var Size = phosphor.utility.Size;
+        var hitTest = phosphor.utility.hitTest;
+        var overrideCursor = phosphor.utility.overrideCursor;
         /**
          * The class name added to TabBar instances.
          */
         var TAB_BAR_CLASS = 'p-TabBar';
         /**
-         * The class name added to the tab bar inner div.
+         * The class name added to the tab bar header div.
          */
-        var INNER_CLASS = 'p-TabBar-inner';
+        var HEADER_CLASS = 'p-TabBar-header';
         /**
-         * The class name added to the inner div when transitioning tabs.
+         * The class name added to the tab bar content list.
+         */
+        var CONTENT_CLASS = 'p-TabBar-content';
+        /**
+         * The class name added to the tab bar footer div.
+         */
+        var FOOTER_CLASS = 'p-TabBar-footer';
+        /**
+         * The class name added to the content div when transitioning tabs.
          */
         var TRANSITION_CLASS = 'p-mod-transition';
         /**
@@ -10754,20 +11216,18 @@ var phosphor;
          */
         var TRANSITION_DURATION = 150;
         /**
-         * The stub size of an overlapped tab.
+         * The size of a collapsed tab stub.
          */
-        var TAB_STUB_SIZE = 5;
+        var TAB_STUB_SIZE = 7;
         /**
-         * A panel which displays a row of tabs.
-         *
-         * A tab bar should be treated as leaf content with no children.
+         * A leaf widget which displays a row of tabs.
          */
         var TabBar = (function (_super) {
             __extends(TabBar, _super);
             /**
              * Construct a new tab bar.
              */
-            function TabBar() {
+            function TabBar(options) {
                 _super.call(this);
                 /**
                  * A signal emitted when a tab is moved.
@@ -10785,42 +11245,44 @@ var phosphor;
                  * A signal emitted when a tab is dragged beyond the detach threshold.
                  */
                 this.tabDetachRequested = new Signal();
-                this._movable = true;
                 this._tabWidth = 175;
-                this._tabOverlap = 1;
+                this._tabOverlap = 0;
                 this._minTabWidth = 45;
+                this._tabs = [];
+                this._tabsMovable = true;
                 this._currentTab = null;
                 this._previousTab = null;
                 this._dragData = null;
-                this._tabs = [];
-                this.node.classList.add(TAB_BAR_CLASS);
+                this.addClass(TAB_BAR_CLASS);
                 this.verticalSizePolicy = 0 /* Fixed */;
+                if (options)
+                    this._initFrom(options);
             }
-            /**
-             * Dispose of the resources held by the panel.
+            /*
+             * Dispose of the resources held by the widget.
              */
             TabBar.prototype.dispose = function () {
-                this._releaseMouse();
-                this._tabs = null;
                 this.tabMoved.disconnect();
                 this.currentChanged.disconnect();
                 this.tabCloseRequested.disconnect();
                 this.tabDetachRequested.disconnect();
+                this._releaseMouse();
+                this._tabs = null;
                 _super.prototype.dispose.call(this);
             };
             Object.defineProperty(TabBar.prototype, "currentIndex", {
                 /**
-                 * Get the index of the current tab.
+                 * Get the currently selected tab index.
                  */
                 get: function () {
-                    return this._tabs.indexOf(this._currentTab);
+                    return this.indexOf(this.currentTab);
                 },
                 /**
-                 * Set the selected tab index.
+                 * Set the currently selected tab index.
                  */
                 set: function (index) {
                     var prev = this._currentTab;
-                    var next = this._tabs[index] || null;
+                    var next = this.tabAt(index) || null;
                     if (prev === next) {
                         return;
                     }
@@ -10828,11 +11290,10 @@ var phosphor;
                         prev.selected = false;
                     if (next)
                         next.selected = true;
-                    index = next ? index : -1;
                     this._currentTab = next;
                     this._previousTab = prev;
                     this._updateTabZOrder();
-                    this.currentChanged.emit(this, { index: index, tab: next });
+                    this.currentChanged.emit(this, new Pair(next ? index : -1, next));
                 },
                 enumerable: true,
                 configurable: true
@@ -10848,7 +11309,7 @@ var phosphor;
                  * Set the currently selected tab.
                  */
                 set: function (tab) {
-                    this.currentIndex = this._tabs.indexOf(tab);
+                    this.currentIndex = this.indexOf(tab);
                 },
                 enumerable: true,
                 configurable: true
@@ -10868,28 +11329,36 @@ var phosphor;
                  * Get whether the tabs are movable by the user.
                  */
                 get: function () {
-                    return this._movable;
+                    return this._tabsMovable;
                 },
                 /**
                  * Set whether the tabs are movable by the user.
                  */
                 set: function (movable) {
-                    this._movable = movable;
-                    if (!movable)
+                    if (movable === this._tabsMovable) {
+                        return;
+                    }
+                    this._tabsMovable = movable;
+                    if (!movable) {
                         this._releaseMouse();
+                    }
                 },
                 enumerable: true,
                 configurable: true
             });
             Object.defineProperty(TabBar.prototype, "tabWidth", {
                 /**
-                 * Get the desired tab width in pixels.
+                 * Get the preferred tab width.
+                 *
+                 * Tabs will be sized to this width if possible, but never larger.
                  */
                 get: function () {
                     return this._tabWidth;
                 },
                 /**
-                 * Set the desired tab width in pixels.
+                 * Set the preferred tab width.
+                 *
+                 * Tabs will be sized to this width if possible, but never larger.
                  */
                 set: function (width) {
                     width = Math.max(0, width);
@@ -10907,13 +11376,17 @@ var phosphor;
             });
             Object.defineProperty(TabBar.prototype, "minTabWidth", {
                 /**
-                 * Get the minimum tab width in pixels.
+                 * Get the minimum tab width.
+                 *
+                 * Tabs will never be sized smaller than this amount.
                  */
                 get: function () {
                     return this._minTabWidth;
                 },
                 /**
-                 * Set the minimum tab width in pixels.
+                 * Set the minimum tab width.
+                 *
+                 * Tabs will never be sized smaller than this amount.
                  */
                 set: function (width) {
                     width = Math.max(0, width);
@@ -10931,13 +11404,19 @@ var phosphor;
             });
             Object.defineProperty(TabBar.prototype, "tabOverlap", {
                 /**
-                 * Get the tab overlap amount in pixels.
+                 * Get the tab overlap amount.
+                 *
+                 * A positive value will cause neighboring tabs to overlap.
+                 * A negative value will insert empty space between tabs.
                  */
                 get: function () {
                     return this._tabOverlap;
                 },
                 /**
-                 * Set the tab overlap amount in pixels.
+                 * Set the tab overlap amount.
+                 *
+                 * A positive value will cause neighboring tabs to overlap.
+                 * A negative value will insert empty space between tabs.
                  */
                 set: function (overlap) {
                     if (overlap === this._tabOverlap) {
@@ -10971,7 +11450,7 @@ var phosphor;
             /**
              * Get the index of the given tab.
              */
-            TabBar.prototype.tabIndex = function (tab) {
+            TabBar.prototype.indexOf = function (tab) {
                 return this._tabs.indexOf(tab);
             };
             /**
@@ -10980,7 +11459,7 @@ var phosphor;
              * Returns the index of the tab.
              */
             TabBar.prototype.addTab = function (tab) {
-                return this.insertTab(this._tabs.length, tab);
+                return this.insertTab(this.count, tab);
             };
             /**
              * Insert a tab into the tab bar at the given index.
@@ -10988,19 +11467,13 @@ var phosphor;
              * Returns the index of the tab.
              */
             TabBar.prototype.insertTab = function (index, tab) {
-                var tabs = this._tabs;
-                index = Math.max(0, Math.min(index | 0, tabs.length));
-                if (typeof tab === 'string') {
-                    this._insertTab(index, new panels.Tab(tab), true);
+                index = Math.max(0, Math.min(index | 0, this.count));
+                var curr = this.indexOf(tab);
+                if (curr !== -1) {
+                    index = this.moveTab(curr, index);
                 }
                 else {
-                    var curr = tabs.indexOf(tab);
-                    if (curr !== -1) {
-                        index = this.moveTab(curr, index);
-                    }
-                    else {
-                        this._insertTab(index, tab, true);
-                    }
+                    this._insertTab(index, tab, true);
                 }
                 return index;
             };
@@ -11011,7 +11484,7 @@ var phosphor;
              */
             TabBar.prototype.moveTab = function (fromIndex, toIndex) {
                 fromIndex = fromIndex | 0;
-                var count = this._tabs.length;
+                var count = this.count;
                 if (fromIndex < 0 || fromIndex >= count) {
                     return -1;
                 }
@@ -11023,135 +11496,150 @@ var phosphor;
                 return toIndex;
             };
             /**
-             * Remove a tab from the tab bar by index.
+             * Remove and return the tab at the given index.
              *
-             * Returns the removed tab.
+             * Returns `undefined` if the index is out of range.
              */
-            TabBar.prototype.takeAt = function (index, animate) {
-                if (animate === void 0) { animate = true; }
-                index = index | 0;
-                var tabs = this._tabs;
-                if (index < 0 || index >= tabs.length) {
-                    return void 0;
-                }
-                var tab = this._tabs[index];
-                this._removeTab(index, animate);
+            TabBar.prototype.removeAt = function (index) {
+                var tab = this.tabAt(index);
+                if (tab)
+                    this._removeTab(index, true);
                 return tab;
             };
             /**
-             * Remove a tab from the tab bar by value.
+             * Remove a tab from the tab bar and return its index.
              *
-             * Returns the index of the removed item.
+             * Returns -1 if the tab is not in the tab bar.
              */
-            TabBar.prototype.removeTab = function (tab, animate) {
-                if (animate === void 0) { animate = true; }
-                var index = this._tabs.indexOf(tab);
-                this.takeAt(index, animate);
-                return index;
+            TabBar.prototype.removeTab = function (tab) {
+                var i = this.indexOf(tab);
+                if (i !== -1)
+                    this._removeTab(i, true);
+                return i;
             };
             /**
              * Remove all of the tabs from the tab bar.
-             *
-             * This is more efficient than removing the tabs individually.
              */
             TabBar.prototype.clearTabs = function () {
-                this._releaseMouse();
-                if (this._currentTab) {
-                    this._currentTab.selected = false;
-                    this._currentTab = null;
-                }
-                this._previousTab = null;
-                this._tabs.length = 0;
-                this.node.firstChild.innerHTML = '';
-                if (this.isAttached) {
-                    this.updateGeometry();
+                while (this.count) {
+                    this._removeTab(this.count - 1, false);
                 }
             };
             /**
-             * Attach a tab to the tab bar.
+             * Add a tab to the tab bar at the given client X position.
              *
-             * This will immediately insert the tab with no transition. It will
-             * then grab the mouse to continue the tab drag. It assumes the left
-             * mouse button is down.
+             * This method is intended for use by code which supports tear-off
+             * tab interfaces. It will insert the tab at the specified location
+             * without a transition and grab the mouse to continue the tab drag.
+             * It assumes that the left mouse button is currently pressed.
+             *
+             * This is a no-op if the tab is already added to the tab bar.
              */
-            TabBar.prototype.attachTab = function (args) {
-                var curr = this._tabs.indexOf(args.tab);
-                var inner = this.node.firstChild;
-                var innerRect = inner.getBoundingClientRect();
-                var localLeft = args.clientX - args.offsetX - innerRect.left;
-                var index = localLeft / (this._tabLayoutWidth() - this._tabOverlap);
-                index = Math.max(0, Math.min(Math.round(index), this._tabs.length));
-                if (curr === -1) {
-                    this._insertTab(index, args.tab, false);
+            TabBar.prototype.attachTab = function (tab, clientX) {
+                // Do nothing if the tab is already attached to the tab bar.
+                if (this.indexOf(tab) !== -1) {
+                    return;
                 }
-                else if (curr !== index) {
-                    this._moveTab(curr, index);
-                }
+                // Compute the insert index for the given client position.
+                var contentNode = this.contentNode;
+                var contentRect = contentNode.getBoundingClientRect();
+                var localX = clientX - contentRect.left;
+                var index = localX / (this._tabLayoutWidth() - this._tabOverlap);
+                index = Math.max(0, Math.min(Math.round(index), this.count));
+                // Insert and select the tab and install the mouse listeners.
+                this._insertTab(index, tab, false);
                 this.currentIndex = index;
                 document.addEventListener('mouseup', this, true);
                 document.addEventListener('mousemove', this, true);
-                if (!this._movable) {
+                // Bail early if the tabs are not movable.
+                if (!this._tabsMovable) {
                     return;
                 }
-                var node = args.tab.node;
-                var tabWidth = this._tabLayoutWidth();
-                var offsetX = tabWidth * (args.offsetX / args.tabWidth);
-                var maxX = this.width - tabWidth;
-                var localX = args.clientX - innerRect.left - offsetX;
-                var targetX = Math.max(0, Math.min(localX, maxX));
-                var grab = overrideCursor(window.getComputedStyle(node).cursor);
+                // Setup the drag data object.
+                var tlw = this._tabLayoutWidth();
+                var offsetX = (0.4 * tlw) | 0;
+                var clientY = contentRect.top + (0.5 * contentRect.height) | 0;
+                var cursorGrab = overrideCursor('default');
                 this._dragData = {
-                    node: node,
-                    pressX: args.clientX,
-                    pressY: args.clientY,
+                    node: tab.node,
+                    pressX: clientX,
+                    pressY: clientY,
                     offsetX: offsetX,
-                    offsetY: args.offsetY,
-                    innerRect: innerRect,
-                    cursorGrab: grab,
+                    contentRect: contentRect,
+                    cursorGrab: cursorGrab,
                     dragActive: true,
-                    emitted: false,
+                    detachRequested: false,
                 };
-                inner.classList.add(TRANSITION_CLASS);
-                node.style.transition = 'none';
+                // Move the tab to its target position.
+                var tgtLeft = localX - offsetX;
+                var maxLeft = contentRect.width - tlw;
+                var tabLeft = Math.max(0, Math.min(tgtLeft, maxLeft));
+                var tabStyle = tab.node.style;
+                contentNode.classList.add(TRANSITION_CLASS);
+                tabStyle.transition = 'none';
                 this._updateTabLayout();
-                node.style.left = targetX + 'px';
+                tabStyle.left = tabLeft + 'px';
+            };
+            /**
+             * Detach the tab at the given index.
+             *
+             * This method is intended for use by code which supports tear-off
+             * tab interfaces. It will remove the tab at the specified index
+             * without a transition.
+             *
+             * This is a no-op if the index is out of range.
+             */
+            TabBar.prototype.detachAt = function (index) {
+                var tab = this.tabAt(index);
+                if (tab)
+                    this._removeTab(index, false);
             };
             /**
              * Compute the size hint for the tab bar.
              */
             TabBar.prototype.sizeHint = function () {
                 var width = 0;
-                var count = this._tabs.length;
+                var count = this.count;
                 if (count > 0) {
-                    var overlap = this._tabOverlap * (count - 1);
-                    width = this._tabWidth * count - overlap;
+                    width = this._tabWidth * count - this._tabOverlap * (count - 1);
                 }
-                var style = window.getComputedStyle(this.node);
-                var height = parseInt(style.minHeight, 10) || 0;
-                return new panels.Size(width, height);
+                return new Size(width, this.boxSizing.minHeight);
             };
             /**
              * Compute the minimum size hint for the tab bar.
              */
             TabBar.prototype.minSizeHint = function () {
                 var width = 0;
-                var count = this._tabs.length;
+                var count = this.count;
                 if (count > 0) {
-                    var stub = TAB_STUB_SIZE * (count - 1);
-                    width = this._minTabWidth + stub;
+                    width = this._minTabWidth + TAB_STUB_SIZE * (count - 1);
                 }
-                var style = window.getComputedStyle(this.node);
-                var height = parseInt(style.minHeight, 10) || 0;
-                return new panels.Size(width, height);
+                return new Size(width, this.boxSizing.minHeight);
             };
+            Object.defineProperty(TabBar.prototype, "contentNode", {
+                /**
+                 * Get the content node for the tab bar.
+                 */
+                get: function () {
+                    return this.node.firstChild.nextSibling;
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
              * Create the DOM node for the tab bar.
              */
             TabBar.prototype.createNode = function () {
                 var node = document.createElement('div');
-                var inner = document.createElement('ul');
-                inner.className = INNER_CLASS;
-                node.appendChild(inner);
+                var header = document.createElement('div');
+                var content = document.createElement('ul');
+                var footer = document.createElement('div');
+                header.className = HEADER_CLASS;
+                content.className = CONTENT_CLASS;
+                footer.className = FOOTER_CLASS;
+                node.appendChild(header);
+                node.appendChild(content);
+                node.appendChild(footer);
                 return node;
             };
             /**
@@ -11182,147 +11670,164 @@ var phosphor;
             TabBar.prototype.handleEvent = function (event) {
                 switch (event.type) {
                     case 'click':
-                        this.domEvent_click(event);
+                        this._evtClick(event);
                         break;
                     case 'mousedown':
-                        this.domEvent_mousedown(event);
+                        this._evtMouseDown(event);
                         break;
                     case 'mousemove':
-                        this.domEvent_mousemove(event);
+                        this._evtMouseMove(event);
                         break;
                     case 'mouseup':
-                        this.domEvent_mouseup(event);
-                        break;
-                    default:
+                        this._evtMouseUp(event);
                         break;
                 }
             };
             /**
-             * Handle the click event for the tab bar.
+             * Handle the 'click' event for the tab bar.
              */
-            TabBar.prototype.domEvent_click = function (event) {
+            TabBar.prototype._evtClick = function (event) {
+                // Do nothing if it's not a left click.
                 if (event.button !== 0) {
                     return;
                 }
-                var clientX = event.clientX;
-                var clientY = event.clientY;
-                var index = this._indexAtPos(clientX, clientY);
+                // Do nothing if the click is not on a tab.
+                var index = this._hitTest(event.clientX, event.clientY);
                 if (index < 0) {
                     return;
                 }
+                // Clicking on a tab stops the event propagation.
                 event.preventDefault();
                 event.stopPropagation();
+                // If the click was on the close icon of a closable tab,
+                // emit the `tabCloseRequested` signal.
                 var tab = this._tabs[index];
-                var icon = tab.closeIconNode;
-                if (icon && icon === event.target && tab.closable) {
-                    this.tabCloseRequested.emit(this, { index: index, tab: tab });
+                var iconNode = tab.closeIconNode;
+                if (iconNode && iconNode === event.target && tab.closable) {
+                    this.tabCloseRequested.emit(this, new Pair(index, tab));
                 }
             };
             /**
-             * Handle the mousedown event for the tab bar.
+             * Handle the 'mousedown' event for the tab bar.
              */
-            TabBar.prototype.domEvent_mousedown = function (event) {
+            TabBar.prototype._evtMouseDown = function (event) {
+                // Do nothing if it's not a left mouse press.
                 if (event.button !== 0) {
                     return;
                 }
+                // Do nothing of the press is not on a tab.
                 var clientX = event.clientX;
                 var clientY = event.clientY;
-                var index = this._indexAtPos(clientX, clientY);
+                var index = this._hitTest(clientX, clientY);
                 if (index < 0) {
                     return;
                 }
+                // Pressing on a tab stops the event propagation.
                 event.preventDefault();
                 event.stopPropagation();
+                // Do nothing further if the press in on the tab close icon.
                 var tab = this._tabs[index];
-                var icon = tab.closeIconNode;
-                if (icon && icon === event.target) {
+                var iconNode = tab.closeIconNode;
+                if (iconNode && iconNode === event.target) {
                     return;
                 }
-                if (this._movable) {
-                    var node = tab.node;
-                    var rect = node.getBoundingClientRect();
+                // Setup the drag data if the tabs are movable.
+                if (this._tabsMovable) {
+                    var offsetX = clientX - tab.node.getBoundingClientRect().left;
                     this._dragData = {
-                        node: node,
+                        node: tab.node,
                         pressX: clientX,
                         pressY: clientY,
-                        offsetX: clientX - rect.left,
-                        offsetY: clientY - rect.top,
-                        innerRect: null,
+                        offsetX: offsetX,
+                        contentRect: null,
                         cursorGrab: null,
                         dragActive: false,
-                        emitted: false,
+                        detachRequested: false,
                     };
                 }
+                // Select the tab and install the other mouse event listeners.
                 this.currentIndex = index;
                 document.addEventListener('mouseup', this, true);
                 document.addEventListener('mousemove', this, true);
             };
             /**
-             * Handle the mouse move event for the tab bar.
+             * Handle the 'mousemove' event for the tab bar.
              */
-            TabBar.prototype.domEvent_mousemove = function (event) {
+            TabBar.prototype._evtMouseMove = function (event) {
+                // Mouse move events are never propagated since this handler is
+                // only installed when during a left-mouse-drag operation. Bail
+                // early if the tabs are not movable or there is no drag data.
                 event.preventDefault();
                 event.stopPropagation();
-                if (!this._movable || !this._dragData) {
+                if (!this._tabsMovable || !this._dragData) {
                     return;
                 }
+                // Setup common variables
                 var clientX = event.clientX;
                 var clientY = event.clientY;
                 var data = this._dragData;
+                // Check to see if the drag threshold has been exceeded, and
+                // start the tab drag operation the first time that occurrs.
                 if (!data.dragActive) {
                     var dx = Math.abs(clientX - data.pressX);
                     var dy = Math.abs(clientY - data.pressY);
                     if (dx < DRAG_THRESHOLD && dy < DRAG_THRESHOLD) {
                         return;
                     }
-                    var inner = this.node.firstChild;
-                    var innerRect = inner.getBoundingClientRect();
-                    var cursor = window.getComputedStyle(data.node).cursor;
-                    var grab = overrideCursor(cursor);
-                    data.innerRect = innerRect;
-                    data.cursorGrab = grab;
+                    // Fill in the missing drag data.
+                    var contentNode = this.contentNode;
+                    data.contentRect = contentNode.getBoundingClientRect();
+                    data.cursorGrab = overrideCursor('default');
                     data.dragActive = true;
-                    inner.classList.add(TRANSITION_CLASS);
+                    // Setup the styles for the drag.
+                    contentNode.classList.add(TRANSITION_CLASS);
                     data.node.style.transition = 'none';
                 }
-                var tabWidth = this._tabLayoutWidth();
-                if (!data.emitted) {
-                    var innerRect = data.innerRect;
-                    if (!inBounds(innerRect, DETACH_THRESHOLD, clientX, clientY)) {
-                        var args = {
-                            index: this.currentIndex,
+                // Check to see if the detach threshold has been exceeded, and
+                // emit the detach request signal the first time that occurrs.
+                if (!data.detachRequested) {
+                    if (!inBounds(data.contentRect, DETACH_THRESHOLD, clientX, clientY)) {
+                        // Update the data nad emit the `tabDetachRequested` signal.
+                        data.detachRequested = true;
+                        this.tabDetachRequested.emit(this, {
                             tab: this.currentTab,
-                            tabWidth: tabWidth,
-                            offsetX: data.offsetX,
-                            offsetY: data.offsetY,
+                            index: this.currentIndex,
                             clientX: clientX,
                             clientY: clientY,
-                        };
-                        data.emitted = true;
-                        this.tabDetachRequested.emit(this, args);
+                        });
+                        // If the drag data is null, it means the mouse was released due
+                        // to the tab being detached and the move operation has ended.
                         if (!this._dragData) {
                             return;
                         }
                     }
                 }
+                // Compute the natural position of the current tab, absent any
+                // influence from the mouse drag.
                 var index = this.currentIndex;
-                var naturalX = index * (tabWidth - this._tabOverlap);
-                var lowerBound = naturalX - tabWidth * OVERLAP_THRESHOLD;
-                var upperBound = naturalX + tabWidth * OVERLAP_THRESHOLD;
-                var localX = event.clientX - data.innerRect.left - data.offsetX;
-                var targetX = Math.max(0, Math.min(localX, this.width - tabWidth));
+                var tlw = this._tabLayoutWidth();
+                var naturalX = index * (tlw - this._tabOverlap);
+                // Compute the upper and lower bound on the natural tab position
+                // which would cause the tab to swap position with its neighbor.
+                var lowerBound = naturalX - tlw * OVERLAP_THRESHOLD;
+                var upperBound = naturalX + tlw * OVERLAP_THRESHOLD;
+                // Compute the actual target mouse position of the tab.
+                var localX = clientX - data.contentRect.left - data.offsetX;
+                var targetX = Math.max(0, Math.min(localX, data.contentRect.width - tlw));
+                // Swap the position of the tab if it exceeds a threshold.
                 if (targetX < lowerBound) {
                     this.moveTab(index, index - 1);
                 }
                 else if (targetX > upperBound) {
                     this.moveTab(index, index + 1);
                 }
+                // Move the tab to its target position.
                 data.node.style.left = targetX + 'px';
             };
             /**
-             * Handle the mouse up event for the tab bar.
+             * Handle the 'mouseup' event for the tab bar.
              */
-            TabBar.prototype.domEvent_mouseup = function (event) {
+            TabBar.prototype._evtMouseUp = function (event) {
                 if (event.button !== 0) {
                     return;
                 }
@@ -11335,36 +11840,49 @@ var phosphor;
              */
             TabBar.prototype._releaseMouse = function () {
                 var _this = this;
+                // Do nothing if the mouse has already been released.
                 var data = this._dragData;
                 if (!data) {
                     return;
                 }
+                // Clear the drag data and remove the extra listeners.
                 this._dragData = null;
                 document.removeEventListener('mouseup', this, true);
                 document.removeEventListener('mousemove', this, true);
-                if (data && data.dragActive) {
+                // Reset the state and layout to the non-drag state.
+                if (data.dragActive) {
                     data.cursorGrab.dispose();
                     data.node.style.transition = '';
-                    this._withTransition(function () { return _this._updateTabLayout(); });
+                    this._withTransition(function () {
+                        _this._updateTabLayout();
+                    });
                 }
             };
             /**
-             * Insert a new tab into the tab bar at a valid index.
+             * Insert a new tab into the tab bar at the given index.
+             *
+             * This method assumes the index is valid and that the tab has
+             * not already been added to the tab bar.
              */
             TabBar.prototype._insertTab = function (index, tab, animate) {
                 var _this = this;
+                // Ensure the tab is deselected and add it to the list and DOM.
                 tab.selected = false;
-                this._tabs.splice(index, 0, tab);
-                this.node.firstChild.appendChild(tab.node);
+                algo.insert(this._tabs, index, tab);
+                this.contentNode.appendChild(tab.node);
+                // Select this tab if there are no selected tabs. Otherwise,
+                // update the tab Z-order to account for the new tab.
                 if (!this._currentTab) {
                     this.currentTab = tab;
                 }
                 else {
                     this._updateTabZOrder();
                 }
+                // If the tab bar is not attached, there is nothing left to do.
                 if (!this.isAttached) {
                     return;
                 }
+                // Animate the tab insert and and layout as appropriate.
                 if (animate) {
                     this._withTransition(function () {
                         tab.node.classList.add(INSERTING_CLASS);
@@ -11374,34 +11892,57 @@ var phosphor;
                     });
                 }
                 else {
-                    this._withTransition(function () { return _this._updateTabLayout(); });
+                    this._withTransition(function () {
+                        _this._updateTabLayout();
+                    });
                 }
+                // Notify the layout system that the widget geometry is dirty.
                 this.updateGeometry();
             };
             /**
              * Move an item to a new index in the tab bar.
+             *
+             * This method assumes both indices are valid.
              */
             TabBar.prototype._moveTab = function (fromIndex, toIndex) {
                 var _this = this;
-                var tab = this._tabs.splice(fromIndex, 1)[0];
-                this._tabs.splice(toIndex, 0, tab);
+                // Move the tab to its new location.
+                var tab = algo.removeAt(this._tabs, fromIndex);
+                algo.insert(this._tabs, toIndex, tab);
+                // Update the tab Z-order to account for the new order.
                 this._updateTabZOrder();
-                this.tabMoved.emit(this, { fromIndex: fromIndex, toIndex: toIndex });
+                // Emit the `tabMoved` signal.
+                this.tabMoved.emit(this, new Pair(fromIndex, toIndex));
+                // If the tab bar is not attached, there is nothing left to do.
                 if (!this.isAttached) {
                     return;
                 }
-                this._withTransition(function () { return _this._updateTabLayout(); });
+                // Animate the tab layout update.
+                this._withTransition(function () {
+                    _this._updateTabLayout();
+                });
             };
             /**
              * Remove the tab at the given index from the tab bar.
+             *
+             * This method assumes the index is valid.
              */
             TabBar.prototype._removeTab = function (index, animate) {
                 var _this = this;
+                // The mouse is always released when removing a tab. Attempting
+                // to gracefully handle the rare case of removing a tab while
+                // a drag is in progress it is not worth the effort.
                 this._releaseMouse();
+                // Remove the tab from the tabs array.
                 var tabs = this._tabs;
-                var tab = tabs.splice(index, 1)[0];
+                var tab = algo.removeAt(tabs, index);
+                // Ensure the tab is deselected and at the bottom of the Z-order.
                 tab.selected = false;
                 tab.node.style.zIndex = '0';
+                // If the tab is the current tab, select the next best tab by
+                // starting with the previous tab, then the next sibling, and
+                // finally the previous sibling. Otherwise, update the state
+                // and tab Z-order as appropriate.
                 if (tab === this._currentTab) {
                     var next = this._previousTab || tabs[index] || tabs[index - 1];
                     this._currentTab = null;
@@ -11410,7 +11951,7 @@ var phosphor;
                         this.currentTab = next;
                     }
                     else {
-                        this.currentChanged.emit(this, { index: -1, tab: void 0 });
+                        this.currentChanged.emit(this, new Pair(-1, void 0));
                     }
                 }
                 else if (tab === this._previousTab) {
@@ -11420,46 +11961,47 @@ var phosphor;
                 else {
                     this._updateTabZOrder();
                 }
-                var inner = this.node.firstChild;
+                // If the tab bar is not attached, remove the node immediately.
                 if (!this.isAttached) {
-                    inner.removeChild(tab.node);
+                    this._removeContentChild(tab.node);
                     return;
                 }
+                // Animate the tab remove as appropriate.
                 if (animate) {
                     this._withTransition(function () {
                         tab.node.classList.add(REMOVING_CLASS);
                         _this._updateTabLayout();
                     }, function () {
                         tab.node.classList.remove(REMOVING_CLASS);
-                        inner.removeChild(tab.node);
+                        _this._removeContentChild(tab.node);
                     });
                 }
                 else {
-                    inner.removeChild(tab.node);
-                    this._withTransition(function () { return _this._updateTabLayout(); });
+                    this._removeContentChild(tab.node);
+                    this._withTransition(function () {
+                        _this._updateTabLayout();
+                    });
                 }
+                // Notify the layout system that the widget geometry is dirty.
                 this.updateGeometry();
             };
             /**
-             * Update the Z order of the tab nodes in the tab bar.
+             * Remove a child node of the tab bar content node.
+             *
+             * This is a no-op if the node is not a child of the content node.
              */
-            TabBar.prototype._updateTabZOrder = function () {
-                var tabs = this._tabs;
-                var index = tabs.length - 1;
-                for (var i = 0, n = tabs.length; i < n; ++i) {
-                    var tab = tabs[i];
-                    if (tab === this._currentTab) {
-                        tab.node.style.zIndex = tabs.length + '';
-                    }
-                    else {
-                        tab.node.style.zIndex = index-- + '';
-                    }
+            TabBar.prototype._removeContentChild = function (node) {
+                var content = this.contentNode;
+                if (content === node.parentNode) {
+                    content.removeChild(node);
                 }
             };
             /**
              * Get the index of the tab which covers the given client position.
+             *
+             * Returns -1 if the client position does not intersect a tab.
              */
-            TabBar.prototype._indexAtPos = function (clientX, clientY) {
+            TabBar.prototype._hitTest = function (clientX, clientY) {
                 var tabs = this._tabs;
                 for (var i = 0, n = tabs.length; i < n; ++i) {
                     if (hitTest(tabs[i].node, clientX, clientY)) {
@@ -11472,11 +12014,11 @@ var phosphor;
              * Compute the layout width of a tab.
              *
              * This computes a tab size as close as possible to the preferred
-             * tab size (but not less than the minimum), taking into account
-             * the current tab bar inner div width and tab overlap setting.
+             * tab size, taking into account the minimum tab width, the current
+             * tab bar width, and the tab overlap setting.
              */
             TabBar.prototype._tabLayoutWidth = function () {
-                var count = this._tabs.length;
+                var count = this.count;
                 if (count === 0) {
                     return 0;
                 }
@@ -11485,68 +12027,102 @@ var phosphor;
                 if (this.width >= totalWidth) {
                     return this._tabWidth;
                 }
-                var ideal = (this.width + totalOverlap) / count;
-                return Math.max(this._minTabWidth, ideal);
+                return Math.max(this._minTabWidth, (this.width + totalOverlap) / count);
             };
             /**
-             * Update the layout of the tabs in the tab bar.
+             * Update the Z-indices of the tabs for the current tab order.
+             */
+            TabBar.prototype._updateTabZOrder = function () {
+                var tabs = this._tabs;
+                var k = tabs.length - 1;
+                var current = this._currentTab;
+                for (var i = 0, n = tabs.length; i < n; ++i) {
+                    var tab = tabs[i];
+                    if (tab === current) {
+                        tab.node.style.zIndex = n + '';
+                    }
+                    else {
+                        tab.node.style.zIndex = k-- + '';
+                    }
+                }
+            };
+            /**
+             * Update the position and size of the tabs in the tab bar.
              *
-             * This will update the position and size of the tabs according to
-             * the current inner width of the tab bar. The position of the drag
-             * tab will not be updated.
+             * The position of the drag tab will not be updated.
              */
             TabBar.prototype._updateTabLayout = function () {
+                var dragNode = null;
+                if (this._dragData && this._dragData.dragActive) {
+                    dragNode = this._dragData.node;
+                }
                 var left = 0;
-                var width = this.width;
                 var tabs = this._tabs;
-                var stub = TAB_STUB_SIZE;
-                var data = this._dragData;
+                var width = this.width;
                 var overlap = this._tabOverlap;
-                var tabWidth = this._tabLayoutWidth();
-                var dragNode = data && data.dragActive && data.node;
+                var tlw = this._tabLayoutWidth();
                 for (var i = 0, n = tabs.length; i < n; ++i) {
                     var node = tabs[i].node;
                     var style = node.style;
                     if (node !== dragNode) {
-                        var stubOffset = tabWidth + stub * (n - i - 1);
-                        if (left + stubOffset > width) {
-                            left = Math.max(0, width - stubOffset);
+                        var offset = tlw + TAB_STUB_SIZE * (n - i - 1);
+                        if ((left + offset) > width) {
+                            left = Math.max(0, width - offset);
                         }
                         style.left = left + 'px';
                     }
-                    style.width = tabWidth + 'px';
-                    left += tabWidth - overlap;
+                    style.width = tlw + 'px';
+                    left += tlw - overlap;
                 }
             };
             /**
              * A helper function to execute an animated transition.
              *
-             * This will execute the enter after the transition class has been
-             * added to the tab bar, and execute the exit callback after the
-             * transition duration has expired and the transition class has
-             * been removed from the tab bar.
+             * This will add the transition class to the tab bar for the global
+             * transition duration. The optional `onEnter` callback is invoked
+             * immediately after the transition class is added. The optional
+             * `onExit` callback will be invoked after the transition duration
+             * has expired and the transition class is removed from the tab bar.
              *
              * If there is an active drag in progress, the transition class
-             * will not be removed from the inner div on exit.
+             * will not be removed from the on exit.
              */
-            TabBar.prototype._withTransition = function (enter, exit) {
+            TabBar.prototype._withTransition = function (onEnter, onExit) {
                 var _this = this;
-                var inner = this.node.firstChild;
-                inner.classList.add(TRANSITION_CLASS);
-                if (enter)
-                    enter();
+                var node = this.contentNode;
+                node.classList.add(TRANSITION_CLASS);
+                if (onEnter) {
+                    onEnter();
+                }
                 setTimeout(function () {
-                    var data = _this._dragData;
-                    if (!data || !data.dragActive) {
-                        inner.classList.remove(TRANSITION_CLASS);
+                    if (!_this._dragData || !_this._dragData.dragActive) {
+                        node.classList.remove(TRANSITION_CLASS);
                     }
-                    if (exit)
-                        exit();
+                    if (onExit) {
+                        onExit();
+                    }
                 }, TRANSITION_DURATION);
             };
+            /**
+             * Initialize the tab bar state from an options object.
+             */
+            TabBar.prototype._initFrom = function (options) {
+                if (options.tabsMovable !== void 0) {
+                    this.tabsMovable = options.tabsMovable;
+                }
+                if (options.tabWidth !== void 0) {
+                    this.tabWidth = options.tabWidth;
+                }
+                if (options.minTabWidth !== void 0) {
+                    this.minTabWidth = options.minTabWidth;
+                }
+                if (options.tabOverlap !== void 0) {
+                    this.tabOverlap = options.tabOverlap;
+                }
+            };
             return TabBar;
-        })(panels.Panel);
-        panels.TabBar = TabBar;
+        })(widgets.Widget);
+        widgets.TabBar = TabBar;
         /**
          * Test whether a point lies within an expanded rect.
          */
@@ -11565,8 +12141,8 @@ var phosphor;
             }
             return true;
         }
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets
 
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -11583,19 +12159,20 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var phosphor;
 (function (phosphor) {
-    var panels;
-    (function (panels) {
+    var widgets;
+    (function (widgets) {
         var Signal = phosphor.core.Signal;
+        var Pair = phosphor.utility.Pair;
         /**
          * The class name added to tab panel instances.
          */
         var TAB_PANEL_CLASS = 'p-TabPanel';
         /**
-         * A panel which provides a tabbed container for child panels.
+         * A panel which provides a tabbed container for child widgets.
          *
-         * The TabPanel provides a convenient combination of a tab bar and
-         * a stack panel which allows the user to toggle between panels by
-         * selecting the tab associated with a tabbable panel.
+         * The TabPanel provides a convenient combination of a TabBar and a
+         * StackedPanel which allows the user to toggle between widgets by
+         * selecting the tab associated with a widget.
          */
         var TabPanel = (function (_super) {
             __extends(TabPanel, _super);
@@ -11605,39 +12182,39 @@ var phosphor;
             function TabPanel() {
                 _super.call(this);
                 /**
-                 * A signal emitted when the current panel is changed.
+                 * A signal emitted when the current widget is changed.
                  */
                 this.currentChanged = new Signal();
-                this.node.classList.add(TAB_PANEL_CLASS);
-                this.layout = new panels.BoxLayout(2 /* TopToBottom */, 0);
+                this.addClass(TAB_PANEL_CLASS);
+                this.layout = new widgets.BoxLayout(2 /* TopToBottom */, 0);
                 this.setFlag(16 /* DisallowLayoutChange */);
-                var bar = this._tabBar = new panels.TabBar();
+                var bar = this._tabBar = new widgets.TabBar();
                 bar.tabMoved.connect(this._tb_tabMoved, this);
                 bar.currentChanged.connect(this._tb_currentChanged, this);
                 bar.tabCloseRequested.connect(this._tb_tabCloseRequested, this);
-                var stack = this._stackPanel = new panels.StackPanel();
-                stack.panelRemoved.connect(this._sw_panelRemoved, this);
-                this.layout.addPanel(bar);
-                this.layout.addPanel(stack);
+                var stack = this._stackedPanel = new widgets.StackedPanel();
+                stack.widgetRemoved.connect(this._sw_widgetRemoved, this);
+                this.layout.addWidget(bar);
+                this.layout.addWidget(stack);
             }
             /**
              * Dispose of the resources held by the panel.
              */
             TabPanel.prototype.dispose = function () {
                 this._tabBar = null;
-                this._stackPanel = null;
+                this._stackedPanel = null;
                 this.currentChanged.disconnect();
                 _super.prototype.dispose.call(this);
             };
             Object.defineProperty(TabPanel.prototype, "currentIndex", {
                 /**
-                 * Get the index of the currently selected panel.
+                 * Get the index of the currently selected widget.
                  */
                 get: function () {
-                    return this._stackPanel.currentIndex;
+                    return this._stackedPanel.currentIndex;
                 },
                 /**
-                 * Set the index of the currently selected panel.
+                 * Set the index of the currently selected widget.
                  */
                 set: function (index) {
                     this._tabBar.currentIndex = index;
@@ -11645,28 +12222,18 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(TabPanel.prototype, "currentPanel", {
+            Object.defineProperty(TabPanel.prototype, "currentWidget", {
                 /**
-                 * Get the currently selected panel.
+                 * Get the currently selected widget.
                  */
                 get: function () {
-                    return this._stackPanel.currentPanel;
+                    return this._stackedPanel.currentWidget;
                 },
                 /**
-                 * Set the currently selected panel.
+                 * Set the currently selected widget.
                  */
-                set: function (panel) {
-                    this._tabBar.currentIndex = this.indexOf(panel);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(TabPanel.prototype, "count", {
-                /**
-                 * Get the number of panels in the tab panel.
-                 */
-                get: function () {
-                    return this._stackPanel.count;
+                set: function (widget) {
+                    this._tabBar.currentIndex = this.indexOf(widget);
                 },
                 enumerable: true,
                 configurable: true
@@ -11689,7 +12256,7 @@ var phosphor;
             });
             Object.defineProperty(TabPanel.prototype, "tabBar", {
                 /**
-                 * Get the tab bar used by the tab panel.
+                 * Get the tab bar used by the panel.
                  */
                 get: function () {
                     return this._tabBar;
@@ -11697,1123 +12264,89 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
-            Object.defineProperty(TabPanel.prototype, "stackPanel", {
+            Object.defineProperty(TabPanel.prototype, "count", {
                 /**
-                 * Get the stack panel used by the tab panel.
+                 * Get the number of widgets in the panel.
                  */
                 get: function () {
-                    return this._stackPanel;
+                    return this._stackedPanel.count;
                 },
                 enumerable: true,
                 configurable: true
             });
             /**
-             * Get the index of the given panel.
+             * Get the index of the given widget.
              */
-            TabPanel.prototype.indexOf = function (panel) {
-                return this._stackPanel.indexOf(panel);
+            TabPanel.prototype.indexOf = function (widget) {
+                return this._stackedPanel.indexOf(widget);
             };
             /**
-             * Add a panel to the end of the tab panel.
+             * Get the widget at the given index.
              *
-             * If the panel has already been added, it will be moved.
-             *
-             * Returns the new index of the panel.
+             * Returns `undefined` if there is no widget at the given index.
              */
-            TabPanel.prototype.addPanel = function (panel) {
-                return this.insertPanel(this.count, panel);
+            TabPanel.prototype.widgetAt = function (index) {
+                return this._stackedPanel.widgetAt(index);
             };
             /**
-             * Insert a panel into the tab panel at the given index.
+             * Add a tabbable widget to the end of the panel.
              *
-             * If the panel has already been added, it will be moved.
+             * If the widget already exists in the panel, it will be moved.
              *
-             * Returns the new index of the panel.
+             * Returns the index of the added widget.
              */
-            TabPanel.prototype.insertPanel = function (index, panel) {
-                var i = this.indexOf(panel);
-                if (i >= 0) {
-                    return this.movePanel(i, index);
-                }
-                index = this._stackPanel.insertPanel(index, panel);
-                return this._tabBar.insertTab(index, panel.tab);
+            TabPanel.prototype.addWidget = function (widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                return this.insertWidget(this.count, widget, alignment);
             };
             /**
-             * Move a panel from one index to another.
+             * Insert a tabbable widget into the panel at the given index.
              *
-             * Returns the new index of the panel.
+             * If the widget already exists in the panel, it will be moved.
+             *
+             * Returns the index of the added widget.
              */
-            TabPanel.prototype.movePanel = function (fromIndex, toIndex) {
+            TabPanel.prototype.insertWidget = function (index, widget, alignment) {
+                if (alignment === void 0) { alignment = 0; }
+                index = this._stackedPanel.insertWidget(index, widget, alignment);
+                return this._tabBar.insertTab(index, widget.tab);
+            };
+            /**
+             * Move a widget from one index to another.
+             *
+             * Returns the new index of the widget.
+             */
+            TabPanel.prototype.moveWidget = function (fromIndex, toIndex) {
                 return this._tabBar.moveTab(fromIndex, toIndex);
             };
             /**
              * Handle the `tabMoved` signal from the tab bar.
              */
             TabPanel.prototype._tb_tabMoved = function (sender, args) {
-                this._stackPanel.movePanel(args.fromIndex, args.toIndex);
+                this._stackedPanel.moveWidget(args.first, args.second);
             };
             /**
              * Handle the `currentChanged` signal from the tab bar.
              */
             TabPanel.prototype._tb_currentChanged = function (sender, args) {
-                this._stackPanel.currentIndex = args.index;
-                var panel = this._stackPanel.currentPanel;
-                this.currentChanged.emit(this, { index: args.index, panel: panel });
+                this._stackedPanel.currentIndex = args.first;
+                var widget = this._stackedPanel.currentWidget;
+                this.currentChanged.emit(this, new Pair(args.first, widget));
             };
             /**
              * Handle the `tabCloseRequested` signal from the tab bar.
              */
             TabPanel.prototype._tb_tabCloseRequested = function (sender, args) {
-                this._stackPanel.panelAt(args.index).close();
+                this._stackedPanel.widgetAt(args.first).close();
             };
             /**
-             * Handle the `panelRemoved` signal from the stack panel.
+             * Handle the `widgetRemoved` signal from the stacked panel.
              */
-            TabPanel.prototype._sw_panelRemoved = function (sender, args) {
-                this._tabBar.takeAt(args.index);
+            TabPanel.prototype._sw_widgetRemoved = function (sender, args) {
+                this._tabBar.removeAt(args.first);
             };
             return TabPanel;
-        })(panels.Panel);
-        panels.TabPanel = TabPanel;
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var panels;
-    (function (panels) {
-        var hitTest = phosphor.domutil.hitTest;
-        var overrideCursor = phosphor.domutil.overrideCursor;
-        /**
-         * The class name added to DockArea instances.
-         */
-        var DOCK_AREA_CLASS = 'p-DockArea';
-        /**
-         * The class name added to floating tabs.
-         */
-        var FLOATING_CLASS = 'p-mod-floating';
-        /**
-         * A panel which provides a flexible layout area for panels.
-         */
-        var DockArea = (function (_super) {
-            __extends(DockArea, _super);
-            /**
-             * Construct a new dock area.
-             */
-            function DockArea() {
-                _super.call(this);
-                this._handleSize = 3;
-                this._tabWidth = 175;
-                this._tabOverlap = 1;
-                this._minTabWidth = 45;
-                this._ignoreRemoved = false;
-                this._root = null;
-                this._dragData = null;
-                this._items = [];
-                this.node.classList.add(DOCK_AREA_CLASS);
-                this._root = this._createSplitter(0 /* Horizontal */);
-                this.layout = new panels.SingleLayout(this._root);
-                this.setFlag(16 /* DisallowLayoutChange */);
-            }
-            /**
-             * Dispose of the resources held by the panel.
-             */
-            DockArea.prototype.dispose = function () {
-                this._abortDrag();
-                this._root = null;
-                this._items = null;
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(DockArea.prototype, "tabWidth", {
-                /**
-                 * Get the width of the tabs in the dock area.
-                 */
-                get: function () {
-                    return this._tabWidth;
-                },
-                /**
-                 * Get the width of the tabs in the dock area.
-                 */
-                set: function (width) {
-                    width = Math.max(0, width);
-                    if (width === this._tabWidth) {
-                        return;
-                    }
-                    this._tabWidth = width;
-                    iterPanels(this._root, function (panel) {
-                        panel.tabBar.tabWidth = width;
-                    });
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DockArea.prototype, "minTabWidth", {
-                /**
-                 * Get the minimum tab width in pixels.
-                 */
-                get: function () {
-                    return this._minTabWidth;
-                },
-                /**
-                 * Set the minimum tab width in pixels.
-                 */
-                set: function (width) {
-                    width = Math.max(0, width);
-                    if (width === this._minTabWidth) {
-                        return;
-                    }
-                    this._minTabWidth = width;
-                    iterPanels(this._root, function (panel) {
-                        panel.tabBar.minTabWidth = width;
-                    });
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DockArea.prototype, "tabOverlap", {
-                /**
-                 * Get the tab overlap amount in pixels.
-                 */
-                get: function () {
-                    return this._tabOverlap;
-                },
-                /**
-                 * Set the tab overlap amount in pixels.
-                 */
-                set: function (overlap) {
-                    if (overlap === this._tabOverlap) {
-                        return;
-                    }
-                    this._tabOverlap = overlap;
-                    iterPanels(this._root, function (panel) {
-                        panel.tabBar.tabOverlap = overlap;
-                    });
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DockArea.prototype, "handleSize", {
-                /**
-                 * Get the handle size of the dock splitters.
-                 */
-                get: function () {
-                    return this._handleSize;
-                },
-                /**
-                 * Set the handle size of the dock splitters.
-                 */
-                set: function (size) {
-                    if (size === this._handleSize) {
-                        return;
-                    }
-                    this._handleSize = size;
-                    iterSplitters(this._root, function (splitter) {
-                        splitter.handleSize = size;
-                    });
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Add a panel to the dock area.
-             *
-             * The panel is positioned in the area according to the given dock
-             * mode and reference panel. If the dock panel is already added to
-             * the area, it will be moved to the new location.
-             *
-             * The default mode inserts the panel on the left side of the area.
-             */
-            DockArea.prototype.addPanel = function (panel, mode, ref) {
-                switch (mode) {
-                    case 0 /* Top */:
-                        this._addWidget(panel, 1 /* Vertical */, false);
-                        break;
-                    case 1 /* Left */:
-                        this._addWidget(panel, 0 /* Horizontal */, false);
-                        break;
-                    case 2 /* Right */:
-                        this._addWidget(panel, 0 /* Horizontal */, true);
-                        break;
-                    case 3 /* Bottom */:
-                        this._addWidget(panel, 1 /* Vertical */, true);
-                        break;
-                    case 4 /* SplitTop */:
-                        this._splitWidget(panel, ref, 1 /* Vertical */, false);
-                        break;
-                    case 5 /* SplitLeft */:
-                        this._splitWidget(panel, ref, 0 /* Horizontal */, false);
-                        break;
-                    case 6 /* SplitRight */:
-                        this._splitWidget(panel, ref, 0 /* Horizontal */, true);
-                        break;
-                    case 7 /* SplitBottom */:
-                        this._splitWidget(panel, ref, 1 /* Vertical */, true);
-                        break;
-                    case 8 /* TabBefore */:
-                        this._tabifyWidget(panel, ref, false);
-                        break;
-                    case 9 /* TabAfter */:
-                        this._tabifyWidget(panel, ref, true);
-                        break;
-                    default:
-                        this._addWidget(panel, 0 /* Horizontal */, false);
-                        break;
-                }
-            };
-            // /**
-            //  * Ensure the given widget is activated.
-            //  *
-            //  * If the widget does not exist, this is a no-op.
-            //  *
-            //  * Returns true if the widget was activated, false otherwise.
-            //  */
-            // activateWidget(widget: Widget): boolean {
-            //   var item = find(this._items, it => it.widget === widget);
-            //   if (!item) {
-            //     return false;
-            //   }
-            //   item.panel.tabBar.currentTab = item.widget.tab;
-            //   return true;
-            // }
-            // /**
-            //  * Get an array of the active widgets in the dock area.
-            //  */
-            // activeWidgets(): Widget[] {
-            //   var result: Widget[] = [];
-            //   iterPanels(this._root, panel => {
-            //     var current = panel.stackPanel.currentPanel;
-            //     if (current) result.push(current);
-            //   });
-            //   return result;
-            // }
-            /**
-             * Handle the DOM events for the dock area.
-             */
-            DockArea.prototype.handleEvent = function (event) {
-                switch (event.type) {
-                    case 'mousemove':
-                        this.domEvent_mousemove(event);
-                        break;
-                    case 'mouseup':
-                        this.domEvent_mouseup(event);
-                        break;
-                    case 'contextmenu':
-                        event.preventDefault();
-                        event.stopPropagation();
-                        break;
-                    default:
-                        break;
-                }
-            };
-            /**
-             * Handle the 'mousemove' event for the dock area.
-             *
-             * This is triggered on the document during a tab move operation.
-             */
-            DockArea.prototype.domEvent_mousemove = function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                var dragData = this._dragData;
-                if (!dragData) {
-                    return;
-                }
-                // Hit test the panels using the current mouse position.
-                var clientX = event.clientX;
-                var clientY = event.clientY;
-                var hitPanel = iterPanels(this._root, function (p) {
-                    return hitTest(p.node, clientX, clientY) ? p : void 0;
-                });
-                // If the last hit panel is not this hit panel, clear the overlay.
-                if (dragData.lastHitPanel && dragData.lastHitPanel !== hitPanel) {
-                    dragData.lastHitPanel.hideOverlay();
-                }
-                // Clear the reference to the hit panel. It will be updated again
-                // if the mouse is over a panel, but not over the panel's tab bar.
-                dragData.lastHitPanel = null;
-                // Compute the new X and Y tab coordinates.
-                var x = clientX - dragData.offsetX;
-                var y = clientY - dragData.offsetY;
-                // If the mouse is not over a dock panel, simply update the tab.
-                var item = dragData.item;
-                var itemTab = item.widget.tab;
-                var tabStyle = itemTab.node.style;
-                if (!hitPanel) {
-                    tabStyle.left = x + 'px';
-                    tabStyle.top = y + 'px';
-                    return;
-                }
-                // Handle the case where the mouse is not over a tab bar. This
-                // saves a reference to the hit panel so that its overlay can be
-                // hidden once the mouse leaves the area, and shows the overlay
-                // provided that the split target is not the current widget.
-                if (!hitTest(hitPanel.tabBar.node, clientX, clientY)) {
-                    dragData.lastHitPanel = hitPanel;
-                    if (hitPanel !== item.panel || hitPanel.tabBar.count > 0) {
-                        hitPanel.showOverlay(clientX, clientY);
-                    }
-                    tabStyle.left = x + 'px';
-                    tabStyle.top = y + 'px';
-                    return;
-                }
-                // Otherwise the mouse is positioned over a tab bar. Hide the
-                // overlay before attaching the tab to the new tab bar.
-                hitPanel.hideOverlay();
-                // If the hit panel is not the current owner, the current hit
-                // panel and tab are saved so that they can be restored later.
-                if (hitPanel !== item.panel) {
-                    dragData.tempPanel = hitPanel;
-                    dragData.tempTab = hitPanel.tabBar.currentTab;
-                }
-                // Reset the tab style before attaching the tab to the tab bar.
-                floatTab(itemTab, false);
-                tabStyle.top = '';
-                tabStyle.left = '';
-                tabStyle.width = '';
-                // Attach the tab to the hit tab bar.
-                hitPanel.tabBar.attachTab({
-                    tab: itemTab,
-                    clientX: clientX,
-                    clientY: clientY,
-                    offsetX: dragData.offsetX,
-                    offsetY: dragData.offsetY,
-                    tabWidth: dragData.tabWidth,
-                });
-                // The tab bar takes over movement of the tab. The dock area still
-                // listens for the mouseup event in order to complete the move.
-                document.removeEventListener('mousemove', this, true);
-            };
-            /**
-             * Handle the 'mouseup' event for the dock area.
-             *
-             * This is triggered on the document during a tab move operation.
-             */
-            DockArea.prototype.domEvent_mouseup = function (event) {
-                if (event.button !== 0) {
-                    return;
-                }
-                event.preventDefault();
-                event.stopPropagation();
-                document.removeEventListener('mouseup', this, true);
-                document.removeEventListener('mousemove', this, true);
-                document.removeEventListener('contextmenu', this, true);
-                var dragData = this._dragData;
-                if (!dragData) {
-                    return;
-                }
-                this._dragData = null;
-                // Restore the application cursor and hide the overlay.
-                dragData.grab.dispose();
-                if (dragData.lastHitPanel) {
-                    dragData.lastHitPanel.hideOverlay();
-                }
-                // Fetch common variables.
-                var item = dragData.item;
-                var ownPanel = item.panel;
-                var ownBar = ownPanel.tabBar;
-                var ownCount = ownBar.count;
-                var itemTab = item.widget.tab;
-                // If the tab was being temporarily borrowed by another panel,
-                // make that relationship permanent by moving the dock widget.
-                // If the original owner panel becomes empty, it is removed.
-                // Otherwise, its current index is updated to the next widget.
-                //
-                // The ignoreRemoved flag is set during the widget swap since
-                // the widget is not actually being removed from the area.
-                if (dragData.tempPanel) {
-                    item.panel = dragData.tempPanel;
-                    this._ignoreRemoved = true;
-                    item.panel.stackPanel.addPanel(item.widget);
-                    this._ignoreRemoved = false;
-                    item.panel.stackPanel.currentPanel = item.widget;
-                    if (ownPanel.stackPanel.count === 0) {
-                        this._removePanel(ownPanel);
-                    }
-                    else {
-                        var i = ownBar.tabIndex(dragData.prevTab);
-                        if (i === -1)
-                            i = Math.min(dragData.index, ownCount - 1);
-                        ownBar.currentIndex = i;
-                    }
-                    return;
-                }
-                // Snap the split mode before modifying the DOM with the tab insert.
-                var mode = 4 /* Invalid */;
-                var hitPanel = dragData.lastHitPanel;
-                if (hitPanel && (hitPanel !== ownPanel || ownCount !== 0)) {
-                    mode = hitPanel.splitModeAt(event.clientX, event.clientY);
-                }
-                // If the mouse was not released over a panel, or if the hit panel
-                // is the empty owner panel, restore the tab to its position.
-                var tabStyle = itemTab.node.style;
-                if (mode === 4 /* Invalid */) {
-                    if (ownBar.currentTab !== itemTab) {
-                        floatTab(itemTab, false);
-                        tabStyle.top = '';
-                        tabStyle.left = '';
-                        tabStyle.width = '';
-                        ownBar.insertTab(dragData.index, itemTab);
-                    }
-                    return;
-                }
-                // Remove the tab from the document body and reset its style.
-                document.body.removeChild(itemTab.node);
-                floatTab(itemTab, false);
-                tabStyle.top = '';
-                tabStyle.left = '';
-                tabStyle.width = '';
-                // Split the target panel with the dock widget.
-                var after = mode === 2 /* Right */ || mode === 3 /* Bottom */;
-                var horiz = mode === 1 /* Left */ || mode === 2 /* Right */;
-                var orientation = horiz ? 0 /* Horizontal */ : 1 /* Vertical */;
-                this._splitPanel(hitPanel, item.widget, orientation, after);
-                var i = ownBar.tabIndex(dragData.prevTab);
-                if (i === -1)
-                    i = Math.min(dragData.index, ownCount - 1);
-                ownBar.currentIndex = i;
-            };
-            /**
-             * Add the widget to a new root dock panel along the given orientation.
-             *
-             * If the widget already exists in the area, it will be removed.
-             */
-            DockArea.prototype._addWidget = function (widget, orientation, after) {
-                widget.parent = null;
-                var panel = this._createPanel();
-                this._addItem(widget, panel);
-                panel.stackPanel.addPanel(widget);
-                panel.tabBar.addTab(widget.tab);
-                this._ensureRoot(orientation);
-                if (after) {
-                    this._root.addPanel(panel);
-                }
-                else {
-                    this._root.insertPanel(0, panel);
-                }
-            };
-            /**
-             * Add the dock widget as a new split panel next to the reference.
-             *
-             * If the reference does not exist in the area, this is a no-op.
-             *
-             * If the dock widget already exists in the area, it will be moved.
-             */
-            DockArea.prototype._splitWidget = function (widget, ref, orientation, after) {
-                if (widget === ref) {
-                    return;
-                }
-                var refItem = find(this._items, function (it) { return it.widget === ref; });
-                if (!refItem) {
-                    return;
-                }
-                this._splitPanel(refItem.panel, widget, orientation, after);
-            };
-            /**
-             * Split the panel with the given widget along the given orientation.
-             *
-             * If the widget already exists in the area, it will be moved.
-             */
-            DockArea.prototype._splitPanel = function (panel, widget, orientation, after) {
-                widget.parent = null;
-                var newPanel = this._createPanel();
-                this._addItem(widget, newPanel);
-                newPanel.stackPanel.addPanel(widget);
-                newPanel.tabBar.addTab(widget.tab);
-                var splitter = panel.parent;
-                if (splitter.orientation !== orientation) {
-                    if (splitter.count <= 1) {
-                        splitter.orientation = orientation;
-                        splitter.insertPanel(after ? 1 : 0, newPanel);
-                        splitter.setSizes([1, 1]);
-                    }
-                    else {
-                        var sizes = splitter.sizes();
-                        var index = splitter.indexOf(panel);
-                        panel.parent = null;
-                        var newSplitter = this._createSplitter(orientation);
-                        newSplitter.addPanel(panel);
-                        newSplitter.insertPanel(after ? 1 : 0, newPanel);
-                        splitter.insertPanel(index, newSplitter);
-                        splitter.setSizes(sizes);
-                        newSplitter.setSizes([1, 1]);
-                    }
-                }
-                else {
-                    var sizes = splitter.sizes();
-                    var index = splitter.indexOf(panel);
-                    splitter.insertPanel(index + (after ? 1 : 0), newPanel);
-                    sizes.splice(index, 0, 1 / sizes.length);
-                    splitter.setSizes(sizes);
-                }
-            };
-            /**
-             * Add the dock widget as a tab next to the reference.
-             *
-             * If the reference does not exist in the area, this is a no-op.
-             *
-             * If the dock widget already exists in the area, it will be moved.
-             */
-            DockArea.prototype._tabifyWidget = function (widget, ref, after) {
-                if (widget === ref) {
-                    return;
-                }
-                var refItem = find(this._items, function (it) { return it.widget === ref; });
-                if (!refItem) {
-                    return;
-                }
-                widget.parent = null;
-                var panel = refItem.panel;
-                var index = panel.tabBar.tabIndex(ref.tab) + (after ? 1 : 0);
-                this._addItem(widget, panel);
-                panel.stackPanel.addPanel(widget);
-                panel.tabBar.insertTab(index, widget.tab);
-            };
-            /**
-             * Ensure the root splitter has the given orientation.
-             *
-             * If the current root has the given orientation, this is a no-op.
-             *
-             * If the root has <= 1 child, its orientation will be updated.
-             *
-             * Otherwise, a new root will be created with the proper orientation
-             * and the current root will be added as the new root's first child.
-             */
-            DockArea.prototype._ensureRoot = function (orientation) {
-                var root = this._root;
-                if (root.orientation === orientation) {
-                    return;
-                }
-                if (root.count <= 1) {
-                    root.orientation = orientation;
-                }
-                else {
-                    this._root = this._createSplitter(orientation);
-                    this._root.addPanel(root);
-                    this.layout.panel = this._root;
-                }
-            };
-            /**
-             * Add a new item to the dock area and install its signal handlers.
-             */
-            DockArea.prototype._addItem = function (widget, panel) {
-                this._items.push({ widget: widget, panel: panel });
-            };
-            /**
-             * Create a new panel and setup the signal handlers.
-             */
-            DockArea.prototype._createPanel = function () {
-                var panel = new DockPanel();
-                var tabBar = panel.tabBar;
-                tabBar.tabWidth = this._tabWidth;
-                tabBar.tabOverlap = this._tabOverlap;
-                tabBar.minTabWidth = this._minTabWidth;
-                tabBar.currentChanged.connect(this._tb_currentChanged, this);
-                tabBar.tabCloseRequested.connect(this._tb_tabCloseRequested, this);
-                tabBar.tabDetachRequested.connect(this._tb_tabDetachRequested, this);
-                panel.stackPanel.panelRemoved.connect(this._sw_widgetRemoved, this);
-                return panel;
-            };
-            /**
-             * Create a new dock splitter for the dock area.
-             */
-            DockArea.prototype._createSplitter = function (orientation) {
-                var splitter = new DockSplitter(orientation);
-                splitter.handleSize = this._handleSize;
-                return splitter;
-            };
-            /**
-             * Remove an empty dock panel from the hierarchy.
-             *
-             * This ensures that the hierarchy is kept consistent by merging an
-             * ancestor splitter when it contains only a single child widget.
-             */
-            DockArea.prototype._removePanel = function (panel) {
-                // The parent of a dock panel is always a splitter.
-                var splitter = panel.parent;
-                // Dispose the panel. It is possible that this method is executing
-                // on the path of the panel's child stack widget event handler, so
-                // the panel is disposed in a deferred fashion to avoid disposing
-                // the child stack widget while its processing events.
-                panel.parent = null;
-                setTimeout(function () { return panel.dispose(); }, 0);
-                // If the splitter still has multiple children after removing
-                // the target panel, nothing else needs to be done.
-                if (splitter.count > 1) {
-                    return;
-                }
-                // If the splitter is the root splitter and has a remaining
-                // child which is a splitter, that child becomes the root.
-                if (splitter === this._root) {
-                    if (splitter.count === 1) {
-                        var child = splitter.panelAt(0);
-                        if (child instanceof DockSplitter) {
-                            var layout = this.layout;
-                            var sizes = child.sizes();
-                            this._root = child;
-                            splitter.parent = null;
-                            layout.panel = child;
-                            child.setSizes(sizes);
-                            splitter.dispose();
-                        }
-                    }
-                    return;
-                }
-                // Non-root splitters always have a splitter parent and are always
-                // created with 2 children, so the splitter is guaranteed to have
-                // a single child at this point. Furthermore, splitters always have
-                // an orthogonal orientation to their parent, so a grandparent and
-                // a grandhild splitter will have the same orientation. This means
-                // the children of the granchild can be merged into the grandparent.
-                var gParent = splitter.parent;
-                var gSizes = gParent.sizes();
-                var gChild = splitter.panelAt(0);
-                var index = gParent.indexOf(splitter);
-                splitter.parent = null;
-                if (gChild instanceof DockPanel) {
-                    gParent.insertPanel(index, gChild);
-                }
-                else {
-                    var gcsp = gChild;
-                    var gcspSizes = gcsp.sizes();
-                    var sizeShare = gSizes.splice(index, 1)[0];
-                    for (var i = 0; gcsp.count !== 0; ++i) {
-                        gParent.insertPanel(index + i, gcsp.panelAt(0));
-                        gSizes.splice(index + i, 0, sizeShare * gcspSizes[i]);
-                    }
-                }
-                gParent.setSizes(gSizes);
-                splitter.dispose();
-            };
-            /**
-             * Abort the tab drag operation if one is in progress.
-             */
-            DockArea.prototype._abortDrag = function () {
-                var dragData = this._dragData;
-                if (!dragData) {
-                    return;
-                }
-                this._dragData = null;
-                // Release the mouse grab and restore the application cursor.
-                document.removeEventListener('mouseup', this, true);
-                document.removeEventListener('mousemove', this, true);
-                document.removeEventListener('contextmenu', this, true);
-                dragData.grab.dispose();
-                // Hide the overlay for the last hit panel.
-                if (dragData.lastHitPanel) {
-                    dragData.lastHitPanel.hideOverlay();
-                }
-                // If the tab is borrowed by another tab bar, remove it from
-                // that tab bar and restore that tab bar's previous tab.
-                if (dragData.tempPanel) {
-                    var tabBar = dragData.tempPanel.tabBar;
-                    tabBar.takeAt(tabBar.currentIndex, false);
-                    tabBar.currentTab = dragData.tempTab;
-                }
-                // Restore the tab to its original location in its owner panel.
-                var item = dragData.item;
-                var itemTab = item.widget.tab;
-                var ownBar = item.panel.tabBar;
-                if (ownBar.currentTab !== itemTab) {
-                    var tabStyle = itemTab.node.style;
-                    floatTab(itemTab, false);
-                    tabStyle.top = '';
-                    tabStyle.left = '';
-                    tabStyle.width = '';
-                    ownBar.insertTab(dragData.index, itemTab);
-                }
-            };
-            /**
-             * Handle the `currentChanged` signal from a tab bar.
-             */
-            DockArea.prototype._tb_currentChanged = function (sender, args) {
-                var item = find(this._items, function (it) { return it.widget.tab === args.tab; });
-                if (item && item.panel.tabBar === sender) {
-                    item.panel.stackPanel.currentPanel = item.widget;
-                }
-            };
-            /**
-             * Handle the `tabCloseRequested` signal from a tab bar.
-             */
-            DockArea.prototype._tb_tabCloseRequested = function (sender, args) {
-                var item = find(this._items, function (it) { return it.widget.tab === args.tab; });
-                if (item)
-                    item.widget.close();
-            };
-            /**
-             * Handle the `tabDetachRequested` signal from the tab bar.
-             */
-            DockArea.prototype._tb_tabDetachRequested = function (sender, args) {
-                // Find the dock item for the detach operation.
-                var tab = args.tab;
-                var item = find(this._items, function (it) { return it.widget.tab === tab; });
-                if (!item) {
-                    return;
-                }
-                // Create the drag data the first time a tab is detached.
-                // The drag data will be cleared on the mouse up event.
-                if (!this._dragData) {
-                    var prevTab = sender.previousTab;
-                    var grab = overrideCursor(window.getComputedStyle(tab.node).cursor);
-                    this._dragData = {
-                        item: item,
-                        index: args.index,
-                        tabWidth: 0,
-                        offsetX: 0,
-                        offsetY: 0,
-                        grab: grab,
-                        prevTab: prevTab,
-                        lastHitPanel: null,
-                        tempPanel: null,
-                        tempTab: null,
-                    };
-                }
-                // Update the drag data with the current tab geometry.
-                var dragData = this._dragData;
-                dragData.tabWidth = args.tabWidth;
-                dragData.offsetX = args.offsetX;
-                dragData.offsetY = args.offsetY;
-                // The tab being detached will have one of two states:
-                //
-                // 1) The tab is being detached from its owner tab bar. The current
-                //    index is unset before detaching the tab so that the content
-                //    widget does not change during the drag operation.
-                // 2) The tab is being detached from a tab bar which was borrowing
-                //    the tab temporarily. Its previously selected tab is restored.
-                if (item.panel.tabBar === sender) {
-                    sender.currentIndex = -1;
-                    sender.takeAt(args.index, false);
-                }
-                else {
-                    sender.takeAt(args.index, false);
-                    sender.currentTab = dragData.tempTab;
-                }
-                // Clear the temp panel and tab
-                dragData.tempPanel = null;
-                dragData.tempTab = null;
-                // Setup the initial style and position for the floating tab.
-                var style = tab.node.style;
-                style.left = args.clientX - args.offsetX + 'px';
-                style.top = args.clientY - args.offsetY + 'px';
-                style.width = args.tabWidth + 'px';
-                style.zIndex = '';
-                // Add the floating tab to the document body.
-                floatTab(tab, true);
-                document.body.appendChild(tab.node);
-                // Attach the necessary mouse event listeners.
-                document.addEventListener('mouseup', this, true);
-                document.addEventListener('mousemove', this, true);
-                document.addEventListener('contextmenu', this, true);
-            };
-            /**
-             * Handle the `widgetRemoved` signal from a stack widget.
-             */
-            DockArea.prototype._sw_widgetRemoved = function (sender, args) {
-                if (this._ignoreRemoved) {
-                    return;
-                }
-                var item = remove(this._items, function (it) { return it.widget === args.panel; });
-                if (!item) {
-                    return;
-                }
-                this._abortDrag();
-                item.panel.tabBar.removeTab(item.widget.tab);
-                if (item.panel.stackPanel.count === 0) {
-                    this._removePanel(item.panel);
-                }
-            };
-            return DockArea;
-        })(panels.Panel);
-        panels.DockArea = DockArea;
-        /**
-         * Set or remove the floating class on the given tab.
-         */
-        function floatTab(tab, on) {
-            if (on) {
-                tab.node.classList.add(FLOATING_CLASS);
-            }
-            else {
-                tab.node.classList.remove(FLOATING_CLASS);
-            }
-        }
-        /**
-         * Iterate over the DockPanels starting with the given root splitter.
-         *
-         * Iteration stops when the callback returns anything but undefined.
-         */
-        function iterPanels(root, cb) {
-            for (var i = 0, n = root.count; i < n; ++i) {
-                var result;
-                var panel = root.panelAt(i);
-                if (panel instanceof DockPanel) {
-                    result = cb(panel);
-                }
-                else {
-                    result = iterPanels(panel, cb);
-                }
-                if (result !== void 0) {
-                    return result;
-                }
-            }
-            return void 0;
-        }
-        /**
-         * Iterate over the DockSplitters starting with the given root splitter.
-         *
-         * Iteration stops when the callback returns anything but undefined.
-         */
-        function iterSplitters(root, cb) {
-            var result = cb(root);
-            if (result !== void 0) {
-                return result;
-            }
-            for (var i = 0, n = root.count; i < n; ++i) {
-                var panel = root.panelAt(i);
-                if (panel instanceof DockSplitter) {
-                    result = iterSplitters(panel, cb);
-                    if (result !== void 0) {
-                        return result;
-                    }
-                }
-            }
-            return void 0;
-        }
-        function find(items, cb) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var v = items[i];
-                if (cb(v))
-                    return v;
-            }
-            return void 0;
-        }
-        function remove(items, cb) {
-            for (var i = 0, n = items.length; i < n; ++i) {
-                var v = items[i];
-                if (cb(v)) {
-                    items.splice(i, 1);
-                    return v;
-                }
-            }
-            return void 0;
-        }
-        /**
-         * The class name added to DockPanel instances.
-         */
-        var DOCK_PANEL_CLASS = 'p-DockPanel';
-        /**
-         * The class name added to the DockPanel overlay div.
-         */
-        var OVERLAY_CLASS = 'p-DockPanel-overlay';
-        /**
-         * The split modes used to indicate a dock panel split direction.
-         */
-        var SplitMode;
-        (function (SplitMode) {
-            SplitMode[SplitMode["Top"] = 0] = "Top";
-            SplitMode[SplitMode["Left"] = 1] = "Left";
-            SplitMode[SplitMode["Right"] = 2] = "Right";
-            SplitMode[SplitMode["Bottom"] = 3] = "Bottom";
-            SplitMode[SplitMode["Invalid"] = 4] = "Invalid";
-        })(SplitMode || (SplitMode = {}));
-        /**
-         * An panel used by a DockArea.
-         *
-         * A dock panel acts as a simple container for a tab bar and stack
-         * panel, plus a bit of logic to manage a drop indicator overlay.
-         * The dock area manages the tab bar and stack panel directly, as
-         * there is not always a 1:1 association between a tab and panel.
-         *
-         * This class is not part of the public Phosphor API.
-         */
-        var DockPanel = (function (_super) {
-            __extends(DockPanel, _super);
-            /**
-             * Construct a new dock panel.
-             */
-            function DockPanel() {
-                _super.call(this);
-                this._overlayTimer = 0;
-                this._overlayHidden = true;
-                this._overlayNode = null;
-                this.node.classList.add(DOCK_PANEL_CLASS);
-                this._tabBar = new panels.TabBar();
-                this._stackPanel = new panels.StackPanel();
-                this._overlayNode = this.createOverlay();
-                var layout = new panels.BoxLayout(2 /* TopToBottom */, 0);
-                layout.addPanel(this._tabBar);
-                layout.addPanel(this._stackPanel);
-                this.layout = layout;
-                this.setFlag(16 /* DisallowLayoutChange */);
-                this.node.appendChild(this._overlayNode);
-            }
-            Object.defineProperty(DockPanel.prototype, "tabBar", {
-                /**
-                 * Get the tab bar child of the dock panel.
-                 */
-                get: function () {
-                    return this._tabBar;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(DockPanel.prototype, "stackPanel", {
-                /**
-                 * Get the stack panel child of the dock panel.
-                 */
-                get: function () {
-                    return this._stackPanel;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Dispose of the resources held by the panel.
-             */
-            DockPanel.prototype.dispose = function () {
-                this._clearOverlayTimer();
-                this._tabBar = null;
-                this._stackPanel = null;
-                this._overlayNode = null;
-                _super.prototype.dispose.call(this);
-            };
-            /**
-             * Compute the split mode for the given client position.
-             */
-            DockPanel.prototype.splitModeAt = function (clientX, clientY) {
-                var rect = this.node.getBoundingClientRect();
-                var fracX = (clientX - rect.left) / rect.width;
-                var fracY = (clientY - rect.top) / rect.height;
-                if (fracX < 0.0 || fracX > 1.0 || fracY < 0.0 || fracY > 1.0) {
-                    return 4 /* Invalid */;
-                }
-                var mode;
-                var normX = fracX > 0.5 ? 1 - fracX : fracX;
-                var normY = fracY > 0.5 ? 1 - fracY : fracY;
-                if (normX < normY) {
-                    mode = fracX <= 0.5 ? 1 /* Left */ : 2 /* Right */;
-                }
-                else {
-                    mode = fracY <= 0.5 ? 0 /* Top */ : 3 /* Bottom */;
-                }
-                return mode;
-            };
-            /**
-             * Show the dock overlay for the given client position.
-             *
-             * If the overlay is already visible, it will be adjusted.
-             */
-            DockPanel.prototype.showOverlay = function (clientX, clientY) {
-                this._clearOverlayTimer();
-                var box = this.boxData;
-                var top = box.paddingTop;
-                var left = box.paddingLeft;
-                var right = box.paddingRight;
-                var bottom = box.paddingBottom;
-                switch (this.splitModeAt(clientX, clientY)) {
-                    case 1 /* Left */:
-                        right = this.width / 2;
-                        break;
-                    case 2 /* Right */:
-                        left = this.width / 2;
-                        break;
-                    case 0 /* Top */:
-                        bottom = this.height / 2;
-                        break;
-                    case 3 /* Bottom */:
-                        top = this.height / 2;
-                        break;
-                    default:
-                        return;
-                }
-                // The first time the overlay is made visible, it is positioned at
-                // the cursor with zero size before being displayed. This allows
-                // for a nice transition to the normally computed size. Since the
-                // elements starts with display: none, a restyle must be forced.
-                var style = this._overlayNode.style;
-                if (this._overlayHidden) {
-                    this._overlayHidden = false;
-                    var rect = this.node.getBoundingClientRect();
-                    style.top = clientY - rect.top + 'px';
-                    style.left = clientX - rect.left + 'px';
-                    style.right = rect.right - clientX + 'px';
-                    style.bottom = rect.bottom - clientY + 'px';
-                    style.display = '';
-                    this._overlayNode.offsetWidth; // force restyle
-                }
-                style.opacity = '1';
-                style.top = top + 'px';
-                style.left = left + 'px';
-                style.right = right + 'px';
-                style.bottom = bottom + 'px';
-            };
-            /**
-             * Hide the dock overlay.
-             *
-             * If the overlay is already hidden, this is a no-op.
-             */
-            DockPanel.prototype.hideOverlay = function () {
-                var _this = this;
-                if (this._overlayHidden) {
-                    return;
-                }
-                this._clearOverlayTimer();
-                this._overlayHidden = true;
-                this._overlayNode.style.opacity = '0';
-                this._overlayTimer = setTimeout(function () {
-                    _this._overlayTimer = 0;
-                    _this._overlayNode.style.display = 'none';
-                }, 150);
-            };
-            /**
-             * Create the overlay node for the dock panel.
-             */
-            DockPanel.prototype.createOverlay = function () {
-                var overlay = document.createElement('div');
-                overlay.className = OVERLAY_CLASS;
-                overlay.style.display = 'none';
-                return overlay;
-            };
-            /**
-             * Clear the overlay timer.
-             */
-            DockPanel.prototype._clearOverlayTimer = function () {
-                if (this._overlayTimer) {
-                    clearTimeout(this._overlayTimer);
-                    this._overlayTimer = 0;
-                }
-            };
-            return DockPanel;
-        })(panels.Panel);
-        /**
-         * The class name added to DockSplitter instances.
-         */
-        var DOCK_SPLITTER_CLASS = 'p-DockSplitter';
-        /**
-         * A split panel used by a DockArea.
-         *
-         * This class is not part of the public Phosphor API.
-         */
-        var DockSplitter = (function (_super) {
-            __extends(DockSplitter, _super);
-            /**
-             * Construct a new dock splitter.
-             */
-            function DockSplitter(orientation) {
-                _super.call(this, orientation);
-                this.node.classList.add(DOCK_SPLITTER_CLASS);
-            }
-            return DockSplitter;
-        })(panels.SplitPanel);
-    })(panels = phosphor.panels || (phosphor.panels = {}));
-})(phosphor || (phosphor = {})); // module phosphor.panels
+        })(widgets.Widget);
+        widgets.TabPanel = TabPanel;
+    })(widgets = phosphor.widgets || (phosphor.widgets = {}));
+})(phosphor || (phosphor = {})); // module phosphor.widgets

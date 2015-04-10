@@ -1,499 +1,161 @@
 declare module phosphor.collections {
-    /**
-     * An object which iterates over elements in an iterable.
-     *
-     * The `moveNext` method must be called after creating the iterator to
-     * advance it to the first element or `current` will return `undefined`.
-     *
-     * The behavior of an iterator is undefined if the underlying collection
-     * is modified during iteration. It is not safe to modify a collection
-     * while using an iterator to iterate over its values.
-     */
-    interface IIterator<T> extends IIterable<T> {
+    module algorithm {
         /**
-         * The current value of the iterable.
+         * A generic index callback function.
+         */
+        interface ICallback<T, U> {
+            (value: T, index: number): U;
+        }
+        /**
+         * A boolean predicate function.
+         */
+        interface IPredicate<T> {
+            (value: T, index: number): boolean;
+        }
+        /**
+         * A three-way comparison function.
+         */
+        interface IComparator<T, U> {
+            (first: T, second: U): number;
+        }
+        /**
+         * Find the index of the first element which passes the test.
          *
-         * Returns `undefined` if there is no current value.
-         */
-        current: T;
-        /**
-         * Move the iterator to the next value.
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array.
+         * The default index is `0`.
          *
-         * Returns true on success, false when the iterator is exhausted.
-         */
-        moveNext(): boolean;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * An object which supports iteration over its elements.
-     *
-     * In general, it is not safe to modify the iterable while iterating.
-     */
-    interface IIterable<T> {
-        /**
-         * Get an iterator for the elements in the iterable.
-         */
-        iterator(): IIterator<T>;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A collection of elements with a definite size.
-     */
-    interface ICollection<T> extends IIterable<T> {
-        /**
-         * True if the collection has elements, false otherwise.
-         */
-        empty: boolean;
-        /**
-         * The number of elements in the collection.
-         */
-        size: number;
-        /**
-         * Test whether the collection contains the given value.
-         */
-        contains(value: T): boolean;
-        /**
-         * Add a value to the collection.
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the end of the array and continue until
+         * reaching the element just before the starting element. The default
+         * wrap value is `false`.
          *
-         * Returns true if the collection was changed, false otherwise.
+         * Returns `-1` if no element passes the test.
          */
-        add(value: T): boolean;
+        function findIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
         /**
-         * Remove a value from the collection.
+         * Find the index of the last element which passes the test.
          *
-         * Returns true if the collection was changed, false otherwise.
-         */
-        remove(value: T): boolean;
-        /**
-         * Remove all elements from the collection.
-         */
-        clear(): void;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A double ended queue with constant time access to both ends.
-     */
-    interface IDeque<T> extends IQueue<T> {
-        /**
-         * Push a value onto the front of the queue.
-         */
-        pushFront(value: T): void;
-        /**
-         * Pop and return the value at the back of the queue.
-         */
-        popBack(): T;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A collection of elements which can be accessed by index.
-     */
-    interface IList<T> extends ICollection<T> {
-        /**
-         * Get the index of the given value.
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array.
+         * The default index is `-1`.
          *
-         * Returns -1 if the value is not in the list.
-         */
-        indexOf(value: T): number;
-        /**
-         * Get the element at the given index.
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the front of the array and continue until
+         * reaching the element just after the starting element. The default
+         * wrap value is `false`.
          *
-         * Returns `undefined` if the index is out of range.
+         * Returns `-1` if no element passes the test.
          */
-        get(index: number): T;
+        function findLastIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
         /**
-         * Set the value at the given index.
+         * Find the first element in the array which passes the given test.
          *
-         * Returns false if the index is out of range.
-         */
-        set(index: number, value: T): boolean;
-        /**
-         * Insert a value at the given index.
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array.
+         * The default index is `0`.
          *
-         * Returns false if the index is out of range.
-         */
-        insert(index: number, value: T): boolean;
-        /**
-         * Remove and return the value at the given index.
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the end of the array and continue until
+         * reaching the element just before the starting element. The default
+         * wrap value is `false`.
          *
-         * Returns `undefined` if the index is out of range.
+         * Returns `undefined` if no element passes the test.
          */
-        removeAt(index: number): T;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A collection with first-in-first-out semantics.
-     */
-    interface IQueue<T> extends ICollection<T> {
+        function find<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
         /**
-         * The value at the front of the queue.
-         */
-        front: T;
-        /**
-         * The value at the back of the queue.
-         */
-        back: T;
-        /**
-         * Push a value onto the back of the queue.
-         */
-        pushBack(value: T): void;
-        /**
-         * Pop and return the value at the front of the queue.
-         */
-        popFront(): T;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A collection with first-in-last-out semantics.
-     */
-    interface IStack<T> extends ICollection<T> {
-        /**
-         * The value at the back of the stack.
-         */
-        back: T;
-        /**
-         * Push a value onto the back of the stack.
-         */
-        pushBack(value: T): void;
-        /**
-         * Pop and return the value at the back of the stack.
-         */
-        popBack(): T;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * Create an iterator for an iterable or array.
-     */
-    function iter<T>(iterable: IIterable<T> | T[]): IIterator<T>;
-    /**
-     * Create an array from the values in an iterable.
-     */
-    function toArray<T>(iterable: IIterable<T> | T[]): T[];
-    /**
-     * Invoke a function once for each element in an iterable.
-     *
-     * If the callback returns anything but `undefined`, iteration
-     * will stop and that value will be returned from the function.
-     */
-    function forEach<T, U>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => U): U;
-    /**
-     * Returns true if any element in the iterable passes the given test.
-     */
-    function some<T>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => boolean): boolean;
-    /**
-     * Returns true if all elements in the iterable pass the given test.
-     */
-    function every<T>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => boolean): boolean;
-    /**
-     * Create an array of the iterable elements which pass the given test.
-     */
-    function filter<T>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => boolean): T[];
-    /**
-     * Create an array of callback results for each element in an iterable.
-     */
-    function map<T, U>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => U): U[];
-    /**
-     * Find the first element in the iterable which passes the given test.
-     *
-     * Returns `undefined` if no element passes the test.
-     */
-    function find<T>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => boolean): T;
-    /**
-     * Find the index of the first element which passes the given test.
-     *
-     * Returns -1 if no element passes the test.
-     */
-    function findIndex<T>(iterable: IIterable<T> | T[], callback: (value: T, index: number) => boolean): number;
-    /**
-     * Find the index of the first element which compares `>=` to `value`.
-     *
-     * This uses a binary search algorithm which must be applied to a
-     * sorted list in order for the results to be correct.
-     *
-     * Returns `list.size` if all elements compare `<` than `value`.
-     */
-    function lowerBound<T, U>(list: IList<T>, value: U, compare: (a: T, b: U) => number): number;
-    /**
-     * Find the index of the first element which compares `>` than `value`.
-     *
-     * This uses a binary search algorithm which must be applied to a
-     * sorted list in order for the results to be correct.
-     *
-     * Returns `0` if all elements compare `<=` than `value`.
-     */
-    function upperBound<T, U>(list: IList<T>, value: U, compare: (a: T, b: U) => number): number;
-    /**
-     * Find the index of the first element which compares `==` to `value`.
-     *
-     * This uses a binary search algorithm which must be applied to a
-     * sorted list in order for the results to be correct.
-     *
-     * Returns `-1` if no matching value is found.
-     */
-    function lowerFind<T, U>(list: IList<T>, value: U, compare: (a: T, b: U) => number): number;
-    /**
-     * Find the index of the last element which compares `==` to `value`.
-     *
-     * This uses a binary search algorithm which must be applied to a
-     * sorted list in order for the results to be correct.
-     *
-     * Returns `-1` if no matching value is found.
-     */
-    function upperFind<T, U>(list: IList<T>, value: U, compare: (a: T, b: U) => number): number;
-}
-
-declare module phosphor.collections {
-    /**
-     * A read only view of a collection.
-     */
-    class ReadOnlyCollection<T> implements ICollection<T> {
-        /**
-         * Construct a new read only collection.
-         */
-        constructor(collection: ICollection<T>);
-        /**
-         * True if the collection has elements, false otherwise.
-         */
-        empty: boolean;
-        /**
-         * The number of elements in the collection.
-         */
-        size: number;
-        /**
-         * Get an iterator for the elements in the collection.
-         */
-        iterator(): IIterator<T>;
-        /**
-         * Test whether the collection contains the given value.
-         */
-        contains(value: T): boolean;
-        /**
-         * Add a value to the collection.
+         * Find the last element in the array which passes the given test.
          *
-         * This method always throws.
-         */
-        add(value: T): boolean;
-        /**
-         * Remove a value from the collection.
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array.
+         * The default index is `-1`.
          *
-         * This method always throws.
-         */
-        remove(value: T): boolean;
-        /**
-         * Remove all elements from the collection.
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the front of the array and continue until
+         * reaching the element just after the starting element. The default
+         * wrap value is `false`.
          *
-         * This method always throws.
+         * Returns `undefined` if no element passes the test.
          */
-        clear(): void;
-        protected _collection: ICollection<T>;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A read only view of a list.
-     */
-    class ReadOnlyList<T> extends ReadOnlyCollection<T> implements IList<T> {
+        function findLast<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
         /**
-         * Construct a new read only list.
-         */
-        constructor(list: IList<T>);
-        /**
-         * Get the index of the given value.
+         * Find the index of the first element which is not less than `value`.
          *
-         * Returns -1 if the value is not in the list.
+         * This function uses a binary search. It must be applied to a sorted
+         * array in order for the results to be correct.
+         *
+         * Returns `array.length` if all elements are less than `value`.
          */
-        indexOf(value: T): number;
+        function lowerBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
         /**
-         * Get the value at the given index.
+         * Find the index of the first element which is greater than `value`.
+         *
+         * This function uses a binary search. It must be applied to a sorted
+         * array in order for the results to be correct.
+         *
+         * Returns `array.length` if no element is greater than `value`.
+         */
+        function upperBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+        /**
+         * Find the index of the first element which is equal to `value`.
+         *
+         * This function uses a binary search. It must be applied to a sorted
+         * array in order for the results to be correct.
+         *
+         * Returns `-1` if no matching value is found.
+         */
+        function findLowerIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+        /**
+         * Find the index of the last element which is equal to `value`.
+         *
+         * This function uses a binary search. It must be applied to a sorted
+         * array in order for the results to be correct.
+         *
+         * Returns `-1` if no matching value is found.
+         */
+        function findUpperIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+        /**
+         * Find the first element which is equal to `value`.
+         *
+         * This function uses a binary search. It must be applied to a sorted
+         * array in order for the results to be correct.
+         *
+         * Returns `undefined` if no matching value is found.
+         */
+        function findLower<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
+        /**
+         * Find the index of the last element which is equal to `value`.
+         *
+         * This uses a binary search algorithm which must be applied to a
+         * sorted array in order for the results to be correct.
+         *
+         * Returns `-1` if no matching value is found.
+         */
+        function findUpper<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
+        /**
+         * Insert an element at the given index.
+         *
+         * Returns the clamped index of the inserted element.
+         */
+        function insert<T>(array: T[], index: number, value: T): number;
+        /**
+         * Remove and return the element at the given index.
          *
          * Returns `undefined` if the index is out of range.
          */
-        get(index: number): T;
+        function removeAt<T>(array: T[], index: number): T;
         /**
-         * Set the value at the given index.
+         * Remove the first occurrence of the element and return its index.
          *
-         * This method always throws.
+         * Returns the `-1` if the element is not in the array.
          */
-        set(index: number, value: T): boolean;
-        /**
-         * Insert a value at the given index.
-         *
-         * This method always throws.
-         */
-        insert(index: number, value: T): boolean;
-        /**
-         * Remove and return the value at the given index.
-         *
-         * This method always throws.
-         */
-        removeAt(index: number): T;
+        function remove<T>(array: T[], value: T): number;
     }
 }
 
 declare module phosphor.collections {
-    /**
-     * An iterator for a generic array.
-     */
-    class ArrayIterator<T> implements IIterator<T> {
-        /**
-         * Construct a new array iterator.
-         */
-        constructor(array: T[]);
-        /**
-         * The current value of the iterable.
-         *
-         * Returns `undefined` if there is no current value.
-         */
-        current: T;
-        /**
-         * Move the iterator to the next value.
-         *
-         * Returns true on success, false when the iterator is exhausted.
-         */
-        moveNext(): boolean;
-        /**
-         * Returns `this` to make the iterator iterable.
-         */
-        iterator(): IIterator<T>;
-        private _index;
-        private _array;
-        private _current;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * A collection of elements which can be accessed by index.
-     */
-    class List<T> implements IList<T>, IStack<T> {
-        /**
-         * Construct a new list.
-         */
-        constructor(items?: IIterable<T> | T[]);
-        /**
-         * True if the list has elements, false otherwise.
-         */
-        empty: boolean;
-        /**
-         * The number of elements in the list.
-         */
-        size: number;
-        /**
-         * The value at the back of the list.
-         */
-        back: T;
-        /**
-         * Get an iterator for the elements in the list.
-         */
-        iterator(): IIterator<T>;
-        /**
-         * Test whether the list contains the given value.
-         */
-        contains(value: T): boolean;
-        /**
-         * Get the index of the given value.
-         *
-         * Returns -1 if the value is not in the list.
-         */
-        indexOf(value: T): number;
-        /**
-         * Get the value at the given index.
-         *
-         * Returns `undefined` if the index is out of range.
-         */
-        get(index: number): T;
-        /**
-         * Set the value at the given index.
-         *
-         * Returns false if the index is out of range.
-         */
-        set(index: number, value: T): boolean;
-        /**
-         * Add a value to the end of the list.
-         *
-         * This method always succeeds.
-         */
-        add(value: T): boolean;
-        /**
-         * Push a value onto the back of the list.
-         */
-        pushBack(value: T): void;
-        /**
-         * Insert a value at the given index.
-         *
-         * Returns false if the index is out of range.
-         */
-        insert(index: number, value: T): boolean;
-        /**
-         * Pop and return the value at the back of the list.
-         */
-        popBack(): T;
-        /**
-         * Remove the first matching value from the list.
-         *
-         * Returns false if the value is not in the list.
-         */
-        remove(value: T): boolean;
-        /**
-         * Remove and return the value at the given index.
-         *
-         * Returns `undefined` if the index is out of range.
-         */
-        removeAt(index: number): T;
-        /**
-         * Remove all elements from the list.
-         */
-        clear(): void;
-        private _array;
-    }
-}
-
-declare module phosphor.collections {
-    /**
-     * An iterator for a generic list.
-     */
-    class ListIterator<T> implements IIterator<T> {
-        /**
-         * Construct a new list iterator.
-         */
-        constructor(list: IList<T>);
-        /**
-         * The current value of the iterable.
-         *
-         * Returns `undefined` if there is no current value.
-         */
-        current: T;
-        /**
-         * Move the iterator to the next value.
-         *
-         * Returns true on success, false when the iterator is exhausted.
-         */
-        moveNext(): boolean;
-        /**
-         * Returns `this` to make the iterator iterable.
-         */
-        iterator(): IIterator<T>;
-        private _index;
-        private _list;
-        private _current;
-    }
-}
-
-declare module phosphor.collections {
+    import ICallback = algorithm.ICallback;
+    import IPredicate = algorithm.IPredicate;
     /**
      * A circular buffer with a fixed maximum size.
      *
@@ -502,23 +164,23 @@ declare module phosphor.collections {
      * and back of the buffer. When the buffer reaches its maximum
      * size, newly added elements will overwrite existing elements.
      */
-    class CircularBuffer<T> implements IDeque<T>, IList<T>, IStack<T> {
+    class CircularBuffer<T> {
         /**
          * Construct a new circular buffer.
          */
-        constructor(maxSize: number, items?: IIterable<T> | T[]);
+        constructor(maxSize: number, items?: T[]);
         /**
          * The maximum size of the buffer.
          */
         maxSize: number;
         /**
-         * True if the buffer has elements, false otherwise.
-         */
-        empty: boolean;
-        /**
          * The number of elements in the buffer.
          */
         size: number;
+        /**
+         * True if the buffer has elements, false otherwise.
+         */
+        empty: boolean;
         /**
          * The value at the front of the buffer.
          */
@@ -528,21 +190,7 @@ declare module phosphor.collections {
          */
         back: T;
         /**
-         * Get an iterator for the elements in the buffer.
-         */
-        iterator(): IIterator<T>;
-        /**
-         * Test whether the buffer contains the given value.
-         */
-        contains(value: T): boolean;
-        /**
-         * Get the index of the given value.
-         *
-         * Returns -1 if the value is not in the buffer.
-         */
-        indexOf(value: T): number;
-        /**
-         * Get the element at the given index.
+         * Get the value at the given index.
          *
          * Returns `undefined` if the index is out of range.
          */
@@ -574,35 +222,36 @@ declare module phosphor.collections {
          */
         popFront(): T;
         /**
-         * Add a value to the back of the buffer.
-         *
-         * This method always succeeds.
-         */
-        add(value: T): boolean;
-        /**
-         * Insert a value at the given index.
-         *
-         * If the buffer is full, the first element will be overwritten.
-         *
-         * Returns false if the index is out of range.
-         */
-        insert(index: number, value: T): boolean;
-        /**
-         * Remove the first matching value from the buffer.
-         *
-         * Returns false if the value is not in the buffer.
-         */
-        remove(value: T): boolean;
-        /**
-         * Remove and return the value at the given index.
-         *
-         * Returns `undefined` if the index is out of range.
-         */
-        removeAt(index: number): T;
-        /**
-         * Remove all elements from the buffer.
+         * Remove all values from the buffer.
          */
         clear(): void;
+        /**
+         * Create an array from the values in the buffer.
+         */
+        toArray(): T[];
+        /**
+         * Returns true if any value in the buffer passes the given test.
+         */
+        some(pred: IPredicate<T>): boolean;
+        /**
+         * Returns true if all values in the buffer pass the given test.
+         */
+        every(pred: IPredicate<T>): boolean;
+        /**
+         * Create an array of the values which pass the given test.
+         */
+        filter(pred: IPredicate<T>): T[];
+        /**
+         * Create an array of callback results for each value in the buffer.
+         */
+        map<U>(callback: ICallback<T, U>): U[];
+        /**
+         * Execute a callback for each element in buffer.
+         *
+         * Iteration will terminate if the callbacks returns a value other
+         * than `undefined`. That value will be returned from this method.
+         */
+        forEach<U>(callback: ICallback<T, U>): U;
         /**
          * Get the value for the apparent index.
          *
@@ -620,7 +269,7 @@ declare module phosphor.collections {
          *
          * The index is assumed to be in-range.
          */
-        private _del(index);
+        private _rem(index);
         /**
          * Increment the offset by one.
          */
@@ -636,22 +285,24 @@ declare module phosphor.collections {
 }
 
 declare module phosphor.collections {
+    import ICallback = algorithm.ICallback;
+    import IPredicate = algorithm.IPredicate;
     /**
      * A canonical singly linked FIFO queue.
      */
-    class Queue<T> implements IQueue<T> {
+    class Queue<T> {
         /**
          * Construct a new queue.
          */
-        constructor(items?: IIterable<T> | T[]);
-        /**
-         * True if the queue has elements, false otherwise.
-         */
-        empty: boolean;
+        constructor(items?: T[]);
         /**
          * The number of elements in the queue.
          */
         size: number;
+        /**
+         * True if the queue has elements, false otherwise.
+         */
+        empty: boolean;
         /**
          * The value at the front of the queue.
          */
@@ -661,20 +312,6 @@ declare module phosphor.collections {
          */
         back: T;
         /**
-         * Get an iterator for the elements in the queue.
-         */
-        iterator(): IIterator<T>;
-        /**
-         * Test whether the queue contains the given value.
-         */
-        contains(value: T): boolean;
-        /**
-         * Add a value to the end of the queue.
-         *
-         * This method always succeeds.
-         */
-        add(value: T): boolean;
-        /**
          * Push a value onto the back of the queue.
          */
         pushBack(value: T): void;
@@ -683,32 +320,39 @@ declare module phosphor.collections {
          */
         popFront(): T;
         /**
-         * Remove the first matching value from the queue.
-         *
-         * Returns false if the value is not in the queue.
-         */
-        remove(value: T): boolean;
-        /**
          * Remove all values from the queue.
          */
         clear(): void;
+        /**
+         * Create an array from the values in the queue.
+         */
+        toArray(): T[];
+        /**
+         * Returns true if any value in the queue passes the given test.
+         */
+        some(pred: IPredicate<T>): boolean;
+        /**
+         * Returns true if all values in the queue pass the given test.
+         */
+        every(pred: IPredicate<T>): boolean;
+        /**
+         * Create an array of the values which pass the given test.
+         */
+        filter(pred: IPredicate<T>): T[];
+        /**
+         * Create an array of callback results for each value in the queue.
+         */
+        map<U>(callback: ICallback<T, U>): U[];
+        /**
+         * Execute a callback for each element in queue.
+         *
+         * Iteration will terminate if the callbacks returns a value other
+         * than `undefined`. That value will be returned from this method.
+         */
+        forEach<U>(callback: ICallback<T, U>): U;
         private _size;
         private _front;
         private _back;
-    }
-}
-
-declare module phosphor.core {
-    /**
-     * An object which holds disposable resources.
-     */
-    interface IDisposable {
-        /**
-         * Dispose of the resources held by the object.
-         *
-         * It is not safe to use an object after it has been disposed.
-         */
-        dispose(): void;
     }
 }
 
@@ -739,7 +383,7 @@ declare module phosphor.core {
 }
 
 declare module phosphor.core {
-    import IIterable = collections.IIterable;
+    import Queue = collections.Queue;
     /**
      * An object which processes messages.
      */
@@ -756,87 +400,7 @@ declare module phosphor.core {
          * the message was compressed and should be dropped, or false if the
          * message should be enqueued for delivery as normal.
          */
-        compressMessage?(msg: IMessage, pending: IIterable<IMessage>): boolean;
-    }
-}
-
-declare module phosphor.core {
-    module dispatch {
-        /**
-         * Send a message to the message handler to process immediately.
-         */
-        function sendMessage(handler: IMessageHandler, msg: IMessage): void;
-        /**
-         * Post a message to the message handler to process in the future.
-         */
-        function postMessage(handler: IMessageHandler, msg: IMessage): void;
-        /**
-         * Test whether the message handler has pending messages.
-         */
-        function hasPendingMessages(handler: IMessageHandler): boolean;
-        /**
-         * Send the first pending message to the message handler.
-         */
-        function sendPendingMessage(handler: IMessageHandler): void;
-        /**
-         * Install a message filter for a message handler.
-         *
-         * A message filter is invoked before the message handler processes
-         * the message. If the filter returns true from its `filterMessage`
-         * method, processing of the message will stop immediately and no
-         * other filters or the message handler will be invoked.
-         *
-         * The most recently installed filter is executed first.
-         */
-        function installMessageFilter(handler: IMessageHandler, filter: IMessageFilter): void;
-        /**
-         * Remove a message filter added for a message handler.
-         *
-         * It is safe to call this function while the filter is executing.
-         *
-         * If the filter is not installed, this is a no-op.
-         */
-        function removeMessageFilter(handler: IMessageHandler, filter: IMessageFilter): void;
-        /**
-         * Clear all message data associated with the message handler.
-         *
-         * This removes all pending messages and filters for the handler.
-         */
-        function clearMessageData(handler: IMessageHandler): void;
-    }
-}
-
-declare module phosphor.core {
-    /**
-     * A singleton frozen empty object.
-     */
-    var emptyObject: any;
-    /**
-     * A singleton frozen empty array.
-     */
-    var emptyArray: any[];
-    /**
-     * A singleton empty no-op function.
-     */
-    var emptyFunction: () => void;
-}
-
-declare module phosphor.core {
-    /**
-     * A concrete implementation of IDisposable.
-     *
-     * A Disposable invokes a user provided callback when disposed.
-     */
-    class Disposable implements IDisposable {
-        /**
-         * Construct a new disposable.
-         */
-        constructor(callback: () => void);
-        /**
-         * Dispose the object and invoke the user provided callback.
-         */
-        dispose(): void;
-        private _callback;
+        compressMessage?(msg: IMessage, pending: Queue<IMessage>): boolean;
     }
 }
 
@@ -857,6 +421,50 @@ declare module phosphor.core {
         type: string;
         private _type;
     }
+}
+
+declare module phosphor.core {
+    /**
+     * Send a message to the message handler to process immediately.
+     */
+    function sendMessage(handler: IMessageHandler, msg: IMessage): void;
+    /**
+     * Post a message to the message handler to process in the future.
+     */
+    function postMessage(handler: IMessageHandler, msg: IMessage): void;
+    /**
+     * Test whether the message handler has pending messages.
+     */
+    function hasPendingMessages(handler: IMessageHandler): boolean;
+    /**
+     * Send the first pending message to the message handler.
+     */
+    function sendPendingMessage(handler: IMessageHandler): void;
+    /**
+     * Install a message filter for a message handler.
+     *
+     * A message filter is invoked before the message handler processes
+     * the message. If the filter returns true from its `filterMessage`
+     * method, processing of the message will stop immediately and no
+     * other filters or the message handler will be invoked.
+     *
+     * The most recently installed filter is executed first.
+     */
+    function installMessageFilter(handler: IMessageHandler, filter: IMessageFilter): void;
+    /**
+     * Remove a message filter added for a message handler.
+     *
+     * It is safe to call this function while the filter is executing.
+     *
+     * If the filter is not installed, this is a no-op.
+     */
+    function removeMessageFilter(handler: IMessageHandler, filter: IMessageFilter): void;
+    /**
+     * Clear all message data associated with the message handler.
+     *
+     * This removes all pending messages and filters for the handler.
+     */
+    function clearMessageData(handler: IMessageHandler): void;
 }
 
 declare module phosphor.core {
@@ -929,75 +537,6 @@ declare module phosphor.di {
 
 declare module phosphor.di {
     /**
-     * A class type which declares its injection dependencies.
-     */
-    interface IInjectable<T> {
-        /**
-         * The constructor signature for the class.
-         */
-        new (...args: any[]): T;
-        /**
-         * The type ids of the dependencies needed to instantiate the type.
-         */
-        $inject?: IToken<any>[];
-    }
-}
-
-declare module phosphor.di {
-    /**
-     * An object which manages dependency injection.
-     */
-    interface IContainer {
-        /**
-         * Test whether a type is registered with the container.
-         */
-        isRegistered<T>(token: IToken<T>): boolean;
-        /**
-         * Register a type mapping with the container.
-         *
-         * An exception will be thrown if the token is already registered.
-         *
-         * The allowed lifetimes are:
-         *
-         *   'singleton' - Only a single instance of the type is ever
-         *      created, and that instance is shared by all objects
-         *      which have a dependency on the given type id.
-         *
-         *   'transient' - A new instance of the type is created each
-         *      time the dependency is fullfilled for an object which
-         *      has a dependency on the given type id.
-         *
-         *   'perresolve' - A single instance of the type is created
-         *      each time the `resolve` method is called, and that
-         *      instance is shared by all objects which are created
-         *      during the same resolve pass and have a dependency
-         *      on the given type id.
-         *
-         * The default lifetime is 'singleton'.
-         */
-        registerType<T>(token: IToken<T>, type: IInjectable<T>, lifetime?: string): void;
-        /**
-         * Register an instance mapping with the container.
-         *
-         * This is the same as a 'singleton' type registration, except
-         * that the user creates the instance of the type beforehand.
-         *
-         * This will throw an exception if the token is already registered.
-         */
-        registerInstance<T>(token: IToken<T>, instance: T): void;
-        /**
-         * Resolve an instance for the given token or type.
-         *
-         * An error is thrown if no type mapping is registered for the
-         * token or if the injection dependencies cannot be fulfilled.
-         */
-        resolve<T>(token: IToken<T> | IInjectable<T>): T;
-    }
-    var IContainer: IToken<IContainer>;
-}
-
-declare module phosphor.di {
-    /**
      * A lightweight dependency injection container.
      */
     class Container implements IContainer {
@@ -1065,11 +604,93 @@ declare module phosphor.di {
     }
 }
 
-declare module phosphor.domutil {
+declare module phosphor.di {
+    /**
+     * A class type which declares its injection dependencies.
+     */
+    interface IInjectable<T> {
+        /**
+         * The constructor signature for the class.
+         */
+        new (...args: any[]): T;
+        /**
+         * The type ids of the dependencies needed to instantiate the type.
+         */
+        $inject?: IToken<any>[];
+    }
+    /**
+     * An object which manages dependency injection.
+     */
+    interface IContainer {
+        /**
+         * Test whether a type is registered with the container.
+         */
+        isRegistered<T>(token: IToken<T>): boolean;
+        /**
+         * Register a type mapping with the container.
+         *
+         * An exception will be thrown if the token is already registered.
+         *
+         * The allowed lifetimes are:
+         *
+         *   'singleton' - Only a single instance of the type is ever
+         *      created, and that instance is shared by all objects
+         *      which have a dependency on the given type id.
+         *
+         *   'transient' - A new instance of the type is created each
+         *      time the dependency is fullfilled for an object which
+         *      has a dependency on the given type id.
+         *
+         *   'perresolve' - A single instance of the type is created
+         *      each time the `resolve` method is called, and that
+         *      instance is shared by all objects which are created
+         *      during the same resolve pass and have a dependency
+         *      on the given type id.
+         *
+         * The default lifetime is 'singleton'.
+         */
+        registerType<T>(token: IToken<T>, type: IInjectable<T>, lifetime?: string): void;
+        /**
+         * Register an instance mapping with the container.
+         *
+         * This is the same as a 'singleton' type registration, except
+         * that the user creates the instance of the type beforehand.
+         *
+         * This will throw an exception if the token is already registered.
+         */
+        registerInstance<T>(token: IToken<T>, instance: T): void;
+        /**
+         * Resolve an instance for the given token or type.
+         *
+         * An error is thrown if no type mapping is registered for the
+         * token or if the injection dependencies cannot be fulfilled.
+         */
+        resolve<T>(token: IToken<T> | IInjectable<T>): T;
+    }
+    var IContainer: IToken<IContainer>;
+}
+
+declare module phosphor.utility {
     /**
      * The box sizing data for an HTML element.
      */
-    interface IBoxData {
+    interface IBoxSizing {
+        /**
+         * The minimum width, in pixels.
+         */
+        minWidth: number;
+        /**
+         * The minimum height, in pixels.
+         */
+        minHeight: number;
+        /**
+         * The maximum width, in pixels.
+         */
+        maxWidth: number;
+        /**
+         * The maximum height, in pixels.
+         */
+        maxHeight: number;
         /**
          * The top border width, in pixels.
          */
@@ -1112,22 +733,14 @@ declare module phosphor.domutil {
         horizontalSum: number;
     }
     /**
-     * Create a box data object for the given node.
+     * Create a box sizing object for the given node.
      *
      * The values of the returned object are read only.
      */
-    function createBoxData(node: HTMLElement): IBoxData;
+    function createBoxSizing(node: HTMLElement): IBoxSizing;
 }
 
-declare module phosphor.domutil {
-    /**
-     * Test whether a client position lies within a node.
-     */
-    function hitTest(node: HTMLElement, x: number, y: number): boolean;
-}
-
-declare module phosphor.domutil {
-    import IDisposable = core.IDisposable;
+declare module phosphor.utility {
     /**
      * Override the cursor for the entire document.
      *
@@ -1136,122 +749,237 @@ declare module phosphor.domutil {
     function overrideCursor(cursor: string): IDisposable;
 }
 
-declare module phosphor.virtualdom {
-    import IDisposable = core.IDisposable;
+declare module phosphor.utility {
     /**
-     * An object which manages its own node in a virtual DOM tree.
+     * An object which holds disposable resources.
      */
-    interface IComponent<T extends IData> extends IDisposable {
+    interface IDisposable {
         /**
-         * The DOM node for the component.
+         * Dispose of the resources held by the object.
          *
-         * The component should render its content using this node as a host.
+         * It is not safe to use an object after it has been disposed.
          */
-        node: HTMLElement;
-        /**
-         * Initialize the component with new data and children.
-         *
-         * This is called whenever the component is rendered by its parent.
-         *
-         * A component is resposible for updating the content of its node.
-         */
-        init(data: T, children: IElement[]): void;
+        dispose(): void;
     }
     /**
-     * A component class type.
+     * A concrete implementation of IDisposable.
+     *
+     * This will invoke a user provided callback when it is disposed.
      */
-    interface IComponentClass<T extends IData> {
+    class Disposable implements IDisposable {
         /**
-         * Construct a new component.
+         * Construct a new disposable.
          */
-        new (): IComponent<T>;
+        constructor(callback: () => void);
+        /**
+         * Dispose the object and invoke the user provided callback.
+         */
+        dispose(): void;
+        private _callback;
     }
 }
 
-declare module phosphor.virtualdom {
+declare module phosphor.utility {
     /**
-     * A base data object for a virtual element.
+     * A singleton frozen empty object.
      */
-    interface IData {
+    var emptyObject: any;
+    /**
+     * A singleton frozen empty array.
+     */
+    var emptyArray: any[];
+    /**
+     * A singleton empty no-op function.
+     */
+    var emptyFunction: () => void;
+}
+
+declare module phosphor.utility {
+    /**
+     * Test whether a client position lies within a node.
+     */
+    function hitTest(node: HTMLElement, x: number, y: number): boolean;
+}
+
+declare module phosphor.utility {
+    /**
+     * A generic pair of values.
+     */
+    class Pair<T, U> {
+        first: T;
+        second: U;
         /**
-         * The key id for the element.
-         *
-         * If an element is given a key id, the generated node will not be
-         * recreated during a rendering update if it moves in the render
-         * tree provided the type of the node does not change.
+         * Construct a new pair.
          */
-        key?: string;
-        /**
-         * The ref id for the element.
-         *
-         * If an element is given a ref id, the generated node or component
-         * will be added to the ref mapping created by the virtual renderer.
-         */
-        ref?: string;
+        constructor(first: T, second: U);
     }
 }
 
-declare module phosphor.virtualdom {
+declare module phosphor.utility {
     /**
-     * An enum of supported virtual element types.
+     * The position of a two dimensional object.
      */
-    enum ElementType {
+    class Point {
         /**
-         * The element represents a text node.
+         * A static zero point.
          */
-        Text = 0,
+        static Zero: Point;
         /**
-         * The element represents an HTMLElement node.
+         * A static infinite point.
          */
-        Node = 1,
+        static Infinite: Point;
         /**
-         * The element represents a component.
+         * Construct a new point.
          */
-        Component = 2,
+        constructor(x: number, y: number);
+        /**
+         * The X coordinate of the point.
+         */
+        x: number;
+        /**
+         * The Y coordinate of the point.
+         */
+        y: number;
+        /**
+         * Test whether the point is equivalent to another.
+         */
+        equals(other: Point): boolean;
+        private _x;
+        private _y;
     }
+}
+
+declare module phosphor.utility {
     /**
-     * An object which represents a node or component in virtual DOM tree.
-     *
-     * User code will typically create an element indirectly by calling an
-     * element factory function. The framework provides default factories
-     * for all standard DOM nodes, and new factories may be created with
-     * the `createFactory` function.
-     *
-     * An element *must* be treated as immutable. Mutating element state
-     * lead to undefined rendering behavior.
+     * The position and size of a 2-dimensional object.
      */
-    interface IElement {
+    class Rect {
         /**
-         * The type of the element.
+         * Construct a new rect.
          */
-        type: ElementType;
+        constructor(x: number, y: number, width: number, height: number);
         /**
-         * The tag for the element.
+         * The X coordinate of the rect.
          *
-         * The interpretation of the tag depends on the element type:
-         *   Text - the text content
-         *   Node - the node tag name
-         *   Component - the component constructor
+         * This is equivalent to `left`.
          */
-        tag: string | IComponentClass<any>;
+        x: number;
         /**
-         * The data object for the element.
+         * The Y coordinate of the rect.
          *
-         * The interpretation of the data depends on the element type:
-         *   Text - an empty object
-         *   Node - the node attributes object
-         *   Component - the component data object
+         * This is equivalent to `top`.
          */
-        data: IData;
+        y: number;
         /**
-         * The array of child elements.
+         * The width of the rect.
          */
-        children: IElement[];
+        width: number;
         /**
-         * A prototype property used to quickly type-check an element.
+         * The height of the rect.
          */
-        __isElement: boolean;
+        height: number;
+        /**
+         * The position of the rect.
+         *
+         * This is equivalent to `topLeft`.
+         */
+        pos: Point;
+        /**
+         * The size of the rect.
+         */
+        size: Size;
+        /**
+         * The top edge of the rect.
+         *
+         * This is equivalent to `y`.
+         */
+        top: number;
+        /**
+         * The left edge of the rect.
+         *
+         * This is equivalent to `x`.
+         */
+        left: number;
+        /**
+         * The right edge of the rect.
+         *
+         * This is equivalent to `x + width`.
+         */
+        right: number;
+        /**
+         * The bottom edge of the rect.
+         *
+         * This is equivalent to `y + height`.
+         */
+        bottom: number;
+        /**
+         * The position of the top left corner of the rect.
+         *
+         * This is equivalent to `pos`.
+         */
+        topLeft: Point;
+        /**
+         * The position of the top right corner of the rect.
+         */
+        topRight: Point;
+        /**
+         * The position bottom left corner of the rect.
+         */
+        bottomLeft: Point;
+        /**
+         * The position bottom right corner of the rect.
+         */
+        bottomRight: Point;
+        /**
+         * Test whether the rect is equivalent to another.
+         */
+        equals(other: Rect): boolean;
+        private _x;
+        private _y;
+        private _width;
+        private _height;
     }
+}
+
+declare module phosphor.utility {
+    /**
+     * The size of a 2-dimensional object.
+     */
+    class Size {
+        /**
+         * A static zero size.
+         */
+        static Zero: Size;
+        /**
+         * A static infinite size.
+         */
+        static Infinite: Size;
+        /**
+         * Construct a new size.
+         */
+        constructor(width: number, height: number);
+        /**
+         * The width of the size.
+         */
+        width: number;
+        /**
+         * The height of the size.
+         */
+        height: number;
+        /**
+         * Test whether the size is equivalent to another.
+         */
+        equals(other: Size): boolean;
+        private _width;
+        private _height;
+    }
+}
+
+declare module phosphor.utility {
+    /**
+     * Get the currently visible viewport rect in page coordinates.
+     */
+    function clientViewportRect(): Rect;
 }
 
 declare module phosphor.virtualdom {
@@ -1266,7 +994,7 @@ declare module phosphor.virtualdom {
     /**
      * A factory function which creates a virtual element.
      */
-    interface IElementFactory<T extends IData> {
+    interface IFactory<T extends IData> {
         /**
          * Create a virtual element with the given children.
          */
@@ -1283,7 +1011,7 @@ declare module phosphor.virtualdom {
      * defined component. The `virtualdom` module exports a `dom` object
      * which contains factories for the standard DOM elements.
      */
-    function createFactory<T extends IData>(tag: string | IComponentClass<T>): IElementFactory<T>;
+    function createFactory<T extends IData>(tag: string | IComponentClass<T>): IFactory<T>;
 }
 
 declare module phosphor.virtualdom {
@@ -1727,103 +1455,221 @@ declare module phosphor.virtualdom {
      * The virtual dom factory functions.
      */
     var dom: {
-        a: IElementFactory<IAnchorAttributes>;
-        abbr: IElementFactory<IElementAttributes>;
-        address: IElementFactory<IElementAttributes>;
-        area: IElementFactory<IAreaAttributes>;
-        article: IElementFactory<IElementAttributes>;
-        aside: IElementFactory<IElementAttributes>;
-        audio: IElementFactory<IMediaAttributes>;
-        b: IElementFactory<IElementAttributes>;
-        bdi: IElementFactory<IElementAttributes>;
-        bdo: IElementFactory<IElementAttributes>;
-        blockquote: IElementFactory<IQuoteAttributes>;
-        br: IElementFactory<IElementAttributes>;
-        button: IElementFactory<IButtonAttributes>;
-        canvas: IElementFactory<ICanvasAttributes>;
-        caption: IElementFactory<IElementAttributes>;
-        cite: IElementFactory<IElementAttributes>;
-        code: IElementFactory<IElementAttributes>;
-        col: IElementFactory<ITableColAttributes>;
-        colgroup: IElementFactory<ITableColAttributes>;
-        data: IElementFactory<IDataAttributes>;
-        datalist: IElementFactory<IElementAttributes>;
-        dd: IElementFactory<IElementAttributes>;
-        del: IElementFactory<IModAttributes>;
-        dfn: IElementFactory<IElementAttributes>;
-        div: IElementFactory<IElementAttributes>;
-        dl: IElementFactory<IElementAttributes>;
-        dt: IElementFactory<IElementAttributes>;
-        em: IElementFactory<IElementAttributes>;
-        embed: IElementFactory<IEmbedAttributes>;
-        fieldset: IElementFactory<IFieldSetAttributes>;
-        figcaption: IElementFactory<IElementAttributes>;
-        figure: IElementFactory<IElementAttributes>;
-        footer: IElementFactory<IElementAttributes>;
-        form: IElementFactory<IFormAttributes>;
-        h1: IElementFactory<IElementAttributes>;
-        h2: IElementFactory<IElementAttributes>;
-        h3: IElementFactory<IElementAttributes>;
-        h4: IElementFactory<IElementAttributes>;
-        h5: IElementFactory<IElementAttributes>;
-        h6: IElementFactory<IElementAttributes>;
-        header: IElementFactory<IElementAttributes>;
-        hr: IElementFactory<IElementAttributes>;
-        i: IElementFactory<IElementAttributes>;
-        iframe: IElementFactory<IIFrameAttributes>;
-        img: IElementFactory<IImageAttributes>;
-        input: IElementFactory<IInputAttributes>;
-        ins: IElementFactory<IModAttributes>;
-        kbd: IElementFactory<IElementAttributes>;
-        label: IElementFactory<ILabelAttributes>;
-        legend: IElementFactory<IElementAttributes>;
-        li: IElementFactory<ILIAttributes>;
-        main: IElementFactory<IElementAttributes>;
-        map: IElementFactory<IMapAttributes>;
-        mark: IElementFactory<IElementAttributes>;
-        meter: IElementFactory<IMeterAttributes>;
-        nav: IElementFactory<IElementAttributes>;
-        object: IElementFactory<IObjectAttributes>;
-        ol: IElementFactory<IOListAttributes>;
-        optgroup: IElementFactory<IOptGroupAttributes>;
-        option: IElementFactory<IOptionAttributes>;
-        output: IElementFactory<IOutputAttributes>;
-        p: IElementFactory<IElementAttributes>;
-        param: IElementFactory<IElementAttributes>;
-        pre: IElementFactory<IElementAttributes>;
-        progress: IElementFactory<IProgressAttributes>;
-        q: IElementFactory<IElementAttributes>;
-        rp: IElementFactory<IElementAttributes>;
-        rt: IElementFactory<IElementAttributes>;
-        ruby: IElementFactory<IElementAttributes>;
-        s: IElementFactory<IElementAttributes>;
-        samp: IElementFactory<IElementAttributes>;
-        section: IElementFactory<IElementAttributes>;
-        select: IElementFactory<ISelectAttributes>;
-        small: IElementFactory<IElementAttributes>;
-        source: IElementFactory<ISourceAttributes>;
-        span: IElementFactory<IElementAttributes>;
-        strong: IElementFactory<IElementAttributes>;
-        sub: IElementFactory<IElementAttributes>;
-        summary: IElementFactory<IElementAttributes>;
-        sup: IElementFactory<IElementAttributes>;
-        table: IElementFactory<IElementAttributes>;
-        tbody: IElementFactory<IElementAttributes>;
-        td: IElementFactory<ITableDataCellAttributes>;
-        textarea: IElementFactory<ITextAreaAttributes>;
-        tfoot: IElementFactory<IElementAttributes>;
-        th: IElementFactory<ITableHeaderCellAttributes>;
-        thead: IElementFactory<IElementAttributes>;
-        time: IElementFactory<ITimeAttributes>;
-        title: IElementFactory<IElementAttributes>;
-        tr: IElementFactory<IElementAttributes>;
-        track: IElementFactory<ITrackAttributes>;
-        u: IElementFactory<IElementAttributes>;
-        ul: IElementFactory<IElementAttributes>;
-        var: IElementFactory<IElementAttributes>;
-        video: IElementFactory<IVideoAttributes>;
-        wbr: IElementFactory<IElementAttributes>;
+        a: IFactory<IAnchorAttributes>;
+        abbr: IFactory<IElementAttributes>;
+        address: IFactory<IElementAttributes>;
+        area: IFactory<IAreaAttributes>;
+        article: IFactory<IElementAttributes>;
+        aside: IFactory<IElementAttributes>;
+        audio: IFactory<IMediaAttributes>;
+        b: IFactory<IElementAttributes>;
+        bdi: IFactory<IElementAttributes>;
+        bdo: IFactory<IElementAttributes>;
+        blockquote: IFactory<IQuoteAttributes>;
+        br: IFactory<IElementAttributes>;
+        button: IFactory<IButtonAttributes>;
+        canvas: IFactory<ICanvasAttributes>;
+        caption: IFactory<IElementAttributes>;
+        cite: IFactory<IElementAttributes>;
+        code: IFactory<IElementAttributes>;
+        col: IFactory<ITableColAttributes>;
+        colgroup: IFactory<ITableColAttributes>;
+        data: IFactory<IDataAttributes>;
+        datalist: IFactory<IElementAttributes>;
+        dd: IFactory<IElementAttributes>;
+        del: IFactory<IModAttributes>;
+        dfn: IFactory<IElementAttributes>;
+        div: IFactory<IElementAttributes>;
+        dl: IFactory<IElementAttributes>;
+        dt: IFactory<IElementAttributes>;
+        em: IFactory<IElementAttributes>;
+        embed: IFactory<IEmbedAttributes>;
+        fieldset: IFactory<IFieldSetAttributes>;
+        figcaption: IFactory<IElementAttributes>;
+        figure: IFactory<IElementAttributes>;
+        footer: IFactory<IElementAttributes>;
+        form: IFactory<IFormAttributes>;
+        h1: IFactory<IElementAttributes>;
+        h2: IFactory<IElementAttributes>;
+        h3: IFactory<IElementAttributes>;
+        h4: IFactory<IElementAttributes>;
+        h5: IFactory<IElementAttributes>;
+        h6: IFactory<IElementAttributes>;
+        header: IFactory<IElementAttributes>;
+        hr: IFactory<IElementAttributes>;
+        i: IFactory<IElementAttributes>;
+        iframe: IFactory<IIFrameAttributes>;
+        img: IFactory<IImageAttributes>;
+        input: IFactory<IInputAttributes>;
+        ins: IFactory<IModAttributes>;
+        kbd: IFactory<IElementAttributes>;
+        label: IFactory<ILabelAttributes>;
+        legend: IFactory<IElementAttributes>;
+        li: IFactory<ILIAttributes>;
+        main: IFactory<IElementAttributes>;
+        map: IFactory<IMapAttributes>;
+        mark: IFactory<IElementAttributes>;
+        meter: IFactory<IMeterAttributes>;
+        nav: IFactory<IElementAttributes>;
+        object: IFactory<IObjectAttributes>;
+        ol: IFactory<IOListAttributes>;
+        optgroup: IFactory<IOptGroupAttributes>;
+        option: IFactory<IOptionAttributes>;
+        output: IFactory<IOutputAttributes>;
+        p: IFactory<IElementAttributes>;
+        param: IFactory<IElementAttributes>;
+        pre: IFactory<IElementAttributes>;
+        progress: IFactory<IProgressAttributes>;
+        q: IFactory<IElementAttributes>;
+        rp: IFactory<IElementAttributes>;
+        rt: IFactory<IElementAttributes>;
+        ruby: IFactory<IElementAttributes>;
+        s: IFactory<IElementAttributes>;
+        samp: IFactory<IElementAttributes>;
+        section: IFactory<IElementAttributes>;
+        select: IFactory<ISelectAttributes>;
+        small: IFactory<IElementAttributes>;
+        source: IFactory<ISourceAttributes>;
+        span: IFactory<IElementAttributes>;
+        strong: IFactory<IElementAttributes>;
+        sub: IFactory<IElementAttributes>;
+        summary: IFactory<IElementAttributes>;
+        sup: IFactory<IElementAttributes>;
+        table: IFactory<IElementAttributes>;
+        tbody: IFactory<IElementAttributes>;
+        td: IFactory<ITableDataCellAttributes>;
+        textarea: IFactory<ITextAreaAttributes>;
+        tfoot: IFactory<IElementAttributes>;
+        th: IFactory<ITableHeaderCellAttributes>;
+        thead: IFactory<IElementAttributes>;
+        time: IFactory<ITimeAttributes>;
+        title: IFactory<IElementAttributes>;
+        tr: IFactory<IElementAttributes>;
+        track: IFactory<ITrackAttributes>;
+        u: IFactory<IElementAttributes>;
+        ul: IFactory<IElementAttributes>;
+        var: IFactory<IElementAttributes>;
+        video: IFactory<IVideoAttributes>;
+        wbr: IFactory<IElementAttributes>;
     };
+}
+
+declare module phosphor.virtualdom {
+    import IDisposable = utility.IDisposable;
+    /**
+     * An object which manages its own node in a virtual DOM tree.
+     */
+    interface IComponent<T extends IData> extends IDisposable {
+        /**
+         * The DOM node for the component.
+         *
+         * The component should render its content using this node as a host.
+         */
+        node: HTMLElement;
+        /**
+         * Initialize the component with new data and children.
+         *
+         * This is called whenever the component is rendered by its parent.
+         *
+         * A component is resposible for updating the content of its node.
+         */
+        init(data: T, children: IElement[]): void;
+    }
+    /**
+     * A component class type.
+     */
+    interface IComponentClass<T extends IData> {
+        /**
+         * Construct a new component.
+         */
+        new (): IComponent<T>;
+    }
+}
+
+declare module phosphor.virtualdom {
+    /**
+     * A base data object for a virtual element.
+     */
+    interface IData {
+        /**
+         * The key id for the element.
+         *
+         * If an element is given a key id, the generated node will not be
+         * recreated during a rendering update if it moves in the render
+         * tree provided the type of the node does not change.
+         */
+        key?: string;
+        /**
+         * The ref id for the element.
+         *
+         * If an element is given a ref id, the generated node or component
+         * will be added to the ref mapping created by the renderer.
+         */
+        ref?: string;
+    }
+}
+
+declare module phosphor.virtualdom {
+    /**
+     * An enum of supported virtual element types.
+     */
+    enum ElementType {
+        /**
+         * The element represents a text node.
+         */
+        Text = 0,
+        /**
+         * The element represents an HTMLElement node.
+         */
+        Node = 1,
+        /**
+         * The element represents a component.
+         */
+        Component = 2,
+    }
+    /**
+     * An object which represents a node or component in virtual DOM tree.
+     *
+     * User code will typically create an element indirectly by calling an
+     * element factory function. The framework provides default factories
+     * for all standard DOM nodes, and new factories may be created with
+     * the `createFactory` function.
+     *
+     * An element *must* be treated as immutable. Mutating element state
+     * will lead to undefined rendering behavior.
+     */
+    interface IElement {
+        /**
+         * The type of the element.
+         */
+        type: ElementType;
+        /**
+         * The tag for the element.
+         *
+         * The interpretation of the tag depends on the element type:
+         *   Text - the text content
+         *   Node - the node tag name
+         *   Component - the component constructor
+         */
+        tag: string | IComponentClass<any>;
+        /**
+         * The data object for the element.
+         *
+         * The interpretation of the data depends on the element type:
+         *   Text - an empty object
+         *   Node - the node attributes object
+         *   Component - the component data object
+         */
+        data: IData;
+        /**
+         * The array of child elements.
+         */
+        children: IElement[];
+        /**
+         * A prototype property used to quickly type-check an element.
+         */
+        __isElement: boolean;
+    }
 }
 
 declare module phosphor.virtualdom {
@@ -2031,10 +1877,10 @@ declare module phosphor.components {
     /**
      * The default virtual element factory for the CodeMirrorComponent.
      */
-    var CodeMirrorFactory: virtualdom.IElementFactory<ICodeMirrorData>;
+    var CodeMirrorFactory: virtualdom.IFactory<ICodeMirrorData>;
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     /**
      * An enum of alignment bit flags.
      */
@@ -2076,8 +1922,29 @@ declare module phosphor.panels {
          */
         Vertical_Mask,
     }
+}
+
+declare module phosphor.widgets {
+    import Message = core.Message;
     /**
-     * An enum of direction values.
+     * A class for messages related to child widgets.
+     */
+    class ChildMessage extends Message {
+        /**
+         * Construct a new child message.
+         */
+        constructor(type: string, child: Widget);
+        /**
+         * The child widget for the message.
+         */
+        child: Widget;
+        private _child;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * An enum of layout directions.
      */
     enum Direction {
         /**
@@ -2097,359 +1964,57 @@ declare module phosphor.panels {
          */
         BottomToTop = 3,
     }
+}
+
+declare module phosphor.widgets {
     /**
-     * The available docking modes for a dock area.
+     * An enum of docking modes for a dock area.
      */
     enum DockMode {
         /**
-         * Insert the panel at the top of the dock area.
+         * Insert the widget at the top of the dock area.
          */
         Top = 0,
         /**
-         * Insert the panel at the left of the dock area.
+         * Insert the widget at the left of the dock area.
          */
         Left = 1,
         /**
-         * Insert the panel at the right of the dock area.
+         * Insert the widget at the right of the dock area.
          */
         Right = 2,
         /**
-         * Insert the panel at the bottom of the dock area.
+         * Insert the widget at the bottom of the dock area.
          */
         Bottom = 3,
         /**
-         * Insert the panel as a new split item above the reference.
+         * Insert the widget as a new split item above the reference.
          */
         SplitTop = 4,
         /**
-         * Insert the panel as a new split item to the left of the reference.
+         * Insert the widget as a new split item to the left of the reference.
          */
         SplitLeft = 5,
         /**
-         * Insert the panel as a new split item to the right of the reference.
+         * Insert the widget as a new split item to the right of the reference.
          */
         SplitRight = 6,
         /**
-         * Insert the panel as a new split item below the reference.
+         * Insert the widget as a new split item below the reference.
          */
         SplitBottom = 7,
         /**
-         * Insert the panel as a new tab before the reference.
+         * Insert the widget as a new tab before the reference.
          */
         TabBefore = 8,
         /**
-         * Insert the panel as a new tab after the reference.
+         * Insert the widget as a new tab after the reference.
          */
         TabAfter = 9,
     }
-    /**
-     * An enum of orientation values.
-     */
-    enum Orientation {
-        /**
-         * Horizontal orientation.
-         */
-        Horizontal = 0,
-        /**
-         * Vertical orientation.
-         */
-        Vertical = 1,
-    }
-    /**
-     * An enum of panel bit flags.
-     *
-     * Panel flags are used to control various low-level behaviors of
-     * a panel. They are typcially not used directly by user code.
-     */
-    enum PanelFlag {
-        /**
-         * The panel is attached to the DOM.
-         */
-        IsAttached = 1,
-        /**
-         * The panel is explicitly hidden.
-         */
-        IsHidden = 2,
-        /**
-         * The panel is visible.
-         */
-        IsVisible = 4,
-        /**
-         * The panel has been disposed.
-         */
-        IsDisposed = 8,
-        /**
-         * Changing the panel layout is disallowed.
-         */
-        DisallowLayoutChange = 16,
-    }
-    /**
-     * An enum of size policy values.
-     *
-     * A size policy controls how a layout interprets a panel's `sizeHint`.
-     */
-    enum SizePolicy {
-        /**
-         * A policy indicating that the `sizeHint` is the only acceptable
-         * size for the panel.
-         */
-        Fixed = 0,
-        /**
-         * A bit flag indicating the panel can grow beyond `sizeHint`.
-         */
-        GrowFlag = 1,
-        /**
-         * A bit flag indicating the panel can shrink below `sizeHint`.
-         */
-        ShrinkFlag = 2,
-        /**
-         * A bit flag indicating the panel should expand beyond `sizeHint`.
-         */
-        ExpandFlag = 4,
-        /**
-         * A bit flag indicating the `sizeHint` is ignored.
-         */
-        IgnoreFlag = 8,
-        /**
-         * A policy indicating that the `sizeHint` is a minimum, but the
-         * panel can be expanded if needed and still be useful.
-         */
-        Minimum,
-        /**
-         * A policy indicating that the `sizeHint` is a maximum, but the
-         * panel can be shrunk if needed and still be useful.
-         */
-        Maximum,
-        /**
-         * A policy indicating that the `sizeHint` is preferred, but the
-         * panel can grow or shrink if needed and still be useful.
-         *
-         * This is the default size policy.
-         */
-        Preferred,
-        /**
-         * A policy indicating that `sizeHint` is reasonable, but the panel
-         * can shrink if needed and still be useful. It can also make use of
-         * extra space and should expand as much as possible.
-         */
-        Expanding,
-        /**
-         * A policy indicating that `sizeHint` is a minimum. The panel can
-         * make use of extra space and should expand as much as possible.
-         */
-        MinimumExpanding,
-        /**
-         * A policy indicating the `sizeHint` is ignored.
-         */
-        Ignored,
-    }
 }
 
-declare module phosphor.panels {
-    /**
-     * The position of a two dimensional object.
-     */
-    class Point {
-        /**
-         * Construct a new point.
-         */
-        constructor(x: number, y: number);
-        /**
-         * The X coordinate of the point.
-         */
-        x: number;
-        /**
-         * The Y coordinate of the point.
-         */
-        y: number;
-        /**
-         * Test whether the point is equivalent to another.
-         */
-        equals(other: Point): boolean;
-        private _x;
-        private _y;
-    }
-    /**
-     * The size of a 2-dimensional object.
-     */
-    class Size {
-        /**
-         * Construct a new size.
-         */
-        constructor(width: number, height: number);
-        /**
-         * The width of the size.
-         */
-        width: number;
-        /**
-         * The height of the size.
-         */
-        height: number;
-        /**
-         * Test whether the size is equivalent to another.
-         */
-        equals(other: Size): boolean;
-        private _width;
-        private _height;
-    }
-    /**
-     * The position and size of a 2-dimensional object.
-     */
-    class Rect {
-        /**
-         * Construct a new rect.
-         */
-        constructor(x: number, y: number, width: number, height: number);
-        /**
-         * The X coordinate of the rect.
-         *
-         * This is equivalent to `left`.
-         */
-        x: number;
-        /**
-         * The Y coordinate of the rect.
-         *
-         * This is equivalent to `top`.
-         */
-        y: number;
-        /**
-         * The width of the rect.
-         */
-        width: number;
-        /**
-         * The height of the rect.
-         */
-        height: number;
-        /**
-         * The position of the rect.
-         *
-         * This is equivalent to `topLeft`.
-         */
-        pos: Point;
-        /**
-         * The size of the rect.
-         */
-        size: Size;
-        /**
-         * The top edge of the rect.
-         *
-         * This is equivalent to `y`.
-         */
-        top: number;
-        /**
-         * The left edge of the rect.
-         *
-         * This is equivalent to `x`.
-         */
-        left: number;
-        /**
-         * The right edge of the rect.
-         *
-         * This is equivalent to `x + width`.
-         */
-        right: number;
-        /**
-         * The bottom edge of the rect.
-         *
-         * This is equivalent to `y + height`.
-         */
-        bottom: number;
-        /**
-         * The position of the top left corner of the rect.
-         *
-         * This is equivalent to `pos`.
-         */
-        topLeft: Point;
-        /**
-         * The position of the top right corner of the rect.
-         */
-        topRight: Point;
-        /**
-         * The position bottom left corner of the rect.
-         */
-        bottomLeft: Point;
-        /**
-         * The position bottom right corner of the rect.
-         */
-        bottomRight: Point;
-        /**
-         * Test whether the rect is equivalent to another.
-         */
-        equals(other: Rect): boolean;
-        private _x;
-        private _y;
-        private _width;
-        private _height;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * An object which manages an item in a layout.
-     */
-    interface ILayoutItem {
-        /**
-         * Test whether the item manages a panel.
-         */
-        isPanel: boolean;
-        /**
-         * Test whether the item manages empty space.
-         */
-        isSpacer: boolean;
-        /**
-         * Test whether the item should be treated as hidden.
-         */
-        isHidden: boolean;
-        /**
-         * The panel the item manages, if any.
-         */
-        panel: Panel;
-        /**
-         * Test whether the item should be expanded horizontally.
-         *
-         * If this is true, the item will get as much space as possible
-         * in the horizontal direction up to its maximum size.
-         */
-        expandHorizontal: boolean;
-        /**
-         * Test Whether the item should be expanded vertically.
-         *
-         * If this is true, the item will get as much space as possible
-         * in the vertical direction up to its maximum size.
-         */
-        expandVertical: boolean;
-        /**
-         * The horizontal stretch factor for the item.
-         */
-        horizontalStretch: number;
-        /**
-         * The vertical stretch factor for the item.
-         */
-        verticalStretch: number;
-        /**
-         * Invalidate the cached data for the item.
-         */
-        invalidate(): void;
-        /**
-         * Compute the preferred size of the item.
-         */
-        sizeHint(): Size;
-        /**
-         * Compute the minimum allowed size of the item.
-         */
-        minSize(): Size;
-        /**
-         * Compute the maximum allowed size of the item.
-         */
-        maxSize(): Size;
-        /**
-         * Set the geometry of the item using the given values.
-         */
-        setGeometry(x: number, y: number, width: number, height: number): void;
-    }
-}
-
-declare module phosphor.panels {
+declare module phosphor.widgets {
     /**
      * An object which can be used as a tab in a tab bar.
      */
@@ -2477,27 +2042,283 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
+    import Size = utility.Size;
     /**
-     * A panel which owns and manages its own tab.
+     * An object which manages an item in a layout.
      */
-    interface ITabbable extends Panel {
+    interface ILayoutItem {
         /**
-         * The tab to associate with the panel.
+         * Test whether the item manages a widget.
+         */
+        isWidget: boolean;
+        /**
+         * Test whether the item manages empty space.
+         */
+        isSpacer: boolean;
+        /**
+         * Test whether the item should be treated as hidden.
+         */
+        isHidden: boolean;
+        /**
+         * The widget the item manages, if any.
+         */
+        widget: Widget;
+        /**
+         * The alignment for the item in its layout cell.
+         */
+        alignment: Alignment;
+        /**
+         * Test whether the item should be expanded horizontally.
+         *
+         * If this is true, the item will get as much space as possible
+         * in the horizontal direction up to its maximum size.
+         */
+        expandHorizontal: boolean;
+        /**
+         * Test Whether the item should be expanded vertically.
+         *
+         * If this is true, the item will get as much space as possible
+         * in the vertical direction up to its maximum size.
+         */
+        expandVertical: boolean;
+        /**
+         * Invalidate the cached data for the item.
+         */
+        invalidate(): void;
+        /**
+         * Compute the preferred size of the item.
+         */
+        sizeHint(): Size;
+        /**
+         * Compute the minimum allowed size of the item.
+         */
+        minSize(): Size;
+        /**
+         * Compute the maximum allowed size of the item.
+         */
+        maxSize(): Size;
+        /**
+         * Set the geometry of the item using the given values.
+         */
+        setGeometry(x: number, y: number, width: number, height: number): void;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * A widget which owns and manages its own tab.
+     */
+    interface ITabbable extends Widget {
+        /**
+         * The tab associated with the widget.
          */
         tab: ITab;
     }
 }
 
-declare module phosphor.panels {
-    import IDisposable = core.IDisposable;
+declare module phosphor.widgets {
+    import Message = core.Message;
+    /**
+     * A message class for 'move' messages.
+     */
+    class MoveMessage extends Message {
+        /**
+         * Construct a new move message.
+         */
+        constructor(oldX: number, oldY: number, x: number, y: number);
+        /**
+         * The previous X coordinate of the widget.
+         */
+        oldX: number;
+        /**
+         * The previous Y coordinate of the widget.
+         */
+        oldY: number;
+        /**
+         * The current X coordinate of the widget.
+         */
+        x: number;
+        /**
+         * The current Y coordinate of the widget.
+         */
+        y: number;
+        /**
+         * The change in X coordinate of the widget.
+         */
+        deltaX: number;
+        /**
+         * The change in Y coordinate of the widget.
+         */
+        deltaY: number;
+        private _oldX;
+        private _oldY;
+        private _x;
+        private _y;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * An enum of layout orientations.
+     */
+    enum Orientation {
+        /**
+         * Horizontal orientation.
+         */
+        Horizontal = 0,
+        /**
+         * Vertical orientation.
+         */
+        Vertical = 1,
+    }
+}
+
+declare module phosphor.widgets {
+    import Message = core.Message;
+    /**
+     * A message class for 'resize' messages.
+     */
+    class ResizeMessage extends Message {
+        /**
+         * Construct a new resize message.
+         */
+        constructor(oldWidth: number, oldHeight: number, width: number, height: number);
+        /**
+         * The previous width of the widget.
+         */
+        oldWidth: number;
+        /**
+         * The previous height of the widget.
+         */
+        oldHeight: number;
+        /**
+         * The current width of the widget.
+         */
+        width: number;
+        /**
+         * The current height of the widget.
+         */
+        height: number;
+        /**
+         * The change in width of the widget.
+         */
+        deltaWidth: number;
+        /**
+         * The change in height of the widget.
+         */
+        deltaHeight: number;
+        private _oldWidth;
+        private _oldHeight;
+        private _width;
+        private _height;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * An enum of size policy values.
+     *
+     * A size policy controls how layouts interpret a widget's `sizeHint`.
+     */
+    enum SizePolicy {
+        /**
+         * A policy indicating that the `sizeHint` is the only acceptable
+         * size for the widget.
+         */
+        Fixed = 0,
+        /**
+         * A bit flag indicating the widget can grow beyond `sizeHint`.
+         */
+        GrowFlag = 1,
+        /**
+         * A bit flag indicating the widget can shrink below `sizeHint`.
+         */
+        ShrinkFlag = 2,
+        /**
+         * A bit flag indicating the widget should expand beyond `sizeHint`.
+         */
+        ExpandFlag = 4,
+        /**
+         * A bit flag indicating the `sizeHint` is ignored.
+         */
+        IgnoreFlag = 8,
+        /**
+         * A policy indicating that the `sizeHint` is a minimum, but the
+         * widget can be expanded if needed and still be useful.
+         */
+        Minimum,
+        /**
+         * A policy indicating that the `sizeHint` is a maximum, but the
+         * widget can be shrunk if needed and still be useful.
+         */
+        Maximum,
+        /**
+         * A policy indicating that the `sizeHint` is preferred, but the
+         * widget can grow or shrink if needed and still be useful.
+         *
+         * This is the default size policy.
+         */
+        Preferred,
+        /**
+         * A policy indicating that `sizeHint` is reasonable, but the widget
+         * can shrink if needed and still be useful. It can also make use of
+         * extra space and should expand as much as possible.
+         */
+        Expanding,
+        /**
+         * A policy indicating that `sizeHint` is a minimum. The widget can
+         * make use of extra space and should expand as much as possible.
+         */
+        MinimumExpanding,
+        /**
+         * A policy indicating the `sizeHint` is ignored.
+         */
+        Ignored,
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * An enum of widget bit flags.
+     *
+     * Widget flags are used to control various low-level behaviors of
+     * a widget. They are typically not used directly by user code.
+     */
+    enum WidgetFlag {
+        /**
+         * The widget is attached to the DOM.
+         */
+        IsAttached = 1,
+        /**
+         * The widget is explicitly hidden.
+         */
+        IsHidden = 2,
+        /**
+         * The widget is visible.
+         */
+        IsVisible = 4,
+        /**
+         * The widget has been disposed.
+         */
+        IsDisposed = 8,
+        /**
+         * Changing the widget layout is disallowed.
+         */
+        DisallowLayoutChange = 16,
+    }
+}
+
+declare module phosphor.widgets {
     import IMessage = core.IMessage;
     import IMessageHandler = core.IMessageHandler;
     import IMessageFilter = core.IMessageFilter;
+    import IDisposable = utility.IDisposable;
+    import Size = utility.Size;
     /**
      * The base class of phosphor layouts.
      *
-     * The Layout class does not define an interface for adding panels to
+     * The Layout class does not define an interface for adding widgets to
      * the layout. A subclass should define that API in a manner suitable
      * for its intended use.
      */
@@ -2511,16 +2332,16 @@ declare module phosphor.panels {
          */
         dispose(): void;
         /**
-         * Get the parent panel of the layout.
+         * Get the parent widget of the layout.
          */
         /**
-         * Set the parent panel of the layout.
+         * Set the parent widget of the layout.
          *
-         * The parent panel can only be set once, and is done automatically
-         * when the layout is installed on a panel. This should not be set
+         * The parent widget can only be set once, and is done automatically
+         * when the layout is installed on a widget. This should not be set
          * directly by user code.
          */
-        parent: Panel;
+        parent: Widget;
         /**
          * Get the number of layout items in the layout.
          *
@@ -2538,9 +2359,9 @@ declare module phosphor.panels {
          *
          * This must be implemented by a subclass.
          */
-        takeAt(index: number): ILayoutItem;
+        removeAt(index: number): ILayoutItem;
         /**
-         * Compute the preferred size of the layout.
+         * Compute the size hint for the layout.
          *
          * This must be implemented by a subclass.
          */
@@ -2558,21 +2379,35 @@ declare module phosphor.panels {
          */
         maxSize(): Size;
         /**
-         * Get the panel at the given index.
+         * Get the widget at the given index.
          *
-         * Returns `undefined` if there is no panel at the given index.
+         * Returns `undefined` if there is no widget at the given index.
          */
-        panelAt(index: number): Panel;
+        widgetAt(index: number): Widget;
         /**
-         * Get the index of the given panel or layout item.
+         * Get the index of the given widget or layout item.
          *
-         * Returns -1 if the panel or item does not exist in the layout.
+         * Returns -1 if the widget or item does not exist in the layout.
          */
-        indexOf(value: Panel | ILayoutItem): number;
+        indexOf(value: Widget | ILayoutItem): number;
         /**
-         * Remove the given panel or layout item from the layout.
+         * Remove an item from the layout and return its index.
+         *
+         * Returns -1 if the item is not in the layout.
          */
-        remove(value: Panel | ILayoutItem): void;
+        remove(value: Widget | ILayoutItem): number;
+        /**
+         * Get the alignment for the given widget.
+         *
+         * Returns 0 if the widget is not found in the layout.
+         */
+        alignment(widget: Widget): Alignment;
+        /**
+         * Set the alignment for the given widget.
+         *
+         * Returns true if the alignment was updated, false otherwise.
+         */
+        setAlignment(widget: Widget, alignment: Alignment): boolean;
         /**
          * Invalidate the cached layout data and enqueue an update.
          *
@@ -2580,40 +2415,49 @@ declare module phosphor.panels {
          */
         invalidate(): void;
         /**
+         * Update the layout for the parent widget immediately.
+         *
+         * This is typically called automatically at the appropriate times.
+         */
+        update(): void;
+        /**
          * Filter a message sent to a message handler.
+         *
+         * This implements the `IMessageFilter` interface.
          */
         filterMessage(handler: IMessageHandler, msg: IMessage): boolean;
         /**
-         * Process a message dispatched to the parent panel.
+         * Process a message dispatched to the parent widget.
          *
          * Subclasses may reimplement this method as needed.
          */
-        protected processPanelMessage(msg: IMessage): void;
+        protected processParentMessage(msg: IMessage): void;
         /**
-         * Ensure a child panel is parented to the layout parent.
+         * A method invoked when widget layout should be updated.
          *
-         * This should be called by a subclass when adding a panel.
+         * The arguments are the content boundaries for the layout which are
+         * already adjusted to account for the parent widget box sizing data.
+         *
+         * The default implementation of this method is a no-op.
          */
-        protected ensureParent(panel: Panel): void;
+        protected layout(x: number, y: number, width: number, height: number): void;
         /**
-         * Reparent the child panels to the current layout parent.
+         * Ensure a child widget is parented to the layout's parent.
+         *
+         * This should be called by a subclass when adding a widget.
+         */
+        protected ensureParent(widget: Widget): void;
+        /**
+         * Reparent the child widgets to the layout's parent.
          *
          * This is typically called automatically at the proper times.
          */
-        protected reparentChildPanels(): void;
-        /**
-         * A method invoked on parent 'resize' and 'layout-request' messages.
-         *
-         * Subclasses should reimplement this method to update the layout.
-         *
-         * The default implementation is a no-op.
-         */
-        protected layout(): void;
+        protected reparentChildWidgets(): void;
         private _parent;
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     /**
      * A sizer object for the `layoutCalc` function.
      *
@@ -2623,7 +2467,9 @@ declare module phosphor.panels {
      */
     class LayoutSizer {
         /**
-         * The preferred size of the sizer.
+         * The size hint for the sizer.
+         *
+         * The sizer will be given this initial size subject to its bounds.
          */
         sizeHint: number;
         /**
@@ -2724,662 +2570,22 @@ declare module phosphor.panels {
     function layoutCalc(sizers: LayoutSizer[], space: number): void;
 }
 
-declare module phosphor.panels {
-    import Message = core.Message;
+declare module phosphor.widgets {
+    import Size = utility.Size;
     /**
-     * A message class for child panel related messages.
-     */
-    class ChildMessage extends Message {
-        /**
-         * Construct a new child message.
-         */
-        constructor(type: string, child: Panel);
-        /**
-         * The child panel for the message.
-         */
-        child: Panel;
-        private _child;
-    }
-    /**
-     * A message class for 'move' messages.
-     */
-    class MoveMessage extends Message {
-        /**
-         * Construct a new move message.
-         */
-        constructor(oldX: number, oldY: number, x: number, y: number);
-        /**
-         * The previous X coordinate of the panel.
-         */
-        oldX: number;
-        /**
-         * The previous Y coordinate of the panel.
-         */
-        oldY: number;
-        /**
-         * The current X coordinate of the panel.
-         */
-        x: number;
-        /**
-         * The current Y coordinate of the panel.
-         */
-        y: number;
-        private _oldX;
-        private _oldY;
-        private _x;
-        private _y;
-    }
-    /**
-     * A message class for 'resize' messages.
-     */
-    class ResizeMessage extends Message {
-        /**
-         * Construct a new resize message.
-         */
-        constructor(oldWidth: number, oldHeight: number, width: number, height: number);
-        /**
-         * The previous width of the panel.
-         */
-        oldWidth: number;
-        /**
-         * The previous height of the panel.
-         */
-        oldHeight: number;
-        /**
-         * The current width of the panel.
-         */
-        width: number;
-        /**
-         * The current height of the panel.
-         */
-        height: number;
-        private _oldWidth;
-        private _oldHeight;
-        private _width;
-        private _height;
-    }
-}
-
-declare module phosphor.panels {
-    import IIterable = collections.IIterable;
-    import IList = collections.IList;
-    import IDisposable = core.IDisposable;
-    import IMessage = core.IMessage;
-    import IMessageHandler = core.IMessageHandler;
-    import Signal = core.Signal;
-    import IBoxData = domutil.IBoxData;
-    /**
-     * The base class of the Phosphor panel hierarchy.
-     *
-     * A panel wraps an absolutely positioned DOM node. It can be used with
-     * a Phosphor layout manager to layout its child panels, or it can also
-     * be used to host any other leaf DOM content.
-     */
-    class Panel implements IMessageHandler, IDisposable {
-        /**
-         * A signal emitted when the panel is disposed.
-         */
-        disposed: Signal<Panel, void>;
-        /**
-         * Construct a new panel.
-         */
-        constructor();
-        /**
-         * Dispose of the panel and its descendants.
-         */
-        dispose(): void;
-        /**
-         * Get the DOM node managed by the panel.
-         */
-        node: HTMLElement;
-        /**
-         * Get the X position of the panel.
-         */
-        /**
-         * Set the X position of the panel.
-         */
-        x: number;
-        /**
-         * Get the Y position of the panel.
-         */
-        /**
-         * Set the Y position of the panel.
-         */
-        y: number;
-        /**
-         * Get the width of the panel.
-         */
-        /**
-         * Set the width of the panel.
-         */
-        width: number;
-        /**
-         * Get the height of the panel.
-         */
-        /**
-         * Set the height of the panel.
-         */
-        height: number;
-        /**
-         * Get the position of the panel.
-         */
-        /**
-         * Set the position of the panel.
-         */
-        pos: Point;
-        /**
-         * Get the size of the panel.
-         */
-        /**
-         * Set the size of the panel.
-         */
-        size: Size;
-        /**
-         * Get the geometry of the panel.
-         */
-        /**
-         * Set the geometry of the panel.
-         */
-        geometry: Rect;
-        /**
-         * Get the minimum width of the panel.
-         */
-        /**
-         * Set the minimum width of the panel.
-         */
-        minWidth: number;
-        /**
-         * Get the minimum height of the panel.
-         */
-        /**
-         * Set the minimum height of the panel.
-         */
-        minHeight: number;
-        /**
-         * Get the maximum width of the panel.
-         */
-        /**
-         * Set the maximum width of the panel.
-         */
-        maxWidth: number;
-        /**
-         * Get the maximum height of the panel.
-         */
-        /**
-         * Set the maxmimum height of the panel.
-         */
-        maxHeight: number;
-        /**
-         * Get the minimum size of the panel.
-         */
-        /**
-         * Set the minimum size of the panel.
-         */
-        minSize: Size;
-        /**
-         * Get the maximum size of the panel.
-         */
-        /**
-         * Set the maximum size of the panel.
-         */
-        maxSize: Size;
-        /**
-         * Get the horizontal stretch factor for the panel.
-         */
-        /**
-         * Set the horizontal stretch factor for the panel.
-         */
-        horizontalStretch: number;
-        /**
-         * Get the vertical stretch factor for the panel.
-         */
-        /**
-         * Set the vertical stretch factor for the panel.
-         */
-        verticalStretch: number;
-        /**
-         * Get the horizontal size policy for the panel.
-         */
-        /**
-         * Set the horizontal size policy for the panel.
-         */
-        horizontalSizePolicy: SizePolicy;
-        /**
-         * Get the vertical size policy for the panel.
-         */
-        /**
-         * Set the vertical size policy for the panel.
-         */
-        verticalSizePolicy: SizePolicy;
-        /**
-         * Get the alignment flags for the panel.
-         */
-        /**
-         * Set the alignment flags for the panel.
-         */
-        alignment: Alignment;
-        /**
-         * Get the box data for the panel's node.
-         */
-        boxData: IBoxData;
-        /**
-         * Test whether the panel's node is attached to the DOM.
-         */
-        isAttached: boolean;
-        /**
-         * Test whether the panel has been disposed.
-         */
-        isDisposed: boolean;
-        /**
-         * Test whether the panel is explicitly hidden.
-         */
-        isHidden: boolean;
-        /**
-         * Test whether the panel is visible.
-         *
-         * A panel is visible under the following conditions:
-         *   - it is attached to the DOM
-         *   - it is not explicitly hidden
-         *   - it has no explicitly hidden ancestors
-         */
-        isVisible: boolean;
-        /**
-         * Get the parent panel of the panel.
-         */
-        /**
-         * Set the parent panel of the panel.
-         */
-        parent: Panel;
-        /**
-         * Get a read only list of the child panels.
-         */
-        children: IList<Panel>;
-        /**
-         * Get the layout attached to the panel.
-         */
-        /**
-         * Set the layout for the panel.
-         *
-         * The given layout must be a new layout not assigned to any other
-         * panel or an exception will be thrown. A null layout is allowed.
-         *
-         * The current layout will be disposed and cannot be reused.
-         */
-        layout: Layout;
-        /**
-         * Test whether the given panel flag is set.
-         */
-        testFlag(flag: PanelFlag): boolean;
-        /**
-         * Set the given panel flag.
-         */
-        setFlag(flag: PanelFlag): void;
-        /**
-         * Clear the given panel flag.
-         */
-        clearFlag(flag: PanelFlag): void;
-        /**
-         * Make the panel visible to its parent.
-         *
-         * If the panel is not explicitly hidden, this is a no-op.
-         */
-        show(): void;
-        /**
-         * Make the panel invisible to its parent.
-         *
-         * If the panel is already hidden, this is a no-op.
-         */
-        hide(): void;
-        /**
-         * Close the panel by sending it a 'close' message.
-         *
-         * Subclasses may reimplement the `onClose` method to perform custom
-         * actions before removing the panel from the hierarchy. The default
-         * close message handler will unparent the panel.
-         */
-        close(): void;
-        /**
-         * Attach the panel's node to a host DOM element.
-         *
-         * The `fit` method can be called to resize the panel to fill its
-         * host node. It should be called whenever the size of host node
-         * is known to have changed.
-         *
-         * Only a root panel can be attached to a host node.
-         */
-        attach(host: HTMLElement): void;
-        /**
-         * Detach the panel's node from the DOM.
-         *
-         * Only a root panel can be detached from its host node.
-         */
-        detach(): void;
-        /**
-         * Resize the panel so that its fills its host node.
-         *
-         * Only a root panel can be fit to its host.
-         *
-         * If the size of the host node is known, it can be provided. This
-         * will prevent a read from the DOM and avoid a potential reflow.
-         */
-        fit(width?: number, height?: number, box?: IBoxData): void;
-        /**
-         * Calculate the preferred size for the panel.
-         *
-         * The default implementation returns the layout size hint if
-         * a layout is installed, otherwise it returns a zero size.
-         */
-        sizeHint(): Size;
-        /**
-         * Calculate the preferred minimum size for the panel.
-         *
-         * The default implementation returns the layout min size if
-         * a layout is installed, otherwise it returns a zero size.
-         */
-        minSizeHint(): Size;
-        /**
-         * Calculate the preferred maximum size for the panel.
-         *
-         * The default implementation returns the layout max size if
-         * a layout is installed, otherwise it returns an inf size.
-         */
-        maxSizeHint(): Size;
-        /**
-         * Notify the layout system that the panel geometry needs updating.
-         *
-         * This should be called if the panel's size hint(s) have changed.
-         *
-         * If the `force` flag is false and the panel is explicitly hidden,
-         * this is a no-op. The geometry will update automatically when the
-         * panel is made visible.
-         */
-        updateGeometry(force?: boolean): void;
-        /**
-         * Notify the layout system that the panel box data needs updating.
-         *
-         * This should be called if the node's padding or border has changed.
-         */
-        updateBoxData(): void;
-        /**
-         * Move the panel to the given X-Y position.
-         */
-        move(x: number, y: number): void;
-        /**
-         * Resize the panel to the given width and height.
-         */
-        resize(width: number, height: number): void;
-        /**
-         * Set the geometry of the panel.
-         */
-        setGeometry(x: number, y: number, width: number, height: number): void;
-        /**
-         * Set the minimum size of the panel.
-         */
-        setMinSize(width: number, height: number): void;
-        /**
-         * Set the maximum size of the panel.
-         */
-        setMaxSize(width: number, height: number): void;
-        /**
-         * Set the minimum and maximum size of the panel.
-         */
-        setMinMaxSize(minW: number, minH: number, maxW: number, maxH: number): void;
-        /**
-         * Set the stretch factors for the panel.
-         */
-        setStretch(horizontal: number, vertical: number): void;
-        /**
-         * Set the size policy values for the panel.
-         */
-        setSizePolicy(horizontal: SizePolicy, vertical: SizePolicy): void;
-        /**
-         * Process a message dispatched to the handler.
-         */
-        processMessage(msg: IMessage): void;
-        /**
-         * Compress a message posted to the handler.
-         *
-         * By default 'layout-request' messages are compressed.
-         */
-        compressEvent(msg: IMessage, posted: IIterable<IMessage>): boolean;
-        /**
-         * Create the DOM node which represents the panel.
-         *
-         * The default implementation creates an empty div.
-         */
-        protected createNode(): HTMLElement;
-        /**
-         * A method invoked on a 'child-added' message.
-         *
-         * The default implementation attaches the child node.
-         */
-        protected onChildAdded(msg: ChildMessage): void;
-        /**
-         * A method invoked on a 'child-removed' message.
-         *
-         * The default implementation detaches the child node.
-         */
-        protected onChildRemoved(msg: ChildMessage): void;
-        /**
-         * A method invoked on a 'close' message.
-         *
-         * The default implementation sets the parent to null.
-         */
-        protected onClose(msg: IMessage): void;
-        /**
-         * A method invoked on a 'move' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onMove(msg: MoveMessage): void;
-        /**
-         * A method invoked on a 'resize' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onResize(msg: ResizeMessage): void;
-        /**
-         * A method invoked on a 'before-show' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onBeforeShow(msg: IMessage): void;
-        /**
-         * A method invoked on an 'after-show' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onAfterShow(msg: IMessage): void;
-        /**
-         * A method invoked on a 'before-hide' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onBeforeHide(msg: IMessage): void;
-        /**
-         * A method invoked on an 'after-hide' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onAfterHide(msg: IMessage): void;
-        /**
-         * A method invoked on a 'before-attach' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onBeforeAttach(msg: IMessage): void;
-        /**
-         * A method invoked on an 'after-attach' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onAfterAttach(msg: IMessage): void;
-        /**
-         * A method invoked on a 'before-detach' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onBeforeDetach(msg: IMessage): void;
-        /**
-         * A method invoked on an 'after-detach' message.
-         *
-         * The default implementation is a no-op.
-         */
-        protected onAfterDetach(msg: IMessage): void;
-        private _flags;
-        private _node;
-        private _parent;
-        private _layout;
-        private _children;
-        private _x;
-        private _y;
-        private _width;
-        private _height;
-        private _minWidth;
-        private _minHeight;
-        private _maxWidth;
-        private _maxHeight;
-        private _boxData;
-        private _stretch;
-        private _alignment;
-        private _sizePolicy;
-    }
-}
-
-declare module phosphor.panels {
-    import IMessage = core.IMessage;
-    import IElement = virtualdom.IElement;
-    /**
-     * A panel which hosts a virtual element.
-     *
-     * This is used to embed a virtual element into a panel hierarchy. This
-     * is a simple panel which disallows an external layout. The intent is
-     * that the element will provide the content for the panel, typically
-     * in the form of a component which manages its own updates.
-     */
-    class ElementHost extends Panel {
-        /**
-         * Construct a new element host.
-         */
-        constructor(element?: IElement, width?: number, height?: number);
-        /**
-         * Get the virtual element hosted by the panel.
-         */
-        /**
-         * Set the virtual element hosted by the panel.
-         */
-        element: IElement;
-        /**
-         * Calculate the preferred size of the panel.
-         */
-        sizeHint(): Size;
-        /**
-         * Set the preferred size for the panel.
-         */
-        setSizeHint(width: number, height: number): void;
-        /**
-         * A method invoked on an 'after-attach' message.
-         */
-        protected onAfterAttach(msg: IMessage): void;
-        /**
-         * A method invoked on an 'after-detach' message.
-         */
-        protected onAfterDetach(msg: IMessage): void;
-        private _size;
-        private _element;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A concrete implementation of ILayoutItem which manages a panel.
+     * A layout item which manages empty space.
      *
      * User code will not typically use this class directly.
-     */
-    class PanelItem implements ILayoutItem {
-        /**
-         * Construct a new panel item.
-         */
-        constructor(panel: Panel);
-        /**
-         * Test whether the item manages a panel.
-         */
-        isPanel: boolean;
-        /**
-         * Test whether the item manages empty space.
-         */
-        isSpacer: boolean;
-        /**
-         * Test whether the item should be treated as hidden.
-         */
-        isHidden: boolean;
-        /**
-         * The panel the item manages, if any.
-         */
-        panel: Panel;
-        /**
-         * Test whether the item should be expanded horizontally.
-         */
-        expandHorizontal: boolean;
-        /**
-         * Test Whether the item should be expanded vertically.
-         */
-        expandVertical: boolean;
-        /**
-         * The horizontal stretch factor for the item.
-         */
-        horizontalStretch: number;
-        /**
-         * The vertical stretch factor for the item.
-         */
-        verticalStretch: number;
-        /**
-         * Invalidate the cached data for the item.
-         */
-        invalidate(): void;
-        /**
-         * Compute the preferred size of the item.
-         */
-        sizeHint(): Size;
-        /**
-         * Compute the minimum size of the item.
-         */
-        minSize(): Size;
-        /**
-         * Compute the maximum size of the item.
-         */
-        maxSize(): Size;
-        /**
-         * Set the geometry of the item.
-         */
-        setGeometry(x: number, y: number, width: number, height: number): void;
-        /**
-         * Update the computed sizes for the panel item.
-         */
-        private _updateSizes();
-        private _panel;
-        private _origHint;
-        private _sizeHint;
-        private _minSize;
-        private _maxSize;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A concrete implementation of ILayoutItem which manages empty space.
-     *
-     * User code will not typically create instances of this class directly.
      */
     class SpacerItem implements ILayoutItem {
         /**
          * Construct a new spacer item.
          */
-        constructor(width: number, height: number, hStretch: number, vStretch: number, hPolicy: SizePolicy, vPolicy: SizePolicy);
+        constructor(width: number, height: number, hPolicy: SizePolicy, vPolicy: SizePolicy);
         /**
-         * Test whether the item manages a panel.
+         * Test whether the item manages a widget.
          */
-        isPanel: boolean;
+        isWidget: boolean;
         /**
          * Test whether the item manages empty space.
          */
@@ -3389,9 +2595,13 @@ declare module phosphor.panels {
          */
         isHidden: boolean;
         /**
-         * The panel the item manages, if any.
+         * The widget the item manages, if any.
          */
-        panel: Panel;
+        widget: Widget;
+        /**
+         * Get the alignment for the item in its layout cell.
+         */
+        alignment: Alignment;
         /**
          * Test whether the item should be expanded horizontally.
          */
@@ -3401,19 +2611,11 @@ declare module phosphor.panels {
          */
         expandVertical: boolean;
         /**
-         * The horizontal stretch factor for the item.
-         */
-        horizontalStretch: number;
-        /**
-         * The vertical stretch factor for the item.
-         */
-        verticalStretch: number;
-        /**
          * Change the sizing of the spacer item.
          *
          * The owner layout must be invalidated to reflect the change.
          */
-        setSizing(width: number, height: number, hStretch: number, vStretch: number, hPolicy: SizePolicy, vPolicy: SizePolicy): void;
+        setSizing(width: number, height: number, hPolicy: SizePolicy, vPolicy: SizePolicy): void;
         /**
          * Transpose the effective orientation of the spacer item.
          */
@@ -3435,18 +2637,96 @@ declare module phosphor.panels {
          */
         maxSize(): Size;
         /**
-         * Set the geometry of the item.
+         * Set the geometry of the item using the given values.
          */
         setGeometry(x: number, y: number, width: number, height: number): void;
         private _size;
-        private _stretch;
         private _sizePolicy;
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
+    import Size = utility.Size;
     /**
-     * A layout which arranges panels in a row or column.
+     * A layout item which manages a widget.
+     *
+     * User code will not typically use this class directly.
+     */
+    class WidgetItem implements ILayoutItem {
+        /**
+         * Construct a new widget item.
+         */
+        constructor(widget: Widget, alignment?: Alignment);
+        /**
+         * Test whether the item manages a widget.
+         */
+        isWidget: boolean;
+        /**
+         * Test whether the item manages empty space.
+         */
+        isSpacer: boolean;
+        /**
+         * Test whether the item should be treated as hidden.
+         */
+        isHidden: boolean;
+        /**
+         * The widget the item manages, if any.
+         */
+        widget: Widget;
+        /**
+         * Get the alignment for the item in its layout cell.
+         */
+        /**
+         * Set the alignment for the item in its layout cell.
+         *
+         * The owner layout must be invalidated to reflect the change.
+         */
+        alignment: Alignment;
+        /**
+         * Test whether the item should be expanded horizontally.
+         */
+        expandHorizontal: boolean;
+        /**
+         * Test Whether the item should be expanded vertically.
+         */
+        expandVertical: boolean;
+        /**
+         * Invalidate the cached data for the item.
+         */
+        invalidate(): void;
+        /**
+         * Compute the preferred size of the item.
+         */
+        sizeHint(): Size;
+        /**
+         * Compute the minimum size of the item.
+         */
+        minSize(): Size;
+        /**
+         * Compute the maximum size of the item.
+         */
+        maxSize(): Size;
+        /**
+         * Set the geometry of the item using the given values.
+         */
+        setGeometry(x: number, y: number, width: number, height: number): void;
+        /**
+         * Update the computed sizes for the widget item.
+         */
+        private _updateSizes();
+        private _widget;
+        private _alignment;
+        private _origHint;
+        private _sizeHint;
+        private _minSize;
+        private _maxSize;
+    }
+}
+
+declare module phosphor.widgets {
+    import Size = utility.Size;
+    /**
+     * A layout which arranges widgets in a row or column.
      */
     class BoxLayout extends Layout {
         /**
@@ -3482,23 +2762,23 @@ declare module phosphor.panels {
         /**
          * Remove and return the layout item at the specified index.
          */
-        takeAt(index: number): ILayoutItem;
+        removeAt(index: number): ILayoutItem;
         /**
-         * Add a panel as the last item in the layout.
+         * Add a widget as the last item in the layout.
          *
-         * If the panel already exists in the layout, it will be moved.
+         * If the widget already exists in the layout, it will be moved.
          *
-         * Returns the index of the added panel.
+         * Returns the index of the added widget.
          */
-        addPanel(panel: Panel): number;
+        addWidget(widget: Widget, stretch?: number, alignment?: Alignment): number;
         /**
-         * Insert a panel into the layout at the given index.
+         * Insert a widget into the layout at the given index.
          *
-         * If the panel already exists in the layout, it will be moved.
+         * If the widget already exists in the layout, it will be moved.
          *
-         * Returns the index of the added panel.
+         * Returns the index of the added widget.
          */
-        insertPanel(index: number, panel: Panel): number;
+        insertWidget(index: number, widget: Widget, stretch?: number, alignment?: Alignment): number;
         /**
          * Add a fixed amount of spacing to the end of the layout.
          *
@@ -3522,6 +2802,18 @@ declare module phosphor.panels {
          */
         insertStretch(index: number, stretch?: number): number;
         /**
+         * Get the stretch factor for the given widget or index.
+         *
+         * Returns -1 if the given widget or index is invalid.
+         */
+        stretch(which: Widget | number): number;
+        /**
+         * Set the stretch factor for the given widget or index.
+         *
+         * Returns true if the stretch was updated, false otherwise.
+         */
+        setStretch(which: Widget | number, stretch: number): boolean;
+        /**
          * Invalidate the cached layout data and enqueue an update.
          */
         invalidate(): void;
@@ -3540,7 +2832,7 @@ declare module phosphor.panels {
         /**
          * Update the geometry of the child layout items.
          */
-        protected layout(): void;
+        protected layout(x: number, y: number, width: number, height: number): void;
         /**
          * Initialize the layout items and internal sizes for the layout.
          */
@@ -3550,7 +2842,7 @@ declare module phosphor.panels {
          *
          * Returns the index of the added item.
          */
-        private _insert(index, item);
+        private _insert(index, item, stretch);
         private _dirty;
         private _fixedSpace;
         private _spacing;
@@ -3564,12 +2856,749 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     /**
-     * A panel which arranges its children in a row or column
+     * A class which manages a handle node for a split panel.
+     */
+    class SplitHandle {
+        /**
+         * Construct a new split handle.
+         */
+        constructor(orientation: Orientation);
+        /**
+         * Get whether the handle is hidden.
+         */
+        /**
+         * Set whether the handle is hidden.
+         */
+        hidden: boolean;
+        /**
+         * Get the orientation of the handle.
+         */
+        /**
+         * Set the orientation of the handle.
+         */
+        orientation: Orientation;
+        /**
+         * Get the DOM node for the handle.
+         */
+        node: HTMLElement;
+        /**
+         * Create the DOM node for the handle.
+         */
+        protected createNode(): HTMLElement;
+        private _hidden;
+        private _node;
+        private _orientation;
+    }
+}
+
+declare module phosphor.widgets {
+    import Size = utility.Size;
+    /**
+     * A layout which arranges widgets in resizable sections.
+     */
+    class SplitLayout extends Layout {
+        /**
+         * Construct a new split layout.
+         */
+        constructor(orientation: Orientation);
+        /**
+         * Dispose of the resources held by the layout.
+         */
+        dispose(): void;
+        /**
+         * Get the orientation of the split layout.
+         */
+        /**
+         * Set the orientation of the split layout.
+         */
+        orientation: Orientation;
+        /**
+         * Get the size of the split handles.
+         */
+        /**
+         * Set the the size of the split handles.
+         */
+        handleSize: number;
+        /**
+         * Get the number of layout items in the layout.
+         */
+        count: number;
+        /**
+         * Get the normalized sizes of the items in the layout.
+         */
+        sizes(): number[];
+        /**
+         * Set the relative sizes for the split items.
+         *
+         * Extra values are ignored, too few will yield an undefined layout.
+         */
+        setSizes(sizes: number[]): void;
+        /**
+         * Get the splitter handle at the given index.
+         */
+        handleAt(index: number): SplitHandle;
+        /**
+         * Move the handle at the given index to the offset position.
+         *
+         * This will move the handle as close as possible to the given
+         * offset position, without violating item size constraints.
+         */
+        moveHandle(index: number, pos: number): void;
+        /**
+         * Get the layout item at the specified index.
+         */
+        itemAt(index: number): ILayoutItem;
+        /**
+         * Remove and return the layout item at the specified index.
+         */
+        removeAt(index: number): ILayoutItem;
+        /**
+         * Add a widget as the last item in the layout.
+         *
+         * If the widget already exists in the layout, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        addWidget(widget: Widget, stretch?: number, alignment?: Alignment): number;
+        /**
+         * Insert a widget into the layout at the given index.
+         *
+         * If the widget already exists in the layout, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        insertWidget(index: number, widget: Widget, stretch?: number, alignment?: Alignment): number;
+        /**
+         * Get the stretch factor for the given widget or index.
+         *
+         * Returns -1 if the given widget or index is invalid.
+         */
+        stretch(which: Widget | number): number;
+        /**
+         * Set the stretch factor for the given widget or index.
+         *
+         * Returns true if the stretch was updated, false otherwise.
+         */
+        setStretch(which: Widget | number, stretch: number): boolean;
+        /**
+         * Invalidate the cached layout data and enqueue an update.
+         */
+        invalidate(): void;
+        /**
+         * Compute the preferred size of the layout.
+         */
+        sizeHint(): Size;
+        /**
+         * Compute the minimum size of the layout.
+         */
+        minSize(): Size;
+        /**
+         * Compute the maximum size of the layout.
+         */
+        maxSize(): Size;
+        /**
+         * Update the geometry of the child layout items.
+         */
+        protected layout(x: number, y: number, width: number, height: number): void;
+        /**
+         * Initialize the layout items and internal sizes for the layout.
+         */
+        private _setupGeometry();
+        private _dirty;
+        private _handleSize;
+        private _fixedSpace;
+        private _sizeHint;
+        private _minSize;
+        private _maxSize;
+        private _orientation;
+        private _items;
+        private _sizers;
+    }
+    /**
+     * A custom widget item used by a split layout.
+     */
+    class SplitItem extends WidgetItem {
+        /**
+         * Construct a new split item.
+         */
+        constructor(handle: SplitHandle, widget: Widget, alignment?: Alignment);
+        /**
+         * Get the split handle for the item.
+         */
+        handle: SplitHandle;
+        private _handle;
+    }
+}
+
+declare module phosphor.widgets {
+    import Signal = core.Signal;
+    import Pair = utility.Pair;
+    import Size = utility.Size;
+    /**
+     * A layout in which only one widget is visible at a time.
      *
-     * This panel delegates to a permanently installed box layout and
-     * can be used as a more convenient interface to a box layout.
+     * User code is responsible for managing the current layout index. The
+     * index defaults to -1, which means no widget will be shown. The index
+     * must be set to a valid index in order for a widget to be displayed.
+     *
+     * If the current widget is removed, the current index is reset to -1.
+     *
+     * This layout will typically be used in conjunction with another
+     * widget, such as a tab bar, which manipulates the layout index.
+     */
+    class StackedLayout extends Layout {
+        /**
+         * A signal emitted when a widget is removed from the layout.
+         */
+        widgetRemoved: Signal<StackedLayout, Pair<number, Widget>>;
+        /**
+         * Construct a new stack layout.
+         */
+        constructor();
+        /**
+         * Dispose of the resources held by the layout.
+         */
+        dispose(): void;
+        /**
+         * Get the current index of the layout.
+         */
+        /**
+         * Set the current index of the layout.
+         */
+        currentIndex: number;
+        /**
+         * Get the current widget in the layout.
+         */
+        /**
+         * Set the current widget in the layout.
+         */
+        currentWidget: Widget;
+        /**
+         * Get the number of layout items in the layout.
+         */
+        count: number;
+        /**
+         * Get the layout item at the specified index.
+         */
+        itemAt(index: number): ILayoutItem;
+        /**
+         * Remove and return the layout item at the specified index.
+         */
+        removeAt(index: number): ILayoutItem;
+        /**
+         * Add a widget as the last item in the layout.
+         *
+         * If the widget already exists in the layout, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        addWidget(widget: Widget, alignment?: Alignment): number;
+        /**
+         * Insert a widget into the layout at the given index.
+         *
+         * If the widget already exists in the layout, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        insertWidget(index: number, widget: Widget, alignment?: Alignment): number;
+        /**
+         * Move a widget from one index to another.
+         *
+         * This method is more efficient for moving a widget than calling
+         * `insertWidget` for an already added widget. It will not remove
+         * the widget before moving it and will not emit `widgetRemoved`.
+         *
+         * Returns -1 if `fromIndex` is out of range.
+         */
+        moveWidget(fromIndex: number, toIndex: number): number;
+        /**
+         * Invalidate the cached layout data and enqueue an update.
+         */
+        invalidate(): void;
+        /**
+         * Compute the preferred size of the layout.
+         */
+        sizeHint(): Size;
+        /**
+         * Compute the minimum size of the layout.
+         */
+        minSize(): Size;
+        /**
+         * Compute the maximum size of the layout.
+         */
+        maxSize(): Size;
+        /**
+         * Update the geometry of the child layout items.
+         */
+        protected layout(x: number, y: number, width: number, height: number): void;
+        /**
+         * Initialize the layout items and internal sizes for the layout.
+         */
+        private _setupGeometry();
+        private _dirty;
+        private _currentIndex;
+        private _sizeHint;
+        private _minSize;
+        private _maxSize;
+        private _items;
+    }
+}
+
+declare module phosphor.widgets {
+    import Queue = collections.Queue;
+    import IMessage = core.IMessage;
+    import IMessageHandler = core.IMessageHandler;
+    import Signal = core.Signal;
+    import IBoxSizing = utility.IBoxSizing;
+    import IDisposable = utility.IDisposable;
+    import Size = utility.Size;
+    /**
+     * The base class of the Phosphor widget hierarchy.
+     *
+     * A widget wraps an absolutely positioned DOM node. It can act as a
+     * container for child widgets which can be arranged with a Phosphor
+     * layout manager, or it can act as a leaf control which manipulates
+     * its DOM node directly.
+     *
+     * A root widget (a widget with no parent) can be mounted anywhere
+     * in the DOM by calling its `attach` method and passing the DOM
+     * node which should be used as the parent of the widget's node.
+     */
+    class Widget implements IMessageHandler, IDisposable {
+        /**
+         * A signal emitted when the widget is disposed.
+         */
+        disposed: Signal<Widget, void>;
+        /**
+         * Construct a new widget.
+         */
+        constructor();
+        /**
+         * Dispose of the widget and its descendants.
+         */
+        dispose(): void;
+        /**
+         * Get the DOM node managed by the widget.
+         */
+        node: HTMLElement;
+        /**
+         * Get the X position set for the widget.
+         */
+        /**
+         * Set the X position for the widget.
+         *
+         * This is equivalent to `move(x, this.y)`.
+         */
+        x: number;
+        /**
+         * Get the Y position set for the widget.
+         */
+        /**
+         * Set the Y position for the widget.
+         *
+         * This is equivalent to `move(this.x, y)`.
+         */
+        y: number;
+        /**
+         * Get the width set for the widget.
+         */
+        /**
+         * Set the width for the widget.
+         *
+         * This is equivalent to `resize(width, this.height)`.
+         */
+        width: number;
+        /**
+         * Get the height set for the widget.
+         */
+        /**
+         * Set the height for the widget.
+         *
+         * This is equivalent to `resize(this.width, height)`.
+         */
+        height: number;
+        /**
+         * Get the horizontal size policy for the widget.
+         */
+        /**
+         * Set the horizontal size policy for the widget.
+         *
+         * This is equivalent to `setSizePolicy(policy, this.verticalSizePolicy)`.
+         */
+        horizontalSizePolicy: SizePolicy;
+        /**
+         * Get the vertical size policy for the widget.
+         */
+        /**
+         * Set the vertical size policy for the widget.
+         *
+         * This is equivalent to `setSizePolicy(this.horizontalPolicy, policy)`.
+         */
+        verticalSizePolicy: SizePolicy;
+        /**
+         * Get the CSS box sizing for the widget.
+         *
+         * This method computes the data once, then caches it. The cached
+         * data can be cleared by calling the `invalidateBoxSizing` method.
+         */
+        boxSizing: IBoxSizing;
+        /**
+         * Test whether the widget's node is attached to the DOM.
+         */
+        isAttached: boolean;
+        /**
+         * Test whether the widget has been disposed.
+         */
+        isDisposed: boolean;
+        /**
+         * Test whether the widget is explicitly hidden.
+         */
+        isHidden: boolean;
+        /**
+         * Test whether the widget is visible.
+         *
+         * A widget is visible under the following conditions:
+         *   - it is attached to the DOM
+         *   - it is not explicitly hidden
+         *   - it has no explicitly hidden ancestors
+         */
+        isVisible: boolean;
+        /**
+         * Get the layout manager attached to the widget.
+         *
+         * Returns null if the widget has no layout manager.
+         */
+        /**
+         * Set the layout manager for the widget.
+         *
+         * A layout is single-use only. The current layout can be set to null
+         * or to a new layout instance, but not to a layout which is already
+         * installed on another widget.
+         *
+         * The current layout will be disposed and cannot be reused.
+         */
+        layout: Layout;
+        /**
+         * Get the parent of the widget.
+         *
+         * Returns null if the widget has no parent.
+         */
+        /**
+         * Set the parent of the widget.
+         *
+         * Setting the parent to null will detach the widget from the DOM
+         * and automatically remove it from the relevant layout manager.
+         */
+        parent: Widget;
+        /**
+         * Get an array of the widget's children.
+         */
+        children(): Widget[];
+        /**
+         * Test whether the widget's DOM node has the given class name.
+         */
+        hasClass(name: string): boolean;
+        /**
+         * Add a class name to the widget's DOM node.
+         */
+        addClass(name: string): void;
+        /**
+         * Remove a class name from the widget's DOM node.
+         */
+        removeClass(name: string): void;
+        /**
+         * Test whether the given widget flag is set.
+         */
+        testFlag(flag: WidgetFlag): boolean;
+        /**
+         * Set the given widget flag.
+         */
+        setFlag(flag: WidgetFlag): void;
+        /**
+         * Clear the given widget flag.
+         */
+        clearFlag(flag: WidgetFlag): void;
+        /**
+         * Make the widget visible to its parent.
+         *
+         * If the widget is not explicitly hidden, this is a no-op.
+         */
+        show(): void;
+        /**
+         * Make the widget invisible to its parent.
+         *
+         * If the widget is already hidden, this is a no-op.
+         */
+        hide(): void;
+        /**
+         * Close the widget by sending it a 'close' message.
+         *
+         * Subclasses should reimplement `onClose` to perform custom actions.
+         */
+        close(): void;
+        /**
+         * Attach the widget's node to a host DOM element.
+         *
+         * The `fit` method can be called to resize the widget to fill its
+         * host node. It should be called whenever the size of host node is
+         * known to have changed.
+         *
+         * Only a root widget can be attached to a host node.
+         */
+        attach(host: HTMLElement): void;
+        /**
+         * Detach the widget's node from the DOM.
+         *
+         * Only a root widget can be detached from its host node.
+         */
+        detach(): void;
+        /**
+         * Resize the widget so that it fills its host node.
+         *
+         * Only a root widget can be fit to its host.
+         *
+         * If the size of the host node is known, it can be provided. This
+         * will prevent a DOM geometry read and avoid a potential reflow.
+         */
+        fit(width?: number, height?: number, box?: IBoxSizing): void;
+        /**
+         * Calculate the preferred size for the widget.
+         *
+         * This is used by Phosphor's layout machinery to compute the natural
+         * space required for the widget and its children. A subclass which
+         * provides leaf content should reimplement this method.
+         *
+         * The default implementation of this method delegates to the layout
+         * manager if installed, otherwise it returns a zero size.
+         */
+        sizeHint(): Size;
+        /**
+         * Calculate the preferred minimum size for the widget.
+         *
+         * This is used by Phosphor's layout machinery to compute the minimum
+         * space required for the widget and its children. This is independent
+         * of and subordinate to the minimum size specified in CSS. User code
+         * will not typically interact with this method.
+         *
+         * The default implementation of this method delegates to the layout
+         * manager if installed, otherwise it returns a zero size.
+         */
+        minSizeHint(): Size;
+        /**
+         * Calculate the preferred maximum size for the widget.
+         *
+         * This is used by Phosphor's layout machinery to compute the maximum
+         * space allowed for the widget and its children. This is independent
+         * of and subordinate to the maximum size specified in CSS. User code
+         * will not typically interact with this method.
+         *
+         * The default implementation of this method delegates to the layout
+         * manager if installed, otherwise it returns an infinite size.
+         */
+        maxSizeHint(): Size;
+        /**
+         * Invalidate the cached CSS box sizing for the widget.
+         *
+         * User code should invoke this method when it makes a change to the
+         * node's style which changes its border, padding, or size limits.
+         */
+        invalidateBoxSizing(): void;
+        /**
+         * Notify the layout system that the widget's geometry is dirty.
+         *
+         * This is typically called automatically at the proper times, but
+         * a custom leaf widget should call this method when its size hint
+         * changes so that the ancestor layout will refresh.
+         *
+         * If the `force` flag is false and the widget is explicitly hidden,
+         * this is a no-op. The geometry will update automatically when the
+         * widget is made visible.
+         */
+        updateGeometry(force?: boolean): void;
+        /**
+         * Move the widget to the specified X-Y coordinate.
+         */
+        move(x: number, y: number): void;
+        /**
+         * Resize the widget to the specified width and height.
+         */
+        resize(width: number, height: number): void;
+        /**
+         * Set the position and size of the widget.
+         *
+         * The size is clipped to the limits specified by the node's style.
+         *
+         * This method will send 'move' and 'resize' messages to the widget if
+         * the new geometry changes the position or size of the widget's node.
+         */
+        setGeometry(x: number, y: number, width: number, height: number): void;
+        /**
+         * Set the size policy for the widget.
+         */
+        setSizePolicy(horizontal: SizePolicy, vertical: SizePolicy): void;
+        /**
+         * Process a message sent to the widget.
+         *
+         * This implements the IMessageHandler interface.
+         *
+         * Subclasses may reimplement this method as needed.
+         */
+        processMessage(msg: IMessage): void;
+        /**
+         * Compress a message posted to the widget.
+         *
+         * This implements the IMessageHandler interface.
+         *
+         * Subclasses may reimplement this method as needed.
+         */
+        compressMessage(msg: IMessage, pending: Queue<IMessage>): boolean;
+        /**
+         * Create the DOM node for the widget.
+         *
+         * This can be reimplemented by subclasses as needed.
+         *
+         * The default implementation creates an empty div.
+         */
+        protected createNode(): HTMLElement;
+        /**
+         * A method invoked when a 'close' message is received.
+         *
+         * The default implementation sets the parent to null.
+         */
+        protected onClose(msg: IMessage): void;
+        /**
+         * A method invoked when a 'child-added' message is received.
+         *
+         * The default implementation appends the child node to the DOM.
+         */
+        protected onChildAdded(msg: ChildMessage): void;
+        /**
+         * A method invoked when a 'child-removed' message is received.
+         *
+         * The default implementation removes the child node from the DOM.
+         */
+        protected onChildRemoved(msg: ChildMessage): void;
+        /**
+         * A method invoked when a 'move' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onMove(msg: MoveMessage): void;
+        /**
+         * A method invoked when a 'resize' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onResize(msg: ResizeMessage): void;
+        /**
+         * A method invoked when a 'before-show' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onBeforeShow(msg: IMessage): void;
+        /**
+         * A method invoked when an 'after-show' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onAfterShow(msg: IMessage): void;
+        /**
+         * A method invoked when a 'before-hide' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onBeforeHide(msg: IMessage): void;
+        /**
+         * A method invoked when an 'after-hide' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onAfterHide(msg: IMessage): void;
+        /**
+         * A method invoked when a 'before-attach' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onBeforeAttach(msg: IMessage): void;
+        /**
+         * A method invoked when an 'after-attach' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onAfterAttach(msg: IMessage): void;
+        /**
+         * A method invoked when a 'before-detach' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onBeforeDetach(msg: IMessage): void;
+        /**
+         * A method invoked when an 'after-detach' message is received.
+         *
+         * The default implementation is a no-op.
+         */
+        protected onAfterDetach(msg: IMessage): void;
+        private _node;
+        private _layout;
+        private _parent;
+        private _children;
+        private _sizePolicy;
+        private _boxSizing;
+        private _x;
+        private _y;
+        private _width;
+        private _height;
+        private _flags;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * A widget which delegates to a permanently installed layout.
+     *
+     * This is used as a base class for common panel widgets.
+     */
+    class Panel extends Widget {
+        /**
+         * Construct a new panel.
+         */
+        constructor(layout: Layout);
+        /**
+         * Get the number of items (widgets + spacers) in the panel.
+         */
+        count: number;
+        /**
+         * Get the index of the given widget.
+         *
+         * Returns -1 if the widget is not found.
+         */
+        indexOf(widget: Widget): number;
+        /**
+         * Get the widget at the given index.
+         *
+         * Returns `undefined` if there is no widget at the given index.
+         */
+        widgetAt(index: number): Widget;
+        /**
+         * Get the alignment for the given widget.
+         *
+         * Returns 0 if the widget is not found in the panel.
+         */
+        alignment(widget: Widget): Alignment;
+        /**
+         * Set the alignment for the given widget.
+         *
+         * Returns true if the alignment was updated, false otherwise.
+         */
+        setAlignment(widget: Widget, alignment: Alignment): boolean;
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * A panel which arranges its children in a row or column.
      */
     class BoxPanel extends Panel {
         /**
@@ -3577,53 +3606,37 @@ declare module phosphor.panels {
          */
         constructor(direction?: Direction, spacing?: number);
         /**
-         * Get the layout direction for the box.
+         * Get the layout direction for the panel.
          */
         /**
-         * Set the layout direction for the box.
+         * Set the layout direction for the panel.
          */
         direction: Direction;
         /**
-         * Get the inter-element fixed spacing for the box.
+         * Get the inter-element fixed spacing for the panel.
          */
         /**
-         * Set the inter-element fixed spacing for the box.
+         * Set the inter-element fixed spacing for the panel.
          */
         spacing: number;
         /**
-         * Get the number of items (panels + spacers) in the box.
+         * Add a child widget to the end of the panel.
+         *
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
          */
-        count: number;
+        addWidget(widget: Widget, stretch?: number, alignment?: Alignment): number;
         /**
-         * Get the index of the given panel.
+         * Insert a child widget into the panel at the given index.
          *
-         * Returns -1 if the panel is not found.
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
          */
-        indexOf(panel: Panel): number;
+        insertWidget(index: number, widget: Widget, stretch?: number, alignment?: Alignment): number;
         /**
-         * Get the panel at the given index.
-         *
-         * Returns `undefined` if there is no panel at the given index.
-         */
-        panelAt(index: number): Panel;
-        /**
-         * Add a child panel to the end of the split panel.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        addPanel(panel: Panel): number;
-        /**
-         * Insert a child panel into the split panel at the given index.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        insertPanel(index: number, panel: Panel): number;
-        /**
-         * Add a fixed amount of spacing to the end of the box.
+         * Add a fixed amount of spacing to the end of the panel.
          *
          * Returns the index of the added space.
          */
@@ -3635,7 +3648,7 @@ declare module phosphor.panels {
          */
         insertSpacing(index: number, size: number): number;
         /**
-         * Add stretchable space to the end of the box.
+         * Add stretchable space to the end of the panel.
          *
          * Returns the index of the added space.
          */
@@ -3646,10 +3659,387 @@ declare module phosphor.panels {
          * Returns the index of the added space.
          */
         insertStretch(index: number, stretch?: number): number;
+        /**
+         * Get the stretch factor for the given widget or index.
+         *
+         * Returns -1 if the given widget or index is invalid.
+         */
+        stretch(which: Widget | number): number;
+        /**
+         * Set the stretch factor for the given widget or index.
+         *
+         * Returns true if the stretch was updated, false otherwise.
+         */
+        setStretch(which: Widget | number, stretch: number): boolean;
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
+    import IMessage = core.IMessage;
+    /**
+     * A panel which arranges its children into resizable sections.
+     */
+    class SplitPanel extends Panel {
+        /**
+         * Construct a new split panel.
+         */
+        constructor(orientation?: Orientation);
+        /**
+         * Dispose of the resources held by the panel.
+         */
+        dispose(): void;
+        /**
+         * Get the orientation of the split panel.
+         */
+        /**
+         * Set the orientation of the split panel.
+         */
+        orientation: Orientation;
+        /**
+         * Get the size of the split handles.
+         */
+        /**
+         * Set the the size of the split handles.
+         */
+        handleSize: number;
+        /**
+         * Get the normalized sizes of the widgets in the split panel.
+         */
+        sizes(): number[];
+        /**
+         * Set the relative sizes for the split panel widgets.
+         *
+         * Extra values are ignored, too few will yield an undefined layout.
+         */
+        setSizes(sizes: number[]): void;
+        /**
+         * Add a child widget to the end of the split panel.
+         *
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        addWidget(widget: Widget, stretch?: number, alignment?: Alignment): number;
+        /**
+         * Insert a child widget into the split panel at the given index.
+         *
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        insertWidget(index: number, widget: Widget, stretch?: number, alignment?: Alignment): number;
+        /**
+         * Get the stretch factor for the given widget or index.
+         *
+         * Returns -1 if the given widget or index is invalid.
+         */
+        stretch(which: Widget | number): number;
+        /**
+         * Set the stretch factor for the given widget or index.
+         *
+         * Returns true if the stretch was updated, false otherwise.
+         */
+        setStretch(which: Widget | number, stretch: number): boolean;
+        /**
+         * A method invoked after the node is attached to the DOM.
+         */
+        protected onAfterAttach(msg: IMessage): void;
+        /**
+         * A method invoked after the node is detached from the DOM.
+         */
+        protected onAfterDetach(msg: IMessage): void;
+        /**
+         * Handle the DOM events for the split panel.
+         */
+        protected handleEvent(event: Event): void;
+        /**
+         * Handle the 'mousedown' event for the split panel.
+         */
+        private _evtMouseDown(event);
+        /**
+         * Handle the 'mouseup' event for the split panel.
+         */
+        private _evtMouseUp(event);
+        /**
+         * Handle the 'mousemove' event for the split panel.
+         */
+        private _evtMouseMove(event);
+        /**
+         * Find the index of the handle which contains a target element.
+         */
+        private _findHandle(target);
+        /**
+         * Release the mouse grab for the split panel.
+         */
+        private _releaseMouse();
+        private _pressData;
+    }
+}
+
+declare module phosphor.widgets {
+    import Signal = core.Signal;
+    import Pair = utility.Pair;
+    /**
+     * A panel where only one child widget is visible at a time.
+     */
+    class StackedPanel extends Panel {
+        /**
+         * A signal emitted when a widget is removed from the panel.
+         */
+        widgetRemoved: Signal<StackedPanel, Pair<number, Widget>>;
+        /**
+         * Construct a new stacked panel.
+         */
+        constructor();
+        /**
+         * Dispose of the resources held by the panel.
+         */
+        dispose(): void;
+        /**
+         * Get the current index of the panel.
+         */
+        /**
+         * Set the current index of the panel.
+         */
+        currentIndex: number;
+        /**
+         * Get the current widget of the panel.
+         */
+        /**
+         * Set the current widget of the panel.
+         */
+        currentWidget: Widget;
+        /**
+         * Add a child widget to the end of the panel.
+         *
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        addWidget(widget: Widget, alignment?: Alignment): number;
+        /**
+         * Insert a child widget into the panel at the given index.
+         *
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
+         */
+        insertWidget(index: number, widget: Widget, alignment?: Alignment): number;
+        /**
+         * Move a child widget from one index to another.
+         *
+         * This method is more efficient for moving a widget than calling
+         * `insertWidget` for an already added widget. It will not remove
+         * the widget before moving it and will not emit `widgetRemoved`.
+         *
+         * Returns -1 if `fromIndex` is out of range.
+         */
+        moveWidget(fromIndex: number, toIndex: number): number;
+        /**
+         * Handle the `widgetRemoved` signal for the stacked layout.
+         */
+        private _sl_widgetRemoved(sender, args);
+    }
+}
+
+declare module phosphor.widgets {
+    /**
+     * A widget which provides a flexible docking layout area for widgets.
+     */
+    class DockArea extends Widget {
+        /**
+         * Construct a new dock area.
+         */
+        constructor();
+        /**
+         * Dispose of the resources held by the widget.
+         */
+        dispose(): void;
+        /**
+         * Get the width of the tabs in the dock area.
+         */
+        /**
+         * Get the width of the tabs in the dock area.
+         */
+        tabWidth: number;
+        /**
+         * Get the minimum tab width in pixels.
+         */
+        /**
+         * Set the minimum tab width in pixels.
+         */
+        minTabWidth: number;
+        /**
+         * Get the tab overlap amount in pixels.
+         */
+        /**
+         * Set the tab overlap amount in pixels.
+         */
+        tabOverlap: number;
+        /**
+         * Get the handle size of the dock splitters.
+         */
+        /**
+         * Set the handle size of the dock splitters.
+         */
+        handleSize: number;
+        /**
+         * Add a widget to the dock area.
+         *
+         * The widget is positioned in the area according to the given dock
+         * mode and reference widget. If the dock widget is already added to
+         * the area, it will be moved to the new location.
+         *
+         * The default mode inserts the widget on the left side of the area.
+         */
+        addWidget(widget: ITabbable, mode?: DockMode, ref?: ITabbable): void;
+        /**
+         * Handle the DOM events for the dock area.
+         */
+        protected handleEvent(event: Event): void;
+        /**
+         * Handle the 'mousemove' event for the dock area.
+         *
+         * This is triggered on the document during a tab move operation.
+         */
+        private _evtMouseMove(event);
+        /**
+         * Handle the 'mouseup' event for the dock area.
+         *
+         * This is triggered on the document during a tab move operation.
+         */
+        private _evtMouseUp(event);
+        /**
+         * Add the widget to a new root dock panel along the given orientation.
+         *
+         * If the widget already exists in the area, it will be removed.
+         */
+        private _addWidget(widget, orientation, after);
+        /**
+         * Add the dock widget as a new split panel next to the reference.
+         *
+         * If the reference does not exist in the area, this is a no-op.
+         *
+         * If the dock widget already exists in the area, it will be moved.
+         */
+        private _splitWidget(widget, ref, orientation, after);
+        /**
+         * Split the panel with the given widget along the given orientation.
+         *
+         * If the widget already exists in the area, it will be moved.
+         */
+        private _splitPanel(panel, widget, orientation, after);
+        /**
+         * Add the dock widget as a tab next to the reference.
+         *
+         * If the reference does not exist in the area, this is a no-op.
+         *
+         * If the dock widget already exists in the area, it will be moved.
+         */
+        private _tabifyWidget(widget, ref, after);
+        /**
+         * Ensure the root splitter has the given orientation.
+         *
+         * If the current root has the given orientation, this is a no-op.
+         *
+         * If the root has <= 1 child, its orientation will be updated.
+         *
+         * Otherwise, a new root will be created with the proper orientation
+         * and the current root will be added as the new root's first child.
+         */
+        private _ensureRoot(orientation);
+        /**
+         * Create a new panel and setup the signal handlers.
+         */
+        private _createPanel();
+        /**
+         * Create a new dock splitter for the dock area.
+         */
+        private _createSplitter(orientation);
+        /**
+         * Remove an empty dock panel from the hierarchy.
+         *
+         * This ensures that the hierarchy is kept consistent by merging an
+         * ancestor splitter when it contains only a single child widget.
+         */
+        private _removePanel(panel);
+        /**
+         * Abort the tab drag operation if one is in progress.
+         */
+        private _abortDrag();
+        /**
+         * Handle the `currentChanged` signal from a tab bar.
+         */
+        private _tb_currentChanged(sender, args);
+        /**
+         * Handle the `tabCloseRequested` signal from a tab bar.
+         */
+        private _tb_tabCloseRequested(sender, args);
+        /**
+         * Handle the `tabDetachRequested` signal from the tab bar.
+         */
+        private _tb_tabDetachRequested(sender, args);
+        /**
+         * Handle the `widgetRemoved` signal from a stack widget.
+         */
+        private _sw_widgetRemoved(sender, args);
+        private _handleSize;
+        private _tabWidth;
+        private _tabOverlap;
+        private _minTabWidth;
+        private _ignoreRemoved;
+        private _root;
+        private _dragData;
+        private _items;
+    }
+}
+
+declare module phosphor.widgets {
+    import IMessage = core.IMessage;
+    import Size = utility.Size;
+    import IElement = virtualdom.IElement;
+    /**
+     * A leaf widget which hosts a virtual element.
+     *
+     * This is used to embed a virtual element into a widget hierarchy. This
+     * is a simple widget which disallows an external layout. The intent is
+     * that the element will provide the content for the widget, typically
+     * in the form of a component which manages its own updates.
+     */
+    class ElementHost extends Widget {
+        /**
+         * Construct a new element host.
+         */
+        constructor(element?: IElement, width?: number, height?: number);
+        /**
+         * Get the virtual element hosted by the panel.
+         */
+        /**
+         * Set the virtual element hosted by the panel.
+         */
+        element: IElement;
+        /**
+         * Calculate the preferred size of the panel.
+         */
+        sizeHint(): Size;
+        /**
+         * Set the preferred size for the panel.
+         */
+        setSizeHint(width: number, height: number): void;
+        /**
+         * A method invoked on an 'after-attach' message.
+         */
+        protected onAfterAttach(msg: IMessage): void;
+        /**
+         * A method invoked on an 'after-detach' message.
+         */
+        protected onAfterDetach(msg: IMessage): void;
+        private _size;
+        private _element;
+    }
+}
+
+declare module phosphor.widgets {
     import Signal = core.Signal;
     /**
      * An options object for initializing a menu item.
@@ -3697,7 +4087,7 @@ declare module phosphor.panels {
         onTriggered?: (item: MenuItem) => void;
     }
     /**
-     * An object which can be added to a menu or menu bar.
+     * An item which can be added to a menu or menu bar.
      */
     class MenuItem {
         /**
@@ -3715,7 +4105,7 @@ declare module phosphor.panels {
         /**
          * Construct a new menu item.
          */
-        constructor(opts?: IMenuItemOptions);
+        constructor(options?: IMenuItemOptions);
         /**
          * Get the type of the menu item: 'normal' | 'check' | 'separator'.
          */
@@ -3783,7 +4173,7 @@ declare module phosphor.panels {
         /**
          * Initialize the menu item from the given options object.
          */
-        private _initFrom(opts);
+        private _initFrom(options);
         private _text;
         private _mnemonic;
         private _shortcut;
@@ -3795,19 +4185,18 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
-    import IMessage = core.IMessage;
+declare module phosphor.widgets {
     import Signal = core.Signal;
     /**
-     * A panel which displays an array of menu items as a menu.
+     * An object which displays menu items as a popup menu.
      */
-    class Menu extends Panel {
+    class Menu {
         /**
          * Find the root menu of a menu hierarchy.
          */
         static rootMenu(menu: Menu): Menu;
         /**
-         * Find the leaf menu of the menu hierarchy.
+         * Find the leaf menu of a menu hierarchy.
          */
         static leafMenu(menu: Menu): Menu;
         /**
@@ -3819,9 +4208,9 @@ declare module phosphor.panels {
          */
         constructor(items?: MenuItem[]);
         /**
-         * Dispose of the resources held by the panel.
+         * Get the DOM node for the menu.
          */
-        dispose(): void;
+        node: HTMLElement;
         /**
          * Get the parent menu of the menu.
          *
@@ -3835,7 +4224,7 @@ declare module phosphor.panels {
          */
         childMenu: Menu;
         /**
-         * Get the index of the active (highlighted) item.
+         * Get the index of the active (highlighted) menu item.
          */
         /**
          * Set the index of the active (highlighted) menu item.
@@ -3844,10 +4233,10 @@ declare module phosphor.panels {
          */
         activeIndex: number;
         /**
-         * Get the active (highlighted) item.
+         * Get the active (highlighted) menu item.
          */
         /**
-         * Set the active (highlighted) item.
+         * Set the active (highlighted) menu item.
          *
          * Only a non-separator item can be set as the active item.
          */
@@ -3863,7 +4252,7 @@ declare module phosphor.panels {
         /**
          * Get the index of the given menu item.
          */
-        itemIndex(item: MenuItem): number;
+        indexOf(item: MenuItem): number;
         /**
          * Add a menu item to the end of the menu.
          *
@@ -3877,11 +4266,9 @@ declare module phosphor.panels {
          */
         insertItem(index: number, item: MenuItem): number;
         /**
-         * Remove the menu item at the given index from the menu.
-         *
-         * Returns the removed item.
+         * Remove and return the menu item at the given index.
          */
-        takeItem(index: number): MenuItem;
+        removeAt(index: number): MenuItem;
         /**
          * Remove the given menu item from the menu.
          *
@@ -3956,32 +4343,44 @@ declare module phosphor.panels {
          */
         open(x: number, y: number, forceX?: boolean, forceY?: boolean): void;
         /**
-         * Handle the 'close' message for the menu.
-         *
-         * If the menu is currently attached, this will detach the menu
-         * and emit the `closed` signal. The super handler is not called.
+         * Close the menu and remove it's node from the DOM.
          */
-        protected onClose(msg: IMessage): void;
-        /**
-         * A method invoked when a menu item is inserted into the menu.
-         */
-        protected itemInserted(index: number, item: MenuItem): void;
-        /**
-         * A method invoked when a menu item is removed from the menu.
-         */
-        protected itemRemoved(index: number, item: MenuItem): void;
+        close(): void;
         /**
          * Create the DOM node for the panel.
+         *
+         * This can be reimplemented to create a custom menu node.
          */
         protected createNode(): HTMLElement;
         /**
-         * A method invoked on an 'after-attach' message.
+         * Create a DOM node for the given MenuItem.
+         *
+         * This can be reimplemented to create custom menu item nodes.
          */
-        protected onAfterAttach(msg: IMessage): void;
+        protected createItemNode(item: MenuItem): HTMLElement;
         /**
-         * A method invoked on an 'after-detach' message.
+         * Initialize the item node for the given menu item.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createItemNode` method. It should initialize the node using the
+         * given menu item. It will be called any time the item changes.
          */
-        protected onAfterDetach(msg: IMessage): void;
+        protected initItemNode(item: MenuItem, node: HTMLElement): void;
+        /**
+         * A method invoked when a menu item is inserted into the menu.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createNode` method. It should insert the item node into the menu
+         * at the specified location.
+         */
+        protected insertItemNode(index: number, node: HTMLElement): void;
+        /**
+         * A method invoked when a menu item is removed from the menu.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createNode` method. It should remove the item node from the menu.
+         */
+        protected removeItemNode(index: number, node: HTMLElement): void;
         /**
          * Handle the DOM events for the menu.
          */
@@ -3991,46 +4390,44 @@ declare module phosphor.panels {
          *
          * This event listener is attached to the child item nodes.
          */
-        protected domEvent_mouseenter(event: MouseEvent): void;
+        private _evtMouseEnter(event);
         /**
          * Handle the 'mouseleave' event for the menu.
          *
-         * The event listener is only attached to the menu node.
+         * This event listener is only attached to the menu node.
          */
-        protected domEvent_mouseleave(event: MouseEvent): void;
+        private _evtMouseLeave(event);
         /**
          * Handle the 'mouseup' event for the menu.
          *
          * This event listener is attached to the menu node.
          */
-        protected domEvent_mouseup(event: MouseEvent): void;
+        private _evtMouseUp(event);
         /**
          * Handle the 'contextmenu' event for the menu.
          *
-         * This event listener is attached to the menu node.
+         * This event listener is attached to the menu node and disables
+         * the default browser context menu.
          */
-        protected domEvent_contextmenu(event: Event): void;
+        private _evtContextMenu(event);
         /**
          * Handle the 'mousedown' event for the menu.
          *
-         * This event listener is attached to the document for the root
-         * menu only when it is opened as a popup menu.
+         * This event listener is attached to the document for a popup menu.
          */
-        protected domEvent_mousedown(event: MouseEvent): void;
+        private _evtMouseDown(event);
         /**
          * Handle the key down event for the menu.
          *
-         * This event listener is attached to the document for the root
-         * menu only when it is opened as a popup menu.
+         * This event listener is attached to the document for a popup menu.
          */
-        protected domEvent_keydown(event: KeyboardEvent): void;
+        private _evtKeyDown(event);
         /**
          * Handle the 'keypress' event for the menu.
          *
-         * This event listener is attached to the document for the root
-         * menu only when it is opened as a popup menu.
+         * This event listener is attached to the document for a popup menu.
          */
-        protected domEvent_keypress(event: KeyboardEvent): void;
+        private _evtKeyPress(event);
         /**
          * Set the active item index for the menu.
          *
@@ -4061,6 +4458,10 @@ declare module phosphor.panels {
          */
         private _openChildMenu(item, node, delayed);
         /**
+         * Open the menu as a child menu.
+         */
+        private _openAsSubmenu(item);
+        /**
          * Close the currently open child menu using a delayed task.
          *
          * If a task is pending or if there is no child menu, this is a no-op.
@@ -4075,7 +4476,7 @@ declare module phosphor.panels {
         /**
          * Remove the menu from its parent menu.
          */
-        private _removeFromParentMenu();
+        private _removeFromParent();
         /**
          * Cancel any pending child menu open task.
          */
@@ -4088,9 +4489,10 @@ declare module phosphor.panels {
          * Handle the `changed` signal from a menu item.
          */
         private _mi_changed(sender);
-        private _childItem;
-        private _childMenu;
+        private _node;
         private _parentMenu;
+        private _childMenu;
+        private _childItem;
         private _items;
         private _nodes;
         private _activeIndex;
@@ -4099,12 +4501,13 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     import IMessage = core.IMessage;
+    import Size = utility.Size;
     /**
-     * A panel which displays menu items as a menu bar.
+     * A leaf widget which displays menu items as a menu bar.
      */
-    class MenuBar extends Panel {
+    class MenuBar extends Widget {
         /**
          * Construct a new menu bar.
          */
@@ -4120,7 +4523,7 @@ declare module phosphor.panels {
          */
         childMenu: Menu;
         /**
-         * Get the index of the active (highlighted) item.
+         * Get the index of the active (highlighted) menu item.
          */
         /**
          * Set the index of the active (highlighted) menu item.
@@ -4129,10 +4532,10 @@ declare module phosphor.panels {
          */
         activeIndex: number;
         /**
-         * Get the active (highlighted) item.
+         * Get the active (highlighted) menu item.
          */
         /**
-         * Set the active (highlighted) item.
+         * Set the active (highlighted) menu item.
          *
          * Only an enabled non-separator item can be set as the active item.
          */
@@ -4148,7 +4551,7 @@ declare module phosphor.panels {
         /**
          * Get the index of the given menu item.
          */
-        itemIndex(item: MenuItem): number;
+        indexOf(item: MenuItem): number;
         /**
          * Add a menu item to the end of the menu bar.
          *
@@ -4162,11 +4565,9 @@ declare module phosphor.panels {
          */
         insertItem(index: number, item: MenuItem): number;
         /**
-         * Remove the menu item at the given index from the menu bar.
-         *
-         * Returns the removed item.
+         * Remove and return the menu item at the given index.
          */
-        takeItem(index: number): MenuItem;
+        removeAt(index: number): MenuItem;
         /**
          * Remove the given menu item from the menu bar.
          *
@@ -4212,23 +4613,44 @@ declare module phosphor.panels {
          */
         minSizeHint(): Size;
         /**
-         * A method called when a menu item is inserted into the menu bar.
-         */
-        protected itemInserted(index: number, item: MenuItem): void;
-        /**
-         * A method called when a menu item is removed from the menu bar.
-         */
-        protected itemRemoved(index: number, item: MenuItem): void;
-        /**
-         * Create the DOM node for the panel.
+         * Create the DOM node for the widget.
          */
         protected createNode(): HTMLElement;
         /**
-         * A method invoked on the 'after-attach' event.
+         * Create a DOM node for the given MenuItem.
+         *
+         * This can be reimplemented to create custom menu item nodes.
+         */
+        protected createItemNode(item: MenuItem): HTMLElement;
+        /**
+         * Initialize the item node for the given menu item.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createItemNode` method. It should initialize the node using the
+         * given menu item. It will be called any time the item changes.
+         */
+        protected initItemNode(item: MenuItem, node: HTMLElement): void;
+        /**
+         * A method invoked when a menu item is inserted into the menu.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createNode` method. It should insert the item node into the menu
+         * at the specified location.
+         */
+        protected insertItemNode(index: number, node: HTMLElement): void;
+        /**
+         * A method invoked when a menu item is removed from the menu.
+         *
+         * This method should be reimplemented if a subclass reimplements the
+         * `createNode` method. It should remove the item node from the menu.
+         */
+        protected removeItemNode(index: number, node: HTMLElement): void;
+        /**
+         * A method invoked on the 'after-attach' message.
          */
         protected onAfterAttach(msg: IMessage): void;
         /**
-         * A method invoked on the 'after-detach' event.
+         * A method invoked on the 'after-detach' message.
          */
         protected onAfterDetach(msg: IMessage): void;
         /**
@@ -4238,23 +4660,23 @@ declare module phosphor.panels {
         /**
          * Handle the 'mousedown' event for the menu bar.
          */
-        protected domEvent_mousedown(event: MouseEvent): void;
+        private _evtMouseDown(event);
         /**
          * Handle the 'mousemove' event for the menu bar.
          */
-        protected domEvent_mousemove(event: MouseEvent): void;
+        private _evtMouseMove(event);
         /**
          * Handle the 'mouseleave' event for the menu bar.
          */
-        protected domEvent_mouseleave(event: MouseEvent): void;
+        private _evtMouseLeave(event);
         /**
          * Handle the 'keydown' event for the menu bar.
          */
-        protected domEvent_keydown(event: KeyboardEvent): void;
+        private _evtKeyDown(event);
         /**
          * Handle the 'keypress' event for the menu bar.
          */
-        protected domEvent_keypress(event: KeyboardEvent): void;
+        private _evtKeyPress(event);
         /**
          * Set the active item index for the menu bar.
          *
@@ -4301,571 +4723,7 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
-    /**
-     * A layout in which positions a single child at time.
-     *
-     * This is useful for panels which hold a single content child.
-     */
-    class SingleLayout extends Layout {
-        /**
-         * Construct a new single layout.
-         */
-        constructor(panel?: Panel);
-        /**
-         * Dispose of the resources held by the layout.
-         */
-        dispose(): void;
-        /**
-         * Get the panel managed by the layout.
-         */
-        /**
-         * Set the panel managed by the layout.
-         */
-        panel: Panel;
-        /**
-         * Get the number of layout items in the layout.
-         */
-        count: number;
-        /**
-         * Get the layout item at the specified index.
-         */
-        itemAt(index: number): ILayoutItem;
-        /**
-         * Remove and return the layout item at the specified index.
-         */
-        takeAt(index: number): ILayoutItem;
-        /**
-         * Invalidate the cached layout data and enqueue an update.
-         */
-        invalidate(): void;
-        /**
-         * Compute the preferred size of the layout.
-         */
-        sizeHint(): Size;
-        /**
-         * Compute the minimum size of the layout.
-         */
-        minSize(): Size;
-        /**
-         * Compute the maximum size of the layout.
-         */
-        maxSize(): Size;
-        /**
-         * Update the geometry of the child layout items.
-         */
-        protected layout(): void;
-        /**
-         * Initialize the layout items and internal sizes for the layout.
-         */
-        private _setupGeometry();
-        private _dirty;
-        private _sizeHint;
-        private _minSize;
-        private _maxSize;
-        private _item;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A panel which holds a single child.
-     *
-     * This panel delegates to a permanently installed single layout and
-     * can be used as a more convenient interface to a single layout.
-     */
-    class SinglePanel extends Panel {
-        /**
-         * Construct a new single panel.
-         */
-        constructor(panel?: Panel);
-        /**
-         * Get the managed child panel.
-         */
-        /**
-         * Set the managed child panel.
-         */
-        panel: Panel;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A class which manages a handle node for a split panel.
-     */
-    class SplitHandle {
-        /**
-         * Construct a new split handle.
-         */
-        constructor(orientation: Orientation);
-        /**
-         * Get whether the handle is hidden.
-         */
-        /**
-         * Set whether the handle is hidden.
-         */
-        hidden: boolean;
-        /**
-         * Get the orientation of the handle.
-         */
-        /**
-         * Set the orientation of the handle.
-         */
-        orientation: Orientation;
-        /**
-         * Get the DOM node for the handle.
-         */
-        node: HTMLElement;
-        /**
-         * Create the DOM node for the handle.
-         */
-        protected createNode(): HTMLElement;
-        private _hidden;
-        private _node;
-        private _orientation;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A layout which arranges its panels in resizable sections.
-     */
-    class SplitLayout extends Layout {
-        /**
-         * Construct a new split layout.
-         */
-        constructor(orientation: Orientation);
-        /**
-         * Dispose of the resources held by the layout.
-         */
-        dispose(): void;
-        /**
-         * Get the orientation of the split layout.
-         */
-        /**
-         * Set the orientation of the split layout.
-         */
-        orientation: Orientation;
-        /**
-         * Get the size of the split handles.
-         */
-        /**
-         * Set the the size of the split handles.
-         */
-        handleSize: number;
-        /**
-         * Get the number of layout items in the layout.
-         */
-        count: number;
-        /**
-         * Get the normalized sizes of the items in the layout.
-         */
-        sizes(): number[];
-        /**
-         * Set the relative sizes for the split items.
-         *
-         * Extra values are ignored, too few will yield an undefined layout.
-         */
-        setSizes(sizes: number[]): void;
-        /**
-         * Get the splitter handle at the given index.
-         */
-        handleAt(index: number): SplitHandle;
-        /**
-         * Get the layout item at the specified index.
-         */
-        itemAt(index: number): ILayoutItem;
-        /**
-         * Remove and return the layout item at the specified index.
-         */
-        takeAt(index: number): ILayoutItem;
-        /**
-         * Add a panel as the last item in the layout.
-         *
-         * If the panel already exists in the layout, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        addPanel(panel: Panel): number;
-        /**
-         * Insert a panel into the layout at the given index.
-         *
-         * If the panel already exists in the layout, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        insertPanel(index: number, panel: Panel): number;
-        /**
-         * Move the handle at the given index to the offset position.
-         *
-         * This will move the handle as close as possible to the given
-         * offset position, without violating item size constraints.
-         */
-        moveHandle(index: number, pos: number): void;
-        /**
-         * Invalidate the cached layout data and enqueue an update.
-         */
-        invalidate(): void;
-        /**
-         * Compute the preferred size of the layout.
-         */
-        sizeHint(): Size;
-        /**
-         * Compute the minimum size of the layout.
-         */
-        minSize(): Size;
-        /**
-         * Compute the maximum size of the layout.
-         */
-        maxSize(): Size;
-        /**
-         * Update the geometry of the child layout items.
-         */
-        protected layout(): void;
-        /**
-         * Initialize the layout items and internal sizes for the layout.
-         */
-        private _setupGeometry();
-        private _dirty;
-        private _handleSize;
-        private _fixedSpace;
-        private _sizeHint;
-        private _minSize;
-        private _maxSize;
-        private _orientation;
-        private _items;
-        private _sizers;
-    }
-    /**
-     * A custom panel item used by a split layout.
-     */
-    class SplitItem extends PanelItem {
-        /**
-         * Construct a new split item.
-         */
-        constructor(panel: Panel, handle: SplitHandle);
-        /**
-         * Get the split handle for the item.
-         */
-        handle: SplitHandle;
-        private _handle;
-    }
-}
-
-declare module phosphor.panels {
-    import IMessage = core.IMessage;
-    /**
-     * A panel which separates its children into resizable sections.
-     *
-     * This panel delegates to a permanently installed split layout and
-     * can be used as a more convenient interface to a split layout.
-     */
-    class SplitPanel extends Panel {
-        /**
-         * Construct a new split panel.
-         */
-        constructor(orientation?: Orientation);
-        /**
-         * Dispose of the resources held by the panel.
-         */
-        dispose(): void;
-        /**
-         * Get the orientation of the split panel.
-         */
-        /**
-         * Set the orientation of the split panel.
-         */
-        orientation: Orientation;
-        /**
-         * Get the size of the split handles.
-         */
-        /**
-         * Set the the size of the split handles.
-         */
-        handleSize: number;
-        /**
-         * Get the number of child panels in the split panel.
-         */
-        count: number;
-        /**
-         * Get the normalized sizes of the children in the split panel.
-         */
-        sizes(): number[];
-        /**
-         * Set the relative sizes for the split panel children.
-         *
-         * Extra values are ignored, too few will yield an undefined layout.
-         */
-        setSizes(sizes: number[]): void;
-        /**
-         * Get the index of the given panel.
-         *
-         * Returns -1 if the panel is not found.
-         */
-        indexOf(panel: Panel): number;
-        /**
-         * Get the panel at the given index.
-         *
-         * Returns `undefined` if there is no panel at the given index.
-         */
-        panelAt(index: number): Panel;
-        /**
-         * Add a child panel to the end of the split panel.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        addPanel(panel: Panel): number;
-        /**
-         * Insert a child panel into the split panel at the given index.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        insertPanel(index: number, panel: Panel): number;
-        /**
-         * A method invoked after the node is attached to the DOM.
-         */
-        protected onAfterAttach(msg: IMessage): void;
-        /**
-         * A method invoked after the node is detached from the DOM.
-         */
-        protected onAfterDetach(msg: IMessage): void;
-        /**
-         * Handle the DOM events for the splitter.
-         */
-        protected handleEvent(event: Event): void;
-        /**
-         * Handle the 'mousedown' event for the splitter.
-         */
-        protected domEvent_mousedown(event: MouseEvent): void;
-        /**
-         * Handle the 'mouseup' event for the splitter.
-         */
-        protected domEvent_mouseup(event: MouseEvent): void;
-        /**
-         * Handle the 'mousemove' event for the splitter.
-         */
-        protected domEvent_mousemove(event: MouseEvent): void;
-        /**
-         * Find the index of the handle which contains a target element.
-         */
-        private _findHandle(target);
-        /**
-         * Release the mouse grab for the splitter.
-         */
-        private _releaseMouse();
-        private _pressData;
-    }
-}
-
-declare module phosphor.panels {
-    import Signal = core.Signal;
-    /**
-     * The arguments object for stack layout signals.
-     */
-    interface IStackIndexArgs {
-        /**
-         * The stack layout index of interest.
-         */
-        index: number;
-        /**
-         * The panel associated with the index.
-         */
-        panel: Panel;
-    }
-    /**
-     * A layout in which only one child panel is visible at a time.
-     */
-    class StackLayout extends Layout {
-        /**
-         * A signal emitted when the current index is changed.
-         */
-        currentChanged: Signal<StackLayout, IStackIndexArgs>;
-        /**
-         * A signal emitted when a panel is removed from the layout.
-         */
-        panelRemoved: Signal<StackLayout, IStackIndexArgs>;
-        /**
-         * Construct a new stack layout.
-         */
-        constructor();
-        /**
-         * Dispose of the resources held by the layout.
-         */
-        dispose(): void;
-        /**
-         * Get the current index of the stack.
-         */
-        /**
-         * Set the current index of the stack.
-         */
-        currentIndex: number;
-        /**
-         * Get the current panel in the stack.
-         */
-        /**
-         * Set the current panel in the stack.
-         */
-        currentPanel: Panel;
-        /**
-         * Get the number of layout items in the layout.
-         */
-        count: number;
-        /**
-         * Get the layout item at the specified index.
-         */
-        itemAt(index: number): ILayoutItem;
-        /**
-         * Remove and return the layout item at the specified index.
-         */
-        takeAt(index: number): ILayoutItem;
-        /**
-         * Add a panel as the last item in the layout.
-         *
-         * If the panel already exists in the layout, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        addPanel(panel: Panel): number;
-        /**
-         * Insert a panel into the layout at the given index.
-         *
-         * If the panel already exists in the layout, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        insertPanel(index: number, panel: Panel): number;
-        /**
-         * Move a panel from one index to another.
-         *
-         * Returns the new index of the panel.
-         */
-        movePanel(fromIndex: number, toIndex: number): number;
-        /**
-         * Invalidate the cached layout data and enqueue an update.
-         */
-        invalidate(): void;
-        /**
-         * Compute the preferred size of the layout.
-         */
-        sizeHint(): Size;
-        /**
-         * Compute the minimum size of the layout.
-         */
-        minSize(): Size;
-        /**
-         * Compute the maximum size of the layout.
-         */
-        maxSize(): Size;
-        /**
-         * Update the geometry of the child layout items.
-         */
-        protected layout(): void;
-        /**
-         * Initialize the layout items and internal sizes for the layout.
-         */
-        private _setupGeometry();
-        private _dirty;
-        private _currentIndex;
-        private _sizeHint;
-        private _minSize;
-        private _maxSize;
-        private _items;
-    }
-}
-
-declare module phosphor.panels {
-    import Signal = core.Signal;
-    /**
-     * A panel where only one child is visible at a time.
-     *
-     * This panel delegates to a permanently installed stack layout and
-     * can be used as a more convenient interface to a stack layout.
-     */
-    class StackPanel extends Panel {
-        /**
-         * A signal emitted when the current index changes.
-         */
-        currentChanged: Signal<StackPanel, IStackIndexArgs>;
-        /**
-         * A signal emitted when a panel is removed from the stack.
-         */
-        panelRemoved: Signal<StackPanel, IStackIndexArgs>;
-        /**
-         * Construct a new stack panel.
-         */
-        constructor();
-        /**
-         * Dispose of the resources held by the panel.
-         */
-        dispose(): void;
-        /**
-         * Get the current index of the stack.
-         */
-        /**
-         * Set the current index of the stack.
-         */
-        currentIndex: number;
-        /**
-         * Get the current panel in the stack.
-         */
-        /**
-         * Set the current panel in the stack.
-         */
-        currentPanel: Panel;
-        /**
-         * Get the number of panels in the stack.
-         */
-        count: number;
-        /**
-         * Get the index of the given panel.
-         *
-         * Returns -1 if the panel is not found.
-         */
-        indexOf(panel: Panel): number;
-        /**
-         * Get the panel at the given index.
-         *
-         * Returns `undefined` if there is no panel at the given index.
-         */
-        panelAt(index: number): Panel;
-        /**
-         * Add a child panel to the end of the split panel.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        addPanel(panel: Panel): number;
-        /**
-         * Insert a child panel into the split panel at the given index.
-         *
-         * If the panel already exists, it will be moved.
-         *
-         * Returns the index of the added panel.
-         */
-        insertPanel(index: number, panel: Panel): number;
-        /**
-         * Move a child panel from one index to another.
-         *
-         * Returns the new index of the panel.
-         */
-        movePanel(fromIndex: number, toIndex: number): number;
-        /**
-         * Handle the `currentChanged` signal for the stack layout.
-         */
-        private _sl_currentChanged(sender, args);
-        /**
-         * Handle the `panelChanged` signal for the stack layout.
-         */
-        private _sl_panelRemoved(sender, args);
-    }
-}
-
-declare module phosphor.panels {
+declare module phosphor.widgets {
     /**
      * A concrete implementation of ITab.
      */
@@ -4911,29 +4769,23 @@ declare module phosphor.panels {
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     import IMessage = core.IMessage;
     import Signal = core.Signal;
+    import Pair = utility.Pair;
+    import Size = utility.Size;
     /**
-     * The arguments object for the `attachTab` method.
+     * The arguments object for the `tabDetachRequested` signal.
      */
-    interface ITabAttachArgs {
+    interface ITabDetachArgs {
         /**
-         * The tab to add to the tab bar.
+         * The tab of interest.
          */
         tab: ITab;
         /**
-         * The current width of the tab.
+         * The index of the tab.
          */
-        tabWidth: number;
-        /**
-         * The X press position in tab coordinates.
-         */
-        offsetX: number;
-        /**
-         * The Y press position in tab coordinates.
-         */
-        offsetY: number;
+        index: number;
         /**
          * The current mouse client X position.
          */
@@ -4944,82 +4796,49 @@ declare module phosphor.panels {
         clientY: number;
     }
     /**
-     * The arguments object for various tab bar signals.
+     * The options object for initializing a tab bar.
      */
-    interface ITabIndexArgs {
+    interface ITabBarOptions {
         /**
-         * The index of interest.
+         * Wether the tabs are movable by the user.
          */
-        index: number;
+        tabsMovable?: boolean;
         /**
-         * The tab associated with the index.
+         * The preferred tab width.
+         *
+         * Tabs will be sized to this width if possible, but never larger.
          */
-        tab: ITab;
+        tabWidth?: number;
+        /**
+         * The minimum tab width.
+         *
+         * Tabs will never be sized smaller than this amount.
+         */
+        minTabWidth?: number;
+        /**
+         * The tab overlap amount.
+         *
+         * A positive value will cause neighboring tabs to overlap.
+         * A negative value will insert empty space between tabs.
+         */
+        tabOverlap?: number;
     }
     /**
-     * The arguments object for the `tabMoved` signal.
+     * A leaf widget which displays a row of tabs.
      */
-    interface ITabMoveArgs {
-        /**
-         * The original tab index.
-         */
-        fromIndex: number;
-        /**
-         * The new tab index.
-         */
-        toIndex: number;
-    }
-    /**
-     * The arguments object for the `tabDetachRequested` signal.
-     */
-    interface ITabDetachArgs {
-        /**
-         * The index of the tab to detach.
-         */
-        index: number;
-        /**
-         * The tab to detach.
-         */
-        tab: ITab;
-        /**
-         * The current width of the tab.
-         */
-        tabWidth: number;
-        /**
-         * The X press position in tab coordinates.
-         */
-        offsetX: number;
-        /**
-         * The Y press position in tab coordinates.
-         */
-        offsetY: number;
-        /**
-         * The current client mouse X position.
-         */
-        clientX: number;
-        /**
-         * The current client mouse Y position.
-         */
-        clientY: number;
-    }
-    /**
-     * A panel which displays a row of tabs.
-     *
-     * A tab bar should be treated as leaf content with no children.
-     */
-    class TabBar extends Panel {
+    class TabBar extends Widget {
         /**
          * A signal emitted when a tab is moved.
          */
-        tabMoved: Signal<TabBar, ITabMoveArgs>;
+        tabMoved: Signal<TabBar, Pair<number, number>>;
         /**
          * A signal emitted when the currently selected tab is changed.
          */
-        currentChanged: Signal<TabBar, ITabIndexArgs>;
+        currentChanged: Signal<TabBar, Pair<number, ITab>>;
         /**
          * A signal emitted when the user clicks a tab close icon.
          */
-        tabCloseRequested: Signal<TabBar, ITabIndexArgs>;
+        tabCloseRequested: Signal<TabBar, Pair<number, ITab>>;
         /**
          * A signal emitted when a tab is dragged beyond the detach threshold.
          */
@@ -5027,16 +4846,13 @@ declare module phosphor.panels {
         /**
          * Construct a new tab bar.
          */
-        constructor();
-        /**
-         * Dispose of the resources held by the panel.
-         */
+        constructor(options?: ITabBarOptions);
         dispose(): void;
         /**
-         * Get the index of the current tab.
+         * Get the currently selected tab index.
          */
         /**
-         * Set the selected tab index.
+         * Set the currently selected tab index.
          */
         currentIndex: number;
         /**
@@ -5058,24 +4874,38 @@ declare module phosphor.panels {
          */
         tabsMovable: boolean;
         /**
-         * Get the desired tab width in pixels.
+         * Get the preferred tab width.
+         *
+         * Tabs will be sized to this width if possible, but never larger.
          */
         /**
-         * Set the desired tab width in pixels.
+         * Set the preferred tab width.
+         *
+         * Tabs will be sized to this width if possible, but never larger.
          */
         tabWidth: number;
         /**
-         * Get the minimum tab width in pixels.
+         * Get the minimum tab width.
+         *
+         * Tabs will never be sized smaller than this amount.
          */
         /**
-         * Set the minimum tab width in pixels.
+         * Set the minimum tab width.
+         *
+         * Tabs will never be sized smaller than this amount.
          */
         minTabWidth: number;
         /**
-         * Get the tab overlap amount in pixels.
+         * Get the tab overlap amount.
+         *
+         * A positive value will cause neighboring tabs to overlap.
+         * A negative value will insert empty space between tabs.
          */
         /**
-         * Set the tab overlap amount in pixels.
+         * Set the tab overlap amount.
+         *
+         * A positive value will cause neighboring tabs to overlap.
+         * A negative value will insert empty space between tabs.
          */
         tabOverlap: number;
         /**
@@ -5089,19 +4919,19 @@ declare module phosphor.panels {
         /**
          * Get the index of the given tab.
          */
-        tabIndex(tab: ITab): number;
+        indexOf(tab: ITab): number;
         /**
          * Add a tab to the end of the tab bar.
          *
          * Returns the index of the tab.
          */
-        addTab(tab: string | ITab): number;
+        addTab(tab: ITab): number;
         /**
          * Insert a tab into the tab bar at the given index.
          *
          * Returns the index of the tab.
          */
-        insertTab(index: number, tab: string | ITab): number;
+        insertTab(index: number, tab: ITab): number;
         /**
          * Move a tab from one index to another.
          *
@@ -5109,31 +4939,42 @@ declare module phosphor.panels {
          */
         moveTab(fromIndex: number, toIndex: number): number;
         /**
-         * Remove a tab from the tab bar by index.
+         * Remove and return the tab at the given index.
          *
-         * Returns the removed tab.
+         * Returns `undefined` if the index is out of range.
          */
-        takeAt(index: number, animate?: boolean): ITab;
+        removeAt(index: number): ITab;
         /**
-         * Remove a tab from the tab bar by value.
+         * Remove a tab from the tab bar and return its index.
          *
-         * Returns the index of the removed item.
+         * Returns -1 if the tab is not in the tab bar.
          */
-        removeTab(tab: ITab, animate?: boolean): number;
+        removeTab(tab: ITab): number;
         /**
          * Remove all of the tabs from the tab bar.
-         *
-         * This is more efficient than removing the tabs individually.
          */
         clearTabs(): void;
         /**
-         * Attach a tab to the tab bar.
+         * Add a tab to the tab bar at the given client X position.
          *
-         * This will immediately insert the tab with no transition. It will
-         * then grab the mouse to continue the tab drag. It assumes the left
-         * mouse button is down.
+         * This method is intended for use by code which supports tear-off
+         * tab interfaces. It will insert the tab at the specified location
+         * without a transition and grab the mouse to continue the tab drag.
+         * It assumes that the left mouse button is currently pressed.
+         *
+         * This is a no-op if the tab is already added to the tab bar.
          */
-        attachTab(args: ITabAttachArgs): void;
+        attachTab(tab: ITab, clientX: number): void;
+        /**
+         * Detach the tab at the given index.
+         *
+         * This method is intended for use by code which supports tear-off
+         * tab interfaces. It will remove the tab at the specified index
+         * without a transition.
+         *
+         * This is a no-op if the index is out of range.
+         */
+        detachAt(index: number): void;
         /**
          * Compute the size hint for the tab bar.
          */
@@ -5142,6 +4983,10 @@ declare module phosphor.panels {
          * Compute the minimum size hint for the tab bar.
          */
         minSizeHint(): Size;
+        /**
+         * Get the content node for the tab bar.
+         */
+        protected contentNode: HTMLElement;
         /**
          * Create the DOM node for the tab bar.
          */
@@ -5163,98 +5008,117 @@ declare module phosphor.panels {
          */
         protected handleEvent(event: Event): void;
         /**
-         * Handle the click event for the tab bar.
+         * Handle the 'click' event for the tab bar.
          */
-        protected domEvent_click(event: MouseEvent): void;
+        private _evtClick(event);
         /**
-         * Handle the mousedown event for the tab bar.
+         * Handle the 'mousedown' event for the tab bar.
          */
-        protected domEvent_mousedown(event: MouseEvent): void;
+        private _evtMouseDown(event);
         /**
-         * Handle the mouse move event for the tab bar.
+         * Handle the 'mousemove' event for the tab bar.
          */
-        protected domEvent_mousemove(event: MouseEvent): void;
+        private _evtMouseMove(event);
         /**
-         * Handle the mouse up event for the tab bar.
+         * Handle the 'mouseup' event for the tab bar.
          */
-        protected domEvent_mouseup(event: MouseEvent): void;
+        private _evtMouseUp(event);
         /**
          * Release the current mouse grab for the tab bar.
          */
         private _releaseMouse();
         /**
-         * Insert a new tab into the tab bar at a valid index.
+         * Insert a new tab into the tab bar at the given index.
+         *
+         * This method assumes the index is valid and that the tab has
+         * not already been added to the tab bar.
          */
         private _insertTab(index, tab, animate);
         /**
          * Move an item to a new index in the tab bar.
+         *
+         * This method assumes both indices are valid.
          */
         private _moveTab(fromIndex, toIndex);
         /**
          * Remove the tab at the given index from the tab bar.
+         *
+         * This method assumes the index is valid.
          */
         private _removeTab(index, animate);
         /**
-         * Update the Z order of the tab nodes in the tab bar.
+         * Remove a child node of the tab bar content node.
+         *
+         * This is a no-op if the node is not a child of the content node.
          */
-        private _updateTabZOrder();
+        private _removeContentChild(node);
         /**
          * Get the index of the tab which covers the given client position.
+         *
+         * Returns -1 if the client position does not intersect a tab.
          */
-        private _indexAtPos(clientX, clientY);
+        private _hitTest(clientX, clientY);
         /**
          * Compute the layout width of a tab.
          *
          * This computes a tab size as close as possible to the preferred
-         * tab size (but not less than the minimum), taking into account
-         * the current tab bar inner div width and tab overlap setting.
+         * tab size, taking into account the minimum tab width, the current
+         * tab bar width, and the tab overlap setting.
          */
         private _tabLayoutWidth();
         /**
-         * Update the layout of the tabs in the tab bar.
+         * Update the Z-indices of the tabs for the current tab order.
+         */
+        private _updateTabZOrder();
+        /**
+         * Update the position and size of the tabs in the tab bar.
          *
-         * This will update the position and size of the tabs according to
-         * the current inner width of the tab bar. The position of the drag
-         * tab will not be updated.
+         * The position of the drag tab will not be updated.
          */
         private _updateTabLayout();
         /**
          * A helper function to execute an animated transition.
          *
-         * This will execute the enter after the transition class has been
-         * added to the tab bar, and execute the exit callback after the
-         * transition duration has expired and the transition class has
-         * been removed from the tab bar.
+         * This will add the transition class to the tab bar for the global
+         * transition duration. The optional `onEnter` callback is invoked
+         * immediately after the transition class is added. The optional
+         * `onExit` callback will be invoked after the transition duration
+         * has expired and the transition class is removed from the tab bar.
          *
          * If there is an active drag in progress, the transition class
-         * will not be removed from the inner div on exit.
+         * will not be removed from the on exit.
          */
-        private _withTransition(enter?, exit?);
-        private _movable;
+        private _withTransition(onEnter?, onExit?);
+        /**
+         * Initialize the tab bar state from an options object.
+         */
+        private _initFrom(options);
         private _tabWidth;
         private _tabOverlap;
         private _minTabWidth;
+        private _tabs;
+        private _tabsMovable;
         private _currentTab;
         private _previousTab;
         private _dragData;
-        private _tabs;
     }
 }
 
-declare module phosphor.panels {
+declare module phosphor.widgets {
     import Signal = core.Signal;
+    import Pair = utility.Pair;
     /**
-     * A panel which provides a tabbed container for child panels.
+     * A panel which provides a tabbed container for child widgets.
      *
-     * The TabPanel provides a convenient combination of a tab bar and
-     * a stack panel which allows the user to toggle between panels by
-     * selecting the tab associated with a tabbable panel.
+     * The TabPanel provides a convenient combination of a TabBar and a
+     * StackedPanel which allows the user to toggle between widgets by
+     * selecting the tab associated with a widget.
      */
-    class TabPanel extends Panel {
+    class TabPanel extends Widget {
         /**
-         * A signal emitted when the current panel is changed.
+         * A signal emitted when the current widget is changed.
          */
-        currentChanged: Signal<TabPanel, IStackIndexArgs>;
+        currentChanged: Signal<TabPanel, Pair<number, Widget>>;
         /**
          * Construct a new tab panel.
          */
@@ -5264,23 +5128,19 @@ declare module phosphor.panels {
          */
         dispose(): void;
         /**
-         * Get the index of the currently selected panel.
+         * Get the index of the currently selected widget.
          */
         /**
-         * Set the index of the currently selected panel.
+         * Set the index of the currently selected widget.
          */
         currentIndex: number;
         /**
-         * Get the currently selected panel.
+         * Get the currently selected widget.
          */
         /**
-         * Set the currently selected panel.
+         * Set the currently selected widget.
          */
-        currentPanel: Panel;
-        /**
-         * Get the number of panels in the tab panel.
-         */
-        count: number;
+        currentWidget: Widget;
         /**
          * Get whether the tabs are movable by the user.
          */
@@ -5289,39 +5149,45 @@ declare module phosphor.panels {
          */
         tabsMovable: boolean;
         /**
-         * Get the tab bar used by the tab panel.
+         * Get the tab bar used by the panel.
          */
         tabBar: TabBar;
         /**
-         * Get the stack panel used by the tab panel.
+         * Get the number of widgets in the panel.
          */
-        stackPanel: StackPanel;
+        count: number;
         /**
-         * Get the index of the given panel.
+         * Get the index of the given widget.
          */
-        indexOf(panel: Panel): number;
+        indexOf(widget: Widget): number;
         /**
-         * Add a panel to the end of the tab panel.
+         * Get the widget at the given index.
          *
-         * If the panel has already been added, it will be moved.
-         *
-         * Returns the new index of the panel.
+         * Returns `undefined` if there is no widget at the given index.
          */
-        addPanel(panel: ITabbable): number;
+        widgetAt(index: number): Widget;
         /**
-         * Insert a panel into the tab panel at the given index.
+         * Add a tabbable widget to the end of the panel.
          *
-         * If the panel has already been added, it will be moved.
+         * If the widget already exists in the panel, it will be moved.
          *
-         * Returns the new index of the panel.
+         * Returns the index of the added widget.
          */
-        insertPanel(index: number, panel: ITabbable): number;
+        addWidget(widget: ITabbable, alignment?: Alignment): number;
         /**
-         * Move a panel from one index to another.
+         * Insert a tabbable widget into the panel at the given index.
          *
-         * Returns the new index of the panel.
+         * If the widget already exists in the panel, it will be moved.
+         *
+         * Returns the index of the added widget.
          */
-        movePanel(fromIndex: number, toIndex: number): number;
+        insertWidget(index: number, widget: ITabbable, alignment?: Alignment): number;
+        /**
+         * Move a widget from one index to another.
+         *
+         * Returns the new index of the widget.
+         */
+        moveWidget(fromIndex: number, toIndex: number): number;
         /**
          * Handle the `tabMoved` signal from the tab bar.
          */
@@ -5335,166 +5201,10 @@ declare module phosphor.panels {
          */
         private _tb_tabCloseRequested(sender, args);
         /**
-         * Handle the `panelRemoved` signal from the stack panel.
-         */
-        private _sw_panelRemoved(sender, args);
-        private _tabBar;
-        private _stackPanel;
-    }
-}
-
-declare module phosphor.panels {
-    /**
-     * A panel which provides a flexible layout area for panels.
-     */
-    class DockArea extends Panel {
-        /**
-         * Construct a new dock area.
-         */
-        constructor();
-        /**
-         * Dispose of the resources held by the panel.
-         */
-        dispose(): void;
-        /**
-         * Get the width of the tabs in the dock area.
-         */
-        /**
-         * Get the width of the tabs in the dock area.
-         */
-        tabWidth: number;
-        /**
-         * Get the minimum tab width in pixels.
-         */
-        /**
-         * Set the minimum tab width in pixels.
-         */
-        minTabWidth: number;
-        /**
-         * Get the tab overlap amount in pixels.
-         */
-        /**
-         * Set the tab overlap amount in pixels.
-         */
-        tabOverlap: number;
-        /**
-         * Get the handle size of the dock splitters.
-         */
-        /**
-         * Set the handle size of the dock splitters.
-         */
-        handleSize: number;
-        /**
-         * Add a panel to the dock area.
-         *
-         * The panel is positioned in the area according to the given dock
-         * mode and reference panel. If the dock panel is already added to
-         * the area, it will be moved to the new location.
-         *
-         * The default mode inserts the panel on the left side of the area.
-         */
-        addPanel(panel: ITabbable, mode?: DockMode, ref?: ITabbable): void;
-        /**
-         * Handle the DOM events for the dock area.
-         */
-        protected handleEvent(event: Event): void;
-        /**
-         * Handle the 'mousemove' event for the dock area.
-         *
-         * This is triggered on the document during a tab move operation.
-         */
-        protected domEvent_mousemove(event: MouseEvent): void;
-        /**
-         * Handle the 'mouseup' event for the dock area.
-         *
-         * This is triggered on the document during a tab move operation.
-         */
-        protected domEvent_mouseup(event: MouseEvent): void;
-        /**
-         * Add the widget to a new root dock panel along the given orientation.
-         *
-         * If the widget already exists in the area, it will be removed.
-         */
-        private _addWidget(widget, orientation, after);
-        /**
-         * Add the dock widget as a new split panel next to the reference.
-         *
-         * If the reference does not exist in the area, this is a no-op.
-         *
-         * If the dock widget already exists in the area, it will be moved.
-         */
-        private _splitWidget(widget, ref, orientation, after);
-        /**
-         * Split the panel with the given widget along the given orientation.
-         *
-         * If the widget already exists in the area, it will be moved.
-         */
-        private _splitPanel(panel, widget, orientation, after);
-        /**
-         * Add the dock widget as a tab next to the reference.
-         *
-         * If the reference does not exist in the area, this is a no-op.
-         *
-         * If the dock widget already exists in the area, it will be moved.
-         */
-        private _tabifyWidget(widget, ref, after);
-        /**
-         * Ensure the root splitter has the given orientation.
-         *
-         * If the current root has the given orientation, this is a no-op.
-         *
-         * If the root has <= 1 child, its orientation will be updated.
-         *
-         * Otherwise, a new root will be created with the proper orientation
-         * and the current root will be added as the new root's first child.
-         */
-        private _ensureRoot(orientation);
-        /**
-         * Add a new item to the dock area and install its signal handlers.
-         */
-        private _addItem(widget, panel);
-        /**
-         * Create a new panel and setup the signal handlers.
-         */
-        private _createPanel();
-        /**
-         * Create a new dock splitter for the dock area.
-         */
-        private _createSplitter(orientation);
-        /**
-         * Remove an empty dock panel from the hierarchy.
-         *
-         * This ensures that the hierarchy is kept consistent by merging an
-         * ancestor splitter when it contains only a single child widget.
-         */
-        private _removePanel(panel);
-        /**
-         * Abort the tab drag operation if one is in progress.
-         */
-        private _abortDrag();
-        /**
-         * Handle the `currentChanged` signal from a tab bar.
-         */
-        private _tb_currentChanged(sender, args);
-        /**
-         * Handle the `tabCloseRequested` signal from a tab bar.
-         */
-        private _tb_tabCloseRequested(sender, args);
-        /**
-         * Handle the `tabDetachRequested` signal from the tab bar.
-         */
-        private _tb_tabDetachRequested(sender, args);
-        /**
-         * Handle the `widgetRemoved` signal from a stack widget.
+         * Handle the `widgetRemoved` signal from the stacked panel.
          */
         private _sw_widgetRemoved(sender, args);
-        private _handleSize;
-        private _tabWidth;
-        private _tabOverlap;
-        private _minTabWidth;
-        private _ignoreRemoved;
-        private _root;
-        private _dragData;
-        private _items;
+        private _tabBar;
+        private _stackedPanel;
     }
 }

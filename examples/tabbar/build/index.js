@@ -8,17 +8,17 @@
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var TabBar = phosphor.panels.TabBar;
+    var Tab = phosphor.widgets.Tab;
+    var TabBar = phosphor.widgets.TabBar;
     function main() {
-        var tb = new TabBar();
-        tb.minTabWidth = 100;
-        tb.addTab('One');
-        tb.addTab('Two');
-        tb.addTab('Three');
-        tb.addTab('Four');
-        tb.addTab('Five');
-        tb.addTab('Six');
-        tb.addTab('Seven');
+        var tb = new TabBar({ tabOverlap: 1 });
+        tb.addTab(new Tab('One'));
+        tb.addTab(new Tab('Two'));
+        tb.addTab(new Tab('Three'));
+        tb.addTab(new Tab('Four'));
+        tb.addTab(new Tab('Five'));
+        tb.addTab(new Tab('Six'));
+        tb.addTab(new Tab('Seven'));
         tb.attach(document.getElementById('main'));
         tb.fit();
         window.onresize = function () { return tb.fit(); };

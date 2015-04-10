@@ -8,9 +8,9 @@
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var Menu = phosphor.panels.Menu;
-    var MenuBar = phosphor.panels.MenuBar;
-    var MenuItem = phosphor.panels.MenuItem;
+    var Menu = phosphor.widgets.Menu;
+    var MenuBar = phosphor.widgets.MenuBar;
+    var MenuItem = phosphor.widgets.MenuItem;
     var cutCmd = function () { return console.log('Cut'); };
     var copyCmd = function () { return console.log('Copy'); };
     var pasteCmd = function () { return console.log('Paste'); };
@@ -76,7 +76,9 @@ var example;
             className: 'close',
             onTriggered: closeCmd,
         });
-        var separator = new MenuItem({ type: 'separator' });
+        function separator() {
+            return new MenuItem({ type: 'separator' });
+        }
         var newFileItem = new MenuItem({
             text: 'New File',
             shortcut: 'Ctrl+N',
@@ -97,7 +99,7 @@ var example;
             text: 'Close File',
             shortcut: 'Ctrl+W',
         });
-        var closeAllItem = new MenuItem({ text: 'Close All File' });
+        var closeAllItem = new MenuItem({ text: 'Close All Files' });
         var exitItem = new MenuItem({ text: 'Exit' });
         var fileItem = new MenuItem({
             text: 'File',
@@ -106,12 +108,12 @@ var example;
                 openFileItem,
                 saveFileItem,
                 saveAsItem,
-                separator,
+                separator(),
                 closeFileItem,
                 closeAllItem,
-                separator,
+                separator(),
                 moreItem,
-                separator,
+                separator(),
                 exitItem,
             ]),
         });
@@ -132,7 +134,7 @@ var example;
             submenu: new Menu([
                 undoItem,
                 repeatItem,
-                separator,
+                separator(),
                 copyItem,
                 cutItem,
                 pasteItem,
@@ -164,7 +166,7 @@ var example;
                 findItem,
                 findNextItem,
                 findPrevItem,
-                separator,
+                separator(),
                 replaceItem,
                 replaceNextItem,
             ]),
@@ -184,15 +186,15 @@ var example;
             copyItem,
             cutItem,
             pasteItem,
-            separator,
+            separator(),
             newTabItem,
             closeTabItem,
             saveOnExitItem,
-            separator,
+            separator(),
             taskMgrItem,
-            separator,
+            separator(),
             moreItem,
-            separator,
+            separator(),
             closeItem,
         ]);
         var menubar = new MenuBar([
@@ -200,7 +202,7 @@ var example;
             editItem,
             fmItem,
             viewItem,
-            separator,
+            separator(),
             helpItem,
         ]);
         menubar.attach(document.getElementById('container'));

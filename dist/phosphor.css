@@ -8,7 +8,7 @@
 body.p-mod-cursor-override * {
   cursor: inherit !important;
 }
-.p-Panel {
+.p-Widget {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -24,7 +24,7 @@ body.p-mod-cursor-override * {
   width: 0px;
   height: 0px;
 }
-.p-Panel.p-mod-hidden {
+.p-Widget.p-mod-hidden {
   display: none;
 }
 .p-CodeMirrorComponent > .CodeMirror {
@@ -47,16 +47,26 @@ body.p-mod-cursor-override * {
   -ms-transition: all 150ms ease;
   transition: all 150ms ease;
 }
-.p-Tab.p-mod-floating {
-  position: absolute;
-}
 .p-Menu {
-  display: table;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
   margin: 0;
   padding: 3px 0px;
-  width: auto;
-  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   z-index: 100000;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.p-Menu-content {
+  display: table;
   list-style: none;
   border-spacing: 0;
 }
@@ -104,7 +114,7 @@ body.p-mod-cursor-override * {
 .p-Menu-item.p-mod-separator-type:last-child {
   display: none;
 }
-.p-MenuBar {
+.p-MenuBar-content {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -136,7 +146,7 @@ body.p-mod-cursor-override * {
 .p-MenuBar-item.p-mod-separator-type > span {
   display: none;
 }
-.p-SplitPanel > .p-Panel {
+.p-SplitPanel > .p-Widget {
   z-index: 0;
 }
 .p-SplitHandle {
@@ -183,7 +193,15 @@ body.p-mod-cursor-override * {
   width: 100%;
   height: 100%;
 }
-.p-TabBar-inner {
+.p-TabBar-header {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+.p-TabBar-content {
   position: absolute;
   top: 0;
   left: 0;
@@ -191,26 +209,27 @@ body.p-mod-cursor-override * {
   bottom: 0;
   margin: 0;
   padding: 0;
+  z-index: 2;
 }
-.p-TabBar-inner > .p-Tab {
+.p-TabBar-content > .p-Tab {
   position: absolute;
   bottom: 0px;
 }
-.p-TabBar-inner > .p-Tab.p-mod-inserting {
-  -webkit-animation: p-keyframes-inserting-tab 150ms ease;
-  -moz-animation: p-keyframes-inserting-tab 150ms ease;
-  -o-animation: p-keyframes-inserting-tab 150ms ease;
-  -ms-animation: p-keyframes-inserting-tab 150ms ease;
-  animation: p-keyframes-inserting-tab 150ms ease;
+.p-TabBar-content > .p-Tab.p-mod-inserting {
+  -webkit-animation: p-kf-insert-tab 150ms ease;
+  -moz-animation: p-kf-insert-tab 150ms ease;
+  -o-animation: p-kf-insert-tab 150ms ease;
+  -ms-animation: p-kf-insert-tab 150ms ease;
+  animation: p-kf-insert-tab 150ms ease;
 }
-.p-TabBar-inner > .p-Tab.p-mod-removing {
-  -webkit-animation: p-keyframes-removing-tab 150ms ease;
-  -moz-animation: p-keyframes-removing-tab 150ms ease;
-  -o-animation: p-keyframes-removing-tab 150ms ease;
-  -ms-animation: p-keyframes-removing-tab 150ms ease;
-  animation: p-keyframes-removing-tab 150ms ease;
+.p-TabBar-content > .p-Tab.p-mod-removing {
+  -webkit-animation: p-kf-remove-tab 150ms ease;
+  -moz-animation: p-kf-remove-tab 150ms ease;
+  -o-animation: p-kf-remove-tab 150ms ease;
+  -ms-animation: p-kf-remove-tab 150ms ease;
+  animation: p-kf-remove-tab 150ms ease;
 }
-.p-TabBar-inner.p-mod-transition > .p-Tab {
+.p-TabBar-content.p-mod-transition > .p-Tab {
   -webkit-transition-property: left, width;
   -moz-transition-property: left, width;
   -o-transition-property: left, width;
@@ -221,6 +240,14 @@ body.p-mod-cursor-override * {
   -o-transition-duration: 150ms;
   -ms-transition-duration: 150ms;
   transition-duration: 150ms;
+}
+.p-TabBar-footer {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 .p-Tab {
   display: -webkit-box;
@@ -261,10 +288,8 @@ body.p-mod-cursor-override * {
   flex: 1 1 auto;
   overflow: hidden;
   white-space: nowrap;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
 }
-@-moz-keyframes p-keyframes-inserting-tab {
+@-moz-keyframes p-kf-insert-tab {
   from {
     bottom: -100%;
   }
@@ -272,7 +297,7 @@ body.p-mod-cursor-override * {
     bottom: 0;
   }
 }
-@-webkit-keyframes p-keyframes-inserting-tab {
+@-webkit-keyframes p-kf-insert-tab {
   from {
     bottom: -100%;
   }
@@ -280,7 +305,7 @@ body.p-mod-cursor-override * {
     bottom: 0;
   }
 }
-@-o-keyframes p-keyframes-inserting-tab {
+@-o-keyframes p-kf-insert-tab {
   from {
     bottom: -100%;
   }
@@ -288,7 +313,7 @@ body.p-mod-cursor-override * {
     bottom: 0;
   }
 }
-@keyframes p-keyframes-inserting-tab {
+@keyframes p-kf-insert-tab {
   from {
     bottom: -100%;
   }
@@ -296,7 +321,7 @@ body.p-mod-cursor-override * {
     bottom: 0;
   }
 }
-@-moz-keyframes p-keyframes-removing-tab {
+@-moz-keyframes p-kf-remove-tab {
   from {
     bottom: 0;
   }
@@ -304,7 +329,7 @@ body.p-mod-cursor-override * {
     bottom: -100%;
   }
 }
-@-webkit-keyframes p-keyframes-removing-tab {
+@-webkit-keyframes p-kf-remove-tab {
   from {
     bottom: 0;
   }
@@ -312,7 +337,7 @@ body.p-mod-cursor-override * {
     bottom: -100%;
   }
 }
-@-o-keyframes p-keyframes-removing-tab {
+@-o-keyframes p-kf-remove-tab {
   from {
     bottom: 0;
   }
@@ -320,7 +345,7 @@ body.p-mod-cursor-override * {
     bottom: -100%;
   }
 }
-@keyframes p-keyframes-removing-tab {
+@keyframes p-kf-remove-tab {
   from {
     bottom: 0;
   }

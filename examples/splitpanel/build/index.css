@@ -17,6 +17,10 @@ body {
   right: 0;
   bottom: 0;
 }
+.content {
+  min-width: 100px;
+  min-height: 100px;
+}
 .red {
   background: #e74c3c;
 }

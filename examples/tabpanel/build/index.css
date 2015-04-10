@@ -21,21 +21,10 @@ body {
 .p-TabBar {
   min-height: 24px;
 }
-.p-TabBar::after {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  content: '';
-  z-index: 0;
-  background: #c0c0c0;
-}
-.p-TabBar-inner {
+.p-TabBar-content {
   bottom: 1px;
-  z-index: 1;
 }
-.p-TabBar-inner > .p-Tab {
+.p-TabBar-content > .p-Tab {
   font: 12px Helvetica, Arial, sans-serif;
   height: 21px;
   padding: 0px 10px;
@@ -43,18 +32,23 @@ body {
   border: 1px solid #c0c0c0;
   border-bottom: none;
 }
-.p-TabBar-inner > .p-Tab.p-mod-selected {
+.p-TabBar-content > .p-Tab.p-mod-selected {
   height: 24px;
   background: #fff;
   transform: translateY(1px);
 }
-.p-TabBar-inner > .p-Tab:hover:not(.p-mod-selected) {
+.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {
   background: #f0f0f0;
 }
-.p-TabBar-inner > .p-Tab > span {
+.p-TabBar-content > .p-Tab > span {
   line-height: 21px;
 }
-.p-TabPanel > .p-StackPanel {
+.p-TabBar-footer {
+  display: block;
+  height: 1px;
+  background: #c0c0c0;
+}
+.p-TabPanel > .p-StackedPanel {
   padding: 10px;
   background: #fff;
   border: 1px solid #c0c0c0;

@@ -139,7 +139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L139">src/core/Signal.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L139">src/core/signal.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,7 +190,7 @@
 					<div class="tsd-signature tsd-kind-icon">_callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L174">src/core/Signal.ts:174</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L174">src/core/signal.ts:174</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -224,7 +224,7 @@
 					<div class="tsd-signature tsd-kind-icon">_this<wbr>Arg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L175">src/core/Signal.ts:175</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L175">src/core/signal.ts:175</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -241,7 +241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L151">src/core/Signal.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L151">src/core/signal.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -263,7 +263,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L159">src/core/Signal.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L159">src/core/signal.ts:159</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -315,7 +315,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/Signal.ts#L168">src/core/Signal.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/signal.ts#L168">src/core/signal.ts:168</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -359,23 +359,18 @@
 							</li>
 							<li class="current tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.core.html">core</a>
-								<ul>
-									<li class=" tsd-kind-module tsd-parent-kind-module">
-										<a href="../modules/phosphor.core.dispatch.html">dispatch</a>
-									</li>
-								</ul>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.di.html">di</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="../modules/phosphor.domutil.html">domutil</a>
-							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="../modules/phosphor.panels.html">panels</a>
+								<a href="../modules/phosphor.utility.html">utility</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="../modules/phosphor.widgets.html">widgets</a>
 							</li>
 						</ul>
 					</li>
@@ -420,9 +415,6 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="phosphor.core.disposable.html" class="tsd-kind-icon">Disposable</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="phosphor.core.filterwrapper.html" class="tsd-kind-icon">Filter<wbr>Wrapper</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
@@ -433,9 +425,6 @@
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="phosphor.core.signal.html" class="tsd-kind-icon">Signal</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/phosphor.core.idisposable.html" class="tsd-kind-icon">IDisposable</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/phosphor.core.imessage.html" class="tsd-kind-icon">IMessage</a>
@@ -453,28 +442,40 @@
 						<a href="../modules/phosphor.core.html#dispatchermap" class="tsd-kind-icon">dispatcher<wbr>Map</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/phosphor.core.html#emptyarray" class="tsd-kind-icon">empty<wbr>Array</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/phosphor.core.html#emptyobject" class="tsd-kind-icon">empty<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="../modules/phosphor.core.html#frameid" class="tsd-kind-icon">frame<wbr>Id</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="../modules/phosphor.core.html#raf" class="tsd-kind-icon">raf</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/phosphor.core.html#dispatchmessage" class="tsd-kind-icon">dispatch<wbr>Message</a>
+						<a href="../modules/phosphor.core.html#clearmessagedata" class="tsd-kind-icon">clear<wbr>Message<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/phosphor.core.html#emptyfunction" class="tsd-kind-icon">empty<wbr>Function</a>
+						<a href="../modules/phosphor.core.html#dispatchmessage" class="tsd-kind-icon">dispatch<wbr>Message</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/phosphor.core.html#getdispatcher" class="tsd-kind-icon">get<wbr>Dispatcher</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#haspendingmessages" class="tsd-kind-icon">has<wbr>Pending<wbr>Messages</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#installmessagefilter" class="tsd-kind-icon">install<wbr>Message<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#postmessage" class="tsd-kind-icon">post<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#removemessagefilter" class="tsd-kind-icon">remove<wbr>Message<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/phosphor.core.html#runmessageloop" class="tsd-kind-icon">run<wbr>Message<wbr>Loop</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#sendmessage" class="tsd-kind-icon">send<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/phosphor.core.html#sendpendingmessage" class="tsd-kind-icon">send<wbr>Pending<wbr>Message</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/phosphor.core.html#wakeupmessageloop" class="tsd-kind-icon">wake<wbr>UpMessage<wbr>Loop</a>

@@ -19,7 +19,7 @@ body {
   right: 10px;
   bottom: 10px;
 }
-#main > .p-Panel {
+#main > .p-BoxPanel {
   padding: 8px;
 }
 .red {
@@ -43,6 +43,9 @@ body {
   font: 15px Helvetica;
   background: #ddd;
   border: 1px solid #555;
+  min-width: 60px;
+  min-height: 25px;
+  max-height: 25px;
 }
 .content > span {
   line-height: 25px;

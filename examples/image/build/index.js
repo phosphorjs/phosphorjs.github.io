@@ -15,14 +15,13 @@ var __extends = this.__extends || function (d, b) {
 var example;
 (function (example) {
     var Component = phosphor.components.Component;
-    var BoxPanel = phosphor.panels.BoxPanel;
-    var Direction = phosphor.panels.Direction;
-    var ElementHost = phosphor.panels.ElementHost;
-    var Panel = phosphor.panels.Panel;
-    var Size = phosphor.panels.Size;
-    var SizePolicy = phosphor.panels.SizePolicy;
+    var Size = phosphor.utility.Size;
     var createFactory = phosphor.virtualdom.createFactory;
     var dom = phosphor.virtualdom.dom;
+    var BoxPanel = phosphor.widgets.BoxPanel;
+    var ElementHost = phosphor.widgets.ElementHost;
+    var SizePolicy = phosphor.widgets.SizePolicy;
+    var Widget = phosphor.widgets.Widget;
     /**
      * Example image data - all public domain.
      */
@@ -68,20 +67,20 @@ var example;
      */
     var Selector = createFactory(SelectorComponent);
     /**
-     * A simple panel which displays an image.
+     * A simple widget which displays an image.
      *
      * This could just as easily be rendered as part of the component,
-     * but for this example it demonstrates a simple custom panel.
+     * but for this example it demonstrates a simple custom widget.
      */
-    var SimpleImagePanel = (function (_super) {
-        __extends(SimpleImagePanel, _super);
-        function SimpleImagePanel() {
+    var SimpleImageWidget = (function (_super) {
+        __extends(SimpleImageWidget, _super);
+        function SimpleImageWidget() {
             var _this = this;
             _super.call(this);
-            this.node.classList.add('SimpleImagePanel');
+            this.addClass('SimpleImageWidget');
             this.node.onload = function () { return _this.updateGeometry(); };
         }
-        Object.defineProperty(SimpleImagePanel.prototype, "src", {
+        Object.defineProperty(SimpleImageWidget.prototype, "src", {
             get: function () {
                 return this.node.src;
             },
@@ -91,15 +90,15 @@ var example;
             enumerable: true,
             configurable: true
         });
-        SimpleImagePanel.prototype.sizeHint = function () {
+        SimpleImageWidget.prototype.sizeHint = function () {
             var img = this.node;
             return new Size(img.naturalWidth, img.naturalHeight);
         };
-        SimpleImagePanel.prototype.createNode = function () {
+        SimpleImageWidget.prototype.createNode = function () {
             return document.createElement('img');
         };
-        return SimpleImagePanel;
-    })(Panel);
+        return SimpleImageWidget;
+    })(Widget);
     /**
      * A top level panel which combines a selector and image panel.
      */
@@ -107,7 +106,7 @@ var example;
         __extends(MainPanel, _super);
         function MainPanel() {
             var _this = this;
-            _super.call(this, 2 /* TopToBottom */);
+            _super.call(this);
             this._onSelected = function (value) {
                 for (var i = 0; i < imageItems.length; ++i) {
                     var item = imageItems[i];
@@ -118,16 +117,16 @@ var example;
                 }
                 _this._image.src = item.path;
             };
-            this.node.classList.add('MainPanel');
+            this.addClass('MainPanel');
             var names = imageItems.map(function (item) { return item.name; });
             var selector = Selector({ values: names, onSelected: this._onSelected });
             var host = new ElementHost(selector, 200, 24);
             host.setSizePolicy(SizePolicy.Expanding, 0 /* Fixed */);
-            var image = this._image = new SimpleImagePanel();
+            var image = this._image = new SimpleImageWidget();
             image.setSizePolicy(0 /* Fixed */, 0 /* Fixed */);
             image.src = imageItems[0].path;
-            this.addPanel(host);
-            this.addPanel(image);
+            this.addWidget(host);
+            this.addWidget(image);
         }
         return MainPanel;
     })(BoxPanel);

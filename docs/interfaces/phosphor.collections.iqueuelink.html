@@ -118,7 +118,7 @@
 					<div class="tsd-signature tsd-kind-icon">next<span class="tsd-signature-symbol">:</span> <a href="phosphor.collections.iqueuelink.html" class="tsd-signature-type">IQueueLink</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/Queue.ts#L163">src/collections/Queue.ts:163</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/queue.ts#L177">src/collections/queue.ts:177</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -133,7 +133,7 @@
 					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/Queue.ts#L168">src/collections/Queue.ts:168</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/queue.ts#L182">src/collections/queue.ts:182</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -158,6 +158,11 @@
 						<ul>
 							<li class="current tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.collections.html">collections</a>
+								<ul>
+									<li class=" tsd-kind-module tsd-parent-kind-module">
+										<a href="../modules/phosphor.collections.algorithm.html">algorithm</a>
+									</li>
+								</ul>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.components.html">components</a>
@@ -169,13 +174,13 @@
 								<a href="../modules/phosphor.di.html">di</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="../modules/phosphor.domutil.html">domutil</a>
-							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="../modules/phosphor.panels.html">panels</a>
+								<a href="../modules/phosphor.utility.html">utility</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="../modules/phosphor.widgets.html">widgets</a>
 							</li>
 						</ul>
 					</li>
@@ -193,46 +198,10 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.arrayiterator.html" class="tsd-kind-icon">Array<wbr>Iterator</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../classes/phosphor.collections.circularbuffer.html" class="tsd-kind-icon">Circular<wbr>Buffer</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.list.html" class="tsd-kind-icon">List</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.listiterator.html" class="tsd-kind-icon">List<wbr>Iterator</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../classes/phosphor.collections.queue.html" class="tsd-kind-icon">Queue</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.queueiterator.html" class="tsd-kind-icon">Queue<wbr>Iterator</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.readonlycollection.html" class="tsd-kind-icon">Read<wbr>Only<wbr>Collection</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.collections.readonlylist.html" class="tsd-kind-icon">Read<wbr>Only<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.icollection.html" class="tsd-kind-icon">ICollection</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.ideque.html" class="tsd-kind-icon">IDeque</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.iiterable.html" class="tsd-kind-icon">IIterable</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.iiterator.html" class="tsd-kind-icon">IIterator</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.ilist.html" class="tsd-kind-icon">IList</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.iqueue.html" class="tsd-kind-icon">IQueue</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -249,48 +218,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.collections.istack.html" class="tsd-kind-icon">IStack</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#every" class="tsd-kind-icon">every</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#filter" class="tsd-kind-icon">filter</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#find" class="tsd-kind-icon">find</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#foreach" class="tsd-kind-icon">for<wbr>Each</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#iter" class="tsd-kind-icon">iter</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#lowerbound" class="tsd-kind-icon">lower<wbr>Bound</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#lowerfind" class="tsd-kind-icon">lower<wbr>Find</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#map" class="tsd-kind-icon">map</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#some" class="tsd-kind-icon">some</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#upperbound" class="tsd-kind-icon">upper<wbr>Bound</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/phosphor.collections.html#upperfind" class="tsd-kind-icon">upper<wbr>Find</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

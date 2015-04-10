@@ -14,15 +14,15 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var Panel = phosphor.panels.Panel;
-    var Tab = phosphor.panels.Tab;
-    var TabPanel = phosphor.panels.TabPanel;
+    var Tab = phosphor.widgets.Tab;
+    var TabPanel = phosphor.widgets.TabPanel;
+    var Widget = phosphor.widgets.Widget;
     var Content = (function (_super) {
         __extends(Content, _super);
         function Content(title) {
             _super.call(this);
-            this.node.classList.add('content');
-            this.node.classList.add(title.toLowerCase());
+            this.addClass('content');
+            this.addClass(title.toLowerCase());
             this._tab = new Tab(title);
         }
         Object.defineProperty(Content.prototype, "tab", {
@@ -33,13 +33,14 @@ var example;
             configurable: true
         });
         return Content;
-    })(Panel);
+    })(Widget);
     function main() {
         var tabs = new TabPanel();
-        tabs.addPanel(new Content('Red'));
-        tabs.addPanel(new Content('Yellow'));
-        tabs.addPanel(new Content('Blue'));
-        tabs.addPanel(new Content('Green'));
+        tabs.tabBar.tabOverlap = 1;
+        tabs.addWidget(new Content('Red'));
+        tabs.addWidget(new Content('Yellow'));
+        tabs.addWidget(new Content('Blue'));
+        tabs.addWidget(new Content('Green'));
         tabs.attach(document.getElementById('main'));
         tabs.fit();
         window.onresize = function () { return tabs.fit(); };

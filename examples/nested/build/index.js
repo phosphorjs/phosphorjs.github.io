@@ -14,18 +14,17 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var Orientation = phosphor.panels.Orientation;
-    var Panel = phosphor.panels.Panel;
-    var SplitPanel = phosphor.panels.SplitPanel;
-    var Tab = phosphor.panels.Tab;
-    var TabPanel = phosphor.panels.TabPanel;
+    var Orientation = phosphor.widgets.Orientation;
+    var SplitPanel = phosphor.widgets.SplitPanel;
+    var Tab = phosphor.widgets.Tab;
+    var TabPanel = phosphor.widgets.TabPanel;
+    var Widget = phosphor.widgets.Widget;
     var Content = (function (_super) {
         __extends(Content, _super);
         function Content(title) {
             _super.call(this);
-            this.node.classList.add('content');
-            this.node.classList.add(title.toLowerCase());
-            this.setMinSize(50, 50);
+            this.addClass('content');
+            this.addClass(title.toLowerCase());
             this._tab = new Tab(title);
         }
         Object.defineProperty(Content.prototype, "tab", {
@@ -36,13 +35,14 @@ var example;
             configurable: true
         });
         return Content;
-    })(Panel);
+    })(Widget);
     function createTabs(index) {
         var tabs = new TabPanel();
-        tabs.addPanel(new Content('Red'));
-        tabs.addPanel(new Content('Yellow'));
-        tabs.addPanel(new Content('Blue'));
-        tabs.addPanel(new Content('Green'));
+        tabs.tabBar.tabOverlap = 1;
+        tabs.addWidget(new Content('Red'));
+        tabs.addWidget(new Content('Yellow'));
+        tabs.addWidget(new Content('Blue'));
+        tabs.addWidget(new Content('Green'));
         tabs.currentIndex = index;
         return tabs;
     }
@@ -50,12 +50,12 @@ var example;
         var sp1 = new SplitPanel(0 /* Horizontal */);
         var sp2 = new SplitPanel(1 /* Vertical */);
         var sp3 = new SplitPanel(1 /* Vertical */);
-        sp2.addPanel(createTabs(0));
-        sp2.addPanel(createTabs(1));
-        sp3.addPanel(createTabs(2));
-        sp3.addPanel(createTabs(3));
-        sp1.addPanel(sp2);
-        sp1.addPanel(sp3);
+        sp2.addWidget(createTabs(0));
+        sp2.addWidget(createTabs(1));
+        sp3.addWidget(createTabs(2));
+        sp3.addWidget(createTabs(3));
+        sp1.addWidget(sp2);
+        sp1.addWidget(sp3);
         sp1.attach(document.getElementById('main'));
         sp1.fit();
         window.onresize = function () { return sp1.fit(); };
