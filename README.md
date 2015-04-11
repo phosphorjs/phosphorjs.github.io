@@ -18,4 +18,3 @@ $ git add *
 $ git commit -am'build docs'
 $ git push origin master:master
 ```
-
