@@ -88,6 +88,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#copy" class="tsd-kind-icon">copy</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#find" class="tsd-kind-icon">find</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#findindex" class="tsd-kind-icon">find<wbr>Index</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#findlast" class="tsd-kind-icon">find<wbr>Last</a></li>
@@ -98,6 +99,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#findupperindex" class="tsd-kind-icon">find<wbr>Upper<wbr>Index</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#insert" class="tsd-kind-icon">insert</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#lowerbound" class="tsd-kind-icon">lower<wbr>Bound</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#move" class="tsd-kind-icon">move</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#remove" class="tsd-kind-icon">remove</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#removeat" class="tsd-kind-icon">remove<wbr>At</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="phosphor.collections.algorithm.html#upperbound" class="tsd-kind-icon">upper<wbr>Bound</a></li>
@@ -109,6 +111,41 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="copy" class="tsd-anchor"></a>
+					<h3>copy</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">copy&lt;T&gt;<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L309">src/collections/algorithm.ts:309</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a shallow copy of the given array.</p>
+								</div>
+								<p>This is faster than <code>Array#slice</code> for a simple copy.</p>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>array: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="find" class="tsd-anchor"></a>
 					<h3>find</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
@@ -118,7 +155,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L145">src/collections/algorithm.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L147">src/collections/algorithm.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -126,8 +163,9 @@
 									<p>Find the first element in the array which passes the given test.</p>
 								</div>
 								<p>The <code>fromIndex</code> parameter controls the starting index of the search.
-									If the value is negative, it is offset from the end of the array.
-								The default index is <code>0</code>.</p>
+									If the value is negative, it is offset from the end of the array. If
+									the adjusted value is still negative, it will be clamped to <code>0</code>. The
+								default index is <code>0</code>.</p>
 								<p>The <code>wrap</code> parameter controls the search wrap-around. If true, the
 									search will wrap-around at the end of the array and continue until
 									reaching the element just before the starting element. The default
@@ -169,7 +207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L55">src/collections/algorithm.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L56">src/collections/algorithm.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -177,8 +215,9 @@
 									<p>Find the index of the first element which passes the test.</p>
 								</div>
 								<p>The <code>fromIndex</code> parameter controls the starting index of the search.
-									If the value is negative, it is offset from the end of the array.
-								The default index is <code>0</code>.</p>
+									If the value is negative, it is offset from the end of the array. If
+									the adjusted value is still negative, it will be clamped to <code>0</code>. The
+								default index is <code>0</code>.</p>
 								<p>The <code>wrap</code> parameter controls the search wrap-around. If true, the
 									search will wrap-around at the end of the array and continue until
 									reaching the element just before the starting element. The default
@@ -220,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L166">src/collections/algorithm.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L169">src/collections/algorithm.ts:169</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -228,8 +267,9 @@
 									<p>Find the last element in the array which passes the given test.</p>
 								</div>
 								<p>The <code>fromIndex</code> parameter controls the starting index of the search.
-									If the value is negative, it is offset from the end of the array.
-								The default index is <code>-1</code>.</p>
+									If the value is negative, it is offset from the end of the array. If
+									the value is greater than the last index, it will be clamped to the
+								last index. The default index is <code>-1</code>.</p>
 								<p>The <code>wrap</code> parameter controls the search wrap-around. If true, the
 									search will wrap-around at the front of the array and continue until
 									reaching the element just after the starting element. The default
@@ -271,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L100">src/collections/algorithm.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L102">src/collections/algorithm.ts:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -279,8 +319,9 @@
 									<p>Find the index of the last element which passes the test.</p>
 								</div>
 								<p>The <code>fromIndex</code> parameter controls the starting index of the search.
-									If the value is negative, it is offset from the end of the array.
-								The default index is <code>-1</code>.</p>
+									If the value is negative, it is offset from the end of the array. If
+									the value is greater than the last index, it will be clamped to the
+								last index. The default index is <code>-1</code>.</p>
 								<p>The <code>wrap</code> parameter controls the search wrap-around. If true, the
 									search will wrap-around at the front of the array and continue until
 									reaching the element just after the starting element. The default
@@ -322,7 +363,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L279">src/collections/algorithm.ts:279</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L282">src/collections/algorithm.ts:282</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,7 +409,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L237">src/collections/algorithm.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L240">src/collections/algorithm.ts:240</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -414,7 +455,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L294">src/collections/algorithm.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L297">src/collections/algorithm.ts:297</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,7 +501,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L258">src/collections/algorithm.ts:258</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L261">src/collections/algorithm.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -506,14 +547,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L306">src/collections/algorithm.ts:306</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L330">src/collections/algorithm.ts:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Insert an element at the given index.</p>
 								</div>
-								<p>Returns the clamped index of the inserted element.</p>
+								<p>If <code>index</code> is negative, it will be offset from the end of the array.
+									If the adjusted value is still negative, it will be clamped to <code>0</code>.
+									If <code>index</code> is greater than <code>array.length</code>, it will be clamped to
+								<code>array.length</code>.</p>
+								<p>Returns the index at which the element was inserted.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -547,7 +592,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L181">src/collections/algorithm.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L184">src/collections/algorithm.ts:184</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -584,6 +629,51 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="move" class="tsd-anchor"></a>
+					<h3>move</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">move&lt;T&gt;<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, fromIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, toIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L361">src/collections/algorithm.ts:361</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Move an array element from one index to another.</p>
+								</div>
+								<p>If <code>fromIndex</code> is negative, it will be offset from the end of the
+								array. If the adjusted value is out of range, <code>-1</code> will be returned.</p>
+								<p>If <code>toIndex</code> is negative, it will be offset from the end of the
+								array. If the adjusted value is out of range, it will be clamped.</p>
+								<p>Returns the final index of the moved element.</p>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>array: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>fromIndex: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>toIndex: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="remove" class="tsd-anchor"></a>
 					<h3>remove</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
@@ -593,7 +683,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L353">src/collections/algorithm.ts:353</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L429">src/collections/algorithm.ts:429</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -631,13 +721,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L332">src/collections/algorithm.ts:332</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L405">src/collections/algorithm.ts:405</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Remove and return the element at the given index.</p>
 								</div>
+								<p>If <code>index</code> is negative, it will be offset from the end of the array.</p>
 								<p>Returns <code>undefined</code> if the index is out of range.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -669,7 +760,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L209">src/collections/algorithm.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/collections/algorithm.ts#L212">src/collections/algorithm.ts:212</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -770,6 +861,9 @@
 						<a href="../interfaces/phosphor.collections.algorithm.ipredicate.html" class="tsd-kind-icon">IPredicate</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="phosphor.collections.algorithm.html#copy" class="tsd-kind-icon">copy</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="phosphor.collections.algorithm.html#find" class="tsd-kind-icon">find</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
@@ -798,6 +892,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="phosphor.collections.algorithm.html#lowerbound" class="tsd-kind-icon">lower<wbr>Bound</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="phosphor.collections.algorithm.html#move" class="tsd-kind-icon">move</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="phosphor.collections.algorithm.html#remove" class="tsd-kind-icon">remove</a>

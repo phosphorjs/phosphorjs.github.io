@@ -16,8 +16,9 @@ var phosphor;
              * Find the index of the first element which passes the test.
              *
              * The `fromIndex` parameter controls the starting index of the search.
-             * If the value is negative, it is offset from the end of the array.
-             * The default index is `0`.
+             * If the value is negative, it is offset from the end of the array. If
+             * the adjusted value is still negative, it will be clamped to `0`. The
+             * default index is `0`.
              *
              * The `wrap` parameter controls the search wrap-around. If true, the
              * search will wrap-around at the end of the array and continue until
@@ -36,9 +37,9 @@ var phosphor;
                 fromIndex = fromIndex | 0;
                 if (fromIndex < 0) {
                     fromIndex += len;
-                }
-                if (fromIndex < 0) {
-                    fromIndex = 0;
+                    if (fromIndex < 0) {
+                        fromIndex = 0;
+                    }
                 }
                 if (wrap) {
                     for (var i = 0; i < len; ++i) {
@@ -62,8 +63,9 @@ var phosphor;
              * Find the index of the last element which passes the test.
              *
              * The `fromIndex` parameter controls the starting index of the search.
-             * If the value is negative, it is offset from the end of the array.
-             * The default index is `-1`.
+             * If the value is negative, it is offset from the end of the array. If
+             * the value is greater than the last index, it will be clamped to the
+             * last index. The default index is `-1`.
              *
              * The `wrap` parameter controls the search wrap-around. If true, the
              * search will wrap-around at the front of the array and continue until
@@ -83,7 +85,7 @@ var phosphor;
                 if (fromIndex < 0) {
                     fromIndex += len;
                 }
-                if (fromIndex >= len) {
+                else if (fromIndex >= len) {
                     fromIndex = len - 1;
                 }
                 if (wrap) {
@@ -108,8 +110,9 @@ var phosphor;
              * Find the first element in the array which passes the given test.
              *
              * The `fromIndex` parameter controls the starting index of the search.
-             * If the value is negative, it is offset from the end of the array.
-             * The default index is `0`.
+             * If the value is negative, it is offset from the end of the array. If
+             * the adjusted value is still negative, it will be clamped to `0`. The
+             * default index is `0`.
              *
              * The `wrap` parameter controls the search wrap-around. If true, the
              * search will wrap-around at the end of the array and continue until
@@ -127,8 +130,9 @@ var phosphor;
              * Find the last element in the array which passes the given test.
              *
              * The `fromIndex` parameter controls the starting index of the search.
-             * If the value is negative, it is offset from the end of the array.
-             * The default index is `-1`.
+             * If the value is negative, it is offset from the end of the array. If
+             * the value is greater than the last index, it will be clamped to the
+             * last index. The default index is `-1`.
              *
              * The `wrap` parameter controls the search wrap-around. If true, the
              * search will wrap-around at the front of the array and continue until
@@ -261,20 +265,39 @@ var phosphor;
             }
             algorithm.findUpper = findUpper;
             /**
+             * Create a shallow copy of the given array.
+             *
+             * This is faster than `Array#slice` for a simple copy.
+             */
+            function copy(array) {
+                var n = array.length;
+                var result = new Array(n);
+                for (var i = 0; i < n; ++i) {
+                    result[i] = array[i];
+                }
+                return result;
+            }
+            algorithm.copy = copy;
+            /**
              * Insert an element at the given index.
              *
-             * Returns the clamped index of the inserted element.
+             * If `index` is negative, it will be offset from the end of the array.
+             * If the adjusted value is still negative, it will be clamped to `0`.
+             * If `index` is greater than `array.length`, it will be clamped to
+             * `array.length`.
+             *
+             * Returns the index at which the element was inserted.
              */
             function insert(array, index, value) {
                 index = index | 0;
                 var len = array.length;
                 if (index < 0) {
                     index += len;
+                    if (index < 0) {
+                        index = 0;
+                    }
                 }
-                if (index < 0) {
-                    index = 0;
-                }
-                if (index > len) {
+                else if (index > len) {
                     index = len;
                 }
                 for (var i = len; i > index; --i) {
@@ -285,13 +308,66 @@ var phosphor;
             }
             algorithm.insert = insert;
             /**
+             * Move an array element from one index to another.
+             *
+             * If `fromIndex` is negative, it will be offset from the end of the
+             * array. If the adjusted value is out of range, `-1` will be returned.
+             *
+             * If `toIndex` is negative, it will be offset from the end of the
+             * array. If the adjusted value is out of range, it will be clamped.
+             *
+             * Returns the final index of the moved element.
+             */
+            function move(array, fromIndex, toIndex) {
+                fromIndex = fromIndex | 0;
+                var len = array.length;
+                if (fromIndex < 0) {
+                    fromIndex += len;
+                }
+                if (fromIndex < 0 || fromIndex >= len) {
+                    return -1;
+                }
+                toIndex = toIndex | 0;
+                if (toIndex < 0) {
+                    toIndex += len;
+                    if (toIndex < 0) {
+                        toIndex = 0;
+                    }
+                }
+                else if (toIndex >= len) {
+                    toIndex = len - 1;
+                }
+                if (fromIndex === toIndex) {
+                    return toIndex;
+                }
+                var value = array[fromIndex];
+                if (fromIndex > toIndex) {
+                    for (var i = fromIndex; i > toIndex; --i) {
+                        array[i] = array[i - 1];
+                    }
+                }
+                else {
+                    for (var i = fromIndex; i < toIndex; ++i) {
+                        array[i] = array[i + 1];
+                    }
+                }
+                array[toIndex] = value;
+                return toIndex;
+            }
+            algorithm.move = move;
+            /**
              * Remove and return the element at the given index.
+             *
+             * If `index` is negative, it will be offset from the end of the array.
              *
              * Returns `undefined` if the index is out of range.
              */
             function removeAt(array, index) {
                 index = index | 0;
                 var len = array.length;
+                if (index < 0) {
+                    index += len;
+                }
                 if (index < 0 || index >= len) {
                     return void 0;
                 }
@@ -5443,8 +5519,7 @@ var phosphor;
             BoxLayout.prototype._insert = function (index, item, stretch) {
                 var sizer = new widgets.LayoutSizer();
                 sizer.stretch = Math.max(0, stretch | 0);
-                index = Math.max(0, Math.min(index | 0, this._items.length));
-                algo.insert(this._items, index, item);
+                index = algo.insert(this._items, index, item);
                 algo.insert(this._sizers, index, sizer);
                 this.invalidate();
                 return index;
@@ -5807,8 +5882,7 @@ var phosphor;
                 var item = new SplitItem(handle, widget, alignment);
                 var sizer = new widgets.LayoutSizer();
                 sizer.stretch = Math.max(0, stretch | 0);
-                index = Math.max(0, Math.min(index | 0, this._items.length));
-                algo.insert(this._items, index, item);
+                index = algo.insert(this._items, index, item);
                 algo.insert(this._sizers, index, sizer);
                 this.invalidate();
                 return index;
@@ -6236,18 +6310,19 @@ var phosphor;
                  */
                 this.widgetRemoved = new Signal();
                 this._dirty = true;
-                this._currentIndex = -1;
                 this._sizeHint = null;
                 this._minSize = null;
                 this._maxSize = null;
                 this._items = [];
+                this._currentItem = null;
             }
             /**
              * Dispose of the resources held by the layout.
              */
             StackedLayout.prototype.dispose = function () {
-                this._items = null;
                 this.widgetRemoved.disconnect();
+                this._currentItem = null;
+                this._items = null;
                 _super.prototype.dispose.call(this);
             };
             Object.defineProperty(StackedLayout.prototype, "currentIndex", {
@@ -6255,23 +6330,22 @@ var phosphor;
                  * Get the current index of the layout.
                  */
                 get: function () {
-                    return this._currentIndex;
+                    return this._items.indexOf(this._currentItem);
                 },
                 /**
                  * Set the current index of the layout.
                  */
                 set: function (index) {
-                    var prev = this.currentWidget;
-                    var next = this.widgetAt(index);
+                    var prev = this._currentItem;
+                    var next = this.itemAt(index) || null;
                     if (prev === next) {
                         return;
                     }
-                    index = next ? index : -1;
-                    this._currentIndex = index;
+                    this._currentItem = next;
                     if (prev)
-                        prev.hide();
+                        prev.widget.hide();
                     if (next)
-                        next.show();
+                        next.widget.show();
                     // IE repaints before firing the animation frame which processes
                     // the layout update triggered by the show/hide calls above. This
                     // causes a double paint flicker when changing the visible widget.
@@ -6286,7 +6360,7 @@ var phosphor;
                  * Get the current widget in the layout.
                  */
                 get: function () {
-                    return this.widgetAt(this.currentIndex);
+                    return this._currentItem.widget;
                 },
                 /**
                  * Set the current widget in the layout.
@@ -6317,18 +6391,13 @@ var phosphor;
              * Remove and return the layout item at the specified index.
              */
             StackedLayout.prototype.removeAt = function (index) {
-                index = index | 0;
                 var item = algo.removeAt(this._items, index);
                 if (!item) {
                     return void 0;
                 }
-                if (index === this._currentIndex) {
-                    this._currentIndex = -1;
+                if (item === this._currentItem) {
+                    this._currentItem = null;
                     item.widget.hide();
-                    this.invalidate();
-                }
-                else if (index < this._currentIndex) {
-                    this._currentIndex--;
                 }
                 this.widgetRemoved.emit(this, new Pair(index, item.widget));
                 return item;
@@ -6356,12 +6425,7 @@ var phosphor;
                 widget.hide();
                 this.remove(widget);
                 this.ensureParent(widget);
-                index = Math.max(0, Math.min(index | 0, this._items.length));
-                algo.insert(this._items, index, new widgets.WidgetItem(widget, alignment));
-                if (index <= this._currentIndex) {
-                    this._currentIndex++;
-                }
-                return index;
+                return algo.insert(this._items, index, new widgets.WidgetItem(widget, alignment));
             };
             /**
              * Move a widget from one index to another.
@@ -6373,29 +6437,7 @@ var phosphor;
              * Returns -1 if `fromIndex` is out of range.
              */
             StackedLayout.prototype.moveWidget = function (fromIndex, toIndex) {
-                fromIndex = fromIndex | 0;
-                var n = this._items.length;
-                if (fromIndex < 0 || fromIndex >= n) {
-                    return -1;
-                }
-                toIndex = Math.max(0, Math.min(toIndex | 0, n - 1));
-                if (fromIndex === toIndex) {
-                    return toIndex;
-                }
-                var item = algo.removeAt(this._items, fromIndex);
-                algo.insert(this._items, toIndex, item);
-                var current = this._currentIndex;
-                if (fromIndex === current) {
-                    current = toIndex;
-                }
-                else {
-                    if (fromIndex < current)
-                        current--;
-                    if (toIndex <= current)
-                        current++;
-                }
-                this._currentIndex = current;
-                return toIndex;
+                return algo.move(this._items, fromIndex, toIndex);
             };
             /**
              * Invalidate the cached layout data and enqueue an update.
@@ -6435,14 +6477,12 @@ var phosphor;
              * Update the geometry of the child layout items.
              */
             StackedLayout.prototype.layout = function (x, y, width, height) {
-                var item = this._items[this._currentIndex];
-                if (!item) {
-                    return;
-                }
                 if (this._dirty) {
                     this._setupGeometry();
                 }
-                item.setGeometry(x, y, width, height);
+                if (this._currentItem !== null) {
+                    this._currentItem.setGeometry(x, y, width, height);
+                }
             };
             /**
              * Initialize the layout items and internal sizes for the layout.
@@ -6468,8 +6508,8 @@ var phosphor;
                 var minH = 0;
                 var maxW = Infinity;
                 var maxH = Infinity;
-                var item = this._items[this._currentIndex];
-                if (item) {
+                var item = this._currentItem;
+                if (item !== null) {
                     item.invalidate();
                     var itemHint = item.sizeHint();
                     var itemMin = item.minSize();
@@ -9610,8 +9650,7 @@ var phosphor;
                     this._reset();
                 }
                 var node = this.createItemNode(item);
-                index = Math.max(0, Math.min(index | 0, this.count));
-                algo.insert(this._items, index, item);
+                index = algo.insert(this._items, index, item);
                 algo.insert(this._nodes, index, node);
                 item.changed.connect(this._mi_changed, this);
                 node.addEventListener('mouseenter', this);
@@ -9625,7 +9664,6 @@ var phosphor;
                 if (this._activeIndex !== -1) {
                     this._reset();
                 }
-                index = index | 0;
                 var item = algo.removeAt(this._items, index);
                 var node = algo.removeAt(this._nodes, index);
                 if (item) {
@@ -9633,7 +9671,7 @@ var phosphor;
                 }
                 if (node) {
                     node.removeEventListener('mouseenter', this);
-                    this.removeItemNode(index, node);
+                    this.removeItemNode(node);
                 }
                 return item;
             };
@@ -9882,7 +9920,7 @@ var phosphor;
              * This method should be reimplemented if a subclass reimplements the
              * `createNode` method. It should remove the item node from the menu.
              */
-            Menu.prototype.removeItemNode = function (index, node) {
+            Menu.prototype.removeItemNode = function (node) {
                 var content = this.node.firstChild;
                 content.removeChild(node);
             };
@@ -10497,8 +10535,7 @@ var phosphor;
                     this._setActiveIndex(-1);
                 }
                 var node = this.createItemNode(item);
-                index = Math.max(0, Math.min(index | 0, this.count));
-                algo.insert(this._items, index, item);
+                index = algo.insert(this._items, index, item);
                 algo.insert(this._nodes, index, node);
                 item.changed.connect(this._mi_changed, this);
                 this.insertItemNode(index, node);
@@ -10512,14 +10549,13 @@ var phosphor;
                     this._setState(0 /* Inactive */);
                     this._setActiveIndex(-1);
                 }
-                index = index | 0;
                 var item = algo.removeAt(this._items, index);
                 var node = algo.removeAt(this._nodes, index);
                 if (item) {
                     item.changed.disconnect(this._mi_changed, this);
                 }
                 if (node) {
-                    this.removeItemNode(index, node);
+                    this.removeItemNode(node);
                 }
                 return item;
             };
@@ -10679,7 +10715,7 @@ var phosphor;
              * This method should be reimplemented if a subclass reimplements the
              * `createNode` method. It should remove the item node from the menu.
              */
-            MenuBar.prototype.removeItemNode = function (index, node) {
+            MenuBar.prototype.removeItemNode = function (node) {
                 var content = this.node.firstChild;
                 content.removeChild(node);
             };
@@ -11255,6 +11291,8 @@ var phosphor;
                 this.tabCloseRequested.disconnect();
                 this.tabDetachRequested.disconnect();
                 this._releaseMouse();
+                this._previousTab = null;
+                this._currentTab = null;
                 this._tabs = null;
                 _super.prototype.dispose.call(this);
             };
@@ -11455,13 +11493,12 @@ var phosphor;
              * Returns the index of the tab.
              */
             TabBar.prototype.insertTab = function (index, tab) {
-                index = Math.max(0, Math.min(index | 0, this.count));
-                var curr = this.indexOf(tab);
-                if (curr !== -1) {
-                    index = this.moveTab(curr, index);
+                var fromIndex = this.indexOf(tab);
+                if (fromIndex !== -1) {
+                    index = this.moveTab(fromIndex, index);
                 }
                 else {
-                    this._insertTab(index, tab, true);
+                    index = this._insertTab(index, tab, true);
                 }
                 return index;
             };
@@ -11471,17 +11508,7 @@ var phosphor;
              * Returns the new tab index.
              */
             TabBar.prototype.moveTab = function (fromIndex, toIndex) {
-                fromIndex = fromIndex | 0;
-                var count = this.count;
-                if (fromIndex < 0 || fromIndex >= count) {
-                    return -1;
-                }
-                toIndex = Math.max(0, Math.min(toIndex | 0, count - 1));
-                if (fromIndex === toIndex) {
-                    return toIndex;
-                }
-                this._moveTab(fromIndex, toIndex);
-                return toIndex;
+                return this._moveTab(fromIndex, toIndex);
             };
             /**
              * Remove and return the tab at the given index.
@@ -11489,10 +11516,7 @@ var phosphor;
              * Returns `undefined` if the index is out of range.
              */
             TabBar.prototype.removeAt = function (index) {
-                var tab = this.tabAt(index);
-                if (tab)
-                    this._removeTab(index, true);
-                return tab;
+                return this._removeTab(index, true);
             };
             /**
              * Remove a tab from the tab bar and return its index.
@@ -11569,18 +11593,16 @@ var phosphor;
                 tabStyle.left = tabLeft + 'px';
             };
             /**
-             * Detach the tab at the given index.
+             * Detach and return the tab at the given index.
              *
              * This method is intended for use by code which supports tear-off
              * tab interfaces. It will remove the tab at the specified index
              * without a transition.
              *
-             * This is a no-op if the index is out of range.
+             * Returns `undefined` if the index is invalid.
              */
             TabBar.prototype.detachAt = function (index) {
-                var tab = this.tabAt(index);
-                if (tab)
-                    this._removeTab(index, false);
+                return this._removeTab(index, false);
             };
             /**
              * Compute the size hint for the tab bar.
@@ -11849,14 +11871,14 @@ var phosphor;
             /**
              * Insert a new tab into the tab bar at the given index.
              *
-             * This method assumes the index is valid and that the tab has
-             * not already been added to the tab bar.
+             * This method assumes that the tab has not already been added.
              */
             TabBar.prototype._insertTab = function (index, tab, animate) {
                 var _this = this;
-                // Ensure the tab is deselected and add it to the list and DOM.
+                // Insert the tab into the array.
+                index = algo.insert(this._tabs, index, tab);
+                // Ensure the tab is deselected and add it to the DOM.
                 tab.selected = false;
-                algo.insert(this._tabs, index, tab);
                 this.contentNode.appendChild(tab.node);
                 // Select this tab if there are no selected tabs. Otherwise,
                 // update the tab Z-order to account for the new tab.
@@ -11868,7 +11890,7 @@ var phosphor;
                 }
                 // If the tab bar is not attached, there is nothing left to do.
                 if (!this.isAttached) {
-                    return;
+                    return index;
                 }
                 // Animate the tab insert and and layout as appropriate.
                 if (animate) {
@@ -11886,44 +11908,53 @@ var phosphor;
                 }
                 // Notify the layout system that the widget geometry is dirty.
                 this.updateGeometry();
+                return index;
             };
             /**
              * Move an item to a new index in the tab bar.
              *
-             * This method assumes both indices are valid.
+             * Returns the new index of the tab, or -1.
              */
             TabBar.prototype._moveTab = function (fromIndex, toIndex) {
                 var _this = this;
                 // Move the tab to its new location.
-                var tab = algo.removeAt(this._tabs, fromIndex);
-                algo.insert(this._tabs, toIndex, tab);
+                toIndex = algo.move(this._tabs, fromIndex, toIndex);
+                // Bail if the index is invalid.
+                if (toIndex === -1) {
+                    return -1;
+                }
                 // Update the tab Z-order to account for the new order.
                 this._updateTabZOrder();
                 // Emit the `tabMoved` signal.
                 this.tabMoved.emit(this, new Pair(fromIndex, toIndex));
                 // If the tab bar is not attached, there is nothing left to do.
                 if (!this.isAttached) {
-                    return;
+                    return toIndex;
                 }
                 // Animate the tab layout update.
                 this._withTransition(function () {
                     _this._updateTabLayout();
                 });
+                return toIndex;
             };
             /**
-             * Remove the tab at the given index from the tab bar.
+             * Remove and return the tab at the given index.
              *
-             * This method assumes the index is valid.
+             * Returns `undefined` if the index is invalid.
              */
             TabBar.prototype._removeTab = function (index, animate) {
                 var _this = this;
+                // Remove the tab from the tabs array.
+                var tabs = this._tabs;
+                var tab = algo.removeAt(tabs, index);
+                // Bail early if the index is invalid.
+                if (!tab) {
+                    return void 0;
+                }
                 // The mouse is always released when removing a tab. Attempting
                 // to gracefully handle the rare case of removing a tab while
                 // a drag is in progress it is not worth the effort.
                 this._releaseMouse();
-                // Remove the tab from the tabs array.
-                var tabs = this._tabs;
-                var tab = algo.removeAt(tabs, index);
                 // Ensure the tab is deselected and at the bottom of the Z-order.
                 tab.selected = false;
                 tab.node.style.zIndex = '0';
@@ -11952,7 +11983,7 @@ var phosphor;
                 // If the tab bar is not attached, remove the node immediately.
                 if (!this.isAttached) {
                     this._removeContentChild(tab.node);
-                    return;
+                    return tab;
                 }
                 // Animate the tab remove as appropriate.
                 if (animate) {
@@ -11972,6 +12003,7 @@ var phosphor;
                 }
                 // Notify the layout system that the widget geometry is dirty.
                 this.updateGeometry();
+                return tab;
             };
             /**
              * Remove a child node of the tab bar content node.

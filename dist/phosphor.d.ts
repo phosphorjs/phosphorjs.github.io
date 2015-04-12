@@ -22,8 +22,9 @@ declare module phosphor.collections {
          * Find the index of the first element which passes the test.
          *
          * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array.
-         * The default index is `0`.
+         * If the value is negative, it is offset from the end of the array. If
+         * the adjusted value is still negative, it will be clamped to `0`. The
+         * default index is `0`.
          *
          * The `wrap` parameter controls the search wrap-around. If true, the
          * search will wrap-around at the end of the array and continue until
@@ -37,8 +38,9 @@ declare module phosphor.collections {
          * Find the index of the last element which passes the test.
          *
          * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array.
-         * The default index is `-1`.
+         * If the value is negative, it is offset from the end of the array. If
+         * the value is greater than the last index, it will be clamped to the
+         * last index. The default index is `-1`.
          *
          * The `wrap` parameter controls the search wrap-around. If true, the
          * search will wrap-around at the front of the array and continue until
@@ -52,8 +54,9 @@ declare module phosphor.collections {
          * Find the first element in the array which passes the given test.
          *
          * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array.
-         * The default index is `0`.
+         * If the value is negative, it is offset from the end of the array. If
+         * the adjusted value is still negative, it will be clamped to `0`. The
+         * default index is `0`.
          *
          * The `wrap` parameter controls the search wrap-around. If true, the
          * search will wrap-around at the end of the array and continue until
@@ -67,8 +70,9 @@ declare module phosphor.collections {
          * Find the last element in the array which passes the given test.
          *
          * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array.
-         * The default index is `-1`.
+         * If the value is negative, it is offset from the end of the array. If
+         * the value is greater than the last index, it will be clamped to the
+         * last index. The default index is `-1`.
          *
          * The `wrap` parameter controls the search wrap-around. If true, the
          * search will wrap-around at the front of the array and continue until
@@ -133,13 +137,38 @@ declare module phosphor.collections {
          */
         function findUpper<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
         /**
+         * Create a shallow copy of the given array.
+         *
+         * This is faster than `Array#slice` for a simple copy.
+         */
+        function copy<T>(array: T[]): T[];
+        /**
          * Insert an element at the given index.
          *
-         * Returns the clamped index of the inserted element.
+         * If `index` is negative, it will be offset from the end of the array.
+         * If the adjusted value is still negative, it will be clamped to `0`.
+         * If `index` is greater than `array.length`, it will be clamped to
+         * `array.length`.
+         *
+         * Returns the index at which the element was inserted.
          */
         function insert<T>(array: T[], index: number, value: T): number;
         /**
+         * Move an array element from one index to another.
+         *
+         * If `fromIndex` is negative, it will be offset from the end of the
+         * array. If the adjusted value is out of range, `-1` will be returned.
+         *
+         * If `toIndex` is negative, it will be offset from the end of the
+         * array. If the adjusted value is out of range, it will be clamped.
+         *
+         * Returns the final index of the moved element.
+         */
+        function move<T>(array: T[], fromIndex: number, toIndex: number): number;
+        /**
          * Remove and return the element at the given index.
+         *
+         * If `index` is negative, it will be offset from the end of the array.
          *
          * Returns `undefined` if the index is out of range.
          */
@@ -3138,11 +3167,11 @@ declare module phosphor.widgets {
          */
         private _setupGeometry();
         private _dirty;
-        private _currentIndex;
         private _sizeHint;
         private _minSize;
         private _maxSize;
         private _items;
+        private _currentItem;
     }
 }
 
@@ -4380,7 +4409,7 @@ declare module phosphor.widgets {
          * This method should be reimplemented if a subclass reimplements the
          * `createNode` method. It should remove the item node from the menu.
          */
-        protected removeItemNode(index: number, node: HTMLElement): void;
+        protected removeItemNode(node: HTMLElement): void;
         /**
          * Handle the DOM events for the menu.
          */
@@ -4644,7 +4673,7 @@ declare module phosphor.widgets {
          * This method should be reimplemented if a subclass reimplements the
          * `createNode` method. It should remove the item node from the menu.
          */
-        protected removeItemNode(index: number, node: HTMLElement): void;
+        protected removeItemNode(node: HTMLElement): void;
         /**
          * A method invoked on the 'after-attach' message.
          */
@@ -4966,15 +4995,15 @@ declare module phosphor.widgets {
          */
         attachTab(tab: ITab, clientX: number): void;
         /**
-         * Detach the tab at the given index.
+         * Detach and return the tab at the given index.
          *
          * This method is intended for use by code which supports tear-off
          * tab interfaces. It will remove the tab at the specified index
          * without a transition.
          *
-         * This is a no-op if the index is out of range.
+         * Returns `undefined` if the index is invalid.
          */
-        detachAt(index: number): void;
+        detachAt(index: number): ITab;
         /**
          * Compute the size hint for the tab bar.
          */
@@ -5030,20 +5059,19 @@ declare module phosphor.widgets {
         /**
          * Insert a new tab into the tab bar at the given index.
          *
-         * This method assumes the index is valid and that the tab has
-         * not already been added to the tab bar.
+         * This method assumes that the tab has not already been added.
          */
         private _insertTab(index, tab, animate);
         /**
          * Move an item to a new index in the tab bar.
          *
-         * This method assumes both indices are valid.
+         * Returns the new index of the tab, or -1.
          */
         private _moveTab(fromIndex, toIndex);
         /**
-         * Remove the tab at the given index from the tab bar.
+         * Remove and return the tab at the given index.
          *
-         * This method assumes the index is valid.
+         * Returns `undefined` if the index is invalid.
          */
         private _removeTab(index, animate);
         /**
