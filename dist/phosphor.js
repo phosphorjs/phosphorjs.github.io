@@ -13,6 +13,100 @@ var phosphor;
         var algorithm;
         (function (algorithm) {
             /**
+             * Find the index of the first occurrence of the given value.
+             *
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array. If
+             * the adjusted value is still negative, it will be clamped to `0`. The
+             * default index is `0`.
+             *
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the end of the array and continue until
+             * reaching the element just before the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `-1` if no element passes the test.
+             */
+            function indexOf(array, value, fromIndex, wrap) {
+                if (fromIndex === void 0) { fromIndex = 0; }
+                if (wrap === void 0) { wrap = false; }
+                var len = array.length;
+                if (len === 0) {
+                    return -1;
+                }
+                fromIndex = fromIndex | 0;
+                if (fromIndex < 0) {
+                    fromIndex += len;
+                    if (fromIndex < 0) {
+                        fromIndex = 0;
+                    }
+                }
+                if (wrap) {
+                    for (var i = 0; i < len; ++i) {
+                        var j = (i + fromIndex) % len;
+                        if (array[j] === value) {
+                            return j;
+                        }
+                    }
+                }
+                else {
+                    for (var i = fromIndex; i < len; ++i) {
+                        if (array[i] === value) {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+            algorithm.indexOf = indexOf;
+            /**
+             * Find the index of the last occurrence of the given value.
+             *
+             * The `fromIndex` parameter controls the starting index of the search.
+             * If the value is negative, it is offset from the end of the array. If
+             * the value is greater than the last index, it will be clamped to the
+             * last index. The default index is `-1`.
+             *
+             * The `wrap` parameter controls the search wrap-around. If true, the
+             * search will wrap-around at the front of the array and continue until
+             * reaching the element just after the starting element. The default
+             * wrap value is `false`.
+             *
+             * Returns `-1` if no element passes the test.
+             */
+            function lastIndexOf(array, value, fromIndex, wrap) {
+                if (fromIndex === void 0) { fromIndex = -1; }
+                if (wrap === void 0) { wrap = false; }
+                var len = array.length;
+                if (len === 0) {
+                    return -1;
+                }
+                fromIndex = fromIndex | 0;
+                if (fromIndex < 0) {
+                    fromIndex += len;
+                }
+                else if (fromIndex >= len) {
+                    fromIndex = len - 1;
+                }
+                if (wrap) {
+                    for (var i = len; i > 0; --i) {
+                        var j = (((i + fromIndex) % len) + len) % len;
+                        if (array[j] === value) {
+                            return j;
+                        }
+                    }
+                }
+                else {
+                    for (var i = fromIndex; i >= 0; --i) {
+                        if (array[i] === value) {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+            algorithm.lastIndexOf = lastIndexOf;
+            /**
              * Find the index of the first element which passes the test.
              *
              * The `fromIndex` parameter controls the starting index of the search.
@@ -266,8 +360,6 @@ var phosphor;
             algorithm.findUpper = findUpper;
             /**
              * Create a shallow copy of the given array.
-             *
-             * This is faster than `Array#slice` for a simple copy.
              */
             function copy(array) {
                 var n = array.length;
@@ -385,10 +477,10 @@ var phosphor;
              * Returns the `-1` if the element is not in the array.
              */
             function remove(array, value) {
-                var index = array.indexOf(value);
-                if (index !== -1)
-                    removeAt(array, index);
-                return index;
+                var i = indexOf(array, value);
+                if (i !== -1)
+                    removeAt(array, i);
+                return i;
             }
             algorithm.remove = remove;
         })(algorithm = collections.algorithm || (collections.algorithm = {})); // module algorithm
@@ -2666,15 +2758,14 @@ var phosphor;
          * Collect a mapping of keyed elements for the host content.
          */
         function collectKeys(host, content) {
-            var childNodes = host.childNodes;
+            var node = host.firstChild;
             var keyed = Object.create(null);
             for (var i = 0, n = content.length; i < n; ++i) {
                 var elem = content[i];
                 var key = elem.data.key;
-                if (key) {
-                    var node = childNodes[i];
+                if (key)
                     keyed[key] = new Pair(elem, node);
-                }
+                node = node.nextSibling;
             }
             return keyed;
         }
@@ -2690,12 +2781,11 @@ var phosphor;
          * A recursive implementation helper for `collectRefs`.
          */
         function refsHelper(host, content, refs) {
-            var childNodes = host.childNodes;
-            for (var i = 0, n = content.length; i < n; ++i) {
+            var node = host.firstChild;
+            for (var i = 0, n = content.length; i < n; ++i, node = node.nextSibling) {
                 var elem = content[i];
                 var type = elem.type;
                 if (type === 1 /* Node */) {
-                    var node = childNodes[i];
                     var ref = elem.data.ref;
                     if (ref)
                         refs[ref] = node;
@@ -2704,21 +2794,9 @@ var phosphor;
                 else if (type === 2 /* Component */) {
                     var ref = elem.data.ref;
                     if (ref)
-                        refs[ref] = componentMap.get(childNodes[i]);
+                        refs[ref] = componentMap.get(node);
                 }
             }
-        }
-        /**
-         * Move a node to a new location in a host element.
-         *
-         * This function will maintain focus on the node if applicable.
-         */
-        function moveNode(host, node, ref) {
-            // TODO - IE11 fails to set the focus properly
-            var wasActive = document.activeElement === node;
-            host.insertBefore(node, ref);
-            if (wasActive)
-                node.focus();
         }
         /**
          * Create a node for a virtual element and add it to a host.
@@ -2726,7 +2804,8 @@ var phosphor;
         function addNode(host, elem, ref) {
             var type = elem.type;
             if (type === 0 /* Text */) {
-                host.insertBefore(document.createTextNode(elem.tag), ref);
+                var text = document.createTextNode(elem.tag);
+                host.insertBefore(text, ref);
             }
             else if (type === 1 /* Node */) {
                 var node = document.createElement(elem.tag);
@@ -2791,14 +2870,13 @@ var phosphor;
             // Collect the old keyed elements into a mapping.
             var oldKeyed = collectKeys(host, oldContent);
             // Create a copy of the old content which can be modified in-place.
-            var oldCopy = oldContent.slice();
-            // Store the child node list locally.
-            var childNodes = host.childNodes;
+            var oldCopy = algo.copy(oldContent);
             // Update the host with the new content. The diff algorithm always
             // proceeds forward and never modifies a previously visited index.
             // The `oldCopy` array is modified in-place to reflect the changes
             // made to the host. This causes the unused nodes to be pushed to
             // the end of the host node and removed at the end of the loop.
+            var currNode = host.firstChild;
             var newCount = newContent.length;
             for (var i = 0; i < newCount; ++i) {
                 var newElem = newContent[i];
@@ -2809,16 +2887,16 @@ var phosphor;
                     continue;
                 }
                 var oldElem = oldCopy[i];
-                var currNode = childNodes[i];
                 // If the new element is keyed, move a keyed old element to the
-                // proper location before proceeding with the diff.
+                // proper location before proceeding with the diff. The search for
+                // the old keyed elem starts at the current index, since unmatched
+                // old keyed elements are pushed forward in the old copy array.
                 var newKey = newElem.data.key;
                 if (newKey && newKey in oldKeyed) {
                     var pair = oldKeyed[newKey];
                     if (pair.first !== oldElem) {
-                        algo.remove(oldCopy, pair.first);
-                        algo.insert(oldCopy, i, pair.first);
-                        moveNode(host, pair.second, currNode);
+                        algo.move(oldCopy, algo.indexOf(oldCopy, pair.first, i), i);
+                        host.insertBefore(pair.second, currNode);
                         oldElem = pair.first;
                         currNode = pair.second;
                     }
@@ -2826,11 +2904,12 @@ var phosphor;
                 // If both elements are identical, there is nothing to do.
                 // This can occur when a component renders cached content.
                 if (oldElem === newElem) {
+                    currNode = currNode.nextSibling;
                     continue;
                 }
                 // If the old element is keyed and does not match the new element
-                // key, create a new node. This is necessary since the old element
-                // may be moved forward in the tree at a later point in the diff.
+                // key, create a new node. This is necessary since the old keyed
+                // element may be matched at a later point in the diff.
                 var oldKey = oldElem.data.key;
                 if (oldKey && oldKey !== newKey) {
                     algo.insert(oldCopy, i, newElem);
@@ -2848,6 +2927,7 @@ var phosphor;
                     if (oldElem.tag !== newElem.tag) {
                         currNode.textContent = newElem.tag;
                     }
+                    currNode = currNode.nextSibling;
                     continue;
                 }
                 // At this point, the element is a Node or Component type.
@@ -2861,14 +2941,16 @@ var phosphor;
                 if (newElem.type === 1 /* Node */) {
                     updateAttrs(currNode, oldElem.data, newElem.data);
                     updateContent(currNode, oldElem.children, newElem.children);
+                    currNode = currNode.nextSibling;
                     continue;
                 }
                 // At this point, the node is a Component type; re-init it.
                 var component = componentMap.get(currNode);
                 component.init(newElem.data, newElem.children);
+                currNode = currNode.nextSibling;
             }
             for (var i = oldCopy.length - 1; i >= newCount; --i) {
-                var oldNode = childNodes[i];
+                var oldNode = host.lastChild;
                 host.removeChild(oldNode);
                 disposeBranch(oldNode);
             }
@@ -6330,7 +6412,7 @@ var phosphor;
                  * Get the current index of the layout.
                  */
                 get: function () {
-                    return this._items.indexOf(this._currentItem);
+                    return algo.indexOf(this._items, this._currentItem);
                 },
                 /**
                  * Set the current index of the layout.
@@ -9604,7 +9686,7 @@ var phosphor;
                  * Only a non-separator item can be set as the active item.
                  */
                 set: function (item) {
-                    this.activeIndex = this._items.indexOf(item);
+                    this.activeIndex = this.indexOf(item);
                 },
                 enumerable: true,
                 configurable: true
@@ -9629,7 +9711,7 @@ var phosphor;
              * Get the index of the given menu item.
              */
             Menu.prototype.indexOf = function (item) {
-                return this._items.indexOf(item);
+                return algo.indexOf(this._items, item);
             };
             /**
              * Add a menu item to the end of the menu.
@@ -9966,7 +10048,7 @@ var phosphor;
                 this._cancelPendingOpen();
                 // Find the item index corresponding to the node.
                 var node = event.currentTarget;
-                var index = this._nodes.indexOf(node);
+                var index = algo.indexOf(this._nodes, node);
                 // Clear the active item if the node is not tracked.
                 if (index === -1) {
                     this._setActiveIndex(-1);
@@ -10136,7 +10218,7 @@ var phosphor;
              * This ensures that the active item is the child menu item.
              */
             Menu.prototype._syncChildItem = function () {
-                var index = this._items.indexOf(this._childItem);
+                var index = this.indexOf(this._childItem);
                 if (index !== -1) {
                     this._setActiveIndex(index);
                 }
@@ -10253,7 +10335,7 @@ var phosphor;
              * Handle the `changed` signal from a menu item.
              */
             Menu.prototype._mi_changed = function (sender) {
-                var i = this._items.indexOf(sender);
+                var i = this.indexOf(sender);
                 if (i === -1) {
                     return;
                 }
@@ -10488,7 +10570,7 @@ var phosphor;
                  * Only an enabled non-separator item can be set as the active item.
                  */
                 set: function (item) {
-                    this.activeIndex = this._items.indexOf(item);
+                    this.activeIndex = this.indexOf(item);
                 },
                 enumerable: true,
                 configurable: true
@@ -10513,7 +10595,7 @@ var phosphor;
              * Get the index of the given menu item.
              */
             MenuBar.prototype.indexOf = function (item) {
-                return this._items.indexOf(item);
+                return algo.indexOf(this._items, item);
             };
             /**
              * Add a menu item to the end of the menu bar.
@@ -10565,7 +10647,7 @@ var phosphor;
              * Returns the index of the removed item.
              */
             MenuBar.prototype.removeItem = function (item) {
-                var index = this._items.indexOf(item);
+                var index = this.indexOf(item);
                 if (index !== -1)
                     this.removeAt(index);
                 return index;
@@ -10979,7 +11061,7 @@ var phosphor;
              * Handle the `changed` signal from a menu item.
              */
             MenuBar.prototype._mi_changed = function (sender) {
-                var i = this._items.indexOf(sender);
+                var i = this.indexOf(sender);
                 if (i === -1) {
                     return;
                 }
@@ -11477,7 +11559,7 @@ var phosphor;
              * Get the index of the given tab.
              */
             TabBar.prototype.indexOf = function (tab) {
-                return this._tabs.indexOf(tab);
+                return algo.indexOf(this._tabs, tab);
             };
             /**
              * Add a tab to the end of the tab bar.

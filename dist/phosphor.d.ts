@@ -19,6 +19,38 @@ declare module phosphor.collections {
             (first: T, second: U): number;
         }
         /**
+         * Find the index of the first occurrence of the given value.
+         *
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array. If
+         * the adjusted value is still negative, it will be clamped to `0`. The
+         * default index is `0`.
+         *
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the end of the array and continue until
+         * reaching the element just before the starting element. The default
+         * wrap value is `false`.
+         *
+         * Returns `-1` if no element passes the test.
+         */
+        function indexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
+        /**
+         * Find the index of the last occurrence of the given value.
+         *
+         * The `fromIndex` parameter controls the starting index of the search.
+         * If the value is negative, it is offset from the end of the array. If
+         * the value is greater than the last index, it will be clamped to the
+         * last index. The default index is `-1`.
+         *
+         * The `wrap` parameter controls the search wrap-around. If true, the
+         * search will wrap-around at the front of the array and continue until
+         * reaching the element just after the starting element. The default
+         * wrap value is `false`.
+         *
+         * Returns `-1` if no element passes the test.
+         */
+        function lastIndexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
+        /**
          * Find the index of the first element which passes the test.
          *
          * The `fromIndex` parameter controls the starting index of the search.
@@ -138,8 +170,6 @@ declare module phosphor.collections {
         function findUpper<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
         /**
          * Create a shallow copy of the given array.
-         *
-         * This is faster than `Array#slice` for a simple copy.
          */
         function copy<T>(array: T[]): T[];
         /**
