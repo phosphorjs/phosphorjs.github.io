@@ -25,7 +25,7 @@ var phosphor;
              * reaching the element just before the starting element. The default
              * wrap value is `false`.
              *
-             * Returns `-1` if no element passes the test.
+             * Returns `-1` if the value is not found.
              */
             function indexOf(array, value, fromIndex, wrap) {
                 if (fromIndex === void 0) { fromIndex = 0; }
@@ -72,7 +72,7 @@ var phosphor;
              * reaching the element just after the starting element. The default
              * wrap value is `false`.
              *
-             * Returns `-1` if no element passes the test.
+             * Returns `-1` if the value is not found.
              */
             function lastIndexOf(array, value, fromIndex, wrap) {
                 if (fromIndex === void 0) { fromIndex = -1; }

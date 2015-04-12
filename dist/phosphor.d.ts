@@ -31,7 +31,7 @@ declare module phosphor.collections {
          * reaching the element just before the starting element. The default
          * wrap value is `false`.
          *
-         * Returns `-1` if no element passes the test.
+         * Returns `-1` if the value is not found.
          */
         function indexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
         /**
@@ -47,7 +47,7 @@ declare module phosphor.collections {
          * reaching the element just after the starting element. The default
          * wrap value is `false`.
          *
-         * Returns `-1` if no element passes the test.
+         * Returns `-1` if the value is not found.
          */
         function lastIndexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
         /**
