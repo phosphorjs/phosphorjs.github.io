@@ -3352,9 +3352,15 @@ declare module phosphor.widgets {
          */
         parent: Widget;
         /**
-         * Get an array of the widget's children.
+         * Get the number of children in the widget.
          */
-        children(): Widget[];
+        childCount: number;
+        /**
+         * Get the child widget at the given index.
+         *
+         * Returns `undefined` if the index is out of range.
+         */
+        childAt(index: number): Widget;
         /**
          * Test whether the widget's DOM node has the given class name.
          */

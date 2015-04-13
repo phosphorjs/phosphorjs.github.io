@@ -6979,11 +6979,23 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(Widget.prototype, "childCount", {
+                /**
+                 * Get the number of children in the widget.
+                 */
+                get: function () {
+                    return this._children.length;
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
-             * Get an array of the widget's children.
+             * Get the child widget at the given index.
+             *
+             * Returns `undefined` if the index is out of range.
              */
-            Widget.prototype.children = function () {
-                return this._children.slice();
+            Widget.prototype.childAt = function (index) {
+                return this._children[index];
             };
             /**
              * Test whether the widget's DOM node has the given class name.
