@@ -73,6 +73,10 @@ body.p-mod-cursor-override * {
 .p-Menu-item {
   display: table-row;
 }
+.p-Menu-item.p-mod-hidden,
+.p-Menu-item.p-mod-force-hidden {
+  display: none;
+}
 .p-Menu-item > span {
   display: table-cell;
   padding-top: 4px;
@@ -110,10 +114,6 @@ body.p-mod-cursor-override * {
   position: relative;
   top: 4px;
 }
-.p-Menu-item.p-mod-separator-type:first-child,
-.p-Menu-item.p-mod-separator-type:last-child {
-  display: none;
-}
 .p-MenuBar-content {
   display: -webkit-box;
   display: -moz-box;
@@ -136,15 +136,14 @@ body.p-mod-cursor-override * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.p-MenuBar-item.p-mod-hidden,
+.p-MenuBar-item.p-mod-force-hidden {
+  display: none;
+}
 .p-MenuBar-item.p-mod-separator-type {
   margin: 2px;
   padding: 0;
   border: none;
-}
-.p-MenuBar-item.p-mod-separator-type:first-child,
-.p-MenuBar-item.p-mod-separator-type:last-child,
-.p-MenuBar-item.p-mod-separator-type > span {
-  display: none;
 }
 .p-SplitPanel > .p-Widget {
   z-index: 0;

@@ -1800,6 +1800,9 @@ var phosphor;
 (function (phosphor) {
     var di;
     (function (di) {
+        /**
+         * The interface token for IContainer.
+         */
         di.IContainer = di.createToken('phosphor.di.IContainer');
     })(di = phosphor.di || (phosphor.di = {}));
 })(phosphor || (phosphor = {})); // module phosphor.di
@@ -7084,6 +7087,17 @@ var phosphor;
                 this.updateGeometry(true);
             };
             /**
+             * Show or hide the widget according to the given flag.
+             */
+            Widget.prototype.setVisible = function (visible) {
+                if (visible) {
+                    this.show();
+                }
+                else {
+                    this.hide();
+                }
+            };
+            /**
              * Close the widget by sending it a 'close' message.
              *
              * Subclasses should reimplement `onClose` to perform custom actions.
@@ -9281,6 +9295,7 @@ var phosphor;
                 this._shortcut = '';
                 this._className = '';
                 this._enabled = true;
+                this._visible = true;
                 this._type = 'normal';
                 this._checked = false;
                 this._submenu = null;
@@ -9391,6 +9406,26 @@ var phosphor;
                 enumerable: true,
                 configurable: true
             });
+            Object.defineProperty(MenuItem.prototype, "visible", {
+                /**
+                 * Get whether the menu item is visible.
+                 */
+                get: function () {
+                    return this._visible;
+                },
+                /**
+                 * Set whether the menu item is visible.
+                 */
+                set: function (visible) {
+                    if (visible === this._visible) {
+                        return;
+                    }
+                    this._visible = visible;
+                    this.changed.emit(this, void 0);
+                },
+                enumerable: true,
+                configurable: true
+            });
             Object.defineProperty(MenuItem.prototype, "checked", {
                 /**
                  * Get whether the 'check' type menu item is checked.
@@ -9484,6 +9519,9 @@ var phosphor;
                 if (options.enabled !== void 0) {
                     this._enabled = options.enabled;
                 }
+                if (options.visible !== void 0) {
+                    this._visible = options.visible;
+                }
                 if (options.checked !== void 0) {
                     this.checked = options.checked;
                 }
@@ -9567,6 +9605,14 @@ var phosphor;
          * The class name added to a disabled menu item.
          */
         var DISABLED_CLASS = 'p-mod-disabled';
+        /**
+         * The class name added to a hidden menu item.
+         */
+        var HIDDEN_CLASS = 'p-mod-hidden';
+        /**
+         * The class name added to a force hidden menu item.
+         */
+        var FORCE_HIDDEN_CLASS = 'p-mod-force-hidden';
         /**
          * The class name added to a checked menu item.
          */
@@ -9678,8 +9724,7 @@ var phosphor;
                  * Only a non-separator item can be set as the active item.
                  */
                 set: function (index) {
-                    var item = this._items[index];
-                    var ok = item && item.type !== 'separator';
+                    var ok = isSelectable(this._items[index]);
                     this._setActiveIndex(ok ? index : -1);
                 },
                 enumerable: true,
@@ -9749,6 +9794,7 @@ var phosphor;
                 item.changed.connect(this._mi_changed, this);
                 node.addEventListener('mouseenter', this);
                 this.insertItemNode(index, node);
+                this._collapseSeparators();
                 return index;
             };
             /**
@@ -9767,6 +9813,7 @@ var phosphor;
                     node.removeEventListener('mouseenter', this);
                     this.removeItemNode(node);
                 }
+                this._collapseSeparators();
                 return item;
             };
             /**
@@ -9989,6 +10036,9 @@ var phosphor;
                 }
                 if (!item.enabled) {
                     parts.push(DISABLED_CLASS);
+                }
+                if (!item.visible) {
+                    parts.push(HIDDEN_CLASS);
                 }
                 if (item.submenu) {
                     parts.push(HAS_SUBMENU_CLASS);
@@ -10344,6 +10394,34 @@ var phosphor;
                 }
             };
             /**
+             * Collapse neighboring visible separators.
+             *
+             * This force-hides select separator nodes such that there are never
+             * multiple visible separator siblings. It also force-hides all any
+             * leading and trailing separator nodes.
+             */
+            Menu.prototype._collapseSeparators = function () {
+                var items = this._items;
+                var nodes = this._nodes;
+                var hideSeparator = true;
+                var lastIndex = algo.findLastIndex(items, isVisibleItem);
+                for (var i = 0, n = items.length; i < n; ++i) {
+                    var item = items[i];
+                    if (item.type === 'separator') {
+                        if (hideSeparator || i > lastIndex) {
+                            nodes[i].classList.add(FORCE_HIDDEN_CLASS);
+                        }
+                        else if (item.visible) {
+                            nodes[i].classList.remove(FORCE_HIDDEN_CLASS);
+                            hideSeparator = true;
+                        }
+                    }
+                    else if (item.visible) {
+                        hideSeparator = false;
+                    }
+                }
+            };
+            /**
              * Handle the `changed` signal from a menu item.
              */
             Menu.prototype._mi_changed = function (sender) {
@@ -10355,17 +10433,24 @@ var phosphor;
                     this._reset();
                 }
                 this.initItemNode(sender, this._nodes[i]);
+                this._collapseSeparators();
             };
             return Menu;
         })();
         widgets.Menu = Menu;
         /**
+         * Test whether the menu item is a visible non-separator item.
+         */
+        function isVisibleItem(item) {
+            return item && item.type !== 'separator' && item.visible;
+        }
+        /**
          * Test whether the menu item is selectable.
          *
-         * Returns true if the item is not a separator.
+         * Returns true if the item is a visible non-separator item.
          */
         function isSelectable(item) {
-            return item && item.type !== 'separator';
+            return isVisibleItem(item);
         }
         /**
          * Test whether the menu item is keyable for a mnemonic.
@@ -10509,6 +10594,14 @@ var phosphor;
          */
         var DISABLED_CLASS = 'p-mod-disabled';
         /**
+         * The class name added to a hidden menu item.
+         */
+        var HIDDEN_CLASS = 'p-mod-hidden';
+        /**
+         * The class name added to a force hidden menu item.
+         */
+        var FORCE_HIDDEN_CLASS = 'p-mod-force-hidden';
+        /**
          * A leaf widget which displays menu items as a menu bar.
          */
         var MenuBar = (function (_super) {
@@ -10633,6 +10726,7 @@ var phosphor;
                 algo.insert(this._nodes, index, node);
                 item.changed.connect(this._mi_changed, this);
                 this.insertItemNode(index, node);
+                this._collapseSeparators();
                 return index;
             };
             /**
@@ -10651,6 +10745,7 @@ var phosphor;
                 if (node) {
                     this.removeItemNode(node);
                 }
+                this._collapseSeparators();
                 return item;
             };
             /**
@@ -10788,6 +10883,9 @@ var phosphor;
                 }
                 if (!item.enabled) {
                     parts.push(DISABLED_CLASS);
+                }
+                if (!item.visible) {
+                    parts.push(HIDDEN_CLASS);
                 }
                 node.className = parts.join(' ');
                 node.children[1].textContent = item.text;
@@ -11060,6 +11158,34 @@ var phosphor;
                 }, 0);
             };
             /**
+             * Collapse neighboring visible separators.
+             *
+             * This force-hides select separator nodes such that there are never
+             * multiple visible separator siblings. It also force-hides all any
+             * leading and trailing separator nodes.
+             */
+            MenuBar.prototype._collapseSeparators = function () {
+                var items = this._items;
+                var nodes = this._nodes;
+                var hideSeparator = true;
+                var lastIndex = algo.findLastIndex(items, isVisibleItem);
+                for (var i = 0, n = items.length; i < n; ++i) {
+                    var item = items[i];
+                    if (item.type === 'separator') {
+                        if (hideSeparator || i > lastIndex) {
+                            nodes[i].classList.add(FORCE_HIDDEN_CLASS);
+                        }
+                        else if (item.visible) {
+                            nodes[i].classList.remove(FORCE_HIDDEN_CLASS);
+                            hideSeparator = true;
+                        }
+                    }
+                    else if (item.visible) {
+                        hideSeparator = false;
+                    }
+                }
+            };
+            /**
              * Handle the `closed` signal from the child menu.
              */
             MenuBar.prototype._mn_closed = function (sender) {
@@ -11082,6 +11208,7 @@ var phosphor;
                     this._setActiveIndex(-1);
                 }
                 this.initItemNode(sender, this._nodes[i]);
+                this._collapseSeparators();
             };
             return MenuBar;
         })(widgets.Widget);
@@ -11096,12 +11223,18 @@ var phosphor;
         })(MBState || (MBState = {}));
         ;
         /**
+         * Test whether the menu item is a visible non-separator item.
+         */
+        function isVisibleItem(item) {
+            return item && item.type !== 'separator' && item.visible;
+        }
+        /**
          * Test whether the menu bar item is selectable.
          *
-         * This returns true if the item is enabled and not a separator.
+         * Returns true if the item is a visible and enabled non-separator item.
          */
         function isSelectable(item) {
-            return item && item.type !== 'separator' && item.enabled;
+            return isVisibleItem(item) && item.enabled;
         }
         /**
          * Hit test the chain menus for the given client position.
@@ -12464,3 +12597,660 @@ var phosphor;
         widgets.TabPanel = TabPanel;
     })(widgets = phosphor.widgets || (phosphor.widgets = {}));
 })(phosphor || (phosphor = {})); // module phosphor.widgets
+
+
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var createToken = phosphor.di.createToken;
+        /**
+         * The interface token for IPluginList.
+         */
+        shell.IPluginList = createToken('phosphor.shell.IPluginList');
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var createToken = phosphor.di.createToken;
+        /**
+         * The interface token for IShellView.
+         */
+        shell.IShellView = createToken('phosphor.shell.IShellView');
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var installMessageFilter = phosphor.core.installMessageFilter;
+        var removeMessageFilter = phosphor.core.removeMessageFilter;
+        /**
+         * Enable auto-hiding for the given widget.
+         *
+         * When auto-hiding is enabled, the widget will be automatically hidden
+         * when it has no visible children, and shown when it has at least one
+         * visible child.
+         */
+        function enableAutoHide(widget) {
+            installMessageFilter(widget, filter);
+            refresh(widget);
+        }
+        shell.enableAutoHide = enableAutoHide;
+        /**
+         * Disable auto-hiding for the given widget.
+         *
+         * This removes the effect of calling `enableAutoHide`. The current
+         * visible state of the widget will not be changed by this method.
+         */
+        function disableAutoHide(widget) {
+            removeMessageFilter(widget, filter);
+        }
+        shell.disableAutoHide = disableAutoHide;
+        /**
+         * Refresh the auto-hide visible state for the given widget.
+         */
+        function refresh(widget) {
+            widget.setVisible(hasVisibleChild(widget));
+        }
+        /**
+         * Test whether a widget has at least one visible child.
+         */
+        function hasVisibleChild(widget) {
+            for (var i = 0, n = widget.childCount; i < n; ++i) {
+                if (!widget.childAt(i).isHidden) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /**
+         * A message filter which implements auto-hide functionality.
+         */
+        var AutoHideFilter = (function () {
+            function AutoHideFilter() {
+            }
+            /**
+             * Filter a message sent to a message handler.
+             */
+            AutoHideFilter.prototype.filterMessage = function (handler, msg) {
+                switch (msg.type) {
+                    case 'child-added':
+                    case 'child-removed':
+                    case 'child-shown':
+                    case 'child-hidden':
+                        refresh(handler);
+                        break;
+                }
+                return false;
+            };
+            return AutoHideFilter;
+        })();
+        /**
+         * A singleton instance of AutoHideFilter.
+         */
+        var filter = new AutoHideFilter();
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (_shell) {
+        var Container = phosphor.di.Container;
+        var IContainer = phosphor.di.IContainer;
+        var createBoxSizing = phosphor.utility.createBoxSizing;
+        /**
+         * A class which manages bootstrapping an application.
+         *
+         * An application will typically define its own Bootstrapper subclass
+         * which overrides the necessary methods to customize the application.
+         */
+        var Bootstrapper = (function () {
+            /**
+             * Construct a new bootstrapper.
+             */
+            function Bootstrapper() {
+                this._shell = null;
+                this._container = null;
+                this._pluginList = null;
+            }
+            Object.defineProperty(Bootstrapper.prototype, "container", {
+                /**
+                 * Get the dependency injection container for the application.
+                 *
+                 * This is created by the `createContainer` method.
+                 */
+                get: function () {
+                    return this._container;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Bootstrapper.prototype, "pluginList", {
+                /**
+                 * Get the plugin list for the application.
+                 *
+                 * This is created by the `createPluginList` method.
+                 */
+                get: function () {
+                    return this._pluginList;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Bootstrapper.prototype, "shell", {
+                /**
+                 * Get the top-level shell view for the application.
+                 *
+                 * This is created by the `createShell` method.
+                 */
+                get: function () {
+                    return this._shell;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            /**
+             * Run the bootstrapper.
+             *
+             * This invokes the various bootstrap methods in the proper order
+             * and updates the internal state of the bootstrapper.
+             *
+             * This method should not be reimplemented.
+             */
+            Bootstrapper.prototype.run = function () {
+                var _this = this;
+                this._container = this.createContainer();
+                this.configureContainer();
+                this._shell = this.createShell();
+                this.configureShell();
+                this._pluginList = this.createPluginList();
+                this.configurePlugins().then(function () {
+                    _this.finalize();
+                }).catch(function (ex) {
+                    console.error('plugin initialization failed', ex);
+                });
+            };
+            /**
+             * Create the dependency injection container for the application.
+             *
+             * This can be reimplemented by subclasses as needed.
+             *
+             * The default implementation creates an instance of `Container`.
+             */
+            Bootstrapper.prototype.createContainer = function () {
+                return new Container();
+            };
+            /**
+             * Create the application plugin list.
+             *
+             * This can be reimplmented by subclasses as needed.
+             *
+             * The default implementation resolves an `IPluginList`.
+             */
+            Bootstrapper.prototype.createPluginList = function () {
+                return this.container.resolve(_shell.IPluginList);
+            };
+            /**
+             * Create the application shell widget.
+             *
+             * This can be reimplemented by subclasses as needed.
+             *
+             * The default implementation resolves an `IShellView`.
+             */
+            Bootstrapper.prototype.createShell = function () {
+                return this.container.resolve(_shell.IShellView);
+            };
+            /**
+             * Configure the application dependency injection container.
+             *
+             * This can be reimplemented by subclasses as needed.
+             */
+            Bootstrapper.prototype.configureContainer = function () {
+                var container = this.container;
+                if (!container.isRegistered(IContainer)) {
+                    container.registerInstance(IContainer, container);
+                }
+                if (!container.isRegistered(_shell.IPluginList)) {
+                    container.registerType(_shell.IPluginList, _shell.PluginList);
+                }
+                if (!container.isRegistered(_shell.IShellView)) {
+                    container.registerType(_shell.IShellView, _shell.ShellView);
+                }
+            };
+            /**
+             * Configure the application plugins.
+             *
+             * Subclasses should reimplement this method to add the application
+             * plugins to the plugin list. This should return a promise which
+             * resolves once all plugins are initialized.
+             *
+             * The default implementation returns an empty resolved promise.
+             */
+            Bootstrapper.prototype.configurePlugins = function () {
+                return Promise.resolve();
+            };
+            /**
+             * Configure the application shell widget.
+             *
+             * This can be reimplemented by subclasses as needed.
+             */
+            Bootstrapper.prototype.configureShell = function () {
+            };
+            /**
+             * Finalize the bootstrapping process.
+             *
+             * This is called after all plugins are resolved and intialized.
+             *
+             * It is the last method called in the bootstrapping process.
+             *
+             * This can be reimplemented by subclasses as needed.
+             *
+             * The default implementation attaches the shell widget to the DOM
+             * using the "main" element or `document.body`, and adds a window
+             * resize event handler which refits the shell on window resize.
+             */
+            Bootstrapper.prototype.finalize = function () {
+                var shell = this.shell;
+                var elem = document.getElementById('main') || document.body;
+                var box = createBoxSizing(elem);
+                var fit = function () { return shell.fit(void 0, void 0, box); };
+                window.addEventListener('resize', fit);
+                shell.attach(elem);
+                shell.show();
+                fit();
+            };
+            return Bootstrapper;
+        })();
+        _shell.Bootstrapper = Bootstrapper;
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var algo = phosphor.collections.algorithm;
+        /**
+         * An object which manages items in a menu or menu bar.
+         */
+        var MenuManager = (function () {
+            /**
+             * Construct a new menu manager.
+             *
+             * The provided menu should be empty.
+             */
+            function MenuManager(menu) {
+                this._ranks = [];
+                this._menu = menu;
+            }
+            /**
+             * Add a menu item to the menu.
+             *
+             * Menu items are ordered from lowest to highest rank. The default
+             * rank is `100`. If the item has already been added to the manager,
+             * it will first be removed.
+             */
+            MenuManager.prototype.addItem = function (item, rank) {
+                if (rank === void 0) { rank = 100; }
+                this.removeItem(item);
+                var index = algo.upperBound(this._ranks, rank, cmp);
+                algo.insert(this._ranks, index, rank);
+                this._menu.insertItem(index, item);
+            };
+            /**
+             * Remove a menu item from the menu.
+             *
+             * If the item has not been added to the manager, this is a no-op.
+             */
+            MenuManager.prototype.removeItem = function (item) {
+                var index = this._menu.removeItem(item);
+                if (index !== -1)
+                    algo.removeAt(this._ranks, index);
+            };
+            return MenuManager;
+        })();
+        shell.MenuManager = MenuManager;
+        /**
+         * A numeric comparator.
+         */
+        function cmp(a, b) {
+            return a - b;
+        }
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var IContainer = phosphor.di.IContainer;
+        /**
+         * A concrete implementation of IPluginList.
+         */
+        var PluginList = (function () {
+            /**
+             * Construct a new plugin list.
+             */
+            function PluginList(container) {
+                this._plugins = [];
+                this._container = container;
+            }
+            /**
+             * Add an array of plugins or plugin promises to the plugin list.
+             *
+             * When all plugins are resolved, the `initialize` method of each
+             * plugin is called and the plugin is added to the list.
+             *
+             * Returns a promise which resolves when all plugins are added.
+             */
+            PluginList.prototype.add = function (plugins) {
+                var _this = this;
+                return Promise.all(plugins).then(function (resolved) {
+                    resolved.forEach(function (plugin) { return _this._addPlugin(plugin); });
+                });
+            };
+            /**
+             * Invoke the given callback for each resolved plugin in the list.
+             */
+            PluginList.prototype.forEach = function (callback) {
+                return this._plugins.forEach(function (plugin) { return callback(plugin); });
+            };
+            /**
+             * Initialize a plugin and add it to the plugins list.
+             */
+            PluginList.prototype._addPlugin = function (plugin) {
+                plugin.initialize(this._container);
+                this._plugins.push(plugin);
+            };
+            /**
+             * The injection dependencies for the plugin list.
+             */
+            PluginList.$inject = [IContainer];
+            return PluginList;
+        })();
+        shell.PluginList = PluginList;
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var algo = phosphor.collections.algorithm;
+        var Pair = phosphor.utility.Pair;
+        var BoxLayout = phosphor.widgets.BoxLayout;
+        var Widget = phosphor.widgets.Widget;
+        var WidgetFlag = phosphor.widgets.WidgetFlag;
+        /**
+         * The class name added to shell panel instances.
+         */
+        var SHELL_PANEL_CLASS = 'p-ShellPanel';
+        /**
+         * A content panel for a shell view.
+         */
+        var ShellPanel = (function (_super) {
+            __extends(ShellPanel, _super);
+            /**
+             * Construct a new shell view.
+             */
+            function ShellPanel(direction) {
+                _super.call(this);
+                this._pairs = [];
+                this.addClass(SHELL_PANEL_CLASS);
+                this.layout = new BoxLayout(direction, 0);
+                this.setFlag(16 /* DisallowLayoutChange */);
+            }
+            /**
+             * Dispose of the resources held by the widget.
+             */
+            ShellPanel.prototype.dispose = function () {
+                this._pairs = null;
+                _super.prototype.dispose.call(this);
+            };
+            /**
+             * Add a widget to the panel.
+             */
+            ShellPanel.prototype.addWidget = function (widget, options) {
+                if (options === void 0) { options = {}; }
+                widget.parent = null;
+                var stretch = options.stretch;
+                var alignment = options.alignment;
+                var rank = options.rank !== void 0 ? options.rank : 100;
+                var index = algo.upperBound(this._pairs, rank, pairCmp);
+                algo.insert(this._pairs, index, new Pair(widget, rank));
+                this.layout.insertWidget(index, widget, stretch, alignment);
+            };
+            /**
+             * A method invoked when a 'child-removed' message is received.
+             */
+            ShellPanel.prototype.onChildRemoved = function (msg) {
+                _super.prototype.onChildRemoved.call(this, msg);
+                var index = algo.findIndex(this._pairs, function (pair) { return pair.first === msg.child; });
+                if (index !== -1)
+                    algo.removeAt(this._pairs, index);
+            };
+            return ShellPanel;
+        })(Widget);
+        shell.ShellPanel = ShellPanel;
+        /**
+         * A comparator for a rank pair.
+         */
+        function pairCmp(pair, rank) {
+            return pair.second - rank;
+        }
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, S. Chris Colbert
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var phosphor;
+(function (phosphor) {
+    var shell;
+    (function (shell) {
+        var BoxLayout = phosphor.widgets.BoxLayout;
+        var Direction = phosphor.widgets.Direction;
+        var MenuBar = phosphor.widgets.MenuBar;
+        var Orientation = phosphor.widgets.Orientation;
+        var SizePolicy = phosphor.widgets.SizePolicy;
+        var SplitPanel = phosphor.widgets.SplitPanel;
+        var Widget = phosphor.widgets.Widget;
+        var WidgetFlag = phosphor.widgets.WidgetFlag;
+        /**
+         * The class name added to shell view instances.
+         */
+        var SHELL_VIEW_CLASS = 'p-ShellView';
+        /**
+         * The class name added to the top shell panel.
+         */
+        var TOP_CLASS = 'p-mod-top';
+        /**
+         * The class name added to the left shell panel.
+         */
+        var LEFT_CLASS = 'p-mod-left';
+        /**
+         * The class name added to the right shell panel.
+         */
+        var RIGHT_CLASS = 'p-mod-right';
+        /**
+         * The class name added to the bottom shell panel.
+         */
+        var BOTTOM_CLASS = 'p-mod-bottom';
+        /**
+         * The class name added to the center shell panel.
+         */
+        var CENTER_CLASS = 'p-mod-center';
+        /**
+         * A concrete implementation of IShellView.
+         */
+        var ShellView = (function (_super) {
+            __extends(ShellView, _super);
+            /**
+             * Construct a new shell view.
+             */
+            function ShellView() {
+                _super.call(this);
+                this.addClass(SHELL_VIEW_CLASS);
+                this._menuBar = new MenuBar();
+                this._topPanel = new shell.ShellPanel(2 /* TopToBottom */);
+                this._leftPanel = new shell.ShellPanel(0 /* LeftToRight */);
+                this._rightPanel = new shell.ShellPanel(1 /* RightToLeft */);
+                this._bottomPanel = new shell.ShellPanel(3 /* BottomToTop */);
+                this._centerPanel = new shell.ShellPanel(2 /* TopToBottom */);
+                this._menuManager = new shell.MenuManager(this._menuBar);
+                this._topPanel.addClass(TOP_CLASS);
+                this._leftPanel.addClass(LEFT_CLASS);
+                this._rightPanel.addClass(RIGHT_CLASS);
+                this._bottomPanel.addClass(BOTTOM_CLASS);
+                this._centerPanel.addClass(CENTER_CLASS);
+                this._menuBar.hide();
+                this._topPanel.verticalSizePolicy = 0 /* Fixed */;
+                shell.enableAutoHide(this._topPanel);
+                shell.enableAutoHide(this._leftPanel);
+                shell.enableAutoHide(this._rightPanel);
+                shell.enableAutoHide(this._bottomPanel);
+                var hSplitter = new SplitPanel(0 /* Horizontal */);
+                var vSplitter = new SplitPanel(1 /* Vertical */);
+                hSplitter.handleSize = 0;
+                vSplitter.handleSize = 0;
+                hSplitter.addWidget(this._leftPanel);
+                hSplitter.addWidget(this._centerPanel, 1);
+                hSplitter.addWidget(this._rightPanel);
+                vSplitter.addWidget(hSplitter, 1);
+                vSplitter.addWidget(this._bottomPanel);
+                var layout = new BoxLayout(2 /* TopToBottom */, 0);
+                layout.addWidget(this._menuBar);
+                layout.addWidget(this._topPanel);
+                layout.addWidget(vSplitter, 1);
+                this.layout = layout;
+                this.setFlag(16 /* DisallowLayoutChange */);
+            }
+            /**
+             * Get the content areas names supported by the shell view.
+             */
+            ShellView.prototype.areas = function () {
+                return ['top', 'left', 'right', 'bottom', 'center'];
+            };
+            /**
+             * Add a widget to the named content area.
+             *
+             * This method throws an exception if the named area is not supported.
+             */
+            ShellView.prototype.addWidget = function (area, widget, options) {
+                switch (area) {
+                    case 'top':
+                        this._topPanel.addWidget(widget, options);
+                        break;
+                    case 'left':
+                        this._leftPanel.addWidget(widget, options);
+                        break;
+                    case 'right':
+                        this._rightPanel.addWidget(widget, options);
+                        break;
+                    case 'bottom':
+                        this._bottomPanel.addWidget(widget, options);
+                        break;
+                    case 'center':
+                        this._centerPanel.addWidget(widget, options);
+                        break;
+                    default:
+                        throw new Error('invalid content area: ' + area);
+                }
+            };
+            /**
+             * Add a menu item to the menu bar.
+             *
+             * Items are ordered from lowest to highest rank.
+             *
+             * If the item already exists, its position will be updated.
+             */
+            ShellView.prototype.addMenuItem = function (item, rank) {
+                this._menuManager.addItem(item, rank);
+                this._menuBar.setVisible(this._menuBar.count > 0);
+            };
+            /**
+             * Remove a menu item from the menu bar.
+             *
+             * If the item does not exist, this is a no-op.
+             */
+            ShellView.prototype.removeMenuItem = function (item) {
+                this._menuManager.removeItem(item);
+                this._menuBar.setVisible(this._menuBar.count > 0);
+            };
+            return ShellView;
+        })(Widget);
+        shell.ShellView = ShellView;
+    })(shell = phosphor.shell || (phosphor.shell = {}));
+})(phosphor || (phosphor = {})); // module phosphor.shell

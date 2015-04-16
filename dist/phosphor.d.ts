@@ -726,6 +726,9 @@ declare module phosphor.di {
          */
         resolve<T>(token: IToken<T> | IInjectable<T>): T;
     }
+    /**
+     * The interface token for IContainer.
+     */
     var IContainer: IToken<IContainer>;
 }
 
@@ -3398,6 +3401,10 @@ declare module phosphor.widgets {
          */
         hide(): void;
         /**
+         * Show or hide the widget according to the given flag.
+         */
+        setVisible(visible: boolean): void;
+        /**
          * Close the widget by sending it a 'close' message.
          *
          * Subclasses should reimplement `onClose` to perform custom actions.
@@ -4131,6 +4138,10 @@ declare module phosphor.widgets {
          */
         enabled?: boolean;
         /**
+         * Whether the menu item is visible.
+         */
+        visible?: boolean;
+        /**
          * Whether a 'check' type menu item is checked.
          */
         checked?: boolean;
@@ -4207,6 +4218,13 @@ declare module phosphor.widgets {
          */
         enabled: boolean;
         /**
+         * Get whether the menu item is visible.
+         */
+        /**
+         * Set whether the menu item is visible.
+         */
+        visible: boolean;
+        /**
          * Get whether the 'check' type menu item is checked.
          */
         /**
@@ -4244,6 +4262,7 @@ declare module phosphor.widgets {
         private _shortcut;
         private _className;
         private _enabled;
+        private _visible;
         private _type;
         private _checked;
         private _submenu;
@@ -4551,6 +4570,14 @@ declare module phosphor.widgets {
          */
         private _cancelPendingClose();
         /**
+         * Collapse neighboring visible separators.
+         *
+         * This force-hides select separator nodes such that there are never
+         * multiple visible separator siblings. It also force-hides all any
+         * leading and trailing separator nodes.
+         */
+        private _collapseSeparators();
+        /**
          * Handle the `changed` signal from a menu item.
          */
         private _mi_changed(sender);
@@ -4772,6 +4799,14 @@ declare module phosphor.widgets {
          * Update the event listeners for the active and open states.
          */
         private _useActiveListeners();
+        /**
+         * Collapse neighboring visible separators.
+         *
+         * This force-hides select separator nodes such that there are never
+         * multiple visible separator siblings. It also force-hides all any
+         * leading and trailing separator nodes.
+         */
+        private _collapseSeparators();
         /**
          * Handle the `closed` signal from the child menu.
          */
@@ -5270,5 +5305,379 @@ declare module phosphor.widgets {
         private _sw_widgetRemoved(sender, args);
         private _tabBar;
         private _stackedPanel;
+    }
+}
+
+declare module phosphor.shell {
+    import IContainer = di.IContainer;
+    /**
+     * An object which represents an application plugin.
+     *
+     * A plugin is typically a module with an `initialize` function.
+     */
+    interface IPlugin {
+        /**
+         * Initialize the plugin and register its content with the container.
+         */
+        initialize(container: IContainer): void;
+    }
+}
+
+declare module phosphor.shell {
+    /**
+     * An object which asynchronously resolves and initializes plugins.
+     */
+    interface IPluginList {
+        /**
+         * Add an array of plugins or plugin promises to the plugin list.
+         *
+         * When all plugins are resolved, the `initialize` method of each
+         * plugin is called and the plugin is added to the list.
+         *
+         * Returns a promise which resolves when all plugins are added.
+         */
+        add(plugins: (IPlugin | Promise<IPlugin>)[]): Promise<void>;
+        /**
+         * Invoke a callback for each resolved plugin in the list.
+         */
+        forEach(callback: (plugin: IPlugin) => void): void;
+    }
+    /**
+     * The interface token for IPluginList.
+     */
+    var IPluginList: di.IToken<IPluginList>;
+}
+
+declare module phosphor.shell {
+    import Alignment = widgets.Alignment;
+    import MenuItem = widgets.MenuItem;
+    import Widget = widgets.Widget;
+    /**
+     * An options object for adding a widget to a shell view.
+     */
+    interface IWidgetOptions {
+        /**
+         * The layout rank for the widget.
+         *
+         * Widgets are arranged in ordered from lowest to highest rank
+         * along the direction of layout. The default rank is `100`.
+         */
+        rank?: number;
+        /**
+         * The layout stretch factor for the widget.
+         *
+         * The default stretch factor is determined by the layout.
+         */
+        stretch?: number;
+        /**
+         * The layout alignment for the widget.
+         *
+         * The default stretch factor is determined by the layout.
+         */
+        alignment?: Alignment;
+    }
+    /**
+     * A widget which provides the top-level application shell.
+     *
+     * A shell view serves as the main UI container for an application. It
+     * provides named areas to which plugins can add their content and it
+     * also controls access to shared UI resources such as the menu bar.
+     */
+    interface IShellView extends Widget {
+        /**
+         * Get the content areas names supported by the shell view.
+         */
+        areas(): string[];
+        /**
+         * Add a widget to the named content area.
+         *
+         * This method throws an exception if the named area is not supported.
+         */
+        addWidget(area: string, widget: Widget, options?: IWidgetOptions): void;
+        /**
+         * Add a menu item to the menu bar.
+         *
+         * Items are ordered from lowest to highest rank.
+         *
+         * If the item already exists, its position will be updated.
+         */
+        addMenuItem(item: MenuItem, rank?: number): void;
+        /**
+         * Remove a menu item from the menu bar.
+         *
+         * If the item does not exist, this is a no-op.
+         */
+        removeMenuItem(item: MenuItem): void;
+    }
+    /**
+     * The interface token for IShellView.
+     */
+    var IShellView: di.IToken<IShellView>;
+}
+
+declare module phosphor.shell {
+    import Widget = widgets.Widget;
+    /**
+     * Enable auto-hiding for the given widget.
+     *
+     * When auto-hiding is enabled, the widget will be automatically hidden
+     * when it has no visible children, and shown when it has at least one
+     * visible child.
+     */
+    function enableAutoHide(widget: Widget): void;
+    /**
+     * Disable auto-hiding for the given widget.
+     *
+     * This removes the effect of calling `enableAutoHide`. The current
+     * visible state of the widget will not be changed by this method.
+     */
+    function disableAutoHide(widget: Widget): void;
+}
+
+declare module phosphor.shell {
+    import IContainer = di.IContainer;
+    /**
+     * A class which manages bootstrapping an application.
+     *
+     * An application will typically define its own Bootstrapper subclass
+     * which overrides the necessary methods to customize the application.
+     */
+    class Bootstrapper {
+        /**
+         * Construct a new bootstrapper.
+         */
+        constructor();
+        /**
+         * Get the dependency injection container for the application.
+         *
+         * This is created by the `createContainer` method.
+         */
+        container: IContainer;
+        /**
+         * Get the plugin list for the application.
+         *
+         * This is created by the `createPluginList` method.
+         */
+        pluginList: IPluginList;
+        /**
+         * Get the top-level shell view for the application.
+         *
+         * This is created by the `createShell` method.
+         */
+        shell: IShellView;
+        /**
+         * Run the bootstrapper.
+         *
+         * This invokes the various bootstrap methods in the proper order
+         * and updates the internal state of the bootstrapper.
+         *
+         * This method should not be reimplemented.
+         */
+        run(): void;
+        /**
+         * Create the dependency injection container for the application.
+         *
+         * This can be reimplemented by subclasses as needed.
+         *
+         * The default implementation creates an instance of `Container`.
+         */
+        protected createContainer(): IContainer;
+        /**
+         * Create the application plugin list.
+         *
+         * This can be reimplmented by subclasses as needed.
+         *
+         * The default implementation resolves an `IPluginList`.
+         */
+        protected createPluginList(): IPluginList;
+        /**
+         * Create the application shell widget.
+         *
+         * This can be reimplemented by subclasses as needed.
+         *
+         * The default implementation resolves an `IShellView`.
+         */
+        protected createShell(): IShellView;
+        /**
+         * Configure the application dependency injection container.
+         *
+         * This can be reimplemented by subclasses as needed.
+         */
+        protected configureContainer(): void;
+        /**
+         * Configure the application plugins.
+         *
+         * Subclasses should reimplement this method to add the application
+         * plugins to the plugin list. This should return a promise which
+         * resolves once all plugins are initialized.
+         *
+         * The default implementation returns an empty resolved promise.
+         */
+        protected configurePlugins(): Promise<void>;
+        /**
+         * Configure the application shell widget.
+         *
+         * This can be reimplemented by subclasses as needed.
+         */
+        protected configureShell(): void;
+        /**
+         * Finalize the bootstrapping process.
+         *
+         * This is called after all plugins are resolved and intialized.
+         *
+         * It is the last method called in the bootstrapping process.
+         *
+         * This can be reimplemented by subclasses as needed.
+         *
+         * The default implementation attaches the shell widget to the DOM
+         * using the "main" element or `document.body`, and adds a window
+         * resize event handler which refits the shell on window resize.
+         */
+        protected finalize(): void;
+        private _shell;
+        private _container;
+        private _pluginList;
+    }
+}
+
+declare module phosphor.shell {
+    import Menu = widgets.Menu;
+    import MenuBar = widgets.MenuBar;
+    import MenuItem = widgets.MenuItem;
+    /**
+     * An object which manages items in a menu or menu bar.
+     */
+    class MenuManager {
+        /**
+         * Construct a new menu manager.
+         *
+         * The provided menu should be empty.
+         */
+        constructor(menu: Menu | MenuBar);
+        /**
+         * Add a menu item to the menu.
+         *
+         * Menu items are ordered from lowest to highest rank. The default
+         * rank is `100`. If the item has already been added to the manager,
+         * it will first be removed.
+         */
+        addItem(item: MenuItem, rank?: number): void;
+        /**
+         * Remove a menu item from the menu.
+         *
+         * If the item has not been added to the manager, this is a no-op.
+         */
+        removeItem(item: MenuItem): void;
+        private _menu;
+        private _ranks;
+    }
+}
+
+declare module phosphor.shell {
+    import IContainer = di.IContainer;
+    /**
+     * A concrete implementation of IPluginList.
+     */
+    class PluginList implements IPluginList {
+        /**
+         * The injection dependencies for the plugin list.
+         */
+        static $inject: di.IToken<IContainer>[];
+        /**
+         * Construct a new plugin list.
+         */
+        constructor(container: IContainer);
+        /**
+         * Add an array of plugins or plugin promises to the plugin list.
+         *
+         * When all plugins are resolved, the `initialize` method of each
+         * plugin is called and the plugin is added to the list.
+         *
+         * Returns a promise which resolves when all plugins are added.
+         */
+        add(plugins: (IPlugin | Promise<IPlugin>)[]): Promise<void>;
+        /**
+         * Invoke the given callback for each resolved plugin in the list.
+         */
+        forEach(callback: (plugin: IPlugin) => void): void;
+        /**
+         * Initialize a plugin and add it to the plugins list.
+         */
+        private _addPlugin(plugin);
+        private _container;
+        private _plugins;
+    }
+}
+
+declare module phosphor.shell {
+    import ChildMessage = widgets.ChildMessage;
+    import Direction = widgets.Direction;
+    import Widget = widgets.Widget;
+    /**
+     * A content panel for a shell view.
+     */
+    class ShellPanel extends Widget {
+        /**
+         * Construct a new shell view.
+         */
+        constructor(direction: Direction);
+        /**
+         * Dispose of the resources held by the widget.
+         */
+        dispose(): void;
+        /**
+         * Add a widget to the panel.
+         */
+        addWidget(widget: Widget, options?: IWidgetOptions): void;
+        /**
+         * A method invoked when a 'child-removed' message is received.
+         */
+        protected onChildRemoved(msg: ChildMessage): void;
+        private _pairs;
+    }
+}
+
+declare module phosphor.shell {
+    import MenuItem = widgets.MenuItem;
+    import Widget = widgets.Widget;
+    /**
+     * A concrete implementation of IShellView.
+     */
+    class ShellView extends Widget implements IShellView {
+        /**
+         * Construct a new shell view.
+         */
+        constructor();
+        /**
+         * Get the content areas names supported by the shell view.
+         */
+        areas(): string[];
+        /**
+         * Add a widget to the named content area.
+         *
+         * This method throws an exception if the named area is not supported.
+         */
+        addWidget(area: string, widget: Widget, options?: IWidgetOptions): void;
+        /**
+         * Add a menu item to the menu bar.
+         *
+         * Items are ordered from lowest to highest rank.
+         *
+         * If the item already exists, its position will be updated.
+         */
+        addMenuItem(item: MenuItem, rank?: number): void;
+        /**
+         * Remove a menu item from the menu bar.
+         *
+         * If the item does not exist, this is a no-op.
+         */
+        removeMenuItem(item: MenuItem): void;
+        private _menuBar;
+        private _topPanel;
+        private _leftPanel;
+        private _rightPanel;
+        private _bottomPanel;
+        private _centerPanel;
+        private _menuManager;
     }
 }
