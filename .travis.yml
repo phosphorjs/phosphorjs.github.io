@@ -23,6 +23,6 @@ after_success: |
     echo "https://${GHTOKEN}:@github.com" > .git/credentials
     git push origin master:master
   else
-    echo "Will only deploy docs build from master branch"
+    echo "Will only deploy docs build from source branch"
   fi
 
