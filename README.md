@@ -1,12 +1,10 @@
-# PhosphorJS docs webside
+# PhosphorJS Website
 
 https://phosphorjs.github.io
 
-(wip: http://carreau.github.io/phosphor-website/about/) 
-
 # Install / Publish
 
-typically lucally `$PREFIX='/build/'`
+typically locally `$PREFIX='/build/'`
 
 ```
 $ PREFIX='/'
