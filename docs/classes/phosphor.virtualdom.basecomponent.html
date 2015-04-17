@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CodeMirrorComponent | Phosphor</title>
+	<title>BaseComponent | Phosphor</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -60,13 +60,13 @@
 					<a href="../modules/phosphor.html">phosphor</a>
 				</li>
 				<li>
-					<a href="../modules/phosphor.components.html">components</a>
+					<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
 				</li>
 				<li>
-					<a href="phosphor.components.codemirrorcomponent.html">CodeMirrorComponent</a>
+					<a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>
 				</li>
 			</ul>
-			<h1>Class CodeMirrorComponent</h1>
+			<h1>Class BaseComponent&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -76,18 +76,32 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A component which hosts a CodeMirror editor.</p>
+						<p>A concrete base implementation of IComponent.</p>
 					</div>
+					<p>This class should be used by subclasses that want to manage their
+						own DOM content outside the virtual DOM, but still be embeddable
+					inside a virtual DOM hierarchy.</p>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.idata.html" class="tsd-signature-type">IData</a></h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="phosphor.components.basecomponent.html" class="tsd-signature-type">BaseComponent</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a><span class="tsd-signature-symbol">&gt;</span>
+						<span class="target">BaseComponent</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">CodeMirrorComponent</span>
+								<a href="phosphor.virtualdom.component.html" class="tsd-signature-type">Component</a>
+							</li>
+							<li>
+								<a href="phosphor.lib.codemirrorcomponent.html" class="tsd-signature-type">CodeMirrorComponent</a>
 							</li>
 						</ul>
 					</li>
@@ -96,61 +110,60 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/phosphor.virtualdom.icomponent.html" class="tsd-signature-type">IComponent</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/phosphor.virtualdom.icomponent.html" class="tsd-signature-type">IComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.components.codemirrorcomponent.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.components.codemirrorcomponent.html#_editor" class="tsd-kind-icon">_editor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static"><a href="phosphor.components.codemirrorcomponent.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="phosphor.components.codemirrorcomponent.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.basecomponent.html#_children" class="tsd-kind-icon">_children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.basecomponent.html#_data" class="tsd-kind-icon">_data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.basecomponent.html#_node" class="tsd-kind-icon">_node</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="phosphor.virtualdom.basecomponent.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="phosphor.virtualdom.basecomponent.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.components.codemirrorcomponent.html#children" class="tsd-kind-icon">children</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.components.codemirrorcomponent.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.components.codemirrorcomponent.html#editor" class="tsd-kind-icon">editor</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.components.codemirrorcomponent.html#node" class="tsd-kind-icon">node</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#children" class="tsd-kind-icon">children</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#data" class="tsd-kind-icon">data</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#node" class="tsd-kind-icon">node</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.components.codemirrorcomponent.html#createeditor" class="tsd-kind-icon">create<wbr>Editor</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.components.codemirrorcomponent.html#dispose" class="tsd-kind-icon">dispose</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.components.codemirrorcomponent.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#dispose" class="tsd-kind-icon">dispose</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.virtualdom.basecomponent.html#init" class="tsd-kind-icon">init</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Code<wbr>Mirror<wbr>Component<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.components.codemirrorcomponent.html" class="tsd-signature-type">CodeMirrorComponent</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Base<wbr>Component<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.basecomponent.html" class="tsd-signature-type">BaseComponent</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/basecomponent.ts#L39">src/components/basecomponent.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L35">src/virtualdom/basecomponent.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -158,7 +171,7 @@
 									<p>Construct a new base component.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="phosphor.components.codemirrorcomponent.html" class="tsd-signature-type">CodeMirrorComponent</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="phosphor.virtualdom.basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -166,39 +179,58 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_editor" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _editor</h3>
-					<div class="tsd-signature tsd-kind-icon">_editor<span class="tsd-signature-symbol">:</span> <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></div>
+					<a name="_children" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _children</h3>
+					<div class="tsd-signature tsd-kind-icon">_children<span class="tsd-signature-symbol">:</span> <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L73">src/components/codemirror.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L88">src/virtualdom/basecomponent.ts:88</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_data" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _data</h3>
+					<div class="tsd-signature tsd-kind-icon">_data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L87">src/virtualdom/basecomponent.ts:87</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_node" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _node</h3>
+					<div class="tsd-signature tsd-kind-icon">_node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L86">src/virtualdom/basecomponent.ts:86</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="classname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> class<wbr>Name</h3>
 					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Overwrites <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#classname">className</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L32">src/components/codemirror.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L35">src/virtualdom/basecomponent.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The default class name for a code mirror component.</p>
+							<p>The initial class name for the component&#39;s DOM node.</p>
 						</div>
+						<p>A subclass may redefine this property.</p>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="tagname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> tag<wbr>Name</h3>
 					<div class="tsd-signature tsd-kind-icon">tag<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#tagname">tagName</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/basecomponent.ts#L32">src/components/basecomponent.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L28">src/virtualdom/basecomponent.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -211,18 +243,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="children" class="tsd-anchor"></a>
 					<h3>children</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#children">children</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/basecomponent.ts#L76">src/components/basecomponent.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L72">src/virtualdom/basecomponent.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,18 +265,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="data" class="tsd-anchor"></a>
 					<h3>data</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a></li>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#data">data</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/basecomponent.ts#L69">src/components/basecomponent.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L65">src/virtualdom/basecomponent.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -253,46 +283,21 @@
 									<p>Get the current data object for the component.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="editor" class="tsd-anchor"></a>
-					<h3>editor</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> editor<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L58">src/components/codemirror.ts:58</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the code mirror editor for the component.</p>
-								</div>
-								<p>This component does not attempt to wrap the extensive code mirror
-								api. User code should interact with the editor object directly.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 					<a name="node" class="tsd-anchor"></a>
 					<h3>node</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#node">node</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/basecomponent.ts#L62">src/components/basecomponent.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L58">src/virtualdom/basecomponent.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -307,43 +312,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="createeditor" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Editor</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Editor<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L69">src/components/codemirror.ts:69</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create the editor for the component.</p>
-								</div>
-								<p>This can be reimplemented by subclasses which require custom
-									creation of the editor instance. The default implementation
-								assumes <code>CodeMirror</code> is available in the global scope.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="dispose" class="tsd-anchor"></a>
 					<h3>dispose</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">dispose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#dispose">dispose</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L37">src/components/codemirror.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L49">src/virtualdom/basecomponent.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -355,29 +334,29 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="init" class="tsd-anchor"></a>
 					<h3>init</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a>, children<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, children<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="phosphor.components.basecomponent.html">BaseComponent</a>.<a href="phosphor.components.basecomponent.html#init">init</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L45">src/components/codemirror.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L81">src/virtualdom/basecomponent.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Initialize the component with new data and children.</p>
 								</div>
+								<p>This is called whenever the component is rendered by its parent.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>data: <a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a></h5>
+									<h5>data: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
 									<h5>children: <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></h5>
@@ -404,9 +383,6 @@
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.collections.html">collections</a>
 							</li>
-							<li class="current tsd-kind-module tsd-parent-kind-module">
-								<a href="../modules/phosphor.components.html">components</a>
-							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.core.html">core</a>
 							</li>
@@ -414,12 +390,15 @@
 								<a href="../modules/phosphor.di.html">di</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="../modules/phosphor.lib.html">lib</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.shell.html">shell</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.utility.html">utility</a>
 							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
+							<li class="current tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
@@ -440,66 +419,48 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.components.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="phosphor.components.codemirrorcomponent.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Component</a>
+					<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="phosphor.virtualdom.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.components.codemirrorcomponent.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.basecomponent.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="phosphor.components.codemirrorcomponent.html#_editor" class="tsd-kind-icon">_editor</a>
+								<a href="phosphor.virtualdom.basecomponent.html#_children" class="tsd-kind-icon">_children</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
-								<a href="phosphor.components.codemirrorcomponent.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="phosphor.virtualdom.basecomponent.html#_data" class="tsd-kind-icon">_data</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="phosphor.components.codemirrorcomponent.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="phosphor.virtualdom.basecomponent.html#_node" class="tsd-kind-icon">_node</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.components.codemirrorcomponent.html#children" class="tsd-kind-icon">children</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="phosphor.virtualdom.basecomponent.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.components.codemirrorcomponent.html#data" class="tsd-kind-icon">data</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="phosphor.virtualdom.basecomponent.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="phosphor.components.codemirrorcomponent.html#editor" class="tsd-kind-icon">editor</a>
+								<a href="phosphor.virtualdom.basecomponent.html#children" class="tsd-kind-icon">children</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.components.codemirrorcomponent.html#node" class="tsd-kind-icon">node</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.basecomponent.html#data" class="tsd-kind-icon">data</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="phosphor.components.codemirrorcomponent.html#createeditor" class="tsd-kind-icon">create<wbr>Editor</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.basecomponent.html#node" class="tsd-kind-icon">node</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="phosphor.components.codemirrorcomponent.html#dispose" class="tsd-kind-icon">dispose</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.basecomponent.html#dispose" class="tsd-kind-icon">dispose</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="phosphor.components.codemirrorcomponent.html#init" class="tsd-kind-icon">init</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.basecomponent.html#init" class="tsd-kind-icon">init</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="phosphor.components.component.html" class="tsd-kind-icon">Component</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-kind-icon">ICode<wbr>Mirror<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/phosphor.components.html#codemirrorfactory" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/phosphor.components.html#caf" class="tsd-kind-icon">caf</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/phosphor.components.html#raf" class="tsd-kind-icon">raf</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Panel | Phosphor</title>
+	<title>CodeMirrorWidget | Phosphor</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -60,13 +60,13 @@
 					<a href="../modules/phosphor.html">phosphor</a>
 				</li>
 				<li>
-					<a href="../modules/phosphor.widgets.html">widgets</a>
+					<a href="../modules/phosphor.lib.html">lib</a>
 				</li>
 				<li>
-					<a href="phosphor.widgets.panel.html">Panel</a>
+					<a href="phosphor.lib.codemirrorwidget.html">CodeMirrorWidget</a>
 				</li>
 			</ul>
-			<h1>Class Panel</h1>
+			<h1>Class CodeMirrorWidget</h1>
 		</div>
 	</div>
 </header>
@@ -76,9 +76,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A widget which delegates to a permanently installed layout.</p>
+						<p>A widget which hosts a CodeMirror editor.</p>
 					</div>
-					<p>This is used as a base class for common panel widgets.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -88,18 +87,7 @@
 						<a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">Panel</span>
-								<ul class="tsd-hierarchy">
-									<li>
-										<a href="phosphor.widgets.boxpanel.html" class="tsd-signature-type">BoxPanel</a>
-									</li>
-									<li>
-										<a href="phosphor.widgets.splitpanel.html" class="tsd-signature-type">SplitPanel</a>
-									</li>
-									<li>
-										<a href="phosphor.widgets.stackedpanel.html" class="tsd-signature-type">StackedPanel</a>
-									</li>
-								</ul>
+								<span class="target">CodeMirrorWidget</span>
 							</li>
 						</ul>
 					</li>
@@ -119,83 +107,82 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.widgets.panel.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.lib.codemirrorwidget.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#disposed" class="tsd-kind-icon">disposed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.lib.codemirrorwidget.html#_editor" class="tsd-kind-icon">_editor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.lib.codemirrorwidget.html#_scrollpos" class="tsd-kind-icon">_scroll<wbr>Pos</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#disposed" class="tsd-kind-icon">disposed</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#childcount" class="tsd-kind-icon">child<wbr>Count</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.widgets.panel.html#count" class="tsd-kind-icon">count</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#layout" class="tsd-kind-icon">layout</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#node" class="tsd-kind-icon">node</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#width" class="tsd-kind-icon">width</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#childcount" class="tsd-kind-icon">child<wbr>Count</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="phosphor.lib.codemirrorwidget.html#editor" class="tsd-kind-icon">editor</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#layout" class="tsd-kind-icon">layout</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#node" class="tsd-kind-icon">node</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#y" class="tsd-kind-icon">y</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#addclass" class="tsd-kind-icon">add<wbr>Class</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.widgets.panel.html#alignment" class="tsd-kind-icon">alignment</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#attach" class="tsd-kind-icon">attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#childat" class="tsd-kind-icon">child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#close" class="tsd-kind-icon">close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#createnode" class="tsd-kind-icon">create<wbr>Node</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#detach" class="tsd-kind-icon">detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#dispose" class="tsd-kind-icon">dispose</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#fit" class="tsd-kind-icon">fit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#hide" class="tsd-kind-icon">hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.widgets.panel.html#indexof" class="tsd-kind-icon">index<wbr>Of</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#move" class="tsd-kind-icon">move</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onclose" class="tsd-kind-icon">on<wbr>Close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onmove" class="tsd-kind-icon">on<wbr>Move</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.panel.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#resize" class="tsd-kind-icon">resize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.widgets.panel.html#setalignment" class="tsd-kind-icon">set<wbr>Alignment</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#show" class="tsd-kind-icon">show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.widgets.panel.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.widgets.panel.html#widgetat" class="tsd-kind-icon">widget<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#addclass" class="tsd-kind-icon">add<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#attach" class="tsd-kind-icon">attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#childat" class="tsd-kind-icon">child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#close" class="tsd-kind-icon">close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#createeditor" class="tsd-kind-icon">create<wbr>Editor</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#createnode" class="tsd-kind-icon">create<wbr>Node</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#detach" class="tsd-kind-icon">detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.lib.codemirrorwidget.html#dispose" class="tsd-kind-icon">dispose</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#fit" class="tsd-kind-icon">fit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#hide" class="tsd-kind-icon">hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#move" class="tsd-kind-icon">move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onclose" class="tsd-kind-icon">on<wbr>Close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onmove" class="tsd-kind-icon">on<wbr>Move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="phosphor.lib.codemirrorwidget.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#resize" class="tsd-kind-icon">resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#show" class="tsd-kind-icon">show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.lib.codemirrorwidget.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.lib.codemirrorwidget.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a></li>
 							</ul>
 						</section>
 					</div>
@@ -207,34 +194,54 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Panel<span class="tsd-signature-symbol">(</span>layout<span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.layout.html" class="tsd-signature-type">Layout</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.panel.html" class="tsd-signature-type">Panel</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Code<wbr>Mirror<wbr>Widget<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/codemirror.editorconfiguration.html" class="tsd-signature-type">EditorConfiguration</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.lib.codemirrorwidget.html" class="tsd-signature-type">CodeMirrorWidget</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L16">src/widgets/panel.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L40">src/lib/codemirror.ts:40</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Construct a new panel.</p>
+									<p>Construct a new code mirror widget.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>layout: <a href="phosphor.widgets.layout.html" class="tsd-signature-type">Layout</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/codemirror.editorconfiguration.html" class="tsd-signature-type">EditorConfiguration</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="phosphor.widgets.panel.html" class="tsd-signature-type">Panel</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="phosphor.lib.codemirrorwidget.html" class="tsd-signature-type">CodeMirrorWidget</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_editor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _editor</h3>
+					<div class="tsd-signature tsd-kind-icon">_editor<span class="tsd-signature-symbol">:</span> <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L119">src/lib/codemirror.ts:119</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_scrollpos" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _scroll<wbr>Pos</h3>
+					<div class="tsd-signature tsd-kind-icon">_scroll<wbr>Pos<span class="tsd-signature-symbol">:</span> <a href="phosphor.utility.point.html" class="tsd-signature-type">Point</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L120">src/lib/codemirror.ts:120</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="disposed" class="tsd-anchor"></a>
 					<h3>disposed</h3>
@@ -303,24 +310,26 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="count" class="tsd-anchor"></a>
-					<h3>count</h3>
+					<a name="editor" class="tsd-anchor"></a>
+					<h3>editor</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> count<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> editor<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L29">src/widgets/panel.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L65">src/lib/codemirror.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the number of items (widgets + spacers) in the panel.</p>
+									<p>Get the code mirror editor for the widget.</p>
 								</div>
+								<p>This widget does not attempt to wrap the code mirror api.
+								User code should interact with the editor object directly.</p>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -849,35 +858,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="alignment" class="tsd-anchor"></a>
-					<h3>alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">alignment<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/phosphor.widgets.alignment.html" class="tsd-signature-type">Alignment</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L56">src/widgets/panel.ts:56</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the alignment for the given widget.</p>
-								</div>
-								<p>Returns 0 if the widget is not found in the panel.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>widget: <a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/phosphor.widgets.alignment.html" class="tsd-signature-type">Alignment</a></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="attach" class="tsd-anchor"></a>
 					<h3>attach</h3>
@@ -1028,6 +1008,37 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="createeditor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Editor</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Editor<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/codemirror.editorconfiguration.html" class="tsd-signature-type">EditorConfiguration</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L83">src/lib/codemirror.ts:83</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create the editor for the widget.</p>
+								</div>
+								<p>This can be reimplemented by subclasses which require custom
+									creation of the editor instance. The default implementation
+								assumes <code>CodeMirror</code> is available in the global scope.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/codemirror.editorconfiguration.html" class="tsd-signature-type">EditorConfiguration</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/codemirror.editor.html" class="tsd-signature-type">Editor</a></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="createnode" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Node</h3>
@@ -1077,23 +1088,23 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="dispose" class="tsd-anchor"></a>
 					<h3>dispose</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">dispose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#dispose">dispose</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#dispose">dispose</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L70">src/widgets/widget.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L54">src/lib/codemirror.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Dispose of the widget and its descendants.</p>
+									<p>Dispose of the resources held by the widget.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1188,35 +1199,6 @@
 								<p>If the widget is already hidden, this is a no-op.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="indexof" class="tsd-anchor"></a>
-					<h3>index<wbr>Of</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">index<wbr>Of<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L38">src/widgets/panel.ts:38</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the index of the given widget.</p>
-								</div>
-								<p>Returns -1 if the widget is not found.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>widget: <a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1335,25 +1317,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="onafterattach" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>After<wbr>Attach</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>After<wbr>Attach<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onafterattach">onAfterAttach</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onafterattach">onAfterAttach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L878">src/widgets/widget.ts:878</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L106">src/lib/codemirror.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A method invoked when an &#39;after-attach&#39; message is received.</p>
+									<p>A method invoked on an &#39;after-attach&#39; message.</p>
 								</div>
-								<p>The default implementation is a no-op.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1425,25 +1406,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="onaftershow" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>After<wbr>Show</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>After<wbr>Show<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onaftershow">onAfterShow</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onaftershow">onAfterShow</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L850">src/widgets/widget.ts:850</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L90">src/lib/codemirror.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A method invoked when an &#39;after-show&#39; message is received.</p>
+									<p>A method invoked on an &#39;after-show&#39; message.</p>
 								</div>
-								<p>The default implementation is a no-op.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1515,25 +1495,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="onbeforehide" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Before<wbr>Hide</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Before<wbr>Hide<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onbeforehide">onBeforeHide</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onbeforehide">onBeforeHide</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L857">src/widgets/widget.ts:857</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L98">src/lib/codemirror.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A method invoked when a &#39;before-hide&#39; message is received.</p>
+									<p>A method invoked on a &#39;before-hide&#39; message.</p>
 								</div>
-								<p>The default implementation is a no-op.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1695,25 +1674,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 					<a name="onresize" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Resize</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Resize<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.resizemessage.html" class="tsd-signature-type">ResizeMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onresize">onResize</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#onresize">onResize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L836">src/widgets/widget.ts:836</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L113">src/lib/codemirror.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A method invoked when a &#39;resize&#39; message is received.</p>
+									<p>A method invoked on a &#39;resize&#39; message.</p>
 								</div>
-								<p>The default implementation is a no-op.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1814,38 +1792,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setalignment" class="tsd-anchor"></a>
-					<h3>set<wbr>Alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Alignment<span class="tsd-signature-symbol">(</span>widget<span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a>, alignment<span class="tsd-signature-symbol">: </span><a href="../enums/phosphor.widgets.alignment.html" class="tsd-signature-type">Alignment</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L65">src/widgets/panel.ts:65</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the alignment for the given widget.</p>
-								</div>
-								<p>Returns true if the alignment was updated, false otherwise.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>widget: <a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a></h5>
-								</li>
-								<li>
-									<h5>alignment: <a href="../enums/phosphor.widgets.alignment.html" class="tsd-signature-type">Alignment</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2004,29 +1950,24 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="sizehint" class="tsd-anchor"></a>
 					<h3>size<wbr>Hint</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">size<wbr>Hint<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.utility.size.html" class="tsd-signature-type">Size</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#sizehint">sizeHint</a></p>
+								<p>Overwrites <a href="phosphor.widgets.widget.html">Widget</a>.<a href="phosphor.widgets.widget.html#sizehint">sizeHint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L535">src/widgets/widget.ts:535</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L72">src/lib/codemirror.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Calculate the preferred size for the widget.</p>
 								</div>
-								<p>This is used by Phosphor&#39;s layout machinery to compute the natural
-									space required for the widget and its children. A subclass which
-								provides leaf content should reimplement this method.</p>
-								<p>The default implementation of this method delegates to the layout
-								manager if installed, otherwise it returns a zero size.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="phosphor.utility.size.html" class="tsd-signature-type">Size</a></h4>
 						</li>
@@ -2096,35 +2037,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="widgetat" class="tsd-anchor"></a>
-					<h3>widget<wbr>At</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">widget<wbr>At<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/panel.ts#L47">src/widgets/panel.ts:47</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the widget at the given index.</p>
-								</div>
-								<p>Returns <code>undefined</code> if there is no widget at the given index.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a></h4>
-						</li>
-					</ul>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -2148,7 +2060,7 @@
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.di.html">di</a>
 							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
+							<li class="current tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.lib.html">lib</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
@@ -2160,7 +2072,7 @@
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
 							</li>
-							<li class="current tsd-kind-module tsd-parent-kind-module">
+							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="../modules/phosphor.widgets.html">widgets</a>
 							</li>
 						</ul>
@@ -2178,201 +2090,213 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="phosphor.lib.codemirrorcomponent.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Component</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="phosphor.widgets.panel.html" class="tsd-kind-icon">Panel</a>
+						<a href="phosphor.lib.codemirrorwidget.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Widget</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="phosphor.widgets.panel.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="phosphor.lib.codemirrorwidget.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="phosphor.lib.codemirrorwidget.html#_editor" class="tsd-kind-icon">_editor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="phosphor.lib.codemirrorwidget.html#_scrollpos" class="tsd-kind-icon">_scroll<wbr>Pos</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#disposed" class="tsd-kind-icon">disposed</a>
+								<a href="phosphor.lib.codemirrorwidget.html#disposed" class="tsd-kind-icon">disposed</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a>
+								<a href="phosphor.lib.codemirrorwidget.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#childcount" class="tsd-kind-icon">child<wbr>Count</a>
+								<a href="phosphor.lib.codemirrorwidget.html#childcount" class="tsd-kind-icon">child<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="phosphor.widgets.panel.html#count" class="tsd-kind-icon">count</a>
+								<a href="phosphor.lib.codemirrorwidget.html#editor" class="tsd-kind-icon">editor</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#height" class="tsd-kind-icon">height</a>
+								<a href="phosphor.lib.codemirrorwidget.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.lib.codemirrorwidget.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a>
+								<a href="phosphor.lib.codemirrorwidget.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a>
+								<a href="phosphor.lib.codemirrorwidget.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a>
+								<a href="phosphor.lib.codemirrorwidget.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a>
+								<a href="phosphor.lib.codemirrorwidget.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#layout" class="tsd-kind-icon">layout</a>
+								<a href="phosphor.lib.codemirrorwidget.html#layout" class="tsd-kind-icon">layout</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#node" class="tsd-kind-icon">node</a>
+								<a href="phosphor.lib.codemirrorwidget.html#node" class="tsd-kind-icon">node</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#parent" class="tsd-kind-icon">parent</a>
+								<a href="phosphor.lib.codemirrorwidget.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.lib.codemirrorwidget.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#width" class="tsd-kind-icon">width</a>
+								<a href="phosphor.lib.codemirrorwidget.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#x" class="tsd-kind-icon">x</a>
+								<a href="phosphor.lib.codemirrorwidget.html#x" class="tsd-kind-icon">x</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#y" class="tsd-kind-icon">y</a>
+								<a href="phosphor.lib.codemirrorwidget.html#y" class="tsd-kind-icon">y</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#addclass" class="tsd-kind-icon">add<wbr>Class</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="phosphor.widgets.panel.html#alignment" class="tsd-kind-icon">alignment</a>
+								<a href="phosphor.lib.codemirrorwidget.html#addclass" class="tsd-kind-icon">add<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#attach" class="tsd-kind-icon">attach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#attach" class="tsd-kind-icon">attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#childat" class="tsd-kind-icon">child<wbr>At</a>
+								<a href="phosphor.lib.codemirrorwidget.html#childat" class="tsd-kind-icon">child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a>
+								<a href="phosphor.lib.codemirrorwidget.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#close" class="tsd-kind-icon">close</a>
+								<a href="phosphor.lib.codemirrorwidget.html#close" class="tsd-kind-icon">close</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a>
+								<a href="phosphor.lib.codemirrorwidget.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="phosphor.lib.codemirrorwidget.html#createeditor" class="tsd-kind-icon">create<wbr>Editor</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#createnode" class="tsd-kind-icon">create<wbr>Node</a>
+								<a href="phosphor.lib.codemirrorwidget.html#createnode" class="tsd-kind-icon">create<wbr>Node</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#detach" class="tsd-kind-icon">detach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#detach" class="tsd-kind-icon">detach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="phosphor.lib.codemirrorwidget.html#dispose" class="tsd-kind-icon">dispose</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#dispose" class="tsd-kind-icon">dispose</a>
+								<a href="phosphor.lib.codemirrorwidget.html#fit" class="tsd-kind-icon">fit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#fit" class="tsd-kind-icon">fit</a>
+								<a href="phosphor.lib.codemirrorwidget.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a>
+								<a href="phosphor.lib.codemirrorwidget.html#hide" class="tsd-kind-icon">hide</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#hide" class="tsd-kind-icon">hide</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="phosphor.widgets.panel.html#indexof" class="tsd-kind-icon">index<wbr>Of</a>
+								<a href="phosphor.lib.codemirrorwidget.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a>
+								<a href="phosphor.lib.codemirrorwidget.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a>
+								<a href="phosphor.lib.codemirrorwidget.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a>
+								<a href="phosphor.lib.codemirrorwidget.html#move" class="tsd-kind-icon">move</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#move" class="tsd-kind-icon">move</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="phosphor.lib.codemirrorwidget.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="phosphor.lib.codemirrorwidget.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="phosphor.lib.codemirrorwidget.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onclose" class="tsd-kind-icon">on<wbr>Close</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a>
+								<a href="phosphor.lib.codemirrorwidget.html#onmove" class="tsd-kind-icon">on<wbr>Move</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onclose" class="tsd-kind-icon">on<wbr>Close</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onmove" class="tsd-kind-icon">on<wbr>Move</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.panel.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="phosphor.lib.codemirrorwidget.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a>
+								<a href="phosphor.lib.codemirrorwidget.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a>
+								<a href="phosphor.lib.codemirrorwidget.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#resize" class="tsd-kind-icon">resize</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="phosphor.widgets.panel.html#setalignment" class="tsd-kind-icon">set<wbr>Alignment</a>
+								<a href="phosphor.lib.codemirrorwidget.html#resize" class="tsd-kind-icon">resize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a>
+								<a href="phosphor.lib.codemirrorwidget.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a>
+								<a href="phosphor.lib.codemirrorwidget.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.lib.codemirrorwidget.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a>
+								<a href="phosphor.lib.codemirrorwidget.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#show" class="tsd-kind-icon">show</a>
+								<a href="phosphor.lib.codemirrorwidget.html#show" class="tsd-kind-icon">show</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="phosphor.lib.codemirrorwidget.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a>
+								<a href="phosphor.lib.codemirrorwidget.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="phosphor.widgets.panel.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="phosphor.widgets.panel.html#widgetat" class="tsd-kind-icon">widget<wbr>At</a>
+								<a href="phosphor.lib.codemirrorwidget.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/phosphor.lib.icodemirrordata.html" class="tsd-kind-icon">ICode<wbr>Mirror<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/phosphor.lib.html#code_mirror_component_class" class="tsd-kind-icon">CODE_<wbr>MIRROR_<wbr>COMPONENT_<wbr>CLASS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/phosphor.lib.html#code_mirror_widget_class" class="tsd-kind-icon">CODE_<wbr>MIRROR_<wbr>WIDGET_<wbr>CLASS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/phosphor.lib.html#codemirrorfactory" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Factory</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

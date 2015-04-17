@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>components | Phosphor</title>
+	<title>ICodeMirrorData | Phosphor</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,84 +57,105 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="phosphor.html">phosphor</a>
+					<a href="../modules/phosphor.html">phosphor</a>
 				</li>
 				<li>
-					<a href="phosphor.components.html">components</a>
+					<a href="../modules/phosphor.lib.html">lib</a>
+				</li>
+				<li>
+					<a href="phosphor.lib.icodemirrordata.html">ICodeMirrorData</a>
 				</li>
 			</ul>
-			<h1>Module components</h1>
+			<h1>Interface ICodeMirrorData</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The data object for a code mirror component.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="phosphor.virtualdom.idata.html" class="tsd-signature-type">IData</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">ICodeMirrorData</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/phosphor.components.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/phosphor.components.codemirrorcomponent.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Component</a></li>
-								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/phosphor.components.component.html" class="tsd-kind-icon">Component</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-kind-icon">ICode<wbr>Mirror<wbr>Data</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Variables</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.components.html#codemirrorfactory" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Factory</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.components.html#caf" class="tsd-kind-icon">caf</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.components.html#raf" class="tsd-kind-icon">raf</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="phosphor.lib.icodemirrordata.html#config" class="tsd-kind-icon">config</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.lib.icodemirrordata.html#key" class="tsd-kind-icon">key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.lib.icodemirrordata.html#ref" class="tsd-kind-icon">ref</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="codemirrorfactory" class="tsd-anchor"></a>
-					<h3>Code<wbr>Mirror<wbr>Factory</h3>
-					<div class="tsd-signature tsd-kind-icon">Code<wbr>Mirror<wbr>Factory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/phosphor.virtualdom.ifactory.html" class="tsd-signature-type">IFactory</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-signature-type">ICodeMirrorData</a><span class="tsd-signature-symbol">&gt;</span></div>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="config" class="tsd-anchor"></a>
+					<h3>config</h3>
+					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="codemirror.editorconfiguration.html" class="tsd-signature-type">EditorConfiguration</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/codemirror.ts#L81">src/components/codemirror.ts:81</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/lib/codemirror.ts#L129">src/lib/codemirror.ts:129</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="key" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> key</h3>
+					<div class="tsd-signature tsd-kind-icon">key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="phosphor.virtualdom.idata.html">IData</a>.<a href="phosphor.virtualdom.idata.html#key">key</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/idata.ts#L22">src/virtualdom/idata.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The default virtual element factory for the CodeMirrorComponent.</p>
+							<p>The key id for the element.</p>
 						</div>
+						<p>If an element is given a key id, the generated node will not be
+							recreated during a rendering update if it moves in the render
+						tree provided the type of the node does not change.</p>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="caf" class="tsd-anchor"></a>
-					<h3>caf</h3>
-					<div class="tsd-signature tsd-kind-icon">caf<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">cancelAnimationFrame</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="ref" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ref</h3>
+					<div class="tsd-signature tsd-kind-icon">ref<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="phosphor.virtualdom.idata.html">IData</a>.<a href="phosphor.virtualdom.idata.html#ref">ref</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/component.ts#L19">src/components/component.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/idata.ts#L30">src/virtualdom/idata.ts:30</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="raf" class="tsd-anchor"></a>
-					<h3>raf</h3>
-					<div class="tsd-signature tsd-kind-icon">raf<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">requestAnimationFrame</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/components/component.ts#L18">src/components/component.ts:18</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The ref id for the element.</p>
+						</div>
+						<p>If an element is given a ref id, the generated node or component
+						will be added to the ref mapping created by the renderer.</p>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -148,31 +169,31 @@
 						<span>Internals</span>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="phosphor.html">phosphor</a>
+						<a href="../modules/phosphor.html">phosphor</a>
 						<ul>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.collections.html">collections</a>
+								<a href="../modules/phosphor.collections.html">collections</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="../modules/phosphor.core.html">core</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="../modules/phosphor.di.html">di</a>
 							</li>
 							<li class="current tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.components.html">components</a>
+								<a href="../modules/phosphor.lib.html">lib</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.core.html">core</a>
+								<a href="../modules/phosphor.shell.html">shell</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.di.html">di</a>
+								<a href="../modules/phosphor.utility.html">utility</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.shell.html">shell</a>
+								<a href="../modules/phosphor.virtualdom.html">virtualdom</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.utility.html">utility</a>
-							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.virtualdom.html">virtualdom</a>
-							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.widgets.html">widgets</a>
+								<a href="../modules/phosphor.widgets.html">widgets</a>
 							</li>
 						</ul>
 					</li>
@@ -180,35 +201,47 @@
 						<span>Externals</span>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external tsd-is-not-exported">
-						<a href="_es6_promise_.html">"es6-<wbr>promise"</a>
+						<a href="../modules/_es6_promise_.html">"es6-<wbr>promise"</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external tsd-is-not-exported">
-						<a href="codemirror.html">Code<wbr>Mirror</a>
+						<a href="../modules/codemirror.html">Code<wbr>Mirror</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.components.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/phosphor.lib.codemirrorcomponent.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Component</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/phosphor.components.codemirrorcomponent.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Component</a>
+						<a href="../classes/phosphor.lib.codemirrorwidget.html" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Widget</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/phosphor.components.component.html" class="tsd-kind-icon">Component</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="phosphor.lib.icodemirrordata.html" class="tsd-kind-icon">ICode<wbr>Mirror<wbr>Data</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="phosphor.lib.icodemirrordata.html#config" class="tsd-kind-icon">config</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.lib.icodemirrordata.html#key" class="tsd-kind-icon">key</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.lib.icodemirrordata.html#ref" class="tsd-kind-icon">ref</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/phosphor.components.icodemirrordata.html" class="tsd-kind-icon">ICode<wbr>Mirror<wbr>Data</a>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/phosphor.lib.html#code_mirror_component_class" class="tsd-kind-icon">CODE_<wbr>MIRROR_<wbr>COMPONENT_<wbr>CLASS</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="phosphor.components.html#codemirrorfactory" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Factory</a>
+						<a href="../modules/phosphor.lib.html#code_mirror_widget_class" class="tsd-kind-icon">CODE_<wbr>MIRROR_<wbr>WIDGET_<wbr>CLASS</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="phosphor.components.html#caf" class="tsd-kind-icon">caf</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="phosphor.components.html#raf" class="tsd-kind-icon">raf</a>
+						<a href="../modules/phosphor.lib.html#codemirrorfactory" class="tsd-kind-icon">Code<wbr>Mirror<wbr>Factory</a>
 					</li>
 				</ul>
 			</nav>

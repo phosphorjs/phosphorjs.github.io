@@ -84,6 +84,8 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/phosphor.virtualdom.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/phosphor.virtualdom.component.html" class="tsd-kind-icon">Component</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/phosphor.virtualdom.virtualelement.html" class="tsd-kind-icon">Virtual<wbr>Element</a></li>
 							</ul>
 						</section>
@@ -143,8 +145,10 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.virtualdom.html#caf" class="tsd-kind-icon">caf</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.virtualdom.html#componentmap" class="tsd-kind-icon">component<wbr>Map</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.virtualdom.html#hostmap" class="tsd-kind-icon">host<wbr>Map</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="phosphor.virtualdom.html#raf" class="tsd-kind-icon">raf</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -215,6 +219,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="caf" class="tsd-anchor"></a>
+					<h3>caf</h3>
+					<div class="tsd-signature tsd-kind-icon">caf<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">cancelAnimationFrame</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L15">src/virtualdom/component.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="componentmap" class="tsd-anchor"></a>
 					<h3>component<wbr>Map</h3>
 					<div class="tsd-signature tsd-kind-icon">component<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WeakMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/phosphor.virtualdom.icomponent.html" class="tsd-signature-type">IComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
@@ -243,6 +257,16 @@
 							<p>A weak mapping of host node to rendered content.</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="raf" class="tsd-anchor"></a>
+					<h3>raf</h3>
+					<div class="tsd-signature tsd-kind-icon">raf<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">requestAnimationFrame</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L14">src/virtualdom/component.ts:14</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -3397,13 +3421,13 @@
 								<a href="phosphor.collections.html">collections</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
-								<a href="phosphor.components.html">components</a>
-							</li>
-							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="phosphor.core.html">core</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="phosphor.di.html">di</a>
+							</li>
+							<li class=" tsd-kind-module tsd-parent-kind-module">
+								<a href="phosphor.lib.html">lib</a>
 							</li>
 							<li class=" tsd-kind-module tsd-parent-kind-module">
 								<a href="phosphor.shell.html">shell</a>
@@ -3437,6 +3461,12 @@
 					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="../enums/phosphor.virtualdom.elementtype.html" class="tsd-kind-icon">Element<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../classes/phosphor.virtualdom.basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../classes/phosphor.virtualdom.component.html" class="tsd-kind-icon">Component</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="../classes/phosphor.virtualdom.virtualelement.html" class="tsd-kind-icon">Virtual<wbr>Element</a>
@@ -3571,10 +3601,16 @@
 						<a href="phosphor.virtualdom.html#factorychildtype" class="tsd-kind-icon">Factory<wbr>Child<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="phosphor.virtualdom.html#caf" class="tsd-kind-icon">caf</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="phosphor.virtualdom.html#componentmap" class="tsd-kind-icon">component<wbr>Map</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="phosphor.virtualdom.html#hostmap" class="tsd-kind-icon">host<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="phosphor.virtualdom.html#raf" class="tsd-kind-icon">raf</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="phosphor.virtualdom.html#addattributes" class="tsd-kind-icon">add<wbr>Attributes</a>

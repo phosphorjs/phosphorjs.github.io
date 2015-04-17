@@ -16,8 +16,8 @@ var chat;
 (function (chat) {
     var roomsplugin;
     (function (roomsplugin) {
-        var Component = phosphor.components.Component;
         var IShellView = phosphor.shell.IShellView;
+        var Component = phosphor.virtualdom.Component;
         var createFactory = phosphor.virtualdom.createFactory;
         var dom = phosphor.virtualdom.dom;
         var ElementHost = phosphor.widgets.ElementHost;

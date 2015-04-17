@@ -16,5 +16,5 @@ var example;
         var app = new ChatApplication();
         app.run();
     }
-    example.main = main;
+    window.onload = main;
 })(example || (example = {})); // module example

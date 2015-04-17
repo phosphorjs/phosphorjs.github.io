@@ -14,7 +14,7 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var Component = phosphor.components.Component;
+    var Component = phosphor.virtualdom.Component;
     var createFactory = phosphor.virtualdom.createFactory;
     var dom = phosphor.virtualdom.dom;
     var render = phosphor.virtualdom.render;

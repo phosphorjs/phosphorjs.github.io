@@ -8,19 +8,18 @@
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var CodeMirrorFactory = phosphor.components.CodeMirrorFactory;
+    var CodeMirrorFactory = phosphor.lib.CodeMirrorFactory;
     var render = phosphor.virtualdom.render;
     function main() {
         var cm = CodeMirrorFactory({
-            ref: 'cm',
             config: {
-                value: "var text = 'This is CodeMirror.';",
+                value: "var text = 'This is a CodeMirror component.';",
                 mode: 'javascript',
                 lineNumbers: true,
                 tabSize: 2,
             }
         });
-        var refs = render(cm, document.getElementById('main'));
+        render(cm, document.getElementById('main'));
     }
     window.onload = main;
 })(example || (example = {})); // module example
