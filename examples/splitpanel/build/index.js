@@ -13,8 +13,8 @@ var example;
     var Widget = phosphor.widgets.Widget;
     function createContent(name) {
         var widget = new Widget();
-        widget.addClass('content');
-        widget.addClass(name);
+        widget.node.classList.add('content');
+        widget.node.classList.add(name);
         return widget;
     }
     function main() {

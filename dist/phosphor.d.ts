@@ -3336,18 +3336,6 @@ declare module phosphor.widgets {
          */
         childAt(index: number): Widget;
         /**
-         * Test whether the widget's DOM node has the given class name.
-         */
-        hasClass(name: string): boolean;
-        /**
-         * Add a class name to the widget's DOM node.
-         */
-        addClass(name: string): void;
-        /**
-         * Remove a class name from the widget's DOM node.
-         */
-        removeClass(name: string): void;
-        /**
          * Test whether the given widget flag is set.
          */
         testFlag(flag: WidgetFlag): boolean;

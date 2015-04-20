@@ -6730,7 +6730,7 @@ var phosphor;
                 this._height = 0;
                 this._flags = 0;
                 this._node = this.createNode();
-                this.addClass(WIDGET_CLASS);
+                this._node.classList.add(WIDGET_CLASS);
             }
             /**
              * Dispose of the widget and its descendants.
@@ -7043,24 +7043,6 @@ var phosphor;
                 return this._children[index];
             };
             /**
-             * Test whether the widget's DOM node has the given class name.
-             */
-            Widget.prototype.hasClass = function (name) {
-                return this._node.classList.contains(name);
-            };
-            /**
-             * Add a class name to the widget's DOM node.
-             */
-            Widget.prototype.addClass = function (name) {
-                this._node.classList.add(name);
-            };
-            /**
-             * Remove a class name from the widget's DOM node.
-             */
-            Widget.prototype.removeClass = function (name) {
-                this._node.classList.remove(name);
-            };
-            /**
              * Test whether the given widget flag is set.
              */
             Widget.prototype.testFlag = function (flag) {
@@ -7090,12 +7072,12 @@ var phosphor;
                 var parent = this._parent;
                 if (this.isAttached && (!parent || parent.isVisible)) {
                     sendMessage(this, new Message('before-show'));
-                    this.removeClass(HIDDEN_CLASS);
+                    this._node.classList.remove(HIDDEN_CLASS);
                     this.clearFlag(2 /* IsHidden */);
                     sendMessage(this, new Message('after-show'));
                 }
                 else {
-                    this.removeClass(HIDDEN_CLASS);
+                    this._node.classList.remove(HIDDEN_CLASS);
                     this.clearFlag(2 /* IsHidden */);
                 }
                 if (parent) {
@@ -7115,12 +7097,12 @@ var phosphor;
                 var parent = this._parent;
                 if (this.isAttached && (!parent || parent.isVisible)) {
                     sendMessage(this, new Message('before-hide'));
-                    this.addClass(HIDDEN_CLASS);
+                    this._node.classList.add(HIDDEN_CLASS);
                     this.setFlag(2 /* IsHidden */);
                     sendMessage(this, new Message('after-hide'));
                 }
                 else {
-                    this.addClass(HIDDEN_CLASS);
+                    this._node.classList.add(HIDDEN_CLASS);
                     this.setFlag(2 /* IsHidden */);
                 }
                 if (parent) {
@@ -7714,7 +7696,7 @@ var phosphor;
                 if (direction === void 0) { direction = 2 /* TopToBottom */; }
                 if (spacing === void 0) { spacing = 8; }
                 _super.call(this, new widgets.BoxLayout(direction, spacing));
-                this.addClass(BOX_PANEL_CLASS);
+                this.node.classList.add(BOX_PANEL_CLASS);
             }
             Object.defineProperty(BoxPanel.prototype, "direction", {
                 /**
@@ -7856,7 +7838,7 @@ var phosphor;
                 if (orientation === void 0) { orientation = 0 /* Horizontal */; }
                 _super.call(this, new widgets.SplitLayout(orientation));
                 this._pressData = null;
-                this.addClass(SPLIT_PANEL_CLASS);
+                this.node.classList.add(SPLIT_PANEL_CLASS);
             }
             /**
              * Dispose of the resources held by the panel.
@@ -8098,7 +8080,7 @@ var phosphor;
                  * A signal emitted when a widget is removed from the panel.
                  */
                 this.widgetRemoved = new Signal();
-                this.addClass(STACKED_PANEL_CLASS);
+                this.node.classList.add(STACKED_PANEL_CLASS);
                 var layout = this.layout;
                 layout.widgetRemoved.connect(this._sl_widgetRemoved, this);
             }
@@ -8245,7 +8227,7 @@ var phosphor;
                 this._root = null;
                 this._dragData = null;
                 this._items = [];
-                this.addClass(DOCK_AREA_CLASS);
+                this.node.classList.add(DOCK_AREA_CLASS);
                 this._root = this._createSplitter(0 /* Horizontal */);
                 var layout = new widgets.BoxLayout(2 /* TopToBottom */, 0);
                 layout.addWidget(this._root);
@@ -9031,7 +9013,7 @@ var phosphor;
                 this._overlayTimer = 0;
                 this._overlayHidden = true;
                 this._overlayNode = null;
-                this.addClass(DOCK_PANEL_CLASS);
+                this.node.classList.add(DOCK_PANEL_CLASS);
                 this._tabBar = new widgets.TabBar();
                 this._stackedPanel = new widgets.StackedPanel();
                 this._overlayNode = this.createOverlay();
@@ -9190,7 +9172,7 @@ var phosphor;
              */
             function DockSplitter(orientation) {
                 _super.call(this, orientation);
-                this.addClass(DOCK_SPLITTER_CLASS);
+                this.node.classList.add(DOCK_SPLITTER_CLASS);
             }
             return DockSplitter;
         })(widgets.SplitPanel);
@@ -10556,7 +10538,7 @@ var phosphor;
                 this._nodes = [];
                 this._state = 0 /* Inactive */;
                 this._activeIndex = -1;
-                this.addClass(MENU_BAR_CLASS);
+                this.node.classList.add(MENU_BAR_CLASS);
                 this.verticalSizePolicy = 0 /* Fixed */;
                 if (items)
                     items.forEach(function (it) { return _this.addItem(it); });
@@ -11612,7 +11594,7 @@ var phosphor;
                 this._currentTab = null;
                 this._previousTab = null;
                 this._dragData = null;
-                this.addClass(TAB_BAR_CLASS);
+                this.node.classList.add(TAB_BAR_CLASS);
                 this.verticalSizePolicy = 0 /* Fixed */;
                 if (options)
                     this._initFrom(options);
@@ -12540,7 +12522,7 @@ var phosphor;
                  * A signal emitted when the current widget is changed.
                  */
                 this.currentChanged = new Signal();
-                this.addClass(TAB_PANEL_CLASS);
+                this.node.classList.add(TAB_PANEL_CLASS);
                 this.layout = new widgets.BoxLayout(2 /* TopToBottom */, 0);
                 this.setFlag(16 /* DisallowLayoutChange */);
                 var bar = this._tabBar = new widgets.TabBar();
@@ -13166,7 +13148,7 @@ var phosphor;
             function ShellPanel(direction) {
                 _super.call(this);
                 this._pairs = [];
-                this.addClass(SHELL_PANEL_CLASS);
+                this.node.classList.add(SHELL_PANEL_CLASS);
                 this.layout = new BoxLayout(direction, 0);
                 this.setFlag(16 /* DisallowLayoutChange */);
             }
@@ -13270,7 +13252,7 @@ var phosphor;
              */
             function ShellView() {
                 _super.call(this);
-                this.addClass(SHELL_VIEW_CLASS);
+                this.node.classList.add(SHELL_VIEW_CLASS);
                 this._menuBar = new MenuBar();
                 this._topPanel = new shell.ShellPanel(2 /* TopToBottom */);
                 this._leftPanel = new shell.ShellPanel(0 /* LeftToRight */);
@@ -13278,11 +13260,11 @@ var phosphor;
                 this._bottomPanel = new shell.ShellPanel(3 /* BottomToTop */);
                 this._centerPanel = new shell.ShellPanel(2 /* TopToBottom */);
                 this._menuManager = new shell.MenuManager(this._menuBar);
-                this._topPanel.addClass(TOP_CLASS);
-                this._leftPanel.addClass(LEFT_CLASS);
-                this._rightPanel.addClass(RIGHT_CLASS);
-                this._bottomPanel.addClass(BOTTOM_CLASS);
-                this._centerPanel.addClass(CENTER_CLASS);
+                this._topPanel.node.classList.add(TOP_CLASS);
+                this._leftPanel.node.classList.add(LEFT_CLASS);
+                this._rightPanel.node.classList.add(RIGHT_CLASS);
+                this._bottomPanel.node.classList.add(BOTTOM_CLASS);
+                this._centerPanel.node.classList.add(CENTER_CLASS);
                 this._menuBar.hide();
                 this._topPanel.verticalSizePolicy = 0 /* Fixed */;
                 shell.enableAutoHide(this._topPanel);
@@ -13474,7 +13456,7 @@ var phosphor;
             function CodeMirrorWidget(config) {
                 _super.call(this);
                 this._scrollPos = null;
-                this.addClass(CODE_MIRROR_WIDGET_CLASS);
+                this.node.classList.add(CODE_MIRROR_WIDGET_CLASS);
                 this._editor = CodeMirror(this.node, config);
                 this.setSizePolicy(SizePolicy.Expanding, SizePolicy.Expanding);
             }
