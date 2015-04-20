@@ -17,22 +17,23 @@ var chat;
     var roomsplugin;
     (function (roomsplugin) {
         var IShellView = phosphor.shell.IShellView;
+        var Size = phosphor.utility.Size;
         var Component = phosphor.virtualdom.Component;
         var createFactory = phosphor.virtualdom.createFactory;
         var dom = phosphor.virtualdom.dom;
-        var ElementHost = phosphor.widgets.ElementHost;
+        var RenderWidget = phosphor.widgets.RenderWidget;
         /**
          * A simple placeholder component for the chat rooms list.
          */
         var RoomListPlaceholder = (function (_super) {
             __extends(RoomListPlaceholder, _super);
-            function RoomListPlaceholder() {
-                _super.apply(this, arguments);
+            function RoomListPlaceholder(data, children) {
+                _super.call(this, data, children);
+                this.node.classList.add('chat-room-list');
             }
             RoomListPlaceholder.prototype.render = function () {
                 return dom.h2('Room List Placeholder');
             };
-            RoomListPlaceholder.className = 'chat-room-list';
             return RoomListPlaceholder;
         })(Component);
         /**
@@ -44,13 +45,13 @@ var chat;
          */
         var OpenRoomsPlaceholder = (function (_super) {
             __extends(OpenRoomsPlaceholder, _super);
-            function OpenRoomsPlaceholder() {
-                _super.apply(this, arguments);
+            function OpenRoomsPlaceholder(data, children) {
+                _super.call(this, data, children);
+                this.node.classList.add('chat-open-rooms');
             }
             OpenRoomsPlaceholder.prototype.render = function () {
                 return dom.h2('Open Rooms Placeholder');
             };
-            OpenRoomsPlaceholder.className = 'chat-open-rooms';
             return OpenRoomsPlaceholder;
         })(Component);
         /**
@@ -58,16 +59,46 @@ var chat;
          */
         var OpenRooms = createFactory(OpenRoomsPlaceholder);
         /**
+         * A host widget for the room list component.
+         */
+        var RoomListHost = (function (_super) {
+            __extends(RoomListHost, _super);
+            function RoomListHost() {
+                _super.call(this);
+                this.node.classList.add('chat-room-list-host');
+            }
+            RoomListHost.prototype.sizeHint = function () {
+                return new Size(250, 400);
+            };
+            RoomListHost.prototype.render = function () {
+                return RoomList();
+            };
+            return RoomListHost;
+        })(RenderWidget);
+        /**
+         * A host widget for the open rooms component.
+         */
+        var OpenRoomsHost = (function (_super) {
+            __extends(OpenRoomsHost, _super);
+            function OpenRoomsHost() {
+                _super.call(this);
+                this.node.classList.add('chat-open-rooms-host');
+            }
+            OpenRoomsHost.prototype.sizeHint = function () {
+                return new Size(600, 400);
+            };
+            OpenRoomsHost.prototype.render = function () {
+                return OpenRooms();
+            };
+            return OpenRoomsHost;
+        })(RenderWidget);
+        /**
          * Initialize the chat rooms plugin.
          */
         function initialize(container) {
             var shell = container.resolve(IShellView);
-            var list = new ElementHost(RoomList(), 250, 400);
-            list.addClass('chat-room-list-host');
-            var rooms = new ElementHost(OpenRooms(), 600, 400);
-            rooms.addClass('chat-open-rooms-host');
-            shell.addWidget('left', list);
-            shell.addWidget('center', rooms);
+            shell.addWidget('left', new RoomListHost());
+            shell.addWidget('center', new OpenRoomsHost());
         }
         roomsplugin.initialize = initialize;
     })(roomsplugin = chat.roomsplugin || (chat.roomsplugin = {}));

@@ -17,22 +17,23 @@ var chat;
     var feedplugin;
     (function (feedplugin) {
         var IShellView = phosphor.shell.IShellView;
+        var Size = phosphor.utility.Size;
         var Component = phosphor.virtualdom.Component;
         var createFactory = phosphor.virtualdom.createFactory;
         var dom = phosphor.virtualdom.dom;
-        var ElementHost = phosphor.widgets.ElementHost;
+        var RenderWidget = phosphor.widgets.RenderWidget;
         /**
          * A simple placeholder component for the chat feed.
          */
         var FeedPlaceholder = (function (_super) {
             __extends(FeedPlaceholder, _super);
-            function FeedPlaceholder() {
-                _super.apply(this, arguments);
+            function FeedPlaceholder(data, children) {
+                _super.call(this, data, children);
+                this.node.classList.add('chat-feed');
             }
             FeedPlaceholder.prototype.render = function () {
                 return dom.h2('Chat Feed Placeholder');
             };
-            FeedPlaceholder.className = 'chat-feed';
             return FeedPlaceholder;
         })(Component);
         /**
@@ -40,13 +41,28 @@ var chat;
          */
         var Feed = createFactory(FeedPlaceholder);
         /**
+         * A host widget for the feed component.
+         */
+        var FeedHost = (function (_super) {
+            __extends(FeedHost, _super);
+            function FeedHost() {
+                _super.call(this);
+                this.node.classList.add('chat-feed-host');
+            }
+            FeedHost.prototype.sizeHint = function () {
+                return new Size(600, 200);
+            };
+            FeedHost.prototype.render = function () {
+                return Feed();
+            };
+            return FeedHost;
+        })(RenderWidget);
+        /**
          * Initialize the chat feed plugin.
          */
         function initialize(container) {
             var shell = container.resolve(IShellView);
-            var feed = new ElementHost(Feed(), 600, 200);
-            feed.addClass('chat-feed-host');
-            shell.addWidget('bottom', feed);
+            shell.addWidget('bottom', new FeedHost());
         }
         feedplugin.initialize = initialize;
     })(feedplugin = chat.feedplugin || (chat.feedplugin = {}));

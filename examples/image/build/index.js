@@ -14,14 +14,10 @@ var __extends = this.__extends || function (d, b) {
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var Size = phosphor.utility.Size;
     var Component = phosphor.virtualdom.Component;
     var createFactory = phosphor.virtualdom.createFactory;
     var dom = phosphor.virtualdom.dom;
-    var BoxPanel = phosphor.widgets.BoxPanel;
-    var ElementHost = phosphor.widgets.ElementHost;
-    var SizePolicy = phosphor.widgets.SizePolicy;
-    var Widget = phosphor.widgets.Widget;
+    var render = phosphor.virtualdom.render;
     /**
      * Example image data - all public domain.
      */
@@ -37,104 +33,37 @@ var example;
         { name: 'Crab Nebula', path: 'http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crab_Nebula.jpg/480px-Crab_Nebula.jpg' },
         { name: 'Blue Linckia', path: 'http://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Blue_Linckia_Starfish.JPG/360px-Blue_Linckia_Starfish.JPG' }
     ];
-    /**
-     * A simple component which renders a selector control.
-     */
-    var SelectorComponent = (function (_super) {
-        __extends(SelectorComponent, _super);
-        function SelectorComponent() {
-            _super.call(this);
-            this.node.addEventListener('change', this);
+    var ImageViewerComponent = (function (_super) {
+        __extends(ImageViewerComponent, _super);
+        function ImageViewerComponent() {
+            var _this = this;
+            _super.apply(this, arguments);
+            this._onChange = function (event) {
+                _this._index = event.target.selectedIndex;
+                _this.update();
+            };
+            this._index = 0;
         }
-        SelectorComponent.prototype.dispose = function () {
-            this.node.removeEventListener('change', this);
-            _super.prototype.dispose.call(this);
+        ImageViewerComponent.prototype.render = function () {
+            var items = this.data.items;
+            var target = items[this._index];
+            var path = target ? target.path : '';
+            var options = items.map(function (it) { return dom.option(it.name); });
+            return [
+                dom.select({ onchange: this._onChange }, options),
+                dom.br(),
+                dom.br(),
+                dom.img({ src: path })
+            ];
         };
-        SelectorComponent.prototype.render = function () {
-            return this.data.values.map(function (value) { return dom.option(value); });
-        };
-        SelectorComponent.prototype.handleEvent = function (event) {
-            if (event.type === 'change') {
-                this.data.onSelected(this.node.value);
-            }
-        };
-        SelectorComponent.tagName = 'select';
-        SelectorComponent.className = 'SelectorComponent';
-        return SelectorComponent;
+        return ImageViewerComponent;
     })(Component);
     /**
-     * A factory function for a selector component.
+     * A factory function for an image viewer component.
      */
-    var Selector = createFactory(SelectorComponent);
-    /**
-     * A simple widget which displays an image.
-     *
-     * This could just as easily be rendered as part of the component,
-     * but for this example it demonstrates a simple custom widget.
-     */
-    var SimpleImageWidget = (function (_super) {
-        __extends(SimpleImageWidget, _super);
-        function SimpleImageWidget() {
-            var _this = this;
-            _super.call(this);
-            this.addClass('SimpleImageWidget');
-            this.node.onload = function () { return _this.updateGeometry(); };
-        }
-        Object.defineProperty(SimpleImageWidget.prototype, "src", {
-            get: function () {
-                return this.node.src;
-            },
-            set: function (src) {
-                this.node.src = src;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        SimpleImageWidget.prototype.sizeHint = function () {
-            var img = this.node;
-            return new Size(img.naturalWidth, img.naturalHeight);
-        };
-        SimpleImageWidget.prototype.createNode = function () {
-            return document.createElement('img');
-        };
-        return SimpleImageWidget;
-    })(Widget);
-    /**
-     * A top level panel which combines a selector and image panel.
-     */
-    var MainPanel = (function (_super) {
-        __extends(MainPanel, _super);
-        function MainPanel() {
-            var _this = this;
-            _super.call(this);
-            this._onSelected = function (value) {
-                for (var i = 0; i < imageItems.length; ++i) {
-                    var item = imageItems[i];
-                    if (item.name === value) {
-                        _this._image.src = item.path;
-                        return;
-                    }
-                }
-                _this._image.src = item.path;
-            };
-            this.addClass('MainPanel');
-            var names = imageItems.map(function (item) { return item.name; });
-            var selector = Selector({ values: names, onSelected: this._onSelected });
-            var host = new ElementHost(selector, 200, 24);
-            host.setSizePolicy(SizePolicy.Expanding, 0 /* Fixed */);
-            var image = this._image = new SimpleImageWidget();
-            image.setSizePolicy(0 /* Fixed */, 0 /* Fixed */);
-            image.src = imageItems[0].path;
-            this.addWidget(host);
-            this.addWidget(image);
-        }
-        return MainPanel;
-    })(BoxPanel);
+    var ImageViewer = createFactory(ImageViewerComponent);
     function main() {
-        var panel = new MainPanel();
-        panel.attach(document.getElementById('main'));
-        panel.fit();
-        window.onresize = function () { return panel.fit(); };
+        render(ImageViewer({ items: imageItems }), document.getElementById('main'));
     }
     window.onload = main;
 })(example || (example = {})); // module example

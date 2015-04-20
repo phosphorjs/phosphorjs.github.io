@@ -76,11 +76,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A concrete implementation of IComponent with virtual DOM rendering.</p>
+						<p>A component which renders its content using the virtual DOM.</p>
 					</div>
-					<p>User code should subclass this class to create a custom component.
-						The subclasses should reimplement the <code>render</code> method to generate
-					the virtual DOM content for the component.</p>
+					<p>User code should subclass this class and reimplement the <code>render</code>
+					method to generate the virtual DOM content for the component.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-type-parameters">
@@ -120,13 +119,10 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.virtualdom.component.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.component.html#_frameid" class="tsd-kind-icon">_frame<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.component.html#_refs" class="tsd-kind-icon">_refs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="phosphor.virtualdom.component.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="phosphor.virtualdom.component.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -141,14 +137,19 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.component.html#_cancelframe" class="tsd-kind-icon">_cancel<wbr>Frame</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="phosphor.virtualdom.component.html#_render" class="tsd-kind-icon">_render</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#afterrender" class="tsd-kind-icon">after<wbr>Render</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#beforerender" class="tsd-kind-icon">before<wbr>Render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.virtualdom.component.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.virtualdom.component.html#createnode" class="tsd-kind-icon">create<wbr>Node</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.virtualdom.component.html#dispose" class="tsd-kind-icon">dispose</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.virtualdom.component.html#init" class="tsd-kind-icon">init</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.virtualdom.component.html#render" class="tsd-kind-icon">render</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#shouldupdate" class="tsd-kind-icon">should<wbr>Update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="phosphor.virtualdom.component.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.virtualdom.component.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.virtualdom.component.html#onaftermove" class="tsd-kind-icon">on<wbr>After<wbr>Move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#onafterrender" class="tsd-kind-icon">on<wbr>After<wbr>Render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.virtualdom.component.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="phosphor.virtualdom.component.html#onbeforemove" class="tsd-kind-icon">on<wbr>Before<wbr>Move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#onbeforerender" class="tsd-kind-icon">on<wbr>Before<wbr>Render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="phosphor.virtualdom.component.html#onupdaterequest" class="tsd-kind-icon">on<wbr>Update<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="phosphor.virtualdom.component.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="phosphor.virtualdom.component.html#render" class="tsd-kind-icon">render</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="phosphor.virtualdom.component.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
@@ -161,14 +162,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Component<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.component.html" class="tsd-signature-type">Component</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Component<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, children<span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.component.html" class="tsd-signature-type">Component</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L35">src/virtualdom/basecomponent.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L24">src/virtualdom/basecomponent.ts:24</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -176,66 +177,31 @@
 									<p>Construct a new base component.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>data: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>children: <a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="phosphor.virtualdom.component.html" class="tsd-signature-type">Component</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_frameid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">_frame<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L145">src/virtualdom/component.ts:145</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_refs" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _refs</h3>
 					<div class="tsd-signature tsd-kind-icon">_refs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L146">src/virtualdom/component.ts:146</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L141">src/virtualdom/component.ts:141</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-					<a name="classname" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> class<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#classname">className</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L35">src/virtualdom/basecomponent.ts:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The initial class name for the component&#39;s DOM node.</p>
-						</div>
-						<p>A subclass may redefine this property.</p>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-					<a name="tagname" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> tag<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">tag<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#tagname">tagName</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L28">src/virtualdom/basecomponent.ts:28</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The tag name used to create the component&#39;s DOM node.</p>
-						</div>
-						<p>A subclass may redefine this property.</p>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -244,22 +210,22 @@
 					<a name="children" class="tsd-anchor"></a>
 					<h3>children</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> children<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#children">children</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L72">src/virtualdom/basecomponent.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L61">src/virtualdom/basecomponent.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the current children for the component.</p>
+									<p>Get the current elem children for the component.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -274,7 +240,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#data">data</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L65">src/virtualdom/basecomponent.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L54">src/virtualdom/basecomponent.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -297,7 +263,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#node">node</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L58">src/virtualdom/basecomponent.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L47">src/virtualdom/basecomponent.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -319,15 +285,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L42">src/virtualdom/component.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L55">src/virtualdom/component.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the refs mapping for the component.</p>
+									<p>Get the current refs mapping for the component.</p>
 								</div>
-								<p>This is an object which maps a ref name to the corresponding node
-								or component instance created for the most recent rendering pass.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
@@ -336,93 +300,59 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="_cancelframe" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _cancel<wbr>Frame</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_cancel<wbr>Frame<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="compressmessage" class="tsd-anchor"></a>
+					<h3>compress<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">compress<wbr>Message<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a>, pending<span class="tsd-signature-symbol">: </span><a href="phosphor.collections.queue.html" class="tsd-signature-type">Queue</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L138">src/virtualdom/component.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L98">src/virtualdom/component.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Clear the pending animation frame.</p>
+									<p>Compress a message posted to the component.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+								<li>
+									<h5>pending: <a href="phosphor.collections.queue.html" class="tsd-signature-type">Queue</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="_render" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _render</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="createnode" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Node</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#createnode">createNode</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L129">src/virtualdom/component.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L107">src/virtualdom/basecomponent.ts:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Perform an immediate rendering of the component.</p>
+									<p>Create the DOM node for the component.</p>
 								</div>
+								<p>This can be reimplemented by subclasses as needed.</p>
+								<p>The default implementation creates an empty div.</p>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="afterrender" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> after<wbr>Render</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">after<wbr>Render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L107">src/virtualdom/component.ts:107</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A method invoked immediately after the component is rendered.</p>
-								</div>
-								<p>The default implementation is a no-op.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="beforerender" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> before<wbr>Render</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">before<wbr>Render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L100">src/virtualdom/component.ts:100</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A method invoked immediately before the component is rendered.</p>
-								</div>
-								<p>The default implementation is a no-op.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -437,7 +367,7 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#dispose">dispose</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L30">src/virtualdom/component.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L47">src/virtualdom/component.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -449,26 +379,26 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="init" class="tsd-anchor"></a>
 					<h3>init</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, children<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, children<span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#init">init</a></p>
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#init">init</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L53">src/virtualdom/component.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L72">src/virtualdom/basecomponent.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Initialize the component with new data and children.</p>
 								</div>
-								<p>This is called whenever the component is rendered by its parent.</p>
-								<p>The method will normally not be reimplemented by a subclass.</p>
+								<p>This is called whenever the component is re-rendered by its parent.</p>
+								<p>It is <em>not</em> called when the component is first instantiated.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -476,75 +406,274 @@
 									<h5>data: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
-									<h5>children: <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>children: <a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="render" class="tsd-anchor"></a>
-					<h3>render</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="onafterattach" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>After<wbr>Attach</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>After<wbr>Attach<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#onafterattach">onAfterAttach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L66">src/virtualdom/component.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L123">src/virtualdom/basecomponent.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create the virtual content for the component.</p>
+									<p>A method invoked on an &#39;after-attach&#39; message.</p>
 								</div>
-								<p>The rendered content is used to populate the component&#39;s node.</p>
-								<p>This should be reimplemented by a subclass.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="shouldupdate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> should<wbr>Update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Update<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, children<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L122">src/virtualdom/component.ts:122</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Test whether the component should be updated.</p>
-								</div>
-								<p>This method is invoked when the component is initialized with new
-									data and children. It should return true if the component should
-								be updated, or false if the values do not cause a visual change.</p>
-								<p>Determining whether a component should update is error prone and
-									can be just as expensive as performing the virtual DOM diff, so
-								this should only be reimplemented if performance is a problem.</p>
-								<p>The default implementation of this method always returns true.</p>
+								<p>The default implementation is a no-op.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>data: <span class="tsd-signature-type">T</span></h5>
-								</li>
-								<li>
-									<h5>children: <a href="../interfaces/phosphor.virtualdom.ielement.html" class="tsd-signature-type">IElement</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="onaftermove" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>After<wbr>Move</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>After<wbr>Move<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#onaftermove">onAfterMove</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L144">src/virtualdom/basecomponent.ts:144</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on an &#39;after-move&#39; message.</p>
+								</div>
+								<p>The default implementation is a no-op.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="onafterrender" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>After<wbr>Render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>After<wbr>Render<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L139">src/virtualdom/component.ts:139</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on an &#39;after-render&#39; message.</p>
+								</div>
+								<p>The default implementation is a no-op.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="onbeforedetach" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Before<wbr>Detach</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Before<wbr>Detach<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#onbeforedetach">onBeforeDetach</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L130">src/virtualdom/basecomponent.ts:130</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on a &#39;before-detach&#39; message.</p>
+								</div>
+								<p>The default implementation is a no-op.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="onbeforemove" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Before<wbr>Move</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Before<wbr>Move<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#onbeforemove">onBeforeMove</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/basecomponent.ts#L137">src/virtualdom/basecomponent.ts:137</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on a &#39;before-move&#39; message.</p>
+								</div>
+								<p>The default implementation is a no-op.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="onbeforerender" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Before<wbr>Render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Before<wbr>Render<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L132">src/virtualdom/component.ts:132</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on a &#39;before-render&#39; message.</p>
+								</div>
+								<p>The default implementation is a no-op.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="onupdaterequest" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Update<wbr>Request</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Update<wbr>Request<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overwrites <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#onupdaterequest">onUpdateRequest</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L121">src/virtualdom/component.ts:121</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A method invoked on an &#39;update-request&#39; message.</p>
+								</div>
+								<p>This renders the virtual DOM content into the component&#39;s node.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="processmessage" class="tsd-anchor"></a>
+					<h3>process<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">process<wbr>Message<span class="tsd-signature-symbol">(</span>msg<span class="tsd-signature-symbol">: </span><a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overwrites <a href="phosphor.virtualdom.basecomponent.html">BaseComponent</a>.<a href="phosphor.virtualdom.basecomponent.html#processmessage">processMessage</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L82">src/virtualdom/component.ts:82</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Process a message sent to the component.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>msg: <a href="../interfaces/phosphor.core.imessage.html" class="tsd-signature-type">IMessage</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="render" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol"> | </span><a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L112">src/virtualdom/component.ts:112</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create the virtual DOM content for the component.</p>
+								</div>
+								<p>The rendered content is used to populate the component&#39;s node.</p>
+								<p>The default implementation returns <code>null</code>.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<a href="phosphor.virtualdom.elem.html" class="tsd-signature-type">Elem</a><span class="tsd-signature-symbol">[]</span>
+							</h4>
 						</li>
 					</ul>
 				</section>
@@ -558,20 +687,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L83">src/virtualdom/component.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/virtualdom/component.ts#L71">src/virtualdom/component.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Schedule a rendering update for the component.</p>
+									<p>Schedule an update for the component.</p>
 								</div>
 								<p>This should be called whenever the internal state of the component
 									has changed such that it requires the component to be re-rendered,
-								or when external code requires the component to be refreshed.</p>
-								<p>If the &#39;immediate&#39; flag is false (the default) the update will be
-									scheduled for the next cycle of the event loop. If the flag is set
-								to true, the component will be updated immediately.</p>
-								<p>Multiple pending requests are collapsed into a single update.</p>
+								or when external code determines the component should be refreshed.</p>
+								<p>If the <code>immediate</code> flag is false (the default) the update will be
+									scheduled for the next cycle of the event loop. If <code>immediate</code> is
+									true, the component will be updated immediately. Multiple pending
+								requests are collapsed into a single update.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -645,16 +774,7 @@
 								<a href="phosphor.virtualdom.component.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="phosphor.virtualdom.component.html#_frameid" class="tsd-kind-icon">_frame<wbr>Id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="phosphor.virtualdom.component.html#_refs" class="tsd-kind-icon">_refs</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="phosphor.virtualdom.component.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="phosphor.virtualdom.component.html#tagname" class="tsd-kind-icon">tag<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="phosphor.virtualdom.component.html#children" class="tsd-kind-icon">children</a>
@@ -668,29 +788,44 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="phosphor.virtualdom.component.html#refs" class="tsd-kind-icon">refs</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="phosphor.virtualdom.component.html#_cancelframe" class="tsd-kind-icon">_cancel<wbr>Frame</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="phosphor.virtualdom.component.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="phosphor.virtualdom.component.html#_render" class="tsd-kind-icon">_render</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="phosphor.virtualdom.component.html#afterrender" class="tsd-kind-icon">after<wbr>Render</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="phosphor.virtualdom.component.html#beforerender" class="tsd-kind-icon">before<wbr>Render</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#createnode" class="tsd-kind-icon">create<wbr>Node</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="phosphor.virtualdom.component.html#dispose" class="tsd-kind-icon">dispose</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="phosphor.virtualdom.component.html#init" class="tsd-kind-icon">init</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="phosphor.virtualdom.component.html#render" class="tsd-kind-icon">render</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onaftermove" class="tsd-kind-icon">on<wbr>After<wbr>Move</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="phosphor.virtualdom.component.html#shouldupdate" class="tsd-kind-icon">should<wbr>Update</a>
+								<a href="phosphor.virtualdom.component.html#onafterrender" class="tsd-kind-icon">on<wbr>After<wbr>Render</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onbeforemove" class="tsd-kind-icon">on<wbr>Before<wbr>Move</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onbeforerender" class="tsd-kind-icon">on<wbr>Before<wbr>Render</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#onupdaterequest" class="tsd-kind-icon">on<wbr>Update<wbr>Request</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="phosphor.virtualdom.component.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="phosphor.virtualdom.component.html#render" class="tsd-kind-icon">render</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="phosphor.virtualdom.component.html#update" class="tsd-kind-icon">update</a>
