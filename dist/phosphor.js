@@ -4143,6 +4143,10 @@ var phosphor;
         var Message = phosphor.core.Message;
         var postMessage = phosphor.core.postMessage;
         /**
+         * A singleton 'layout-request' message.
+         */
+        var MSG_LAYOUT_REQUEST = new Message('layout-request');
+        /**
          * The base class of phosphor layouts.
          *
          * The Layout class does not define an interface for adding widgets to
@@ -4313,7 +4317,7 @@ var phosphor;
             Layout.prototype.invalidate = function () {
                 var parent = this._parent;
                 if (parent) {
-                    postMessage(parent, new Message('layout-request'));
+                    postMessage(parent, MSG_LAYOUT_REQUEST);
                     parent.updateGeometry();
                 }
             };
@@ -6699,6 +6703,54 @@ var phosphor;
          */
         var HIDDEN_CLASS = 'p-mod-hidden';
         /**
+         * A singleton 'layout-changed' message.
+         */
+        var MSG_LAYOUT_CHANGED = new Message('layout-changed');
+        /**
+         * A singleton 'layout-request' message.
+         */
+        var MSG_LAYOUT_REQUEST = new Message('layout-request');
+        /**
+         * A singleton 'parent-changed' message.
+         */
+        var MSG_PARENT_CHANGED = new Message('parent-changed');
+        /**
+         * A singleton 'before-show' message.
+         */
+        var MSG_BEFORE_SHOW = new Message('before-show');
+        /**
+         * A singleton 'after-show' message.
+         */
+        var MSG_AFTER_SHOW = new Message('after-show');
+        /**
+         * A singleton 'before-hide' message.
+         */
+        var MSG_BEFORE_HIDE = new Message('before-hide');
+        /**
+         * A singleton 'after-hide' message.
+         */
+        var MSG_AFTER_HIDE = new Message('after-hide');
+        /**
+         * A singleton 'before-attach' message.
+         */
+        var MSG_BEFORE_ATTACH = new Message('before-attach');
+        /**
+         * A singleton 'after-attach' message.
+         */
+        var MSG_AFTER_ATTACH = new Message('after-attach');
+        /**
+         * A singleton 'before-detach' message.
+         */
+        var MSG_BEFORE_DETACH = new Message('before-detach');
+        /**
+         * A singleton 'after-detach' message.
+         */
+        var MSG_AFTER_DETACH = new Message('after-detach');
+        /**
+         * A singleton 'close' message.
+         */
+        var MSG_CLOSE = new Message('close');
+        /**
          * The base class of the Phosphor widget hierarchy.
          *
          * A widget wraps an absolutely positioned DOM node. It can act as a
@@ -6983,7 +7035,7 @@ var phosphor;
                         installMessageFilter(this, layout);
                         layout.parent = this;
                     }
-                    sendMessage(this, new Message('layout-changed'));
+                    sendMessage(this, MSG_LAYOUT_CHANGED);
                 },
                 enumerable: true,
                 configurable: true
@@ -7019,7 +7071,7 @@ var phosphor;
                         parent._children.push(this);
                         sendMessage(parent, new widgets.ChildMessage('child-added', this));
                     }
-                    sendMessage(this, new Message('parent-changed'));
+                    sendMessage(this, MSG_PARENT_CHANGED);
                 },
                 enumerable: true,
                 configurable: true
@@ -7071,10 +7123,10 @@ var phosphor;
                 }
                 var parent = this._parent;
                 if (this.isAttached && (!parent || parent.isVisible)) {
-                    sendMessage(this, new Message('before-show'));
+                    beforeShowHelper(this);
                     this._node.classList.remove(HIDDEN_CLASS);
                     this.clearFlag(2 /* IsHidden */);
-                    sendMessage(this, new Message('after-show'));
+                    afterShowHelper(this);
                 }
                 else {
                     this._node.classList.remove(HIDDEN_CLASS);
@@ -7096,10 +7148,10 @@ var phosphor;
                 }
                 var parent = this._parent;
                 if (this.isAttached && (!parent || parent.isVisible)) {
-                    sendMessage(this, new Message('before-hide'));
+                    beforeHideHelper(this);
                     this._node.classList.add(HIDDEN_CLASS);
                     this.setFlag(2 /* IsHidden */);
-                    sendMessage(this, new Message('after-hide'));
+                    afterHideHelper(this);
                 }
                 else {
                     this._node.classList.add(HIDDEN_CLASS);
@@ -7127,7 +7179,7 @@ var phosphor;
              * Subclasses should reimplement `onClose` to perform custom actions.
              */
             Widget.prototype.close = function () {
-                sendMessage(this, new Message('close'));
+                sendMessage(this, MSG_CLOSE);
             };
             /**
              * Attach the widget's node to a host DOM element.
@@ -7142,9 +7194,9 @@ var phosphor;
                 if (this._parent) {
                     throw new Error('cannot attach a non-root widget to the DOM');
                 }
-                sendMessage(this, new Message('before-attach'));
+                beforeAttachHelper(this);
                 host.appendChild(this._node);
-                sendMessage(this, new Message('after-attach'));
+                afterAttachHelper(this);
             };
             /**
              * Detach the widget's node from the DOM.
@@ -7159,9 +7211,9 @@ var phosphor;
                 if (!host) {
                     return;
                 }
-                sendMessage(this, new Message('before-detach'));
+                beforeDetachHelper(this);
                 host.removeChild(this._node);
-                sendMessage(this, new Message('after-detach'));
+                afterDetachHelper(this);
             };
             /**
              * Resize the widget so that it fills its host node.
@@ -7256,7 +7308,7 @@ var phosphor;
                     this._layout.invalidate();
                 }
                 else {
-                    postMessage(this, new Message('layout-request'));
+                    postMessage(this, MSG_LAYOUT_REQUEST);
                 }
                 this.updateGeometry();
             };
@@ -7281,7 +7333,7 @@ var phosphor;
                     parent._layout.invalidate();
                 }
                 else {
-                    postMessage(parent, new Message('layout-request'));
+                    postMessage(parent, MSG_LAYOUT_REQUEST);
                     parent.updateGeometry();
                 }
             };
@@ -7376,45 +7428,28 @@ var phosphor;
                         break;
                     case 'before-show':
                         this.onBeforeShow(msg);
-                        sendNonHidden(this._children, msg);
                         break;
                     case 'after-show':
-                        this.setFlag(4 /* IsVisible */);
                         this.onAfterShow(msg);
-                        sendNonHidden(this._children, msg);
                         break;
                     case 'before-hide':
                         this.onBeforeHide(msg);
-                        sendNonHidden(this._children, msg);
                         break;
                     case 'after-hide':
-                        this.clearFlag(4 /* IsVisible */);
                         this.onAfterHide(msg);
-                        sendNonHidden(this._children, msg);
                         break;
                     case 'before-attach':
                         this._boxSizing = null;
                         this.onBeforeAttach(msg);
-                        sendAll(this._children, msg);
                         break;
                     case 'after-attach':
-                        var parent = this._parent;
-                        var visible = !this.isHidden && (!parent || parent.isVisible);
-                        if (visible)
-                            this.setFlag(4 /* IsVisible */);
-                        this.setFlag(1 /* IsAttached */);
                         this.onAfterAttach(msg);
-                        sendAll(this._children, msg);
                         break;
                     case 'before-detach':
                         this.onBeforeDetach(msg);
-                        sendAll(this._children, msg);
                         break;
                     case 'after-detach':
-                        this.clearFlag(4 /* IsVisible */);
-                        this.clearFlag(1 /* IsAttached */);
                         this.onAfterDetach(msg);
-                        sendAll(this._children, msg);
                         break;
                     case 'close':
                         this.onClose(msg);
@@ -7460,9 +7495,9 @@ var phosphor;
             Widget.prototype.onChildAdded = function (msg) {
                 var child = msg.child;
                 if (this.isAttached) {
-                    sendMessage(child, new Message('before-attach'));
+                    beforeAttachHelper(child);
                     this._node.appendChild(child._node);
-                    sendMessage(child, new Message('after-attach'));
+                    afterAttachHelper(child);
                 }
                 else {
                     this._node.appendChild(child._node);
@@ -7476,9 +7511,9 @@ var phosphor;
             Widget.prototype.onChildRemoved = function (msg) {
                 var child = msg.child;
                 if (this.isAttached) {
-                    sendMessage(child, new Message('before-detach'));
+                    beforeDetachHelper(child);
                     this._node.removeChild(child._node);
-                    sendMessage(child, new Message('after-detach'));
+                    afterDetachHelper(child);
                 }
                 else {
                     this._node.removeChild(child._node);
@@ -7562,22 +7597,92 @@ var phosphor;
          */
         var defaultSizePolicy = (widgets.SizePolicy.Preferred << 16) | widgets.SizePolicy.Preferred;
         /**
-         * Send a message to all widgets in an array.
+         * A recursive 'before-show' helper function.
          */
-        function sendAll(array, msg) {
-            for (var i = 0; i < array.length; ++i) {
-                sendMessage(array[i], msg);
+        function beforeShowHelper(widget) {
+            sendMessage(widget, MSG_BEFORE_SHOW);
+            for (var i = 0; i < widget.childCount; ++i) {
+                var child = widget.childAt(i);
+                if (!child.isHidden)
+                    beforeShowHelper(child);
             }
         }
         /**
-         * Send a message to all non-hidden widgets in an array.
+         * A recursive 'after-show' helper function.
          */
-        function sendNonHidden(array, msg) {
-            for (var i = 0; i < array.length; ++i) {
-                var widget = array[i];
-                if (!widget.isHidden) {
-                    sendMessage(widget, msg);
-                }
+        function afterShowHelper(widget) {
+            widget.setFlag(4 /* IsVisible */);
+            sendMessage(widget, MSG_AFTER_SHOW);
+            for (var i = 0; i < widget.childCount; ++i) {
+                var child = widget.childAt(i);
+                if (!child.isHidden)
+                    afterShowHelper(child);
+            }
+        }
+        /**
+         * A recursive 'before-hide' helper function.
+         */
+        function beforeHideHelper(widget) {
+            sendMessage(widget, MSG_BEFORE_HIDE);
+            for (var i = 0; i < widget.childCount; ++i) {
+                var child = widget.childAt(i);
+                if (!child.isHidden)
+                    beforeHideHelper(child);
+            }
+        }
+        /**
+         * A recursive 'after-hide' helper function.
+         */
+        function afterHideHelper(widget) {
+            widget.clearFlag(4 /* IsVisible */);
+            sendMessage(widget, MSG_AFTER_HIDE);
+            for (var i = 0; i < widget.childCount; ++i) {
+                var child = widget.childAt(i);
+                if (!child.isHidden)
+                    afterHideHelper(child);
+            }
+        }
+        /**
+         * A recursive 'before-attach' helper function.
+         */
+        function beforeAttachHelper(widget) {
+            sendMessage(widget, MSG_BEFORE_ATTACH);
+            for (var i = 0; i < widget.childCount; ++i) {
+                beforeAttachHelper(widget.childAt(i));
+            }
+        }
+        /**
+         * A recursive 'after-attach' helper function.
+         */
+        function afterAttachHelper(widget) {
+            var parent = widget.parent;
+            if (!widget.isHidden && (!parent || parent.isVisible)) {
+                widget.setFlag(4 /* IsVisible */);
+            }
+            widget.setFlag(1 /* IsAttached */);
+            sendMessage(widget, MSG_AFTER_ATTACH);
+            for (var i = 0; i < widget.childCount; ++i) {
+                afterAttachHelper(widget.childAt(i));
+            }
+        }
+        /**
+         * A recursive 'before-detach' helper function.
+         */
+        function beforeDetachHelper(widget) {
+            sendMessage(widget, MSG_BEFORE_DETACH);
+            for (var i = 0; i < widget.childCount; ++i) {
+                beforeDetachHelper(widget.childAt(i));
+            }
+        }
+        /**
+         * A recursive 'after-detach' helper function.
+         */
+        function afterDetachHelper(widget) {
+            widget.clearFlag(4 /* IsVisible */);
+            widget.clearFlag(1 /* IsAttached */);
+            sendMessage(widget, MSG_AFTER_DETACH);
+            for (var i = 0; i < widget.childCount; ++i) {
+                afterDetachHelper(widget.childAt(i));
             }
         }
     })(widgets = phosphor.widgets || (phosphor.widgets = {}));
