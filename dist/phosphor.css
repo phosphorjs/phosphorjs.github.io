@@ -50,6 +50,9 @@ body.p-mod-cursor-override * {
   -ms-transition: all 150ms ease;
   transition: all 150ms ease;
 }
+.p-Tab.p-mod-floating {
+  position: absolute;
+}
 .p-Menu {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -69,6 +72,8 @@ body.p-mod-cursor-override * {
   user-select: none;
 }
 .p-Menu-content {
+  margin: 0;
+  padding: 0;
   display: table;
   list-style: none;
   border-spacing: 0;

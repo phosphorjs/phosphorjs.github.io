@@ -27,13 +27,13 @@ var chat;
          */
         var FeedPlaceholder = (function (_super) {
             __extends(FeedPlaceholder, _super);
-            function FeedPlaceholder(data, children) {
-                _super.call(this, data, children);
-                this.node.classList.add('chat-feed');
+            function FeedPlaceholder() {
+                _super.apply(this, arguments);
             }
             FeedPlaceholder.prototype.render = function () {
                 return dom.h2('Chat Feed Placeholder');
             };
+            FeedPlaceholder.className = 'chat-feed';
             return FeedPlaceholder;
         })(Component);
         /**
@@ -47,7 +47,7 @@ var chat;
             __extends(FeedHost, _super);
             function FeedHost() {
                 _super.call(this);
-                this.node.classList.add('chat-feed-host');
+                this.addClass('chat-feed-host');
             }
             FeedHost.prototype.sizeHint = function () {
                 return new Size(600, 200);

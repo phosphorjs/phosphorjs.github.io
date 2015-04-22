@@ -23,8 +23,8 @@ var example;
         __extends(Content, _super);
         function Content(title) {
             _super.call(this);
-            this.node.classList.add('content');
-            this.node.classList.add(title.toLowerCase());
+            this.addClass('content');
+            this.addClass(title.toLowerCase());
             this._tab = new Tab(title);
         }
         Object.defineProperty(Content.prototype, "tab", {

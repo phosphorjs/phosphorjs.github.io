@@ -27,13 +27,13 @@ var chat;
          */
         var RoomListPlaceholder = (function (_super) {
             __extends(RoomListPlaceholder, _super);
-            function RoomListPlaceholder(data, children) {
-                _super.call(this, data, children);
-                this.node.classList.add('chat-room-list');
+            function RoomListPlaceholder() {
+                _super.apply(this, arguments);
             }
             RoomListPlaceholder.prototype.render = function () {
                 return dom.h2('Room List Placeholder');
             };
+            RoomListPlaceholder.className = 'chat-room-list';
             return RoomListPlaceholder;
         })(Component);
         /**
@@ -45,13 +45,13 @@ var chat;
          */
         var OpenRoomsPlaceholder = (function (_super) {
             __extends(OpenRoomsPlaceholder, _super);
-            function OpenRoomsPlaceholder(data, children) {
-                _super.call(this, data, children);
-                this.node.classList.add('chat-open-rooms');
+            function OpenRoomsPlaceholder() {
+                _super.apply(this, arguments);
             }
             OpenRoomsPlaceholder.prototype.render = function () {
                 return dom.h2('Open Rooms Placeholder');
             };
+            OpenRoomsPlaceholder.className = 'chat-open-rooms';
             return OpenRoomsPlaceholder;
         })(Component);
         /**
@@ -65,7 +65,7 @@ var chat;
             __extends(RoomListHost, _super);
             function RoomListHost() {
                 _super.call(this);
-                this.node.classList.add('chat-room-list-host');
+                this.addClass('chat-room-list-host');
             }
             RoomListHost.prototype.sizeHint = function () {
                 return new Size(250, 400);
@@ -82,7 +82,7 @@ var chat;
             __extends(OpenRoomsHost, _super);
             function OpenRoomsHost() {
                 _super.call(this);
-                this.node.classList.add('chat-open-rooms-host');
+                this.addClass('chat-open-rooms-host');
             }
             OpenRoomsHost.prototype.sizeHint = function () {
                 return new Size(600, 400);

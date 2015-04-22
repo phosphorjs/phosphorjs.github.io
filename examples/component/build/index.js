@@ -36,17 +36,14 @@ var example;
             }
             return items;
         };
-        TicksComponent.prototype.createNode = function () {
-            return document.createElement('ul');
-        };
+        TicksComponent.tagName = 'ul';
         return TicksComponent;
     })(Component);
     var Ticks = createFactory(TicksComponent);
     var TimeComponent = (function (_super) {
         __extends(TimeComponent, _super);
-        function TimeComponent(data, children) {
-            _super.call(this, data, children);
-            this.node.classList.add('TimeComponent');
+        function TimeComponent() {
+            _super.apply(this, arguments);
         }
         TimeComponent.prototype.render = function () {
             var data = this.data;
@@ -60,6 +57,7 @@ var example;
                 div({ className: 'waterfall' }, Ticks({ title: 'Hours', count: time.getHours() }), Ticks({ title: 'Minutes', count: time.getMinutes() }), Ticks({ title: 'Seconds', count: time.getSeconds() }))
             ];
         };
+        TimeComponent.className = 'TimeComponent';
         return TimeComponent;
     })(Component);
     var Time = createFactory(TimeComponent);

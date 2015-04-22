@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ITabbable | Phosphor</title>
+	<title>IDockWidget | Phosphor</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -63,10 +63,10 @@
 					<a href="../modules/phosphor.widgets.html">widgets</a>
 				</li>
 				<li>
-					<a href="phosphor.widgets.itabbable.html">ITabbable</a>
+					<a href="phosphor.widgets.idockwidget.html">IDockWidget</a>
 				</li>
 			</ul>
-			<h1>Interface ITabbable</h1>
+			<h1>Interface IDockWidget</h1>
 		</div>
 	</div>
 </header>
@@ -76,7 +76,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A widget which owns and manages its own tab.</p>
+						<p>A widget which can be added to a DockArea.</p>
 					</div>
 				</div>
 			</section>
@@ -87,7 +87,7 @@
 						<a href="../classes/phosphor.widgets.widget.html" class="tsd-signature-type">Widget</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ITabbable</span>
+								<span class="target">IDockWidget</span>
 							</li>
 						</ul>
 					</li>
@@ -96,8 +96,8 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="phosphor.core.imessagehandler.html" class="tsd-signature-type">IMessageHandler</a></li>
 					<li><a href="phosphor.utility.idisposable.html" class="tsd-signature-type">IDisposable</a></li>
+					<li><a href="phosphor.core.imessagehandler.html" class="tsd-signature-type">IMessageHandler</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -107,76 +107,79 @@
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#disposed" class="tsd-kind-icon">disposed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="phosphor.widgets.itabbable.html#tab" class="tsd-kind-icon">tab</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#disposed" class="tsd-kind-icon">disposed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="phosphor.widgets.idockwidget.html#tab" class="tsd-kind-icon">tab</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#childcount" class="tsd-kind-icon">child<wbr>Count</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#layout" class="tsd-kind-icon">layout</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#node" class="tsd-kind-icon">node</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#width" class="tsd-kind-icon">width</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#childcount" class="tsd-kind-icon">child<wbr>Count</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#layout" class="tsd-kind-icon">layout</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#node" class="tsd-kind-icon">node</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#x" class="tsd-kind-icon">x</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#y" class="tsd-kind-icon">y</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#attach" class="tsd-kind-icon">attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#childat" class="tsd-kind-icon">child<wbr>At</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#close" class="tsd-kind-icon">close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#createnode" class="tsd-kind-icon">create<wbr>Node</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#detach" class="tsd-kind-icon">detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#dispose" class="tsd-kind-icon">dispose</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#fit" class="tsd-kind-icon">fit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#hide" class="tsd-kind-icon">hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#move" class="tsd-kind-icon">move</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onclose" class="tsd-kind-icon">on<wbr>Close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onmove" class="tsd-kind-icon">on<wbr>Move</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.itabbable.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#resize" class="tsd-kind-icon">resize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#show" class="tsd-kind-icon">show</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.itabbable.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#addclass" class="tsd-kind-icon">add<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#attach" class="tsd-kind-icon">attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#childat" class="tsd-kind-icon">child<wbr>At</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#close" class="tsd-kind-icon">close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#detach" class="tsd-kind-icon">detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#dispose" class="tsd-kind-icon">dispose</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#fit" class="tsd-kind-icon">fit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#hide" class="tsd-kind-icon">hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#move" class="tsd-kind-icon">move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onclose" class="tsd-kind-icon">on<wbr>Close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onmove" class="tsd-kind-icon">on<wbr>Move</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected"><a href="phosphor.widgets.idockwidget.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#resize" class="tsd-kind-icon">resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#show" class="tsd-kind-icon">show</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="phosphor.widgets.idockwidget.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-static"><a href="phosphor.widgets.idockwidget.html#createnode" class="tsd-kind-icon">create<wbr>Node</a></li>
 							</ul>
 						</section>
 					</div>
@@ -184,16 +187,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new ITabbable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.itabbable.html" class="tsd-signature-type">ITabbable</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new IDock<wbr>Widget<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="phosphor.widgets.idockwidget.html" class="tsd-signature-type">IDockWidget</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L117">src/widgets/widget.ts:117</a></li>
 								</ul>
@@ -203,7 +207,7 @@
 									<p>Construct a new widget.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="phosphor.widgets.itabbable.html" class="tsd-signature-type">ITabbable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="phosphor.widgets.idockwidget.html" class="tsd-signature-type">IDockWidget</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -229,10 +233,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="tab" class="tsd-anchor"></a>
 					<h3>tab</h3>
-					<div class="tsd-signature tsd-kind-icon">tab<span class="tsd-signature-symbol">:</span> <a href="phosphor.widgets.itab.html" class="tsd-signature-type">ITab</a></div>
+					<div class="tsd-signature tsd-kind-icon">tab<span class="tsd-signature-symbol">:</span> <a href="../classes/phosphor.widgets.tab.html" class="tsd-signature-type">Tab</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/itabbable.ts#L18">src/widgets/itabbable.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/dockarea.ts#L52">src/widgets/dockarea.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -255,7 +259,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#boxsizing">boxSizing</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L272">src/widgets/widget.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L265">src/widgets/widget.ts:265</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -280,7 +284,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#childcount">childCount</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L392">src/widgets/widget.ts:392</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L385">src/widgets/widget.ts:385</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -304,7 +308,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#height">height</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L221">src/widgets/widget.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L214">src/widgets/widget.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -319,7 +323,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#height">height</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L230">src/widgets/widget.ts:230</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L223">src/widgets/widget.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +354,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#horizontalsizepolicy">horizontalSizePolicy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L237">src/widgets/widget.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L230">src/widgets/widget.ts:230</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -365,7 +369,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#horizontalsizepolicy">horizontalSizePolicy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L246">src/widgets/widget.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L239">src/widgets/widget.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -395,7 +399,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#isattached">isAttached</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L282">src/widgets/widget.ts:282</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L275">src/widgets/widget.ts:275</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,7 +422,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#isdisposed">isDisposed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L289">src/widgets/widget.ts:289</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L282">src/widgets/widget.ts:282</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -441,7 +445,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#ishidden">isHidden</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L296">src/widgets/widget.ts:296</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L289">src/widgets/widget.ts:289</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -464,7 +468,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#isvisible">isVisible</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L308">src/widgets/widget.ts:308</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L301">src/widgets/widget.ts:301</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -494,7 +498,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#layout">layout</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L317">src/widgets/widget.ts:317</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L310">src/widgets/widget.ts:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -509,7 +513,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#layout">layout</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L330">src/widgets/widget.ts:330</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L323">src/widgets/widget.ts:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,14 +544,14 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#node">node</a></p>
+								<p>Inherited from <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#node">node</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L166">src/widgets/widget.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/nodebase.ts#L44">src/core/nodebase.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the DOM node managed by the widget.</p>
+									<p>Get the DOM node managed by the object.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -566,7 +570,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#parent">parent</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L360">src/widgets/widget.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L353">src/widgets/widget.ts:353</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -581,7 +585,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#parent">parent</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L370">src/widgets/widget.ts:370</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L363">src/widgets/widget.ts:363</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -613,7 +617,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#verticalsizepolicy">verticalSizePolicy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L253">src/widgets/widget.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L246">src/widgets/widget.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +632,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#verticalsizepolicy">verticalSizePolicy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L262">src/widgets/widget.ts:262</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L255">src/widgets/widget.ts:255</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -659,7 +663,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#width">width</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L205">src/widgets/widget.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L198">src/widgets/widget.ts:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,7 +678,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#width">width</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L214">src/widgets/widget.ts:214</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L207">src/widgets/widget.ts:207</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -705,7 +709,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#x">x</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L173">src/widgets/widget.ts:173</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L166">src/widgets/widget.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -720,7 +724,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#x">x</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L182">src/widgets/widget.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L175">src/widgets/widget.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -751,7 +755,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#y">y</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L189">src/widgets/widget.ts:189</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L182">src/widgets/widget.ts:182</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -766,7 +770,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#y">y</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L198">src/widgets/widget.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L191">src/widgets/widget.ts:191</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -789,6 +793,35 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<a name="addclass" class="tsd-anchor"></a>
+					<h3>add<wbr>Class</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Class<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#addclass">addClass</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/nodebase.ts#L58">src/core/nodebase.ts:58</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a class name to the object&#39;s DOM node.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="attach" class="tsd-anchor"></a>
 					<h3>attach</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
@@ -799,7 +832,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#attach">attach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L505">src/widgets/widget.ts:505</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L498">src/widgets/widget.ts:498</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -832,7 +865,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#childat">childAt</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L401">src/widgets/widget.ts:401</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L394">src/widgets/widget.ts:394</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -862,7 +895,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#clearflag">clearFlag</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L422">src/widgets/widget.ts:422</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L415">src/widgets/widget.ts:415</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -891,7 +924,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#close">close</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L492">src/widgets/widget.ts:492</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L485">src/widgets/widget.ts:485</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -915,7 +948,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#compressmessage">compressMessage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L788">src/widgets/widget.ts:788</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L781">src/widgets/widget.ts:781</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -938,31 +971,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-					<a name="createnode" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Node</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#createnode">createNode</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L802">src/widgets/widget.ts:802</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create the DOM node for the widget.</p>
-								</div>
-								<p>This can be reimplemented by subclasses as needed.</p>
-								<p>The default implementation creates an empty div.</p>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="detach" class="tsd-anchor"></a>
 					<h3>detach</h3>
@@ -974,7 +982,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#detach">detach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L519">src/widgets/widget.ts:519</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L512">src/widgets/widget.ts:512</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -987,16 +995,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 					<a name="dispose" class="tsd-anchor"></a>
 					<h3>dispose</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">dispose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#dispose">dispose</a></p>
+								<p>Overwrites <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#dispose">dispose</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L130">src/widgets/widget.ts:130</a></li>
 								</ul>
@@ -1021,7 +1030,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#fit">fit</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L540">src/widgets/widget.ts:540</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L533">src/widgets/widget.ts:533</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1049,6 +1058,35 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<a name="hasclass" class="tsd-anchor"></a>
+					<h3>has<wbr>Class</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Class<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#hasclass">hasClass</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/nodebase.ts#L51">src/core/nodebase.ts:51</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Test whether the object&#39;s DOM node has the given class name.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="hide" class="tsd-anchor"></a>
 					<h3>hide</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
@@ -1059,7 +1097,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#hide">hide</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L456">src/widgets/widget.ts:456</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L449">src/widgets/widget.ts:449</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1083,7 +1121,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#invalidateboxsizing">invalidateBoxSizing</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L623">src/widgets/widget.ts:623</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L616">src/widgets/widget.ts:616</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1108,7 +1146,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#maxsizehint">maxSizeHint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L610">src/widgets/widget.ts:610</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L603">src/widgets/widget.ts:603</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1137,7 +1175,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#minsizehint">minSizeHint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L592">src/widgets/widget.ts:592</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L585">src/widgets/widget.ts:585</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1166,7 +1204,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#move">move</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L660">src/widgets/widget.ts:660</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L653">src/widgets/widget.ts:653</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1198,7 +1236,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onafterattach">onAfterAttach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L901">src/widgets/widget.ts:901</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L883">src/widgets/widget.ts:883</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1228,7 +1266,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onafterdetach">onAfterDetach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L915">src/widgets/widget.ts:915</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L897">src/widgets/widget.ts:897</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1258,7 +1296,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onafterhide">onAfterHide</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L887">src/widgets/widget.ts:887</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L869">src/widgets/widget.ts:869</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1288,7 +1326,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onaftershow">onAfterShow</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L873">src/widgets/widget.ts:873</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L855">src/widgets/widget.ts:855</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1318,7 +1356,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onbeforeattach">onBeforeAttach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L894">src/widgets/widget.ts:894</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L876">src/widgets/widget.ts:876</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1348,7 +1386,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onbeforedetach">onBeforeDetach</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L908">src/widgets/widget.ts:908</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L890">src/widgets/widget.ts:890</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1378,7 +1416,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onbeforehide">onBeforeHide</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L880">src/widgets/widget.ts:880</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L862">src/widgets/widget.ts:862</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1408,7 +1446,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onbeforeshow">onBeforeShow</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L866">src/widgets/widget.ts:866</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L848">src/widgets/widget.ts:848</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1438,7 +1476,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onchildadded">onChildAdded</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L820">src/widgets/widget.ts:820</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L802">src/widgets/widget.ts:802</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1468,7 +1506,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onchildremoved">onChildRemoved</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L836">src/widgets/widget.ts:836</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L818">src/widgets/widget.ts:818</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1498,7 +1536,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onclose">onClose</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L811">src/widgets/widget.ts:811</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L793">src/widgets/widget.ts:793</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1528,7 +1566,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onmove">onMove</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L852">src/widgets/widget.ts:852</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L834">src/widgets/widget.ts:834</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1558,7 +1596,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#onresize">onResize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L859">src/widgets/widget.ts:859</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L841">src/widgets/widget.ts:841</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1588,7 +1626,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#processmessage">processMessage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L736">src/widgets/widget.ts:736</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L729">src/widgets/widget.ts:729</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1609,6 +1647,35 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+					<a name="removeclass" class="tsd-anchor"></a>
+					<h3>remove<wbr>Class</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Class<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#removeclass">removeClass</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/nodebase.ts#L65">src/core/nodebase.ts:65</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Remove a class name from the object&#39;s DOM node.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
 					<a name="resize" class="tsd-anchor"></a>
 					<h3>resize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
@@ -1619,7 +1686,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#resize">resize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L667">src/widgets/widget.ts:667</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L660">src/widgets/widget.ts:660</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1651,7 +1718,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#setflag">setFlag</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L415">src/widgets/widget.ts:415</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L408">src/widgets/widget.ts:408</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1680,7 +1747,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#setgeometry">setGeometry</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L679">src/widgets/widget.ts:679</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L672">src/widgets/widget.ts:672</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1721,7 +1788,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#setsizepolicy">setSizePolicy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L721">src/widgets/widget.ts:721</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L714">src/widgets/widget.ts:714</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1753,7 +1820,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#setvisible">setVisible</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L479">src/widgets/widget.ts:479</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L472">src/widgets/widget.ts:472</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1782,7 +1849,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#show">show</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L431">src/widgets/widget.ts:431</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L424">src/widgets/widget.ts:424</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1806,7 +1873,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#sizehint">sizeHint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L574">src/widgets/widget.ts:574</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L567">src/widgets/widget.ts:567</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1834,7 +1901,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#testflag">testFlag</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L408">src/widgets/widget.ts:408</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L401">src/widgets/widget.ts:401</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1863,7 +1930,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/phosphor.widgets.widget.html">Widget</a>.<a href="../classes/phosphor.widgets.widget.html#updategeometry">updateGeometry</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L644">src/widgets/widget.ts:644</a></li>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/widgets/widget.ts#L637">src/widgets/widget.ts:637</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1884,6 +1951,30 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-static">
+					<a name="createnode" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> create<wbr>Node</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Node<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/phosphor.core.nodebase.html">NodeBase</a>.<a href="../classes/phosphor.core.nodebase.html#createnode">createNode</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/phosphorjs/phosphor/blob/HEAD/src/core/nodebase.ts#L23">src/core/nodebase.ts:23</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create the DOM node for a new object instance.</p>
+								</div>
+								<p>This may be reimplemented to create a custom DOM node.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1943,172 +2034,181 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="phosphor.widgets.itabbable.html" class="tsd-kind-icon">ITabbable</a>
+						<a href="phosphor.widgets.idockwidget.html" class="tsd-kind-icon">IDock<wbr>Widget</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#disposed" class="tsd-kind-icon">disposed</a>
+								<a href="phosphor.widgets.idockwidget.html#disposed" class="tsd-kind-icon">disposed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="phosphor.widgets.itabbable.html#tab" class="tsd-kind-icon">tab</a>
+								<a href="phosphor.widgets.idockwidget.html#tab" class="tsd-kind-icon">tab</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a>
+								<a href="phosphor.widgets.idockwidget.html#boxsizing" class="tsd-kind-icon">box<wbr>Sizing</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#childcount" class="tsd-kind-icon">child<wbr>Count</a>
+								<a href="phosphor.widgets.idockwidget.html#childcount" class="tsd-kind-icon">child<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#height" class="tsd-kind-icon">height</a>
+								<a href="phosphor.widgets.idockwidget.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.widgets.idockwidget.html#horizontalsizepolicy" class="tsd-kind-icon">horizontal<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a>
+								<a href="phosphor.widgets.idockwidget.html#isattached" class="tsd-kind-icon">is<wbr>Attached</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a>
+								<a href="phosphor.widgets.idockwidget.html#isdisposed" class="tsd-kind-icon">is<wbr>Disposed</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a>
+								<a href="phosphor.widgets.idockwidget.html#ishidden" class="tsd-kind-icon">is<wbr>Hidden</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a>
+								<a href="phosphor.widgets.idockwidget.html#isvisible" class="tsd-kind-icon">is<wbr>Visible</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#layout" class="tsd-kind-icon">layout</a>
+								<a href="phosphor.widgets.idockwidget.html#layout" class="tsd-kind-icon">layout</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#node" class="tsd-kind-icon">node</a>
+								<a href="phosphor.widgets.idockwidget.html#node" class="tsd-kind-icon">node</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#parent" class="tsd-kind-icon">parent</a>
+								<a href="phosphor.widgets.idockwidget.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.widgets.idockwidget.html#verticalsizepolicy" class="tsd-kind-icon">vertical<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#width" class="tsd-kind-icon">width</a>
+								<a href="phosphor.widgets.idockwidget.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#x" class="tsd-kind-icon">x</a>
+								<a href="phosphor.widgets.idockwidget.html#x" class="tsd-kind-icon">x</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#y" class="tsd-kind-icon">y</a>
+								<a href="phosphor.widgets.idockwidget.html#y" class="tsd-kind-icon">y</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#attach" class="tsd-kind-icon">attach</a>
+								<a href="phosphor.widgets.idockwidget.html#addclass" class="tsd-kind-icon">add<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#childat" class="tsd-kind-icon">child<wbr>At</a>
+								<a href="phosphor.widgets.idockwidget.html#attach" class="tsd-kind-icon">attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a>
+								<a href="phosphor.widgets.idockwidget.html#childat" class="tsd-kind-icon">child<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#close" class="tsd-kind-icon">close</a>
+								<a href="phosphor.widgets.idockwidget.html#clearflag" class="tsd-kind-icon">clear<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a>
+								<a href="phosphor.widgets.idockwidget.html#close" class="tsd-kind-icon">close</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#compressmessage" class="tsd-kind-icon">compress<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#detach" class="tsd-kind-icon">detach</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#dispose" class="tsd-kind-icon">dispose</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#fit" class="tsd-kind-icon">fit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#hasclass" class="tsd-kind-icon">has<wbr>Class</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#hide" class="tsd-kind-icon">hide</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#move" class="tsd-kind-icon">move</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#createnode" class="tsd-kind-icon">create<wbr>Node</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#detach" class="tsd-kind-icon">detach</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#dispose" class="tsd-kind-icon">dispose</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#fit" class="tsd-kind-icon">fit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#hide" class="tsd-kind-icon">hide</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#invalidateboxsizing" class="tsd-kind-icon">invalidate<wbr>Box<wbr>Sizing</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#maxsizehint" class="tsd-kind-icon">max<wbr>Size<wbr>Hint</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#minsizehint" class="tsd-kind-icon">min<wbr>Size<wbr>Hint</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#move" class="tsd-kind-icon">move</a>
+								<a href="phosphor.widgets.idockwidget.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onafterattach" class="tsd-kind-icon">on<wbr>After<wbr>Attach</a>
+								<a href="phosphor.widgets.idockwidget.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onafterdetach" class="tsd-kind-icon">on<wbr>After<wbr>Detach</a>
+								<a href="phosphor.widgets.idockwidget.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onafterhide" class="tsd-kind-icon">on<wbr>After<wbr>Hide</a>
+								<a href="phosphor.widgets.idockwidget.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onaftershow" class="tsd-kind-icon">on<wbr>After<wbr>Show</a>
+								<a href="phosphor.widgets.idockwidget.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onbeforeattach" class="tsd-kind-icon">on<wbr>Before<wbr>Attach</a>
+								<a href="phosphor.widgets.idockwidget.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onbeforedetach" class="tsd-kind-icon">on<wbr>Before<wbr>Detach</a>
+								<a href="phosphor.widgets.idockwidget.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onbeforehide" class="tsd-kind-icon">on<wbr>Before<wbr>Hide</a>
+								<a href="phosphor.widgets.idockwidget.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onbeforeshow" class="tsd-kind-icon">on<wbr>Before<wbr>Show</a>
+								<a href="phosphor.widgets.idockwidget.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onchildadded" class="tsd-kind-icon">on<wbr>Child<wbr>Added</a>
+								<a href="phosphor.widgets.idockwidget.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onchildremoved" class="tsd-kind-icon">on<wbr>Child<wbr>Removed</a>
+								<a href="phosphor.widgets.idockwidget.html#onclose" class="tsd-kind-icon">on<wbr>Close</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onclose" class="tsd-kind-icon">on<wbr>Close</a>
+								<a href="phosphor.widgets.idockwidget.html#onmove" class="tsd-kind-icon">on<wbr>Move</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onmove" class="tsd-kind-icon">on<wbr>Move</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-protected">
-								<a href="phosphor.widgets.itabbable.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a>
+								<a href="phosphor.widgets.idockwidget.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a>
+								<a href="phosphor.widgets.idockwidget.html#processmessage" class="tsd-kind-icon">process<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#resize" class="tsd-kind-icon">resize</a>
+								<a href="phosphor.widgets.idockwidget.html#removeclass" class="tsd-kind-icon">remove<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a>
+								<a href="phosphor.widgets.idockwidget.html#resize" class="tsd-kind-icon">resize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a>
+								<a href="phosphor.widgets.idockwidget.html#setflag" class="tsd-kind-icon">set<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a>
+								<a href="phosphor.widgets.idockwidget.html#setgeometry" class="tsd-kind-icon">set<wbr>Geometry</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a>
+								<a href="phosphor.widgets.idockwidget.html#setsizepolicy" class="tsd-kind-icon">set<wbr>Size<wbr>Policy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#show" class="tsd-kind-icon">show</a>
+								<a href="phosphor.widgets.idockwidget.html#setvisible" class="tsd-kind-icon">set<wbr>Visible</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a>
+								<a href="phosphor.widgets.idockwidget.html#show" class="tsd-kind-icon">show</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a>
+								<a href="phosphor.widgets.idockwidget.html#sizehint" class="tsd-kind-icon">size<wbr>Hint</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="phosphor.widgets.itabbable.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a>
+								<a href="phosphor.widgets.idockwidget.html#testflag" class="tsd-kind-icon">test<wbr>Flag</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
+								<a href="phosphor.widgets.idockwidget.html#updategeometry" class="tsd-kind-icon">update<wbr>Geometry</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-static">
+								<a href="phosphor.widgets.idockwidget.html#createnode" class="tsd-kind-icon">create<wbr>Node</a>
 							</li>
 						</ul>
 					</li>

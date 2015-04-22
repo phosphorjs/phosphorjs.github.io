@@ -9,7 +9,6 @@ module example {
 
 import DockArea = phosphor.widgets.DockArea;
 import DockMode = phosphor.widgets.DockMode;
-import ITab = phosphor.widgets.ITab;
 import Tab = phosphor.widgets.Tab;
 import Widget = phosphor.widgets.Widget;
 
@@ -18,13 +17,13 @@ class Content extends Widget {
 
   constructor(title: string) {
     super();
-    this.node.classList.add('content');
-    this.node.classList.add(title.toLowerCase());
+    this.addClass('content');
+    this.addClass(title.toLowerCase());
     this._tab = new Tab(title);
     this._tab.closable = true;
   }
 
-  get tab(): ITab {
+  get tab(): Tab {
     return this._tab;
   }
 
