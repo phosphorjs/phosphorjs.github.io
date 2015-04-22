@@ -1,215 +1,213 @@
-declare module phosphor.collections {
-    module algorithm {
-        /**
-         * A generic index callback function.
-         */
-        interface ICallback<T, U> {
-            (value: T, index: number): U;
-        }
-        /**
-         * A boolean predicate function.
-         */
-        interface IPredicate<T> {
-            (value: T, index: number): boolean;
-        }
-        /**
-         * A three-way comparison function.
-         */
-        interface IComparator<T, U> {
-            (first: T, second: U): number;
-        }
-        /**
-         * Find the index of the first occurrence of the given value.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the adjusted value is still negative, it will be clamped to `0`. The
-         * default index is `0`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the end of the array and continue until
-         * reaching the element just before the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `-1` if the value is not found.
-         */
-        function indexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
-        /**
-         * Find the index of the last occurrence of the given value.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the value is greater than the last index, it will be clamped to the
-         * last index. The default index is `-1`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the front of the array and continue until
-         * reaching the element just after the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `-1` if the value is not found.
-         */
-        function lastIndexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
-        /**
-         * Find the index of the first element which passes the test.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the adjusted value is still negative, it will be clamped to `0`. The
-         * default index is `0`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the end of the array and continue until
-         * reaching the element just before the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `-1` if no element passes the test.
-         */
-        function findIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
-        /**
-         * Find the index of the last element which passes the test.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the value is greater than the last index, it will be clamped to the
-         * last index. The default index is `-1`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the front of the array and continue until
-         * reaching the element just after the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `-1` if no element passes the test.
-         */
-        function findLastIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
-        /**
-         * Find the first element in the array which passes the given test.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the adjusted value is still negative, it will be clamped to `0`. The
-         * default index is `0`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the end of the array and continue until
-         * reaching the element just before the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `undefined` if no element passes the test.
-         */
-        function find<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
-        /**
-         * Find the last element in the array which passes the given test.
-         *
-         * The `fromIndex` parameter controls the starting index of the search.
-         * If the value is negative, it is offset from the end of the array. If
-         * the value is greater than the last index, it will be clamped to the
-         * last index. The default index is `-1`.
-         *
-         * The `wrap` parameter controls the search wrap-around. If true, the
-         * search will wrap-around at the front of the array and continue until
-         * reaching the element just after the starting element. The default
-         * wrap value is `false`.
-         *
-         * Returns `undefined` if no element passes the test.
-         */
-        function findLast<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
-        /**
-         * Find the index of the first element which is not less than `value`.
-         *
-         * This function uses a binary search. It must be applied to a sorted
-         * array in order for the results to be correct.
-         *
-         * Returns `array.length` if all elements are less than `value`.
-         */
-        function lowerBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
-        /**
-         * Find the index of the first element which is greater than `value`.
-         *
-         * This function uses a binary search. It must be applied to a sorted
-         * array in order for the results to be correct.
-         *
-         * Returns `array.length` if no element is greater than `value`.
-         */
-        function upperBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
-        /**
-         * Find the index of the first element which is equal to `value`.
-         *
-         * This function uses a binary search. It must be applied to a sorted
-         * array in order for the results to be correct.
-         *
-         * Returns `-1` if no matching value is found.
-         */
-        function findLowerIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
-        /**
-         * Find the index of the last element which is equal to `value`.
-         *
-         * This function uses a binary search. It must be applied to a sorted
-         * array in order for the results to be correct.
-         *
-         * Returns `-1` if no matching value is found.
-         */
-        function findUpperIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
-        /**
-         * Find the first element which is equal to `value`.
-         *
-         * This function uses a binary search. It must be applied to a sorted
-         * array in order for the results to be correct.
-         *
-         * Returns `undefined` if no matching value is found.
-         */
-        function findLower<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
-        /**
-         * Find the index of the last element which is equal to `value`.
-         *
-         * This uses a binary search algorithm which must be applied to a
-         * sorted array in order for the results to be correct.
-         *
-         * Returns `-1` if no matching value is found.
-         */
-        function findUpper<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
-        /**
-         * Create a shallow copy of the given array.
-         */
-        function copy<T>(array: T[]): T[];
-        /**
-         * Insert an element at the given index.
-         *
-         * If `index` is negative, it will be offset from the end of the array.
-         * If the adjusted value is still negative, it will be clamped to `0`.
-         * If `index` is greater than `array.length`, it will be clamped to
-         * `array.length`.
-         *
-         * Returns the index at which the element was inserted.
-         */
-        function insert<T>(array: T[], index: number, value: T): number;
-        /**
-         * Move an array element from one index to another.
-         *
-         * If `fromIndex` is negative, it will be offset from the end of the
-         * array. If the adjusted value is out of range, `-1` will be returned.
-         *
-         * If `toIndex` is negative, it will be offset from the end of the
-         * array. If the adjusted value is out of range, it will be clamped.
-         *
-         * Returns the final index of the moved element.
-         */
-        function move<T>(array: T[], fromIndex: number, toIndex: number): number;
-        /**
-         * Remove and return the element at the given index.
-         *
-         * If `index` is negative, it will be offset from the end of the array.
-         *
-         * Returns `undefined` if the index is out of range.
-         */
-        function removeAt<T>(array: T[], index: number): T;
-        /**
-         * Remove the first occurrence of the element and return its index.
-         *
-         * Returns the `-1` if the element is not in the array.
-         */
-        function remove<T>(array: T[], value: T): number;
+declare module phosphor.collections.algorithm {
+    /**
+     * A generic index callback function.
+     */
+    interface ICallback<T, U> {
+        (value: T, index: number): U;
     }
+    /**
+     * A boolean predicate function.
+     */
+    interface IPredicate<T> {
+        (value: T, index: number): boolean;
+    }
+    /**
+     * A three-way comparison function.
+     */
+    interface IComparator<T, U> {
+        (first: T, second: U): number;
+    }
+    /**
+     * Find the index of the first occurrence of the given value.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the adjusted value is still negative, it will be clamped to `0`. The
+     * default index is `0`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the end of the array and continue until
+     * reaching the element just before the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `-1` if the value is not found.
+     */
+    function indexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
+    /**
+     * Find the index of the last occurrence of the given value.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the value is greater than the last index, it will be clamped to the
+     * last index. The default index is `-1`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the front of the array and continue until
+     * reaching the element just after the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `-1` if the value is not found.
+     */
+    function lastIndexOf<T>(array: T[], value: T, fromIndex?: number, wrap?: boolean): number;
+    /**
+     * Find the index of the first element which passes the test.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the adjusted value is still negative, it will be clamped to `0`. The
+     * default index is `0`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the end of the array and continue until
+     * reaching the element just before the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `-1` if no element passes the test.
+     */
+    function findIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
+    /**
+     * Find the index of the last element which passes the test.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the value is greater than the last index, it will be clamped to the
+     * last index. The default index is `-1`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the front of the array and continue until
+     * reaching the element just after the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `-1` if no element passes the test.
+     */
+    function findLastIndex<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): number;
+    /**
+     * Find the first element in the array which passes the given test.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the adjusted value is still negative, it will be clamped to `0`. The
+     * default index is `0`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the end of the array and continue until
+     * reaching the element just before the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `undefined` if no element passes the test.
+     */
+    function find<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
+    /**
+     * Find the last element in the array which passes the given test.
+     *
+     * The `fromIndex` parameter controls the starting index of the search.
+     * If the value is negative, it is offset from the end of the array. If
+     * the value is greater than the last index, it will be clamped to the
+     * last index. The default index is `-1`.
+     *
+     * The `wrap` parameter controls the search wrap-around. If true, the
+     * search will wrap-around at the front of the array and continue until
+     * reaching the element just after the starting element. The default
+     * wrap value is `false`.
+     *
+     * Returns `undefined` if no element passes the test.
+     */
+    function findLast<T>(array: T[], pred: IPredicate<T>, fromIndex?: number, wrap?: boolean): T;
+    /**
+     * Find the index of the first element which is not less than `value`.
+     *
+     * This function uses a binary search. It must be applied to a sorted
+     * array in order for the results to be correct.
+     *
+     * Returns `array.length` if all elements are less than `value`.
+     */
+    function lowerBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+    /**
+     * Find the index of the first element which is greater than `value`.
+     *
+     * This function uses a binary search. It must be applied to a sorted
+     * array in order for the results to be correct.
+     *
+     * Returns `array.length` if no element is greater than `value`.
+     */
+    function upperBound<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+    /**
+     * Find the index of the first element which is equal to `value`.
+     *
+     * This function uses a binary search. It must be applied to a sorted
+     * array in order for the results to be correct.
+     *
+     * Returns `-1` if no matching value is found.
+     */
+    function findLowerIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+    /**
+     * Find the index of the last element which is equal to `value`.
+     *
+     * This function uses a binary search. It must be applied to a sorted
+     * array in order for the results to be correct.
+     *
+     * Returns `-1` if no matching value is found.
+     */
+    function findUpperIndex<T, U>(array: T[], value: U, cmp: IComparator<T, U>): number;
+    /**
+     * Find the first element which is equal to `value`.
+     *
+     * This function uses a binary search. It must be applied to a sorted
+     * array in order for the results to be correct.
+     *
+     * Returns `undefined` if no matching value is found.
+     */
+    function findLower<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
+    /**
+     * Find the index of the last element which is equal to `value`.
+     *
+     * This uses a binary search algorithm which must be applied to a
+     * sorted array in order for the results to be correct.
+     *
+     * Returns `-1` if no matching value is found.
+     */
+    function findUpper<T, U>(array: T[], value: U, cmp: IComparator<T, U>): T;
+    /**
+     * Create a shallow copy of the given array.
+     */
+    function copy<T>(array: T[]): T[];
+    /**
+     * Insert an element at the given index.
+     *
+     * If `index` is negative, it will be offset from the end of the array.
+     * If the adjusted value is still negative, it will be clamped to `0`.
+     * If `index` is greater than `array.length`, it will be clamped to
+     * `array.length`.
+     *
+     * Returns the index at which the element was inserted.
+     */
+    function insert<T>(array: T[], index: number, value: T): number;
+    /**
+     * Move an array element from one index to another.
+     *
+     * If `fromIndex` is negative, it will be offset from the end of the
+     * array. If the adjusted value is out of range, `-1` will be returned.
+     *
+     * If `toIndex` is negative, it will be offset from the end of the
+     * array. If the adjusted value is out of range, it will be clamped.
+     *
+     * Returns the final index of the moved element.
+     */
+    function move<T>(array: T[], fromIndex: number, toIndex: number): number;
+    /**
+     * Remove and return the element at the given index.
+     *
+     * If `index` is negative, it will be offset from the end of the array.
+     *
+     * Returns `undefined` if the index is out of range.
+     */
+    function removeAt<T>(array: T[], index: number): T;
+    /**
+     * Remove the first occurrence of the element and return its index.
+     *
+     * Returns the `-1` if the element is not in the array.
+     */
+    function remove<T>(array: T[], value: T): number;
 }
 
 declare module phosphor.collections {
@@ -5678,11 +5676,14 @@ declare module phosphor.shell {
     }
 }
 
-declare module phosphor.lib {
+declare module phosphor.lib.codemirror {
     import IMessage = core.IMessage;
+    import Size = utility.Size;
     import BaseComponent = virtualdom.BaseComponent;
     import Elem = virtualdom.Elem;
     import IData = virtualdom.IData;
+    import ResizeMessage = widgets.ResizeMessage;
+    import Widget = widgets.Widget;
     /**
      * The data object for a code mirror component.
      */
@@ -5704,8 +5705,8 @@ declare module phosphor.lib {
         /**
          * Get the code mirror editor for the component.
          *
-         * This component does not attempt to wrap the extensive code mirror
-         * api. User code should interact with the editor object directly.
+         * This component does not attempt to wrap the code mirror api.
+         * User code should interact with the editor object directly.
          */
         editor: CodeMirror.Editor;
         /**
@@ -5718,13 +5719,6 @@ declare module phosphor.lib {
      * The default element factory for the CodeMirrorComponent.
      */
     var CodeMirrorFactory: virtualdom.IFactory<ICodeMirrorData>;
-}
-
-declare module phosphor.lib {
-    import IMessage = core.IMessage;
-    import Size = utility.Size;
-    import ResizeMessage = widgets.ResizeMessage;
-    import Widget = widgets.Widget;
     /**
      * A widget which hosts a CodeMirror editor.
      */

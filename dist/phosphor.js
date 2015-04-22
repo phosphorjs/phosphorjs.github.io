@@ -483,9 +483,9 @@ var phosphor;
                 return i;
             }
             algorithm.remove = remove;
-        })(algorithm = collections.algorithm || (collections.algorithm = {})); // module algorithm
+        })(algorithm = collections.algorithm || (collections.algorithm = {}));
     })(collections = phosphor.collections || (phosphor.collections = {}));
-})(phosphor || (phosphor = {})); // module phosphor.collections
+})(phosphor || (phosphor = {})); // module phosphor.collections.algorithm
 
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, S. Chris Colbert
@@ -13529,161 +13529,144 @@ var phosphor;
 (function (phosphor) {
     var lib;
     (function (lib) {
-        var BaseComponent = phosphor.virtualdom.BaseComponent;
-        var createFactory = phosphor.virtualdom.createFactory;
-        /**
-         * The class name added to CodeMirrorComponent instances.
-         */
-        var CODE_MIRROR_COMPONENT_CLASS = 'p-CodeMirrorComponent';
-        // TODO:
-        // - update editor config on re-render?
-        // - save/restore scroll position on move?
-        /**
-         * A component which hosts a CodeMirror editor.
-         */
-        var CodeMirrorComponent = (function (_super) {
-            __extends(CodeMirrorComponent, _super);
+        var codemirror;
+        (function (codemirror) {
+            var Point = phosphor.utility.Point;
+            var Size = phosphor.utility.Size;
+            var BaseComponent = phosphor.virtualdom.BaseComponent;
+            var createFactory = phosphor.virtualdom.createFactory;
+            var SizePolicy = phosphor.widgets.SizePolicy;
+            var Widget = phosphor.widgets.Widget;
             /**
-             * Construct a new code mirror component.
+             * The class name added to CodeMirrorComponent instances.
              */
-            function CodeMirrorComponent(data, children) {
-                _super.call(this, data, children);
-                this.addClass(CODE_MIRROR_COMPONENT_CLASS);
-                this._editor = CodeMirror(this.node, data.config);
-            }
+            var CODE_MIRROR_COMPONENT_CLASS = 'p-CodeMirrorComponent';
             /**
-             * Dispose of the resources held by the component.
+             * The class name added to CodeMirrorWidget instances.
              */
-            CodeMirrorComponent.prototype.dispose = function () {
-                this._editor = null;
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(CodeMirrorComponent.prototype, "editor", {
+            var CODE_MIRROR_WIDGET_CLASS = 'p-CodeMirrorWidget';
+            // TODO:
+            // - update editor config on re-render?
+            // - save/restore scroll position on move?
+            /**
+             * A component which hosts a CodeMirror editor.
+             */
+            var CodeMirrorComponent = (function (_super) {
+                __extends(CodeMirrorComponent, _super);
                 /**
-                 * Get the code mirror editor for the component.
-                 *
-                 * This component does not attempt to wrap the extensive code mirror
-                 * api. User code should interact with the editor object directly.
+                 * Construct a new code mirror component.
                  */
-                get: function () {
-                    return this._editor;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * A method invoked on an 'after-attach' message.
-             */
-            CodeMirrorComponent.prototype.onAfterAttach = function (msg) {
-                this._editor.refresh();
-            };
-            return CodeMirrorComponent;
-        })(BaseComponent);
-        lib.CodeMirrorComponent = CodeMirrorComponent;
-        /**
-         * The default element factory for the CodeMirrorComponent.
-         */
-        lib.CodeMirrorFactory = createFactory(CodeMirrorComponent);
-    })(lib = phosphor.lib || (phosphor.lib = {}));
-})(phosphor || (phosphor = {})); // module phosphor.lib
-
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, S. Chris Colbert
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-var phosphor;
-(function (phosphor) {
-    var lib;
-    (function (lib) {
-        var Point = phosphor.utility.Point;
-        var Size = phosphor.utility.Size;
-        var SizePolicy = phosphor.widgets.SizePolicy;
-        var Widget = phosphor.widgets.Widget;
-        /**
-         * The class name added to CodeMirrorWidget instances.
-         */
-        var CODE_MIRROR_WIDGET_CLASS = 'p-CodeMirrorWidget';
-        /**
-         * A widget which hosts a CodeMirror editor.
-         */
-        var CodeMirrorWidget = (function (_super) {
-            __extends(CodeMirrorWidget, _super);
-            /**
-             * Construct a new code mirror widget.
-             */
-            function CodeMirrorWidget(config) {
-                _super.call(this);
-                this._scrollPos = null;
-                this.addClass(CODE_MIRROR_WIDGET_CLASS);
-                this._editor = CodeMirror(this.node, config);
-                this.setSizePolicy(SizePolicy.Expanding, SizePolicy.Expanding);
-            }
-            /**
-             * Dispose of the resources held by the widget.
-             */
-            CodeMirrorWidget.prototype.dispose = function () {
-                this._editor = null;
-                _super.prototype.dispose.call(this);
-            };
-            Object.defineProperty(CodeMirrorWidget.prototype, "editor", {
-                /**
-                 * Get the code mirror editor for the widget.
-                 *
-                 * This widget does not attempt to wrap the code mirror api.
-                 * User code should interact with the editor object directly.
-                 */
-                get: function () {
-                    return this._editor;
-                },
-                enumerable: true,
-                configurable: true
-            });
-            /**
-             * Calculate the preferred size for the widget.
-             */
-            CodeMirrorWidget.prototype.sizeHint = function () {
-                return new Size(512, 256);
-            };
-            /**
-             * A method invoked on an 'after-show' message.
-             */
-            CodeMirrorWidget.prototype.onAfterShow = function (msg) {
-                var pos = this._scrollPos;
-                if (pos)
-                    this._editor.scrollTo(pos.x, pos.y);
-            };
-            /**
-             * A method invoked on a 'before-hide' message.
-             */
-            CodeMirrorWidget.prototype.onBeforeHide = function (msg) {
-                var info = this._editor.getScrollInfo();
-                this._scrollPos = new Point(info.left, info.top);
-            };
-            /**
-             * A method invoked on an 'after-attach' message.
-             */
-            CodeMirrorWidget.prototype.onAfterAttach = function (msg) {
-                this._editor.refresh();
-            };
-            /**
-             * A method invoked on a 'resize' message.
-             */
-            CodeMirrorWidget.prototype.onResize = function (msg) {
-                if (this.isVisible) {
-                    this._editor.setSize(msg.width, msg.height);
+                function CodeMirrorComponent(data, children) {
+                    _super.call(this, data, children);
+                    this.addClass(CODE_MIRROR_COMPONENT_CLASS);
+                    this._editor = CodeMirror(this.node, data.config);
                 }
-            };
-            return CodeMirrorWidget;
-        })(Widget);
-        lib.CodeMirrorWidget = CodeMirrorWidget;
+                /**
+                 * Dispose of the resources held by the component.
+                 */
+                CodeMirrorComponent.prototype.dispose = function () {
+                    this._editor = null;
+                    _super.prototype.dispose.call(this);
+                };
+                Object.defineProperty(CodeMirrorComponent.prototype, "editor", {
+                    /**
+                     * Get the code mirror editor for the component.
+                     *
+                     * This component does not attempt to wrap the code mirror api.
+                     * User code should interact with the editor object directly.
+                     */
+                    get: function () {
+                        return this._editor;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                /**
+                 * A method invoked on an 'after-attach' message.
+                 */
+                CodeMirrorComponent.prototype.onAfterAttach = function (msg) {
+                    this._editor.refresh();
+                };
+                return CodeMirrorComponent;
+            })(BaseComponent);
+            codemirror.CodeMirrorComponent = CodeMirrorComponent;
+            /**
+             * The default element factory for the CodeMirrorComponent.
+             */
+            codemirror.CodeMirrorFactory = createFactory(CodeMirrorComponent);
+            /**
+             * A widget which hosts a CodeMirror editor.
+             */
+            var CodeMirrorWidget = (function (_super) {
+                __extends(CodeMirrorWidget, _super);
+                /**
+                 * Construct a new code mirror widget.
+                 */
+                function CodeMirrorWidget(config) {
+                    _super.call(this);
+                    this._scrollPos = null;
+                    this.addClass(CODE_MIRROR_WIDGET_CLASS);
+                    this._editor = CodeMirror(this.node, config);
+                    this.setSizePolicy(SizePolicy.Expanding, SizePolicy.Expanding);
+                }
+                /**
+                 * Dispose of the resources held by the widget.
+                 */
+                CodeMirrorWidget.prototype.dispose = function () {
+                    this._editor = null;
+                    _super.prototype.dispose.call(this);
+                };
+                Object.defineProperty(CodeMirrorWidget.prototype, "editor", {
+                    /**
+                     * Get the code mirror editor for the widget.
+                     *
+                     * This widget does not attempt to wrap the code mirror api.
+                     * User code should interact with the editor object directly.
+                     */
+                    get: function () {
+                        return this._editor;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                /**
+                 * Calculate the preferred size for the widget.
+                 */
+                CodeMirrorWidget.prototype.sizeHint = function () {
+                    return new Size(512, 256);
+                };
+                /**
+                 * A method invoked on an 'after-show' message.
+                 */
+                CodeMirrorWidget.prototype.onAfterShow = function (msg) {
+                    var pos = this._scrollPos;
+                    if (pos)
+                        this._editor.scrollTo(pos.x, pos.y);
+                };
+                /**
+                 * A method invoked on a 'before-hide' message.
+                 */
+                CodeMirrorWidget.prototype.onBeforeHide = function (msg) {
+                    var info = this._editor.getScrollInfo();
+                    this._scrollPos = new Point(info.left, info.top);
+                };
+                /**
+                 * A method invoked on an 'after-attach' message.
+                 */
+                CodeMirrorWidget.prototype.onAfterAttach = function (msg) {
+                    this._editor.refresh();
+                };
+                /**
+                 * A method invoked on a 'resize' message.
+                 */
+                CodeMirrorWidget.prototype.onResize = function (msg) {
+                    if (this.isVisible) {
+                        this._editor.setSize(msg.width, msg.height);
+                    }
+                };
+                return CodeMirrorWidget;
+            })(Widget);
+            codemirror.CodeMirrorWidget = CodeMirrorWidget;
+        })(codemirror = lib.codemirror || (lib.codemirror = {}));
     })(lib = phosphor.lib || (phosphor.lib = {}));
-})(phosphor || (phosphor = {})); // module phosphor.lib
+})(phosphor || (phosphor = {})); // module phosphor.lib.codemirror

@@ -8,8 +8,8 @@
 |----------------------------------------------------------------------------*/
 var example;
 (function (example) {
-    var CodeMirrorFactory = phosphor.lib.CodeMirrorFactory;
-    var CodeMirrorWidget = phosphor.lib.CodeMirrorWidget;
+    var CodeMirrorFactory = phosphor.lib.codemirror.CodeMirrorFactory;
+    var CodeMirrorWidget = phosphor.lib.codemirror.CodeMirrorWidget;
     var render = phosphor.virtualdom.render;
     function main() {
         var cm1 = new CodeMirrorWidget({
