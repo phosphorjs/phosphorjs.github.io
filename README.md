@@ -1,9 +1,7 @@
-# PhosphorJS docs webside
+PhosphorJS Website
+------------------
 
 https://phosphorjs.github.io
 
-# Install / Publish
-
-The main branch  on this repository is called `source`.
-
-Master is reserved for the generated html of github pages.
+The main branch of this repository is `source`.
+The `master` branch hosts the github pages.
