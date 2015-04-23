@@ -1,3 +1,3 @@
 Under Construction.
 
-Consider browsing the [API](http://phosphorjs.github.io/phosphor/) in the meantime.
+Consider browsing the [API](https://phosphorjs.github.io/phosphor/) in the meantime.
