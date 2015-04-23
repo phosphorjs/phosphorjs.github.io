@@ -4,7 +4,8 @@ node_js:
 sudo: false
 env:
   global:
-    - secure: Zv6POtOhi0kIMgvGnt3dGouLc+hXeajKuoBMUPLdYdkeD/JLhNHyZyZkF7SKKeKcVSCUj8Y20hcWH2rErRckvGO3jUdeupUZN5DnwKnFZ2QXF4/s7+xzSR5jbS5IUbL9YVPoxSXMyK7VtkcGa1M4H/1cZYOdSUIz51pkfXipgus=
+    # Matthias token for phosphorjs/phosphorjs.github.io
+    - secure: "IhE0iXr0JHBYLPdRrhEYp3VX30EoJYMSxqbpyOuRYaRZQFv1wmTtEdhEuE1j76tPK8LvsTjgdVs3KqoRdt71gs+LT8jjzf1NYMH2prUt8k4cdcu8vmwISGiCkdXUb+2HoBdYG9lS59U72OZOI+wPIAOwDfLhn2MZO2htHbonKd8="
 before_install:
   - chmod +x ./scripts/travis_install.sh
   - chmod +x ./scripts/travis_script.sh
