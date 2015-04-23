@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/phosphorjs/phosphorjs.github.io.git"
   },
-  "author": "Matthias Bussonnier <bussonniermatthias@gmail.com>",
+  "author": "PhosphorJS Contributors",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/phosphorjs/phosphorjs.github.io/issues"
