@@ -18,8 +18,8 @@
         <a href="/" class="logo">Phosphor</a>
         <nav>
             <ul>
-                <li><a href="{{root}}docs/">Docs</a></li>
-                <li><a href="https://github.com/PhosphorJS/Phosphor">GitHub</a></li>
+                <li><a href="{{root}}phosphor/">API</a></li>
+                <li><a href="https://github.com/phosphorjs/phosphor">GitHub</a></li>
             </ul>
         </nav>
     </div>
@@ -28,16 +28,16 @@
 <div class="container main">
     <div class="row">
         <div class="col-3">
-            
+
 
 <nav class="navigation">
-    
+
     <ul>
         {{#each collections.pages}}
         {{#if this.list_index}}
-        <li 
+        <li
             {{#ifCond title ../../title }} class="selected" {{else}} {{/ifCond}}>
-            <a href="{{root}}{{this.path}}" 
+            <a href="{{root}}{{this.path}}"
             {{#ifCond title ../../title }} class="current" {{else}} {{/ifCond}}>{{this.title}}</a>
         </li>
         {{/if}}
