@@ -1,3 +1,3 @@
-This is the main index page. 
+Under Construction.
 
-Consider visiting [about page](./about).
+Consider browsing the [API](http://phosphorjs.github.io/phosphor/) in the meantime.

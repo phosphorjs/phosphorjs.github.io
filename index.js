@@ -1,96 +1,61 @@
-var Metalsmith  = require('metalsmith'),
-    markdown    = require('metalsmith-markdown'),
-    templates   = require('metalsmith-templates'),
-    collections = require('metalsmith-collections'),
-    permalinks  = require('metalsmith-permalinks'),
-    Handlebars  = require('handlebars'),
-    fs          = require('fs');
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS contributors.
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+var path = require('path');
 
-var root = process.argv[2]||'/'
+var Handlebars = require('handlebars');
+var Metalsmith = require('metalsmith');
+var markdown = require('metalsmith-markdown');
+var templates = require('metalsmith-templates');
+var collections = require('metalsmith-collections');
 
-console.log('will use root', root)
 
-var ext = require('path').extname
-
-
-Handlebars.registerHelper('ifCond', function(v1, v2, options) {
-  if(v1 === v2) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
+Handlebars.registerHelper('ifeq', function (v1, v2, options) {
+  return v1 === v2 ? options.fn(this) : options.inverse(this);
 });
 
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+function makePath(fname, ext) {
+  var base = path.basename(fname, ext);
+  return base + '.html';
 }
 
-var default_drop_index_from_collections = function(files, metalsmith, done){
-    mdtp = metalsmith.metadata()['collections']['pages'];
-    for(var i in mdtp){
-        if(mdtp[i].path == 'index'){
-            mdtp[i].list_index = false
-        } else {
-            mdtp[i].list_index = true
-        }
+
+function makeTitle(fname, ext) {
+  var base = path.basename(fname, ext);
+  var parts = base.split('-').map(function (part) {
+    return part.charAt(0).toUpperCase() + part.slice(1);
+  });
+  return parts.join(' ');
+}
+
+
+function configureFiles(files, metalsmith, done) {
+  for (var fname in files) {
+    var ext = path.extname(fname);
+    if (ext == '.md') {
+      var file = files[fname];
+      file.ext = ext;
+      file.root = '/';
+      file.template = 'page.hbt';
+      file.path = makePath(fname, ext);
+      file.title = makeTitle(fname, ext);
+      file.nav_list = file.path !== 'index.html';
     }
-
-    done();
+  }
+  done();
 }
 
-default_log = function(files, metalsmith, done){
-    mdtp = metalsmith.metadata()['collections']['pages'];
-    //console.log(mdtp.map(function(x,i){return x}))
-    done()
-}
-
-default_index = function(files,x, done){
-    files['index.html'] = files['index/index.html'];
-    delete files['index/index.html']
-    done();
-}
-
-default_title = function(files, metalsmith, done){
-    for(var file in files){
-        if(ext(file)=='.md'){
-            files[file].ext = ext(file)
-            files[file].title = capitalizeFirstLetter(file.split('/').slice(-1)[0].split('.')[0].replace('-',' '));
-            files[file].root = root;
-        }
-    }
-    done()
-}
-
-default_template = function(files, metalsmith, done){
-    for(var file in files){
-        if((files[file]||{}).ext=='.md'){
-            files[file].template = 'page.hbt';
-        }
-    }
-    done()
-}
 
 Metalsmith(__dirname)
-    .clean(false)
-    .use(collections({
-        pages: {
-            pattern: '*.md',
-            sortBy: 'title',
-            //reverse: true
-        }
-    }))
-    .use(default_title)
-    .use(markdown())
-    .use(default_template)
-    .use(permalinks({
-        //pattern: ':collection/:title'
-        pattern: ':title'
-    }))
-    .use(default_log)
-    .use(default_drop_index_from_collections)
-    .use(templates('handlebars'))
-    .destination('./build')
-    .use(default_index)
-    .build(function(err) {
-      if (err) throw err;
-    })
+  .use(collections({ pages: { pattern: '*.md', sortBy: 'title' } }))
+  .use(configureFiles)
+  .use(markdown())
+  .use(templates('handlebars'))
+  .build(function (err) {
+    if (err) throw err;
+  });
