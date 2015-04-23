@@ -1,5 +1,5 @@
 {
-  "name": "phosphor-docs",
+  "name": "phosphorjs.github.io",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/phosphorjs/phosphor.git"
+    "url": "https://github.com/phosphorjs/phosphorjs.github.io.git"
   },
   "author": "Matthias Bussonnier <bussonniermatthias@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/phosphorjs/phosphor/issues"
+    "url": "https://github.com/phosphorjs/phosphorjs.github.io/issues"
   },
-  "homepage": "https://github.com/phosphorjs/phosphor",
+  "homepage": "https://github.com/phosphorjs/phosphorjs.github.io",
   "devDependencies": {
     "metalsmith": "^1.5.0",
     "metalsmith-markdown": "^0.2.1",
