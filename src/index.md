@@ -91,7 +91,7 @@ Can I use it now?
 -----------------
 
 PhosphorJS is under development at the moment. Many of the libraries listed
-below have already reached 1.0, others (and several unlisted) are in the
+below have already reached 1.0, and others (several unlisted) are in the
 process of being released.
 
 Consider browsing the API docs in the meantime:
