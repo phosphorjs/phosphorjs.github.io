@@ -24,6 +24,7 @@ are not within the purview of most of today's web frameworks.
 PhosphorJS is written entirely in [TypeScript](https://www.typescriptlang.org),
 and is simple and easy to use from ES5, ES6 and TypeScript.
 
+
 Why?
 ----
 
@@ -49,6 +50,16 @@ provides these low-level facilities that are currently missing from the web,
 in a way which is flexible, unopinionated, and compatible with your existing
 code.
 
+**Speed Matters.** In response to a user interaction, an application has ~16ms
+to perform all necessary logic calculations, DOM manipulations, reflows, and
+repaints, in order to maintain a 60fps refresh rate. This is easy to do for
+one-off small applications, but becomes very difficult for large, multi-tab,
+single-page, dense applications. PhosphorJS helps with this. It's widgets and
+layouts are designed to be efficient: minimizing reflows whenever possible and
+consistently achieving sub-millisecond layout times. It leaves as much of the
+time-slice as possible to be used for the execution of business logic.
+
+
 How?
 ----
 
@@ -57,14 +68,6 @@ How?
 - PhosphorJS avoids CSS layout algorithms, instead managing the layout and sizing
   using javascript.
 
-Show me the proof!
-------------------
-
-- [Check out this PR comment](https://github.com/ipython/ipython/pull/7997#issuecomment-88143191)
-  showing a Panel resize comparison between CodePen and PhosphorJS. CodePen takes
-  more than 16ms, Phosphor takes less than 0.5ms. (The PhosphorJS layout is *much*
-  more complicated).
-- Most importantly, [check out the source](https://github.com/phosphorjs).
 
 Can I use it now?
 -----------------
