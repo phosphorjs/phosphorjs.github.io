@@ -1,4 +1,4 @@
-The PhosphorJS Library
+The PhosphorJS Project
 ======================
 
 What?
