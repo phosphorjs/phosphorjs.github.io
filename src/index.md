@@ -1,25 +1,53 @@
-The PhosphorJS UI library
-=========================
+The PhosphorJS Library
+======================
 
 What?
 -----
 
-PhosphorJS is a UI library designed to allow high-performance web applications
-to be built with your favourite UI toolkits. PhosphorJS does not replace your existing
-library choices, rather it embeds other toolkit UIs into components that have been
-written from the ground up to maximise performance and minimize reflows.
+PhosphorJS is a collection of libraries designed to make it easy to build
+high-performance, pluggable, desktop-style web applications. It **is not**
+an opinionated framework which forces a developer into a specific model of
+data flow, nor does it artificially limit the developer to using only the
+facilities provided by its own libraries. PhosphorJS was designed from the
+start to play nicely with existing and popular web frameworks.
 
-PhosphorJS is written in [TypeScript](https://www.typescriptlang.org),
+The PhosphorJS libraries cover topics including (but not limited to): message
+passing, signaling, attached properties, data structures, widgets, and layouts.
+Each of the libraries is a separately installable NPM package. Developers are
+free to use as much or as little of PhosphorJS as suits their needs.
+
+Most users will be drawn to PhosphorJS for its high performance layouts and
+well structured widget hierarchy. These features allow a developer to build
+desktop-like experiences which are not possible using CSS alone, and which
+are not within the purview of most of today's web frameworks.
+
+PhosphorJS is written entirely in [TypeScript](https://www.typescriptlang.org),
 and is simple and easy to use from ES5, ES6 and TypeScript.
 
 Why?
 ----
 
-The web is built on technology that is highly sub-optimal for modern, dynamic
-UI applications. Many frameworks have appeared that attempt to minimise the latency
-of DOM changes, however none have fully applied the concepts of high-performance UI frameworks,
-such as clear event APIs and correctly timed attach/detach methods, to name just two. PhosphorJS aims
-to fill this gap.
+The web is built on technology that is sub-optimal for modern desktop-style UI
+applications. Nevertheless, the web stack is rapidly becoming *the* deployment
+platform for new applications, desktop or otherwise. Several frameworks have
+appeared which attempt to address the shortcomings using various techniques.
+Unfortunately, these frameworks often comes with an opinionated view of how
+data should flow through an application and/or a rigid model of how a widget
+hierarchy should be assembled. In addition to being limiting, most of these
+frameworks do not leverage the concepts of desktop toolkits which have been
+proven (over several decades) to be highly useful.
+
+HTML and CSS were designed for documents, not applications. There are certain
+classes of user interactions which are expected of production-quality desktop
+applications which are impossible to implement in CSS alone. Think of tabbed
+and docked panels in an IDE application. These types of interactions must be
+implemented using JavaScript, and implementing them in a scalable and elegant
+fashion requires a reasonable amount of architecture. This includes facilities
+such as: a message-passing hierarchy, resize/attach/detach/show/hide events,
+size constraint aggregation, and efficient layout computation. PhosphorJS
+provides these low-level facilities that are currently missing from the web,
+in a way which is flexible, unopinionated, and compatible with your existing
+code.
 
 How?
 ----
