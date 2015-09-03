@@ -77,7 +77,7 @@ We will soon release a version 1.0 to show our intentions of API stability and s
 
 Consider browsing the API docs in the meantime:
 
-Library|Build Status|Coverage
+Library|Status|Coverage
 -------|------------|--------
 [phosphor-arrays](http://phosphorjs.github.io/phosphor-arrays/api)| [![Build Status](https://travis-ci.org/phosphorjs/phosphor-arrays.svg)](https://travis-ci.org/phosphorjs/phosphor-arrays?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-arrays/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-arrays?branch=master)
 [phosphor-boxengine](http://phosphorjs.github.io/phosphor-boxengine/api)| [![Build Status](https://travis-ci.org/phosphorjs/phosphor-boxengine.svg)](https://travis-ci.org/phosphorjs/phosphor-boxengine?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-boxengine/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-boxengine?branch=master)
