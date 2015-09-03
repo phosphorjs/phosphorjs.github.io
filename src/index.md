@@ -77,12 +77,14 @@ We will soon release a version 1.0 to show our intentions of API stability and s
 
 Consider browsing the API docs in the meantime:
 
-- [phosphor-arrays](http://phosphorjs.github.io/phosphor-arrays/api)
-- [phosphor-boxengine](http://phosphorjs.github.io/phosphor-boxengine/api)
-- [phosphor-disposable](http://phosphorjs.github.io/phosphor-disposable/api)
-- [phosphor-messaging](http://phosphorjs.github.io/phosphor-messaging/api)
-- [phosphor-nodewrapper](http://phosphorjs.github.io/phosphor-nodewrapper/api)
-- [phosphor-properties](http://phosphorjs.github.io/phosphor-properties/api)
-- [phosphor-queue](http://phosphorjs.github.io/phosphor-queue/api)
-- [phosphor-signaling](http://phosphorjs.github.io/phosphor-signaling/api)
-- [phosphor-widget](http://phosphorjs.github.io/phosphor-widget/api)
+Library|Build Status|Coverage
+-------|------------|--------
+[phosphor-arrays](http://phosphorjs.github.io/phosphor-arrays/api)| [![Build Status](https://travis-ci.org/phosphorjs/phosphor-arrays.svg)](https://travis-ci.org/phosphorjs/phosphor-arrays?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-arrays/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-arrays?branch=master)
+[phosphor-boxengine](http://phosphorjs.github.io/phosphor-boxengine/api)| [![Build Status](https://travis-ci.org/phosphorjs/phosphor-boxengine.svg)](https://travis-ci.org/phosphorjs/phosphor-boxengine?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-boxengine/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-boxengine?branch=master)
+[phosphor-disposable](http://phosphorjs.github.io/phosphor-disposable/api)| [![Build Status](https://travis-ci.org/phosphorjs/phosphor-disposable.svg)](https://travis-ci.org/phosphorjs/phosphor-disposable?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-disposable/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-disposable?branch=master)
+[phosphor-messaging](http://phosphorjs.github.io/phosphor-messaging/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-messaging.svg)](https://travis-ci.org/phosphorjs/phosphor-messaging?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-messaging/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-messaging?branch=master)
+[phosphor-nodewrapper](http://phosphorjs.github.io/phosphor-nodewrapper/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-nodewrapper.svg)](https://travis-ci.org/phosphorjs/phosphor-nodewrapper?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-nodewrapper/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-nodewrapper?branch=master)
+[phosphor-properties](http://phosphorjs.github.io/phosphor-properties/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-properties.svg)](https://travis-ci.org/phosphorjs/phosphor-properties?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-properties/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-properties?branch=master)
+[phosphor-queue](http://phosphorjs.github.io/phosphor-queue/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-queue.svg)](https://travis-ci.org/phosphorjs/phosphor-queue?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-queue/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-queue?branch=master)
+[phosphor-signaling](http://phosphorjs.github.io/phosphor-signaling/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-signaling.svg)](https://travis-ci.org/phosphorjs/phosphor-signaling?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-signaling/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-signaling?branch=master)
+[phosphor-widget](http://phosphorjs.github.io/phosphor-widget/api) | [![Build Status](https://travis-ci.org/phosphorjs/phosphor-widget.svg)](https://travis-ci.org/phosphorjs/phosphor-widget?branch=master) | [![Coverage Status](https://coveralls.io/repos/phosphorjs/phosphor-widget/badge.svg?branch=master&service=github)](https://coveralls.io/github/phosphorjs/phosphor-widget?branch=master)
