@@ -5,5 +5,4 @@ cd todomvc-demo
 npm install
 npm run build
 cp LICENSE example
-mkdir ../build/todo-example
 cp -r example ../build/todo-example
