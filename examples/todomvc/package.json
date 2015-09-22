@@ -1,0 +1,24 @@
+{
+  "name": "todomvc-example",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && browserify -t browserify-css index.js -o bundle.js",
+    "postinstall": "npm dedupe"
+  },
+  "dependencies": {
+    "director": "^1.2.0",
+    "phosphor-splitpanel": "^0.9.4",
+    "phosphor-widget": "^0.9.9",
+    "react": "^0.13.3",
+    "todomvc-app-css": "^2.0.0",
+    "todomvc-common": "^1.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^11.1.0",
+    "browserify-css": "^0.7.1",
+    "typescript": "^1.6"
+  }
+}
