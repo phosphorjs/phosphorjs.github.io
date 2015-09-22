@@ -14,6 +14,7 @@ then
     cp -r ../build/* ./.
     cp ../README_MASTER.md ./README.md
     git add -A
+    git add -f src/examples/*/node_modules
     git commit -m "autocommit docs"
     git push origin master
 fi
