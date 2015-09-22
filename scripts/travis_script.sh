@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 node index.js
 
 cd examples
