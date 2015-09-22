@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, S. Chris Colbert\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 5px;\n}\n#main {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.content {\n  min-width: 400px;\n  min-height: 400px;\n  overflow: auto;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n#main {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.CodeMirrorWidget {\n  min-width: 400px;\n}\n.TodoWidget {\n  overflow: auto;\n  min-width: 400px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -17,14 +17,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 var phosphor_splitpanel_1 = require('phosphor-splitpanel');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
+/**
+ * A widget which hosts a Todo-App.
+ */
 var TodoWidget = (function (_super) {
     __extends(TodoWidget, _super);
     function TodoWidget(model) {
-        var _this = this;
         _super.call(this);
-        this.addClass('content');
+        this.addClass('TodoWidget');
         this._model = model;
-        model.subscribe(function () { return _this.update(); });
     }
     TodoWidget.createNode = function () {
         var node = document.createElement('div');
@@ -33,28 +34,35 @@ var TodoWidget = (function (_super) {
         node.appendChild(app);
         return node;
     };
+    Object.defineProperty(TodoWidget.prototype, "model", {
+        get: function () {
+            return this._model;
+        },
+        enumerable: true,
+        configurable: true
+    });
     TodoWidget.prototype.onAfterAttach = function (msg) {
+        var _this = this;
+        this._model.subscribe(function () { return _this.update(); });
         this.update();
     };
     TodoWidget.prototype.onUpdateRequest = function (msg) {
-        var host = this.node.firstChild;
         var data = { model: this._model };
+        var host = this.node.firstChild;
         React.render(React.createElement(app.TodoApp, data), host);
     };
     return TodoWidget;
 })(phosphor_widget_1.Widget);
+/**
+ * A widget which hosts a CodeMirror editor.
+ */
 var CodeMirrorWidget = (function (_super) {
     __extends(CodeMirrorWidget, _super);
     function CodeMirrorWidget(config) {
         _super.call(this);
         this.addClass('CodeMirrorWidget');
-        this.addClass('content');
         this._editor = CodeMirror(this.node, config);
     }
-    CodeMirrorWidget.prototype.dispose = function () {
-        this._editor = null;
-        _super.prototype.dispose.call(this);
-    };
     Object.defineProperty(CodeMirrorWidget.prototype, "editor", {
         get: function () {
             return this._editor;
@@ -66,31 +74,43 @@ var CodeMirrorWidget = (function (_super) {
         this._editor.refresh();
     };
     CodeMirrorWidget.prototype.onResize = function (msg) {
-        this._editor.setSize(msg.width, msg.height);
+        if (msg.width < 0 || msg.height < 0) {
+            this._editor.refresh();
+        }
+        else {
+            this._editor.setSize(msg.width, msg.height);
+        }
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
 function main() {
-    var split = new phosphor_splitpanel_1.SplitPanel();
-    split.id = 'main';
-    split.handleSize = 5;
+    // Create Todo widget with a new Todo model
     var model = new app.TodoModel('react-todos');
     var todo = new TodoWidget(model);
+    // Create the CodeMirror widget with a typescript mode.
     var cm = new CodeMirrorWidget({
-        value: "var text = 'This is a CodeMirror widget.';",
-        mode: 'javascript',
+        mode: 'text/typescript',
         lineNumbers: true,
         tabSize: 2,
-        extraKeys: { "Ctrl-Space": "autocomplete" },
     });
-    var client = new XMLHttpRequest();
-    client.open('GET', '/index.ts');
-    client.onreadystatechange = function () {
-        cm.editor.getDoc().setValue(client.responseText);
-    };
-    client.send();
+    // Set the stretch factors for the widgets.
+    phosphor_splitpanel_1.SplitPanel.setStretch(cm, 0);
+    phosphor_splitpanel_1.SplitPanel.setStretch(todo, 1);
+    // Setup the main split panel
+    var split = new phosphor_splitpanel_1.SplitPanel();
+    split.id = 'main';
+    split.handleSize = 0;
     split.children = [cm, todo];
+    split.setSizes([1, 1.5]);
+    // Initialize the CodeMirror text to the contents of this file.
+    var doc = cm.editor.getDoc();
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './index.ts');
+    xhr.onreadystatechange = function () { return doc.setValue(xhr.responseText); };
+    xhr.send();
+    // Attach the main split panel to the body.
     phosphor_widget_1.attachWidget(split, document.body);
+    // Update the main panel on window resize.
     window.onresize = function () { return split.update(); };
 }
 window.onload = main;
