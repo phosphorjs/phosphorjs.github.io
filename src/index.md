@@ -96,7 +96,7 @@ Can I use it now?
 
 PhosphorJS is under development at the moment. Many of the libraries listed
 below have already reached 1.0, and others (several unlisted) are in the
-process of being released.
+process of being released.  See [here](./examples/todomvc) for a live demo of mixing the React Todo MVC example and a Phosphor SplitPanel.
 
 Consider browsing the API docs in the meantime:
 
