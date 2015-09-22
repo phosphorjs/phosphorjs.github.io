@@ -1,5 +1,0 @@
-*.suo
-*.user
-.DS_Store
-example/*.js
-node_modules
