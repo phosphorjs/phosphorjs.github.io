@@ -1,0 +1,93 @@
+{
+  "name": "phosphor-domutil",
+  "version": "0.9.4",
+  "description": "Utilities for working with the DOM.",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "phosphor-disposable": "^1.0.3"
+  },
+  "devDependencies": {
+    "browserify-css": "^0.6.1",
+    "browserify-istanbul": "^0.2.1",
+    "coveralls": "^2.11.4",
+    "expect.js": "^0.3.1",
+    "glob-copy": "^0.1.0",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.3.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-coverage": "^0.5.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-mocha-reporter": "^1.1.1",
+    "mocha": "^2.2.5",
+    "rimraf": "^2.4.2",
+    "typedoc": "git://github.com/phosphorjs/typedoc.git",
+    "typescript": "1.6.0-beta"
+  },
+  "scripts": {
+    "clean": "rimraf lib && rimraf test/build && rimraf test/coverage",
+    "build:src": "tsc --project src",
+    "build:test": "tsc --project test/src",
+    "build:css": "node scripts/copycss.js",
+    "build": "npm run build:src && npm run build:test && npm run build:css",
+    "docs": "rimraf docs/api && typedoc --options scripts/tdoptions.json",
+    "prepublish": "npm run build",
+    "test:chrome": "karma start --browsers=Chrome test/karma.conf.js",
+    "test:coverage": "karma start test/karma-cov.conf.js",
+    "test:firefox": "karma start --browsers=Firefox test/karma.conf.js",
+    "test:ie": "karma start --browsers=IE test/karma.conf.js",
+    "test": "npm run test:firefox"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phosphorjs/phosphor-domutil.git"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/index.css",
+    "lib/index.d.ts"
+  ],
+  "browserify": {
+    "transform": [
+      "browserify-css"
+    ]
+  },
+  "keywords": [
+    "ui",
+    "domutil"
+  ],
+  "author": {
+    "name": "S. Chris Colbert",
+    "email": "sccolbert@gmail.com"
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/phosphorjs/phosphor-domutil/issues"
+  },
+  "homepage": "https://github.com/phosphorjs/phosphor-domutil",
+  "gitHead": "d6e4b0bf446ef811321f2d2bba026e17936c5e21",
+  "_id": "phosphor-domutil@0.9.4",
+  "_shasum": "307ea2ef4fb074a36ae8f70b9fb4b97ad31aad8e",
+  "_from": "phosphor-domutil@0.9.4",
+  "_npmVersion": "2.11.3",
+  "_nodeVersion": "0.12.7",
+  "_npmUser": {
+    "name": "sccolbert",
+    "email": "sccolbert@gmail.com"
+  },
+  "dist": {
+    "shasum": "307ea2ef4fb074a36ae8f70b9fb4b97ad31aad8e",
+    "tarball": "http://registry.npmjs.org/phosphor-domutil/-/phosphor-domutil-0.9.4.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "sccolbert",
+      "email": "sccolbert@gmail.com"
+    }
+  ],
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/phosphor-domutil/-/phosphor-domutil-0.9.4.tgz",
+  "readme": "ERROR: No README data found!"
+}
