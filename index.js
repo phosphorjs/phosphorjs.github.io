@@ -41,10 +41,26 @@ function configureFiles(files, metalsmith, done) {
       var file = files[fname];
       file.ext = ext;
       file.root = '/';
-      file.template = 'page.hbt';
       file.path = makePath(fname, ext);
       file.title = makeTitle(fname, ext);
-      file.nav_list = file.path !== 'index.html';
+      if (file.path === 'index.html') {
+        file.template = 'main.hbt';
+        repos = ['Arrays', 'Boxengine', 'Boxpanel', 'Disposable',
+                 'Domutil', 'Gridpanel', 'Menus', 'Messaging',
+                 'Nodewrapper', 'Properties', 'Queue', 'Sectionlist',
+                 'Signaling', 'Splitpanel', 'Stackedpanel', 'Tabs',
+                 'Widget'];
+        file.repos = {};
+        for (var i = 0; i < repos.length; i++) {
+          var repo = repos[i];
+          file.repos[repo.toLowerCase()] = repo;
+        }
+        file.examples = {
+          'React': 'todomvc'
+        };
+      } else {
+        file.template = 'page.hbt';
+      }
     }
   }
   done();

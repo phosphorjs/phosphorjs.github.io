@@ -23,19 +23,26 @@
     <div class="row">
       <div class="col-3">
         <nav class="navigation">
+          <h3>API Docs</h3>
           <ul>
-            {{#each collections.pages}}
-                <li {{#ifeq this.title ../../title }} class="selected" {{else}} {{/ifeq}}>
-                  <a href="{{root}}{{this.path}}" {{#ifeq this.title ../../title }} class="current" {{else}} {{/ifeq}}>
-                    {{this.title}}
+            {{#each repos}}
+                <li>
+                  <a href="{{root}}/phosphor-{{@key}}/api">{{this}}
                   </a>
                 </li>
+            {{/each}}
+          </ul>
+          <h3>Examples</h3>
+          <ul>
+            {{#each examples}}
+              <li>
+                <a href="{{root}}/examples/{{this}}">{{@key}}</a>
+              </li>
             {{/each}}
           </ul>
         </nav>
       </div>
       <div class="col-9 typography">
-        <h1>{{title}}</h1>
         {{{contents}}}
       </div>
     </div>
