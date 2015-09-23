@@ -11,7 +11,7 @@
 <body class="ui">
   <header>
     <div class="container">
-      <a href="/" class="logo">Phosphor</a>
+      <a href="/" class="logo">PhosphorJS</a>
       <nav>
         <ul>
           <li><a href="https://github.com/phosphorjs/">GitHub</a></li>
