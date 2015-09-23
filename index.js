@@ -56,7 +56,7 @@ function configureFiles(files, metalsmith, done) {
           file.repos[repo.toLowerCase()] = repo;
         }
         file.examples = {
-          'React': 'todomvc'
+          'Phosphor + React': 'todomvc'
         };
       } else {
         file.template = 'page.hbt';
