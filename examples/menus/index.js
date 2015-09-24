@@ -52,9 +52,22 @@ var CodeMirrorWidget = (function (_super) {
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
-function logItem(item) {
-    console.log(item.text);
+/**
+ * Log a message to the log element.
+ */
+function log(value) {
+    var node = document.getElementById('log-span');
+    node.textContent = value;
 }
+/**
+ * Log the text of a menu item to the log element.
+ */
+function logItem(item) {
+    log(item.text.replace(/&/g, ''));
+}
+/**
+ * The template for the application menu bar.
+ */
 var MENU_BAR_TEMPLATE = [
     {
         text: 'File',
@@ -216,6 +229,9 @@ var MENU_BAR_TEMPLATE = [
         ]
     }
 ];
+/**
+ * The template for the application context menu.
+ */
 var CONTEXT_MENU_TEMPLATE = [
     {
         text: '&Copy',
@@ -252,7 +268,7 @@ var CONTEXT_MENU_TEMPLATE = [
         text: '&Save On Exit',
         handler: function (item) {
             item.checked = !item.checked;
-            console.log('Save On Exit:', item.checked);
+            log('Save On Exit - ' + item.checked);
         }
     },
     {
@@ -295,17 +311,15 @@ var CONTEXT_MENU_TEMPLATE = [
         handler: logItem
     }
 ];
+/**
+ * The main application entry point.
+ */
 function main() {
-    var menuHost = new phosphor_widget_1.Widget();
-    menuHost.children = [phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE)];
-    var contextMenu = phosphor_menus_1.Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
-    menuHost.node.addEventListener('contextmenu', function (event) {
-        event.preventDefault();
-        var x = event.clientX;
-        var y = event.clientY;
-        contextMenu.popup(x, y);
-    });
-    phosphor_tabs_1.TabPanel.setTab(menuHost, new phosphor_tabs_1.Tab('Demo'));
+    var contextArea = new phosphor_widget_1.Widget();
+    contextArea.addClass('ContextArea');
+    contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.' +
+        '<h2>Right click this panel for a context menu.</h2>' +
+        '<h3>Clicked Item: <span id="log-span"></span></h3>');
     var cmSource = new CodeMirrorWidget({
         mode: 'text/javascript',
         lineNumbers: true,
@@ -318,11 +332,21 @@ function main() {
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
+    phosphor_tabs_1.TabPanel.setTab(contextArea, new phosphor_tabs_1.Tab('Demo'));
     phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
     phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    var contextMenu = phosphor_menus_1.Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+    contextArea.node.addEventListener('contextmenu', function (event) {
+        event.preventDefault();
+        var x = event.clientX;
+        var y = event.clientY;
+        contextMenu.popup(x, y);
+    });
+    var menuBar = phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.widgets = [menuHost, cmSource, cmCss];
+    panel.widgets = [contextArea, cmSource, cmCss];
+    phosphor_widget_1.attachWidget(menuBar, document.body);
     phosphor_widget_1.attachWidget(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }

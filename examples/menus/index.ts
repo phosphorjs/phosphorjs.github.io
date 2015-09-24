@@ -65,11 +65,26 @@ class CodeMirrorWidget extends Widget {
 }
 
 
-function logItem(item: MenuItem): void {
-  console.log(item.text);
+/**
+ * Log a message to the log element.
+ */
+function log(value: string): void {
+  var node = document.getElementById('log-span');
+  node.textContent = value;
 }
 
 
+/**
+ * Log the text of a menu item to the log element.
+ */
+function logItem(item: MenuItem): void {
+  log(item.text.replace(/&/g, ''));
+}
+
+
+/**
+ * The template for the application menu bar.
+ */
 var MENU_BAR_TEMPLATE = [
   {
     text: 'File',
@@ -233,6 +248,9 @@ var MENU_BAR_TEMPLATE = [
 ];
 
 
+/**
+ * The template for the application context menu.
+ */
 var CONTEXT_MENU_TEMPLATE = [
   {
     text: '&Copy',
@@ -269,7 +287,7 @@ var CONTEXT_MENU_TEMPLATE = [
     text: '&Save On Exit',
     handler: (item: MenuItem) => {
       item.checked = !item.checked;
-      console.log('Save On Exit:', item.checked);
+      log('Save On Exit - ' + item.checked);
     }
   },
   {
@@ -314,20 +332,17 @@ var CONTEXT_MENU_TEMPLATE = [
 ];
 
 
+/**
+ * The main application entry point.
+ */
 function main(): void {
-
-  var menuHost = new Widget();
-  menuHost.children = [MenuBar.fromTemplate(MENU_BAR_TEMPLATE)];
-
-  var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
-  menuHost.node.addEventListener('contextmenu', (event: MouseEvent) => {
-    event.preventDefault();
-    var x = event.clientX;
-    var y = event.clientY;
-    contextMenu.popup(x, y);
-  });
-
-  TabPanel.setTab(menuHost, new Tab('Demo'));
+  var contextArea = new Widget();
+  contextArea.addClass('ContextArea');
+  contextArea.node.innerHTML = (
+    '<h2>Notice the menu bar at the top of the document.' +
+    '<h2>Right click this panel for a context menu.</h2>' +
+    '<h3>Clicked Item: <span id="log-span"></span></h3>'
+  );
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/javascript',
@@ -343,13 +358,25 @@ function main(): void {
   });
   cmCss.loadTarget('./index.css');
 
+  TabPanel.setTab(contextArea, new Tab('Demo'));
   TabPanel.setTab(cmSource, new Tab('Source'));
   TabPanel.setTab(cmCss, new Tab('CSS'));
 
+  var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+  contextArea.node.addEventListener('contextmenu', (event: MouseEvent) => {
+    event.preventDefault();
+    var x = event.clientX;
+    var y = event.clientY;
+    contextMenu.popup(x, y);
+  });
+
+  var menuBar = MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
+
   var panel = new TabPanel();
   panel.id = 'main';
-  panel.widgets = [menuHost, cmSource, cmCss];
+  panel.widgets = [contextArea, cmSource, cmCss];
 
+  attachWidget(menuBar, document.body);
   attachWidget(panel, document.body);
 
   window.onresize = () => panel.update();
