@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.my-vbox {\n  display: flex;\n  flex-direction: column;\n}\n.my-vbox > div {\n  flex-grow: 1;\n  margin-bottom: 5px;\n}\n.my-vbox > div:last-child {\n  margin-bottom: 0;\n}\n.my-vbox > .p-SplitPanel {\n  flex-grow: 2;\n}\n.content {\n  min-width: 100px;\n  min-height: 100px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  padding: 10px;\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.red {\n  background: #E74C3C;\n}\n.yellow {\n  background: #F1C40F;\n}\n.green {\n  background: #27AE60;\n}\n.blue {\n  background: #3498DB;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.my-vbox {\n  display: flex;\n  flex-direction: column;\n  padding: 10px;\n}\n.my-vbox > .p-Widget {\n  flex-grow: 1;\n  margin-bottom: 5px;\n}\n.my-vbox > .p-Widget:last-child {\n  margin-bottom: 0;\n}\n.my-vbox > .p-Widget.p-SplitPanel {\n  flex-grow: 2;\n}\n.content {\n  min-width: 100px;\n  min-height: 100px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.red {\n  background: #E74C3C;\n}\n.yellow {\n  background: #F1C40F;\n}\n.green {\n  background: #27AE60;\n}\n.blue {\n  background: #3498DB;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -18,7 +18,11 @@ var phosphor_splitpanel_1 = require('phosphor-splitpanel');
 var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
-// This widget uses flexbox for layout: see ./index.css
+/**
+ * A widget which uses CSS flexbox to layout its children.
+ *
+ * **See Also:** './index.css'
+ */
 var MyVBox = (function (_super) {
     __extends(MyVBox, _super);
     function MyVBox() {
@@ -27,6 +31,9 @@ var MyVBox = (function (_super) {
     }
     return MyVBox;
 })(phosphor_widget_1.Widget);
+/**
+ * A widget which logs its resize messages.
+ */
 var MyResizeWidget = (function (_super) {
     __extends(MyResizeWidget, _super);
     function MyResizeWidget() {
@@ -35,16 +42,13 @@ var MyResizeWidget = (function (_super) {
     // All widgets will receive a resize message when their parent
     // determines that they have likely been resized. If the current
     // size of the widget is known, it will be passed as part of the
-    // message. Otherwise, the size parameters will be `-1`, and you
-    // will need to measure the node to get the current size.
+    // message. Otherwise, the size parameters will be `-1`, and the
+    // the node will need to be measured to get the current size.
     //
     // The current size will typically be known when the parent of
     // the widget is an absolute Phosphor layout panel, and will be
     // unknown when the parent is a widget which uses CSS to layout
-    // its children. Here is a link to the typical way to handle the
-    // condition in the most efficient way possible, by only measuring
-    // if required:
-    // https://github.com/phosphorjs/phosphor-splitpanel/blob/master/src/index.ts#L368
+    // its children.
     MyResizeWidget.prototype.onResize = function (msg) {
         var w = msg.width;
         var h = msg.height;
@@ -52,12 +56,6 @@ var MyResizeWidget = (function (_super) {
     };
     return MyResizeWidget;
 })(phosphor_widget_1.Widget);
-function createContent(name) {
-    var widget = new MyResizeWidget();
-    widget.addClass('content');
-    widget.addClass(name);
-    return widget;
-}
 /**
  * A widget which hosts a CodeMirror editor.
  */
@@ -95,21 +93,29 @@ var CodeMirrorWidget = (function (_super) {
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
+/**
+ * Create a placeholder content widget.
+ */
+function createContent(name) {
+    var widget = new MyResizeWidget();
+    widget.addClass('content');
+    widget.addClass(name);
+    return widget;
+}
+/**
+ * The main application entry point.
+ */
 function main() {
-    var r = createContent('red');
-    var y = createContent('yellow');
-    var g = createContent('green');
-    var b1 = createContent('blue');
-    var b2 = createContent('blue');
-    var b3 = createContent('blue');
+    var red = createContent('red');
+    var yellow = createContent('yellow');
+    var green = createContent('green');
+    var blue1 = createContent('blue');
+    var blue2 = createContent('blue');
+    var blue3 = createContent('blue');
     var split = new phosphor_splitpanel_1.SplitPanel();
-    split.children = [b1, b2, b3];
-    // Note that the flexbox is the root widget, not the split panel.
-    // Since it is in a Phosphor layout, when the window resizes, 
-    // the flexbox's decendants get the resize message they need.
+    split.children = [blue1, blue2, blue3];
     var box = new MyVBox();
-    box.children = [r, split, y, g];
-    // Create the CodeMirror widget with a typescript mode.
+    box.children = [red, split, yellow, green];
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
