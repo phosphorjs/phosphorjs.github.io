@@ -316,17 +316,18 @@ var CONTEXT_MENU_TEMPLATE = [
 
 function main(): void {
 
-  var menuBar = MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
-  var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+  var menuHost = new Widget();
+  menuHost.children = [MenuBar.fromTemplate(MENU_BAR_TEMPLATE)];
 
-  document.addEventListener('contextmenu', (event: MouseEvent) => {
+  var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+  menuHost.node.addEventListener('contextmenu', (event: MouseEvent) => {
     event.preventDefault();
     var x = event.clientX;
     var y = event.clientY;
     contextMenu.popup(x, y);
   });
 
-  TabPanel.setTab(menuBar, new Tab('Menu'));
+  TabPanel.setTab(menuHost, new Tab('Demo'));
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/javascript',
@@ -347,7 +348,7 @@ function main(): void {
 
   var panel = new TabPanel();
   panel.id = 'main';
-  panel.widgets = [menuBar, cmSource, cmCss];
+  panel.widgets = [menuHost, cmSource, cmCss];
 
   attachWidget(panel, document.body);
 
