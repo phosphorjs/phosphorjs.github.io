@@ -6,7 +6,8 @@
     "postinstall": "npm dedupe"
   },
   "dependencies": {
-    "phosphor-dockpanel": "^0.9.0",
+    "phosphor-dockpanel": "^0.9.1",
+    "phosphor-messaging": "^1.0.4",
     "phosphor-tabs": "^0.9.5",
     "phosphor-widget": "^0.9.9"
   },

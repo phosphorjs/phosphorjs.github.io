@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.content {\n  border: 1px solid black;\n  min-width: 50px;\n  min-height: 50px;\n}\n.red {\n  background: #E74C3C;\n}\n.yellow {\n  background: #F1C40F;\n}\n.green {\n  background: #27AE60;\n}\n.blue {\n  background: #3498DB;\n}\n.p-DockTabPanel {\n  padding-right: 2px;\n  padding-bottom: 2px;\n}\n.p-DockTabPanel > .p-StackedPanel {\n  padding: 10px;\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);\n}\n.p-DockTabPanel-overlay {\n  background: rgba(255, 255, 255, 0.6);\n  border: 1px solid rgba(0, 0, 0, 0.6);\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  min-width: 35px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-Tab.p-mod-closable > .p-Tab-close-icon {\n  margin-left: 4px;\n}\n.p-Tab.p-mod-closable > .p-Tab-close-icon:before {\n  content: '\\f00d';\n  font-family: FontAwesome;\n}\n.p-Tab.p-mod-docking {\n  font: 12px Helvetica, Arial, sans-serif;\n  height: 24px;\n  width: 125px;\n  padding: 0px 10px;\n  background: white;\n  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);\n  transform: translateX(-50px) translateY(-14px);\n}\n.p-Tab.p-mod-docking > span {\n  line-height: 21px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.CodeMirrorWidget {\n  border: 1px solid #C0C0C0;\n  min-width: 200px;\n  min-height: 200px;\n  z-index: 0;\n  /* isolate stacking context */\n}\n.content {\n  border: 1px solid black;\n  min-width: 50px;\n  min-height: 50px;\n}\n.red {\n  background: #E74C3C;\n}\n.yellow {\n  background: #F1C40F;\n}\n.green {\n  background: #27AE60;\n}\n.blue {\n  background: #3498DB;\n}\n.p-DockTabPanel {\n  padding-right: 2px;\n  padding-bottom: 2px;\n}\n.p-DockTabPanel > .p-StackedPanel {\n  padding: 10px;\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);\n}\n.p-DockTabPanel-overlay {\n  background: rgba(255, 255, 255, 0.6);\n  border: 1px solid rgba(0, 0, 0, 0.6);\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  min-width: 35px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-Tab.p-mod-closable > .p-Tab-close-icon {\n  margin-left: 4px;\n}\n.p-Tab.p-mod-closable > .p-Tab-close-icon:before {\n  content: '\\f00d';\n  font-family: FontAwesome;\n}\n.p-Tab.p-mod-docking {\n  font: 12px Helvetica, Arial, sans-serif;\n  height: 24px;\n  width: 125px;\n  padding: 0px 10px;\n  background: white;\n  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);\n  transform: translateX(-50px) translateY(-14px);\n}\n.p-Tab.p-mod-docking > span {\n  line-height: 21px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -55,6 +55,9 @@ var CodeMirrorWidget = (function (_super) {
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
+/**
+ * Create a placeholder content widget.
+ */
 function createContent(title) {
     var widget = new phosphor_widget_1.Widget();
     widget.addClass('content');
@@ -64,6 +67,9 @@ function createContent(title) {
     phosphor_dockpanel_1.DockPanel.setTab(widget, tab);
     return widget;
 }
+/**
+ * The main application entry point.
+ */
 function main() {
     var r1 = createContent('Red');
     var r2 = createContent('Red');
@@ -77,7 +83,6 @@ function main() {
     var y2 = createContent('Yellow');
     var panel = new phosphor_dockpanel_1.DockPanel();
     panel.id = 'main';
-    // Create the CodeMirror widget with a typescript mode.
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
@@ -90,17 +95,15 @@ function main() {
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    var sourceTab = new phosphor_tabs_1.Tab('Source');
-    phosphor_dockpanel_1.DockPanel.setTab(cmSource, sourceTab);
-    var cssTab = new phosphor_tabs_1.Tab('CSS');
-    phosphor_dockpanel_1.DockPanel.setTab(cmCss, cssTab);
-    panel.addWidget(r1);
-    panel.addWidget(b1, phosphor_dockpanel_1.DockPanel.SplitRight, r1);
+    phosphor_dockpanel_1.DockPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
+    phosphor_dockpanel_1.DockPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    panel.addWidget(cmSource);
+    panel.addWidget(b1, phosphor_dockpanel_1.DockPanel.SplitRight, cmSource);
     panel.addWidget(y1, phosphor_dockpanel_1.DockPanel.SplitBottom, b1);
     panel.addWidget(g1, phosphor_dockpanel_1.DockPanel.SplitLeft, y1);
     panel.addWidget(b2, phosphor_dockpanel_1.DockPanel.SplitBottom);
-    panel.addWidget(cmCss, phosphor_dockpanel_1.DockPanel.TabBefore, r1);
-    panel.addWidget(cmSource, phosphor_dockpanel_1.DockPanel.TabBefore, cmCss);
+    panel.addWidget(cmCss, phosphor_dockpanel_1.DockPanel.TabAfter, cmSource);
+    panel.addWidget(r1, phosphor_dockpanel_1.DockPanel.TabAfter, cmCss);
     panel.addWidget(g2, phosphor_dockpanel_1.DockPanel.TabBefore, b2);
     panel.addWidget(y2, phosphor_dockpanel_1.DockPanel.TabBefore, g2);
     panel.addWidget(g3, phosphor_dockpanel_1.DockPanel.TabBefore, y2);
@@ -1820,7 +1823,7 @@ var DisposableSet = (function () {
 exports.DisposableSet = DisposableSet;
 
 },{}],9:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-DockTabPanel-overlay {\n  box-sizing: border-box;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  transition: all 150ms ease;\n}\n.p-Tab.p-mod-docking {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-dockpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-DockTabPanel-overlay {\n  box-sizing: border-box;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  transition: all 150ms ease;\n}\n.p-Tab.p-mod-docking {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-dockpanel/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],10:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -2149,7 +2152,7 @@ var DockPanel = (function (_super) {
         var tab = DockPanel.getTab(widget);
         this._items.push({ tab: tab, widget: widget, panel: item.panel });
         // Add the widget to the tab panel.
-        var i = item.panel.childIndex(item.widget);
+        var i = item.panel.stack.childIndex(item.widget);
         item.panel.stack.addChild(widget);
         item.panel.tabs.insertTab(i + (+after), tab);
     };

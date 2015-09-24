@@ -52,6 +52,9 @@ var CodeMirrorWidget = (function (_super) {
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
+/**
+ * Create a placeholder content widget.
+ */
 function createContent(title) {
     var widget = new phosphor_widget_1.Widget();
     widget.addClass('content');
@@ -61,6 +64,9 @@ function createContent(title) {
     phosphor_dockpanel_1.DockPanel.setTab(widget, tab);
     return widget;
 }
+/**
+ * The main application entry point.
+ */
 function main() {
     var r1 = createContent('Red');
     var r2 = createContent('Red');
@@ -74,7 +80,6 @@ function main() {
     var y2 = createContent('Yellow');
     var panel = new phosphor_dockpanel_1.DockPanel();
     panel.id = 'main';
-    // Create the CodeMirror widget with a typescript mode.
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
@@ -87,17 +92,15 @@ function main() {
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    var sourceTab = new phosphor_tabs_1.Tab('Source');
-    phosphor_dockpanel_1.DockPanel.setTab(cmSource, sourceTab);
-    var cssTab = new phosphor_tabs_1.Tab('CSS');
-    phosphor_dockpanel_1.DockPanel.setTab(cmCss, cssTab);
-    panel.addWidget(r1);
-    panel.addWidget(b1, phosphor_dockpanel_1.DockPanel.SplitRight, r1);
+    phosphor_dockpanel_1.DockPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
+    phosphor_dockpanel_1.DockPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    panel.addWidget(cmSource);
+    panel.addWidget(b1, phosphor_dockpanel_1.DockPanel.SplitRight, cmSource);
     panel.addWidget(y1, phosphor_dockpanel_1.DockPanel.SplitBottom, b1);
     panel.addWidget(g1, phosphor_dockpanel_1.DockPanel.SplitLeft, y1);
     panel.addWidget(b2, phosphor_dockpanel_1.DockPanel.SplitBottom);
-    panel.addWidget(cmCss, phosphor_dockpanel_1.DockPanel.TabBefore, r1);
-    panel.addWidget(cmSource, phosphor_dockpanel_1.DockPanel.TabBefore, cmCss);
+    panel.addWidget(cmCss, phosphor_dockpanel_1.DockPanel.TabAfter, cmSource);
+    panel.addWidget(r1, phosphor_dockpanel_1.DockPanel.TabAfter, cmCss);
     panel.addWidget(g2, phosphor_dockpanel_1.DockPanel.TabBefore, b2);
     panel.addWidget(y2, phosphor_dockpanel_1.DockPanel.TabBefore, g2);
     panel.addWidget(g3, phosphor_dockpanel_1.DockPanel.TabBefore, y2);

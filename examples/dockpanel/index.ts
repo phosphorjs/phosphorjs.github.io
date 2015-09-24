@@ -65,6 +65,9 @@ class CodeMirrorWidget extends Widget {
 }
 
 
+/**
+ * Create a placeholder content widget.
+ */
 function createContent(title: string): Widget {
   var widget = new Widget();
   widget.addClass('content');
@@ -78,6 +81,9 @@ function createContent(title: string): Widget {
 }
 
 
+/**
+ * The main application entry point.
+ */
 function main(): void {
   var r1 = createContent('Red');
   var r2 = createContent('Red');
@@ -96,7 +102,6 @@ function main(): void {
   var panel = new DockPanel();
   panel.id = 'main';
 
-  // Create the CodeMirror widget with a typescript mode.
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
@@ -111,21 +116,18 @@ function main(): void {
   });
   cmCss.loadTarget('./index.css');
 
-  var sourceTab = new Tab('Source');
-  DockPanel.setTab(cmSource, sourceTab);
+  DockPanel.setTab(cmSource, new Tab('Source'));
+  DockPanel.setTab(cmCss, new Tab('CSS'));
 
-  var cssTab = new Tab('CSS');
-  DockPanel.setTab(cmCss, cssTab);
-
-  panel.addWidget(r1);
-  panel.addWidget(b1, DockPanel.SplitRight, r1);
+  panel.addWidget(cmSource);
+  panel.addWidget(b1, DockPanel.SplitRight, cmSource);
   panel.addWidget(y1, DockPanel.SplitBottom, b1);
   panel.addWidget(g1, DockPanel.SplitLeft, y1);
 
   panel.addWidget(b2, DockPanel.SplitBottom);
 
-  panel.addWidget(cmCss, DockPanel.TabBefore, r1);
-  panel.addWidget(cmSource, DockPanel.TabBefore, cmCss);
+  panel.addWidget(cmCss, DockPanel.TabAfter, cmSource);
+  panel.addWidget(r1, DockPanel.TabAfter, cmCss);
   panel.addWidget(g2, DockPanel.TabBefore, b2);
   panel.addWidget(y2, DockPanel.TabBefore, g2);
   panel.addWidget(g3, DockPanel.TabBefore, y2);

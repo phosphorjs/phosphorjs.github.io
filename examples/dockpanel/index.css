@@ -21,6 +21,14 @@ body {
 }
 
 
+.CodeMirrorWidget {
+  border: 1px solid #C0C0C0;
+  min-width: 200px;
+  min-height: 200px;
+  z-index: 0; /* isolate stacking context */
+}
+
+
 .content {
   border: 1px solid black;
   min-width: 50px;
