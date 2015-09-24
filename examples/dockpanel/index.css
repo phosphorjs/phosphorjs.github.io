@@ -21,31 +21,53 @@ body {
 }
 
 
-.my-vbox {
-  display: flex;
-  flex-direction: column;
-}
-
-
-.my-vbox > div {
-  flex-grow: 1;
-  margin-bottom: 5px;
-}
-
-
-.my-vbox > div:last-child {
-  margin-bottom: 0;
-}
-
-
-.my-vbox > .p-SplitPanel {
-  flex-grow: 2;
-}
-
-
 .content {
-  min-width: 100px;
-  min-height: 100px;
+  border: 1px solid black;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+
+.red {
+  background: #E74C3C;
+}
+
+
+.yellow {
+  background: #F1C40F;
+}
+
+
+.green {
+  background: #27AE60;
+}
+
+
+.blue {
+  background: #3498DB;
+}
+
+
+.p-DockTabPanel {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+
+.p-DockTabPanel > .p-StackedPanel {
+  padding: 10px;
+  background: white;
+  border: 1px solid #C0C0C0;
+  border-top: none;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+.p-DockTabPanel-overlay {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.6);
 }
 
 
@@ -63,6 +85,7 @@ body {
 .p-TabBar-content > .p-Tab {
   flex-basis: 125px;
   max-height: 21px;
+  min-width: 35px;
   margin-left: -1px;
   border: 1px solid #C0C0C0;
   border-bottom: none;
@@ -101,29 +124,28 @@ body {
 }
 
 
-.p-TabPanel > .p-StackedPanel {
-  padding: 10px;
+.p-Tab.p-mod-closable > .p-Tab-close-icon {
+  margin-left: 4px;
+}
+
+
+.p-Tab.p-mod-closable > .p-Tab-close-icon:before {
+  content: '\f00d';
+  font-family: FontAwesome;
+}
+
+
+.p-Tab.p-mod-docking {
+  font: 12px Helvetica, Arial, sans-serif;
+  height: 24px;
+  width: 125px;
+  padding: 0px 10px;
   background: white;
-  border: 1px solid #C0C0C0;
-  border-top: none;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50px) translateY(-14px);
 }
 
 
-.red {
-  background: #E74C3C;
-}
-
-
-.yellow {
-  background: #F1C40F;
-}
-
-
-.green {
-  background: #27AE60;
-}
-
-
-.blue {
-  background: #3498DB;
+.p-Tab.p-mod-docking > span {
+  line-height: 21px;
 }
