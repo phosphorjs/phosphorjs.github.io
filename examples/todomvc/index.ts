@@ -12,8 +12,8 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  SplitPanel
-} from 'phosphor-splitpanel';
+  Tab, TabPanel
+} from 'phosphor-tabs';
 
 import {
   ResizeMessage, Widget, attachWidget
@@ -79,6 +79,14 @@ class CodeMirrorWidget extends Widget {
     return this._editor;
   }
 
+  loadTarget(target: string): void {
+    var doc = this._editor.getDoc();
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', target);
+    xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
+    xhr.send();
+  }
+
   protected onAfterAttach(msg: Message): void {
     this._editor.refresh();
   }
@@ -107,30 +115,32 @@ function main(): void {
     tabSize: 2,
   });
 
-  // Set the stretch factors for the widgets.
-  SplitPanel.setStretch(cm, 0);
-  SplitPanel.setStretch(todo, 1);
+  // Create the CodeMirror widget with a typescript mode.
+  var cmSource = new CodeMirrorWidget({
+    mode: 'text/typescript',
+    lineNumbers: true,
+    tabSize: 2,
+  });
+  cmSource.loadTarget('./index.ts');
 
-  // Setup the main split panel
-  var split = new SplitPanel();
-  split.id = 'main';
-  split.handleSize = 0;
-  split.children = [cm, todo];
-  split.setSizes([1, 1.5]);
+  var cmCss = new CodeMirrorWidget({
+    mode: 'text/css',
+    lineNumbers: true,
+    tabSize: 2,
+  });
+  cmCss.loadTarget('./index.css');
 
-  // Initialize the CodeMirror text to the contents of this file.
-  var doc = cm.editor.getDoc();
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', './index.ts');
-  xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
-  xhr.send();
+  TabPanel.setTab(todo, new Tab('Demo'));
+  TabPanel.setTab(cmSource, new Tab('Source'));
+  TabPanel.setTab(cmCss, new Tab('CSS'));
 
-  // Attach the main split panel to the body.
-  attachWidget(split, document.body);
+  var panel = new TabPanel()
+  panel.id = 'main';
+  panel.widgets = [todo, cmSource, cmCss];
 
-  // Update the main panel on window resize.
-  window.onresize = () => split.update();
+  attachWidget(panel, document.body);
+
+  window.onresize = () => panel.update();
 }
-
 
 window.onload = main;
