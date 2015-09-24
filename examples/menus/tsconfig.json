@@ -7,7 +7,7 @@
     "target": "ES5"
   },
   "files": [
-     "index.ts",
-     "../../typings/codemirror/codemirror.d.ts"
+    "index.ts",
+    "../../typings/codemirror/codemirror.d.ts"
    ]
 }
