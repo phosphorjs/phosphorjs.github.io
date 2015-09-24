@@ -45,10 +45,10 @@ function configureFiles(files, metalsmith, done) {
       file.title = makeTitle(fname, ext);
       if (file.path === 'index.html') {
         file.template = 'main.hbt';
-        repos = ['Arrays', 'Boxengine', 'Boxpanel', 'Disposable',
-                 'Domutil', 'Gridpanel', 'Menus', 'Messaging',
-                 'Nodewrapper', 'Properties', 'Queue', 'Sectionlist',
-                 'Signaling', 'Splitpanel', 'Stackedpanel', 'Tabs',
+        repos = ['Arrays', 'Boxengine', 'BoxPanel', 'Disposable',
+                 'Domutil', 'GridPanel', 'Menus', 'Messaging',
+                 'NodeWrapper', 'Properties', 'Queue', 'SectionList',
+                 'Signaling', 'SplitPanel', 'StackedPanel', 'Tabs',
                  'Widget'];
         file.repos = {};
         for (var i = 0; i < repos.length; i++) {
@@ -56,7 +56,8 @@ function configureFiles(files, metalsmith, done) {
           file.repos[repo.toLowerCase()] = repo;
         }
         file.examples = {
-          'Phosphor + React': 'todomvc'
+          'Phosphor + React': 'todomvc',
+          'Phosphor + Flexbox': 'flexbox'
         };
       } else {
         file.template = 'page.hbt';
