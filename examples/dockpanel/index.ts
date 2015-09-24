@@ -85,7 +85,6 @@ function main(): void {
 
   var b1 = createContent('Blue');
   var b2 = createContent('Blue');
-  var b3 = createContent('Blue');
 
   var g1 = createContent('Green');
   var g2 = createContent('Green');
@@ -93,26 +92,9 @@ function main(): void {
 
   var y1 = createContent('Yellow');
   var y2 = createContent('Yellow');
-  var y3 = createContent('Yellow');
 
   var panel = new DockPanel();
-  panel.addClass('mainDock');
-
-  panel.addWidget(r1);
-
-  panel.addWidget(b1, DockPanel.SplitRight, r1);
-  panel.addWidget(y1, DockPanel.SplitBottom, b1);
-  panel.addWidget(g1, DockPanel.SplitLeft, y1);
-
-  panel.addWidget(b2, DockPanel.SplitBottom);
-
-  panel.addWidget(y2, DockPanel.TabBefore, r1);
-  panel.addWidget(b3, DockPanel.TabBefore, y2);
-  panel.addWidget(g2, DockPanel.TabBefore, b2);
-  panel.addWidget(y3, DockPanel.TabBefore, g2);
-  panel.addWidget(g3, DockPanel.TabBefore, y3);
-  panel.addWidget(r2, DockPanel.TabBefore, b1);
-  panel.addWidget(r3, DockPanel.TabBefore, y1);
+  panel.id = 'main';
 
   // Create the CodeMirror widget with a typescript mode.
   var cmSource = new CodeMirrorWidget({
@@ -129,17 +111,30 @@ function main(): void {
   });
   cmCss.loadTarget('./index.css');
 
-  TabPanel.setTab(panel, new Tab('Demo'));
-  TabPanel.setTab(cmSource, new Tab('Source'));
-  TabPanel.setTab(cmCss, new Tab('CSS'));
+  var sourceTab = new Tab('Source');
+  DockPanel.setTab(cmSource, sourceTab);
 
-  var tabs = new TabPanel()
-  tabs.id = 'main';
-  tabs.widgets = [panel, cmSource, cmCss];
+  var cssTab = new Tab('CSS');
+  DockPanel.setTab(cmCss, cssTab);
 
-  attachWidget(tabs, document.body);
+  panel.addWidget(r1);
+  panel.addWidget(b1, DockPanel.SplitRight, r1);
+  panel.addWidget(y1, DockPanel.SplitBottom, b1);
+  panel.addWidget(g1, DockPanel.SplitLeft, y1);
 
-  window.onresize = () => tabs.update();
+  panel.addWidget(b2, DockPanel.SplitBottom);
+
+  panel.addWidget(cmCss, DockPanel.TabBefore, r1);
+  panel.addWidget(cmSource, DockPanel.TabBefore, cmCss);
+  panel.addWidget(g2, DockPanel.TabBefore, b2);
+  panel.addWidget(y2, DockPanel.TabBefore, g2);
+  panel.addWidget(g3, DockPanel.TabBefore, y2);
+  panel.addWidget(r2, DockPanel.TabBefore, b1);
+  panel.addWidget(r3, DockPanel.TabBefore, y1);
+
+  attachWidget(panel, document.body);
+
+  window.onresize = () => panel.update();
 }
 
 
