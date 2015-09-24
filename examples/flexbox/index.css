@@ -24,21 +24,22 @@ body {
 .my-vbox {
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
 
-.my-vbox > div {
+.my-vbox > .p-Widget {
   flex-grow: 1;
   margin-bottom: 5px;
 }
 
 
-.my-vbox > div:last-child {
+.my-vbox > .p-Widget:last-child {
   margin-bottom: 0;
 }
 
 
-.my-vbox > .p-SplitPanel {
+.my-vbox > .p-Widget.p-SplitPanel {
   flex-grow: 2;
 }
 
@@ -102,7 +103,6 @@ body {
 
 
 .p-TabPanel > .p-StackedPanel {
-  padding: 10px;
   background: white;
   border: 1px solid #C0C0C0;
   border-top: none;

@@ -26,9 +26,12 @@ import {
 import './index.css';
 
 
-// This widget uses flexbox for layout: see ./index.css
+/**
+ * A widget which uses CSS flexbox to layout its children.
+ *
+ * **See Also:** './index.css'
+ */
 class MyVBox extends Widget {
-
   constructor() {
     super();
     this.addClass('my-vbox');
@@ -36,33 +39,25 @@ class MyVBox extends Widget {
 }
 
 
+/**
+ * A widget which logs its resize messages.
+ */
 class MyResizeWidget extends Widget {
   // All widgets will receive a resize message when their parent
   // determines that they have likely been resized. If the current
   // size of the widget is known, it will be passed as part of the
-  // message. Otherwise, the size parameters will be `-1`, and you
-  // will need to measure the node to get the current size.
+  // message. Otherwise, the size parameters will be `-1`, and the
+  // the node will need to be measured to get the current size.
   //
   // The current size will typically be known when the parent of
   // the widget is an absolute Phosphor layout panel, and will be
   // unknown when the parent is a widget which uses CSS to layout
-  // its children. Here is a link to the typical way to handle the
-  // condition in the most efficient way possible, by only measuring
-  // if required:
-  // https://github.com/phosphorjs/phosphor-splitpanel/blob/master/src/index.ts#L368
+  // its children.
   protected onResize(msg: ResizeMessage): void {
     var w = msg.width;
     var h = msg.height;
     console.log(this.node.className, 'width:', w, 'height:', h);
   }
-}
-
-
-function createContent(name: string): Widget {
-  var widget = new MyResizeWidget();
-  widget.addClass('content');
-  widget.addClass(name);
-  return widget;
 }
 
 
@@ -105,25 +100,35 @@ class CodeMirrorWidget extends Widget {
 }
 
 
-function main(): void {
-  var r = createContent('red');
-  var y = createContent('yellow');
-  var g = createContent('green');
+/**
+ * Create a placeholder content widget.
+ */
+function createContent(name: string): Widget {
+  var widget = new MyResizeWidget();
+  widget.addClass('content');
+  widget.addClass(name);
+  return widget;
+}
 
-  var b1 = createContent('blue');
-  var b2 = createContent('blue');
-  var b3 = createContent('blue');
+
+/**
+ * The main application entry point.
+ */
+function main(): void {
+  var red = createContent('red');
+  var yellow = createContent('yellow');
+  var green = createContent('green');
+
+  var blue1 = createContent('blue');
+  var blue2 = createContent('blue');
+  var blue3 = createContent('blue');
 
   var split = new SplitPanel();
-  split.children = [b1, b2, b3];
+  split.children = [blue1, blue2, blue3];
 
-  // Note that the flexbox is the root widget, not the split panel.
-  // Since it is in a Phosphor layout, when the window resizes, 
-  // the flexbox's decendants get the resize message they need.
   var box = new MyVBox();
-  box.children = [r, split, y, g];
+  box.children = [red, split, yellow, green];
 
-  // Create the CodeMirror widget with a typescript mode.
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
