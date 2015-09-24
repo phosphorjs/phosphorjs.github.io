@@ -58,7 +58,8 @@ function configureFiles(files, metalsmith, done) {
         file.examples = {
           'Phosphor + React': 'todomvc',
           'Phosphor + Flexbox': 'flexbox',
-          'DockPanel': 'dockpanel'
+          'DockPanel': 'dockpanel',
+          'Menus': 'menus',
         };
       } else {
         file.template = 'page.hbt';
