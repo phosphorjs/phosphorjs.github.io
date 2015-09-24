@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n#main {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.CodeMirrorWidget {\n  min-width: 400px;\n}\n.TodoWidget {\n  overflow: auto;\n  min-width: 400px;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.TodoWidget {\n  overflow: auto;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  padding: 10px;\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var phosphor_splitpanel_1 = require('phosphor-splitpanel');
+var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
@@ -70,6 +70,13 @@ var CodeMirrorWidget = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    CodeMirrorWidget.prototype.loadTarget = function (target) {
+        var doc = this._editor.getDoc();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', target);
+        xhr.onreadystatechange = function () { return doc.setValue(xhr.responseText); };
+        xhr.send();
+    };
     CodeMirrorWidget.prototype.onAfterAttach = function (msg) {
         this._editor.refresh();
     };
@@ -93,29 +100,31 @@ function main() {
         lineNumbers: true,
         tabSize: 2,
     });
-    // Set the stretch factors for the widgets.
-    phosphor_splitpanel_1.SplitPanel.setStretch(cm, 0);
-    phosphor_splitpanel_1.SplitPanel.setStretch(todo, 1);
-    // Setup the main split panel
-    var split = new phosphor_splitpanel_1.SplitPanel();
-    split.id = 'main';
-    split.handleSize = 0;
-    split.children = [cm, todo];
-    split.setSizes([1, 1.5]);
-    // Initialize the CodeMirror text to the contents of this file.
-    var doc = cm.editor.getDoc();
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', './index.ts');
-    xhr.onreadystatechange = function () { return doc.setValue(xhr.responseText); };
-    xhr.send();
-    // Attach the main split panel to the body.
-    phosphor_widget_1.attachWidget(split, document.body);
-    // Update the main panel on window resize.
-    window.onresize = function () { return split.update(); };
+    // Create the CodeMirror widget with a typescript mode.
+    var cmSource = new CodeMirrorWidget({
+        mode: 'text/typescript',
+        lineNumbers: true,
+        tabSize: 2,
+    });
+    cmSource.loadTarget('./index.ts');
+    var cmCss = new CodeMirrorWidget({
+        mode: 'text/css',
+        lineNumbers: true,
+        tabSize: 2,
+    });
+    cmCss.loadTarget('./index.css');
+    phosphor_tabs_1.TabPanel.setTab(todo, new phosphor_tabs_1.Tab('Demo'));
+    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
+    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    var panel = new phosphor_tabs_1.TabPanel();
+    panel.id = 'main';
+    panel.widgets = [todo, cmSource, cmCss];
+    phosphor_widget_1.attachWidget(panel, document.body);
+    window.onresize = function () { return panel.update(); };
 }
 window.onload = main;
 
-},{"./index.css":1,"phosphor-splitpanel":14,"phosphor-widget":17}],3:[function(require,module,exports){
+},{"./index.css":1,"phosphor-tabs":14,"phosphor-widget":24}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -2692,8 +2701,1527 @@ function removeFromSendersList(conn) {
 }
 
 },{}],13:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-SplitPanel {\n  position: relative;\n}\n.p-SplitPanel > .p-Widget {\n  position: absolute;\n  z-index: 0;\n}\n.p-SplitHandle {\n  box-sizing: border-box;\n  position: absolute;\n  z-index: 1;\n}\n.p-SplitHandle.p-mod-hidden {\n  display: none;\n}\n.p-SplitHandle.p-mod-horizontal {\n  cursor: ew-resize;\n}\n.p-SplitHandle.p-mod-vertical {\n  cursor: ns-resize;\n}\n.p-SplitHandle-overlay {\n  box-sizing: border-box;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.p-SplitHandle.p-mod-horizontal > .p-SplitHandle-overlay {\n  min-width: 7px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n.p-SplitHandle.p-mod-vertical > .p-SplitHandle-overlay {\n  min-height: 7px;\n  top: 50%;\n  transform: translateY(-50%);\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-splitpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],14:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+__export(require('./tab'));
+__export(require('./tabbar'));
+__export(require('./tabpanel'));
+require('./index.css');
+
+},{"./index.css":13,"./tab":15,"./tabbar":16,"./tabpanel":17}],15:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_nodewrapper_1 = require('phosphor-nodewrapper');
+/**
+ * `p-Tab`: the class name added to Tab instances.
+ */
+exports.TAB_CLASS = 'p-Tab';
+/**
+ * `p-Tab-text`: the class name assigned to a tab text node.
+ */
+exports.TEXT_CLASS = 'p-Tab-text';
+/**
+ * `p-Tab-icon`: the class name assigned to a tab icon node.
+ */
+exports.ICON_CLASS = 'p-Tab-icon';
+/**
+ * `p-Tab-close-icon`: the class name assigned to a tab close icon node.
+ */
+exports.CLOSE_ICON_CLASS = 'p-Tab-close-icon';
+/**
+ * `p-mod-selected`: the class name added to a selected tab.
+ */
+exports.SELECTED_CLASS = 'p-mod-selected';
+/**
+ * `p-mod-closable`: the class name added to a closable tab.
+ */
+exports.CLOSABLE_CLASS = 'p-mod-closable';
+/**
+ * An object which manages a node for a tab bar.
+ */
+var Tab = (function (_super) {
+    __extends(Tab, _super);
+    /**
+     * Construct a new tab.
+     *
+     * @param text - The initial text for the tab.
+     */
+    function Tab(text) {
+        _super.call(this);
+        this.addClass(exports.TAB_CLASS);
+        if (text)
+            this.text = text;
+    }
+    /**
+     * Create the DOM node for a tab.
+     */
+    Tab.createNode = function () {
+        var node = document.createElement('div');
+        var icon = document.createElement('span');
+        var text = document.createElement('span');
+        var closeIcon = document.createElement('span');
+        icon.className = exports.ICON_CLASS;
+        text.className = exports.TEXT_CLASS;
+        closeIcon.className = exports.CLOSE_ICON_CLASS;
+        node.appendChild(icon);
+        node.appendChild(text);
+        node.appendChild(closeIcon);
+        return node;
+    };
+    Object.defineProperty(Tab.prototype, "text", {
+        /**
+         * Get the text for the tab.
+         */
+        get: function () {
+            return this.node.children[1].textContent;
+        },
+        /**
+         * Set the text for the tab.
+         */
+        set: function (text) {
+            this.node.children[1].textContent = text;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Tab.prototype, "selected", {
+        /**
+         * Get whether the tab is selected.
+         */
+        get: function () {
+            return this.hasClass(exports.SELECTED_CLASS);
+        },
+        /**
+         * Set whether the tab is selected.
+         */
+        set: function (selected) {
+            this.toggleClass(exports.SELECTED_CLASS, selected);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Tab.prototype, "closable", {
+        /**
+         * Get whether the tab is closable.
+         */
+        get: function () {
+            return this.hasClass(exports.CLOSABLE_CLASS);
+        },
+        /**
+         * Set whether the tab is closable.
+         */
+        set: function (closable) {
+            this.toggleClass(exports.CLOSABLE_CLASS, closable);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Tab.prototype, "closeIconNode", {
+        /**
+         * Get the DOM node for the tab close icon.
+         */
+        get: function () {
+            return this.node.lastChild;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Tab;
+})(phosphor_nodewrapper_1.NodeWrapper);
+exports.Tab = Tab;
+
+},{"phosphor-nodewrapper":9}],16:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var arrays = require('phosphor-arrays');
+var phosphor_domutil_1 = require('phosphor-domutil');
+var phosphor_properties_1 = require('phosphor-properties');
+var phosphor_signaling_1 = require('phosphor-signaling');
+var phosphor_widget_1 = require('phosphor-widget');
+/**
+ * `p-TabBar`: the class name added to TabBar instances.
+ */
+exports.TAB_BAR_CLASS = 'p-TabBar';
+/**
+ * `p-TabBar-header`: the class name added to the tab bar header div.
+ */
+exports.HEADER_CLASS = 'p-TabBar-header';
+/**
+ * `p-TabBar-content`: the class name added to the tab bar content div.
+ */
+exports.CONTENT_CLASS = 'p-TabBar-content';
+/**
+ * `p-TabBar-footer`: the class name added to the tab bar footer div.
+ */
+exports.FOOTER_CLASS = 'p-TabBar-footer';
+/**
+ * `p-mod-dragging`: a class name added to the tab bar when dragging.
+ */
+exports.DRAGGING_CLASS = 'p-mod-dragging';
+/**
+ * `p-mod-active`: a class name added to the active drag tab.
+ */
+exports.ACTIVE_CLASS = 'p-mod-active';
+/**
+ * `p-mod-first`: a class name added to the first tab in the tab bar.
+ */
+exports.FIRST_CLASS = 'p-mod-first';
+/**
+ * `p-mod-last`: a class name adde to the last tab in the tab bar.
+ */
+exports.LAST_CLASS = 'p-mod-last';
+/**
+ * The start drag distance threshold.
+ */
+var DRAG_THRESHOLD = 5;
+/**
+ * The detach distance threshold.
+ */
+var DETACH_THRESHOLD = 20;
+/**
+ * The tab transition duration. Keep in sync with CSS.
+ */
+var TRANSITION_DURATION = 150;
+/**
+ * A widget which displays a row of tabs.
+ *
+ * #### Notes
+ * A `TabBar` widget does not support child widgets. Adding children
+ * to a `TabBar` will result in undefined behavior.
+ */
+var TabBar = (function (_super) {
+    __extends(TabBar, _super);
+    /**
+     * Construct a new tab bar.
+     */
+    function TabBar() {
+        _super.call(this);
+        this._tabs = [];
+        this._previousTab = null;
+        this._dragData = null;
+        this.addClass(exports.TAB_BAR_CLASS);
+    }
+    /**
+     * Create the DOM node for a tab bar.
+     */
+    TabBar.createNode = function () {
+        var node = document.createElement('div');
+        var header = document.createElement('div');
+        var content = document.createElement('div');
+        var footer = document.createElement('div');
+        header.className = exports.HEADER_CLASS;
+        content.className = exports.CONTENT_CLASS;
+        footer.className = exports.FOOTER_CLASS;
+        node.appendChild(header);
+        node.appendChild(content);
+        node.appendChild(footer);
+        return node;
+    };
+    /**
+     * Dispose of the resources held by the widget.
+     */
+    TabBar.prototype.dispose = function () {
+        this._releaseMouse();
+        this._previousTab = null;
+        this._tabs.length = 0;
+        _super.prototype.dispose.call(this);
+    };
+    Object.defineProperty(TabBar.prototype, "tabMoved", {
+        /**
+         * A signal emitted when a tab is moved.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabMovedSignal]].
+         */
+        get: function () {
+            return TabBar.tabMovedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabSelected", {
+        /**
+         * A signal emitted when a tab is selected.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabSelectedSignal]].
+         */
+        get: function () {
+            return TabBar.tabSelectedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabCloseRequested", {
+        /**
+         * A signal emitted when the user clicks a tab close icon.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabCloseRequestedSignal]].
+         */
+        get: function () {
+            return TabBar.tabCloseRequestedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabDetachRequested", {
+        /**
+         * A signal emitted when a tab is dragged beyond the detach threshold.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabDetachRequestedSignal]].
+         */
+        get: function () {
+            return TabBar.tabDetachRequestedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "previousTab", {
+        /**
+         * Get the previously selected tab.
+         *
+         * #### Notes
+         * This is a read-only property.
+         *
+         * This will be `null` if there is no valid previous tab.
+         */
+        get: function () {
+            return this._previousTab;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "selectedTab", {
+        /**
+         * Get the selected tab.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[selectedTabProperty]].
+         */
+        get: function () {
+            return TabBar.selectedTabProperty.get(this);
+        },
+        /**
+         * Set the selected tab.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[selectedTabProperty]].
+         */
+        set: function (value) {
+            TabBar.selectedTabProperty.set(this, value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabsMovable", {
+        /**
+         * Get whether the tabs are movable by the user.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabsMovableProperty]].
+         */
+        get: function () {
+            return TabBar.tabsMovableProperty.get(this);
+        },
+        /**
+         * Set whether the tabs are movable by the user.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[tabsMovableProperty]].
+         */
+        set: function (value) {
+            TabBar.tabsMovableProperty.set(this, value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabs", {
+        /**
+         * Get a shallow copy of the array of tabs.
+         *
+         * #### Notes
+         * When only iterating over the tabs, it can be faster to use
+         * the tab query methods, which do not perform a copy.
+         *
+         * **See also:** [[tabCount]], [[tabAt]]
+         */
+        get: function () {
+            return this._tabs.slice();
+        },
+        /**
+         * Set the tabs for the tab bar.
+         *
+         * #### Notes
+         * This will clear the current tabs and add the specified tabs.
+         * Depending on the desired outcome, it can be more efficient to
+         * use one of the tab manipulation methods.
+         *
+         * **See also:** [[addTab]], [[insertTab]], [[removeTab]]
+         */
+        set: function (tabs) {
+            var _this = this;
+            this.clearTabs();
+            tabs.forEach(function (tab) { return _this.addTab(tab); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabBar.prototype, "tabCount", {
+        /**
+         * Get the number of tabs in the tab bar.
+         *
+         * #### Notes
+         * This is a read-only property.
+         *
+         * **See also:** [[tabs]], [[tabAt]]
+         */
+        get: function () {
+            return this._tabs.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Get the tab at a specific index.
+     *
+     * @param index - The index of the tab of interest.
+     *
+     * @returns The tab at the specified index, or `undefined` if the
+     *   index is out of range.
+     *
+     * **See also:** [[tabCount]], [[tabIndex]]
+     */
+    TabBar.prototype.tabAt = function (index) {
+        return this._tabs[index | 0];
+    };
+    /**
+     * Get the index of a specific tab.
+     *
+     * @param tab - The tab of interest.
+     *
+     * @returns The index of the specified tab, or `-1` if the tab is
+     *   not contained within the tab bar.
+     *
+     * **See also:** [[tabCount]], [[tabAt]]
+     */
+    TabBar.prototype.tabIndex = function (tab) {
+        return this._tabs.indexOf(tab);
+    };
+    /**
+     * Add a tab to the end of the tab bar.
+     *
+     * @param tab - The tab to add to the tab bar.
+     *
+     * @returns The new index of the tab.
+     *
+     * #### Notes
+     * If the tab is already contained within the tab bar, it will first
+     * be removed.
+     *
+     * The tab *must not* be contained by any other tab bar.
+     *
+     * **See also:** [[insertTab]], [[moveTab]]
+     */
+    TabBar.prototype.addTab = function (tab) {
+        return this.insertTab(this._tabs.length, tab);
+    };
+    /**
+     * Insert a tab into the tab bar at the given index.
+     *
+     * @param index - The index at which to insert the tab. This will be
+     *   clamped to the bounds of the tabs.
+     *
+     * @param tab - The tab to add to the tab bar.
+     *
+     * @returns The new index of the tab.
+     *
+     * #### Notes
+     * If the tab is already contained within the tab bar, it will first
+     * be removed.
+     *
+     * The tab *must not* be contained by any other tab bar.
+     *
+     * **See also:** [[addTab]], [[moveTab]]
+     */
+    TabBar.prototype.insertTab = function (index, tab) {
+        this.removeTab(tab);
+        return this._insertTab(index, tab);
+    };
+    /**
+     * Move a tab from one index to another.
+     *
+     * @param fromIndex - The index of the tab to move.
+     *
+     * @param toIndex - The target index of the tab.
+     *
+     * @returns `true` if the move was successful, or `false` if either
+     *   index is out of range.
+     *
+     * #### Notes
+     * This can be more efficient than re-inserting an existing tab.
+     *
+     * **See also:** [[addTab]], [[insertTab]]
+     */
+    TabBar.prototype.moveTab = function (fromIndex, toIndex) {
+        this._releaseMouse();
+        return this._moveTab(fromIndex, toIndex);
+    };
+    /**
+     * Remove the tab at a specific index.
+     *
+     * @param index - The index of the tab of interest.
+     *
+     * @returns The removed tab, or `undefined` if the index is out
+     *   of range.
+     *
+     * **See also:** [[removeTab]], [[clearTabs]]
+     */
+    TabBar.prototype.removeTabAt = function (index) {
+        this._releaseMouse();
+        return this._removeTab(index);
+    };
+    /**
+     * Remove a specific tab from the tab bar.
+     *
+     * @param tab - The tab of interest.
+     *
+     * @returns The index occupied by the tab, or `-1` if the tab is
+     *   not contained by the tab bar.
+     *
+     * **See also:** [[removeTabAt]], [[clearTabs]]
+     */
+    TabBar.prototype.removeTab = function (tab) {
+        this._releaseMouse();
+        var i = this._tabs.indexOf(tab);
+        if (i !== -1)
+            this._removeTab(i);
+        return i;
+    };
+    /**
+     * Remove all tabs from the tab bar.
+     *
+     * **See also:** [[removeTab]], [[removeTabAt]]
+     */
+    TabBar.prototype.clearTabs = function () {
+        while (this._tabs.length > 0) {
+            this.removeTabAt(this._tabs.length - 1);
+        }
+    };
+    /**
+     * Add a tab to the tab bar at the given client X position.
+     *
+     * @param tab - The tab to attach to the tab bar.
+     *
+     * @param clientX - The current client X mouse position.
+     *
+     * @returns `true` if the tab was attached, `false` otherwise.
+     *
+     * #### Notes
+     * This method is intended for use by code which supports tear-off
+     * tab interfaces. It will insert the tab at the specified location
+     * and grab the mouse to continue the tab drag. It assumes that the
+     * left mouse button is currently pressed.
+     *
+     * This is a no-op if the tab is already contained by the tab bar,
+     * if the tabs are not movable, or if a tab drag is in progress.
+     */
+    TabBar.prototype.attachTab = function (tab, clientX) {
+        // Bail if there is a drag in progress or the tabs aren't movable.
+        if (this._dragData || !this.tabsMovable) {
+            return false;
+        }
+        // Bail if the tab is already part of the tab bar.
+        if (this._tabs.indexOf(tab) !== -1) {
+            return false;
+        }
+        // Insert and select the new tab.
+        var index = this._tabs.length;
+        this._insertTab(index, tab);
+        this.selectedTab = tab;
+        // Setup the drag data object.
+        var content = this.node.firstChild.nextSibling;
+        var tabRect = tab.node.getBoundingClientRect();
+        var data = this._dragData = new DragData();
+        data.tab = tab;
+        data.tabIndex = index;
+        data.tabLeft = tab.node.offsetLeft;
+        data.tabWidth = tabRect.width;
+        data.pressX = tabRect.left + Math.floor(0.4 * tabRect.width);
+        data.pressY = tabRect.top + (tabRect.height >> 1);
+        data.tabPressX = Math.floor(0.4 * tabRect.width);
+        data.tabLayout = snapTabLayout(this._tabs);
+        data.contentRect = content.getBoundingClientRect();
+        data.cursorGrab = phosphor_domutil_1.overrideCursor('default');
+        data.dragActive = true;
+        // Add the extra mouse event listeners.
+        document.addEventListener('mouseup', this, true);
+        document.addEventListener('mousemove', this, true);
+        // Add the dragging style classes.
+        tab.addClass(exports.ACTIVE_CLASS);
+        this.addClass(exports.DRAGGING_CLASS);
+        // Update the drag tab position.
+        this._updateDragPosition(clientX);
+        return true;
+    };
+    /**
+     * Handle the DOM events for the tab bar.
+     *
+     * @param event - The DOM event sent to the tab bar.
+     *
+     * #### Notes
+     * This method implements the DOM `EventListener` interface and is
+     * called in response to events on the tab bar's DOM node. It should
+     * not be called directly by user code.
+     */
+    TabBar.prototype.handleEvent = function (event) {
+        switch (event.type) {
+            case 'click':
+                this._evtClick(event);
+                break;
+            case 'mousedown':
+                this._evtMouseDown(event);
+                break;
+            case 'mousemove':
+                this._evtMouseMove(event);
+                break;
+            case 'mouseup':
+                this._evtMouseUp(event);
+                break;
+        }
+    };
+    /**
+     * A message handler invoked on an `'after-attach'` message.
+     */
+    TabBar.prototype.onAfterAttach = function (msg) {
+        this.node.addEventListener('mousedown', this);
+        this.node.addEventListener('click', this);
+    };
+    /**
+     * A message handler invoked on a `'before-dettach'` message.
+     */
+    TabBar.prototype.onBeforeDetach = function (msg) {
+        this.node.removeEventListener('mousedown', this);
+        this.node.removeEventListener('click', this);
+    };
+    /**
+     * Handle the `'click'` event for the tab bar.
+     */
+    TabBar.prototype._evtClick = function (event) {
+        // Do nothing if it's not a left click.
+        if (event.button !== 0) {
+            return;
+        }
+        // Do nothing if the click is not on a tab.
+        var index = hitTestTabs(this._tabs, event.clientX, event.clientY);
+        if (index < 0) {
+            return;
+        }
+        // Clicking on a tab stops the event propagation.
+        event.preventDefault();
+        event.stopPropagation();
+        // If the click was on a node contained by the close icon node
+        // of a closable tab, emit the `tabCloseRequested` signal.
+        var tab = this._tabs[index];
+        var target = event.target;
+        if (tab.closable && tab.closeIconNode.contains(target)) {
+            this.tabCloseRequested.emit({ index: index, tab: tab });
+        }
+    };
+    /**
+     * Handle the `'mousedown'` event for the tab bar.
+     */
+    TabBar.prototype._evtMouseDown = function (event) {
+        // Do nothing if it's not a left mouse press.
+        if (event.button !== 0) {
+            return;
+        }
+        // Bail if a previous drag is still transitioning.
+        if (this._dragData) {
+            return;
+        }
+        // Do nothing of the press is not on a tab.
+        var index = hitTestTabs(this._tabs, event.clientX, event.clientY);
+        if (index < 0) {
+            return;
+        }
+        // Pressing on a tab stops the event propagation.
+        event.preventDefault();
+        event.stopPropagation();
+        // Do nothing further if the press was on the tab close icon.
+        var tab = this._tabs[index];
+        if (tab.closeIconNode.contains(event.target)) {
+            return;
+        }
+        // Setup the drag if the tabs are movable.
+        if (this.tabsMovable) {
+            var tabRect = tab.node.getBoundingClientRect();
+            var data = this._dragData = new DragData();
+            data.tab = tab;
+            data.tabIndex = index;
+            data.tabLeft = tab.node.offsetLeft;
+            data.tabWidth = tabRect.width;
+            data.pressX = event.clientX;
+            data.pressY = event.clientY;
+            data.tabPressX = event.clientX - tabRect.left;
+            document.addEventListener('mouseup', this, true);
+            document.addEventListener('mousemove', this, true);
+        }
+        // Update the selected tab to the pressed tab.
+        this.selectedTab = tab;
+    };
+    /**
+     * Handle the `'mousemove'` event for the tab bar.
+     */
+    TabBar.prototype._evtMouseMove = function (event) {
+        // Mouse move events are never propagated since this handler
+        // is only installed when during a left mouse drag operation.
+        event.preventDefault();
+        event.stopPropagation();
+        // Bail if there is no drag in progress.
+        if (!this._dragData) {
+            return;
+        }
+        // Check to see if the drag threshold has been exceeded, and
+        // start the tab drag operation the first time that occurrs.
+        var data = this._dragData;
+        if (!data.dragActive) {
+            var dx = Math.abs(event.clientX - data.pressX);
+            var dy = Math.abs(event.clientY - data.pressY);
+            if (dx < DRAG_THRESHOLD && dy < DRAG_THRESHOLD) {
+                return;
+            }
+            // Fill in the remaining drag data.
+            var content = this.node.firstChild.nextSibling;
+            data.tabLayout = snapTabLayout(this._tabs);
+            data.contentRect = content.getBoundingClientRect();
+            data.cursorGrab = phosphor_domutil_1.overrideCursor('default');
+            data.dragActive = true;
+            // Add the dragging style classes.
+            data.tab.addClass(exports.ACTIVE_CLASS);
+            this.addClass(exports.DRAGGING_CLASS);
+        }
+        // Check to see if the detach threshold has been exceeded, and
+        // emit the detach request signal the first time that occurrs.
+        // If the drag data gets set to null, the mouse was released.
+        if (!data.detachRequested && shouldDetach(data.contentRect, event)) {
+            data.detachRequested = true;
+            this.tabDetachRequested.emit({
+                tab: data.tab,
+                index: data.tabIndex,
+                clientX: event.clientX,
+                clientY: event.clientY,
+            });
+            if (!this._dragData) {
+                return;
+            }
+        }
+        // Update the drag tab position.
+        this._updateDragPosition(event.clientX);
+    };
+    /**
+     * Handle the `'mouseup'` event for the tab bar.
+     */
+    TabBar.prototype._evtMouseUp = function (event) {
+        var _this = this;
+        // Do nothing if the left mouse button is not released.
+        if (event.button !== 0) {
+            return;
+        }
+        // Mouse move events are never propagated since this handler
+        // is only installed when during a left mouse drag operation.
+        event.preventDefault();
+        event.stopPropagation();
+        // Bail if there is no drag in progress.
+        if (!this._dragData) {
+            return;
+        }
+        // Remove the extra mouse handlers.
+        document.removeEventListener('mouseup', this, true);
+        document.removeEventListener('mousemove', this, true);
+        // Store a local reference to the drag data.
+        var data = this._dragData;
+        // If the drag is not active, clear the reference and bail.
+        if (!data.dragActive) {
+            this._dragData = null;
+            return;
+        }
+        // Compute the approximate final relative tab offset.
+        var idealLeft;
+        if (data.tabTargetIndex === data.tabIndex) {
+            idealLeft = 0;
+        }
+        else if (data.tabTargetIndex > data.tabIndex) {
+            var tl = data.tabLayout[data.tabTargetIndex];
+            idealLeft = tl.left + tl.width - data.tabWidth - data.tabLeft;
+        }
+        else {
+            var tl = data.tabLayout[data.tabTargetIndex];
+            idealLeft = tl.left - data.tabLeft;
+        }
+        // Position the tab to its final position, subject to limits.
+        var maxLeft = data.contentRect.width - (data.tabLeft + data.tabWidth);
+        var adjustedLeft = Math.max(-data.tabLeft, Math.min(idealLeft, maxLeft));
+        data.tab.node.style.left = adjustedLeft + 'px';
+        // Remove the active class from the tab so it can be transitioned.
+        data.tab.removeClass(exports.ACTIVE_CLASS);
+        // Complete the release on a timer to allow the tab to transition.
+        setTimeout(function () {
+            // Bail if the drag data has been changed or released.
+            if (_this._dragData !== data) {
+                return;
+            }
+            // Clear the drag data reference.
+            _this._dragData = null;
+            // Clear the relative tab positions.
+            for (var i = 0, n = _this._tabs.length; i < n; ++i) {
+                _this._tabs[i].node.style.left = '';
+            }
+            // Clear the cursor grab and drag styles.
+            data.cursorGrab.dispose();
+            data.tab.removeClass(exports.ACTIVE_CLASS);
+            _this.removeClass(exports.DRAGGING_CLASS);
+            // Finally, move the drag tab to its final index location.
+            if (data.tabTargetIndex !== -1) {
+                _this._moveTab(data.tabIndex, data.tabTargetIndex);
+            }
+        }, TRANSITION_DURATION);
+    };
+    /**
+     * Update the drag tab position for the given mouse X position.
+     *
+     * This method is a no-op if an active drag is not in progress.
+     */
+    TabBar.prototype._updateDragPosition = function (clientX) {
+        // Bail if there is not an active drag.
+        var data = this._dragData;
+        if (!data || !data.dragActive) {
+            return;
+        }
+        // Compute the target bounds of the drag tab.
+        var offsetLeft = clientX - data.contentRect.left;
+        var targetLeft = offsetLeft - data.tabPressX;
+        var targetRight = targetLeft + data.tabWidth;
+        // Reset the target tab index.
+        data.tabTargetIndex = data.tabIndex;
+        // Update the non-drag tab positions and the tab target index.
+        for (var i = 0, n = this._tabs.length; i < n; ++i) {
+            var style = this._tabs[i].node.style;
+            var layout = data.tabLayout[i];
+            var threshold = layout.left + (layout.width >> 1);
+            if (i < data.tabIndex && targetLeft < threshold) {
+                style.left = data.tabWidth + data.tabLayout[i + 1].margin + 'px';
+                data.tabTargetIndex = Math.min(data.tabTargetIndex, i);
+            }
+            else if (i > data.tabIndex && targetRight > threshold) {
+                style.left = -data.tabWidth - layout.margin + 'px';
+                data.tabTargetIndex = i;
+            }
+            else if (i !== data.tabIndex) {
+                style.left = '';
+            }
+        }
+        // Update the drag tab position
+        var idealLeft = clientX - data.pressX;
+        var maxLeft = data.contentRect.width - (data.tabLeft + data.tabWidth);
+        var adjustedLeft = Math.max(-data.tabLeft, Math.min(idealLeft, maxLeft));
+        data.tab.node.style.left = adjustedLeft + 'px';
+    };
+    /**
+     * Release the mouse grab and restore the tab positions.
+     */
+    TabBar.prototype._releaseMouse = function () {
+        // Bail early if there is no drag in progress.
+        if (!this._dragData) {
+            return;
+        }
+        // Remove the extra mouse listeners.
+        document.removeEventListener('mouseup', this, true);
+        document.removeEventListener('mousemove', this, true);
+        // Clear the drag data reference.
+        var data = this._dragData;
+        this._dragData = null;
+        // If the drag is not active, there's nothing left to do.
+        if (!data.dragActive) {
+            return;
+        }
+        // Reset the positions of the tabs.
+        for (var i = 0, n = this._tabs.length; i < n; ++i) {
+            this._tabs[i].node.style.left = '';
+        }
+        // Clear the cursor grab and drag styles.
+        data.cursorGrab.dispose();
+        data.tab.removeClass(exports.ACTIVE_CLASS);
+        this.removeClass(exports.DRAGGING_CLASS);
+    };
+    /**
+     * Insert a new tab into the tab bar at the given index.
+     *
+     * The tab should not already be contained in the tab bar.
+     *
+     * The mouse should be released before calling this method.
+     */
+    TabBar.prototype._insertTab = function (index, tab) {
+        tab.selected = false;
+        var i = arrays.insert(this._tabs, index, tab);
+        var content = this.node.firstChild.nextSibling;
+        content.appendChild(tab.node);
+        if (!this.selectedTab) {
+            this.selectedTab = tab;
+        }
+        else {
+            this._updateTabOrdering();
+        }
+        return i;
+    };
+    /**
+     * Move a tab to a new index in the tab bar.
+     *
+     * The mouse should be released before calling this method.
+     */
+    TabBar.prototype._moveTab = function (fromIndex, toIndex) {
+        var i = fromIndex | 0;
+        var j = toIndex | 0;
+        if (!arrays.move(this._tabs, i, j)) {
+            return false;
+        }
+        if (i === j) {
+            return true;
+        }
+        this._updateTabOrdering();
+        this.tabMoved.emit({ fromIndex: i, toIndex: j });
+        return true;
+    };
+    /**
+     * Remove and return the tab at the given index.
+     *
+     * The mouse should be released before calling this method.
+     */
+    TabBar.prototype._removeTab = function (index) {
+        // Bail if the index is invalid.
+        var i = index | 0;
+        var tab = arrays.removeAt(this._tabs, i);
+        if (!tab) {
+            return void 0;
+        }
+        // Remove the tab from the DOM and reset its style.
+        var content = this.node.firstChild.nextSibling;
+        content.removeChild(tab.node);
+        tab.selected = false;
+        tab.node.style.left = '';
+        tab.node.style.zIndex = '';
+        tab.removeClass(exports.ACTIVE_CLASS);
+        tab.removeClass(exports.FIRST_CLASS);
+        tab.removeClass(exports.LAST_CLASS);
+        // Update the selected tab. If the removed tab was the selected tab,
+        // select the next best tab by starting with the previous tab, then
+        // the next sibling, and finally the previous sibling. Otherwise,
+        // update the state and tab ordering as appropriate.
+        if (tab === this.selectedTab) {
+            var next = this._previousTab || this._tabs[i] || this._tabs[i - 1];
+            this.selectedTab = next;
+            this._previousTab = null;
+        }
+        else if (tab === this._previousTab) {
+            this._previousTab = null;
+            this._updateTabOrdering();
+        }
+        else {
+            this._updateTabOrdering();
+        }
+        return tab;
+    };
+    /**
+     * Update the Z-index and flex order of the tabs.
+     */
+    TabBar.prototype._updateTabOrdering = function () {
+        if (this._tabs.length === 0) {
+            return;
+        }
+        var selectedTab = this.selectedTab;
+        for (var i = 0, n = this._tabs.length, k = n - 1; i < n; ++i) {
+            var tab = this._tabs[i];
+            var style = tab.node.style;
+            tab.removeClass(exports.FIRST_CLASS);
+            tab.removeClass(exports.LAST_CLASS);
+            style.order = i + '';
+            if (tab === selectedTab) {
+                style.zIndex = n + '';
+            }
+            else {
+                style.zIndex = k-- + '';
+            }
+        }
+        this._tabs[0].addClass(exports.FIRST_CLASS);
+        this._tabs[n - 1].addClass(exports.LAST_CLASS);
+    };
+    /**
+     * The change handler for the [[selectedTabProperty]].
+     */
+    TabBar.prototype._onSelectedTabChanged = function (old, tab) {
+        if (old)
+            old.selected = false;
+        if (tab)
+            tab.selected = true;
+        this._previousTab = old;
+        this._updateTabOrdering();
+        this.tabSelected.emit({ index: this.tabIndex(tab), tab: tab });
+    };
+    /**
+     * A signal emitted when a tab is moved.
+     *
+     * **See also:** [[tabMoved]]
+     */
+    TabBar.tabMovedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * A signal emitted when a tab is selected.
+     *
+     * **See also:** [[tabSelected]]
+     */
+    TabBar.tabSelectedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * A signal emitted when the user clicks a tab close icon.
+     *
+     * **See also:** [[tabCloseRequested]
+     */
+    TabBar.tabCloseRequestedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * A signal emitted when a tab is dragged beyond the detach threshold.
+     *
+     * **See also:** [[tabDetachRequested]]
+     */
+    TabBar.tabDetachRequestedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * The property descriptor for the selected tab.
+     *
+     * This controls which tab is selected in the tab bar.
+     *
+     * **See also:** [[selectedTab]]
+     */
+    TabBar.selectedTabProperty = new phosphor_properties_1.Property({
+        value: null,
+        coerce: function (owner, val) { return (val && owner.tabIndex(val) !== -1) ? val : null; },
+        changed: function (owner, old, val) { return owner._onSelectedTabChanged(old, val); },
+    });
+    /**
+     * The property descriptor for the tabs movable property
+     *
+     * THis controls whether tabs are movable by the user.
+     *
+     * **See also:** [[tabsMovable]]
+     */
+    TabBar.tabsMovableProperty = new phosphor_properties_1.Property({
+        value: true,
+    });
+    return TabBar;
+})(phosphor_widget_1.Widget);
+exports.TabBar = TabBar;
+/**
+ * A struct which holds the drag data for a tab bar.
+ */
+var DragData = (function () {
+    function DragData() {
+        /**
+         * The tab being dragged.
+         */
+        this.tab = null;
+        /**
+         * The offset left of the tab being dragged.
+         */
+        this.tabLeft = -1;
+        /**
+         * The offset width of the tab being dragged.
+         */
+        this.tabWidth = -1;
+        /**
+         * The index of the tab being dragged.
+         */
+        this.tabIndex = -1;
+        /**
+         * The orgian mouse X position in tab coordinates.
+         */
+        this.tabPressX = -1;
+        /**
+         * The tab target index upon mouse release.
+         */
+        this.tabTargetIndex = -1;
+        /**
+         * The array of tab layout objects snapped at drag start.
+         */
+        this.tabLayout = null;
+        /**
+         * The mouse press client X position.
+         */
+        this.pressX = -1;
+        /**
+         * The mouse press client Y position.
+         */
+        this.pressY = -1;
+        /**
+         * The bounding client rect of the tab bar content node.
+         */
+        this.contentRect = null;
+        /**
+         * The disposable to clean up the cursor override.
+         */
+        this.cursorGrab = null;
+        /**
+         * Whether the drag is currently active.
+         */
+        this.dragActive = false;
+        /**
+         * Whether the detach request signal has been emitted.
+         */
+        this.detachRequested = false;
+    }
+    return DragData;
+})();
+/**
+ * Test if a mouse position lies outside the detach bound of a rect.
+ */
+function shouldDetach(rect, event) {
+    return ((event.clientX < rect.left - DETACH_THRESHOLD) ||
+        (event.clientX >= rect.right + DETACH_THRESHOLD) ||
+        (event.clientY < rect.top - DETACH_THRESHOLD) ||
+        (event.clientY >= rect.bottom + DETACH_THRESHOLD));
+}
+/**
+ * Get the index of the tab which intersect the client point, or -1.
+ */
+function hitTestTabs(tabs, clientX, clientY) {
+    for (var i = 0, n = tabs.length; i < n; ++i) {
+        if (phosphor_domutil_1.hitTest(tabs[i].node, clientX, clientY)) {
+            return i;
+        }
+    }
+    return -1;
+}
+/**
+ * Snap an array of the current tab layout values.
+ */
+function snapTabLayout(tabs) {
+    var layout = new Array(tabs.length);
+    for (var i = 0, n = tabs.length; i < n; ++i) {
+        var node = tabs[i].node;
+        var left = node.offsetLeft;
+        var width = node.offsetWidth;
+        var cstyle = window.getComputedStyle(tabs[i].node);
+        var margin = parseInt(cstyle.marginLeft, 10) || 0;
+        layout[i] = { margin: margin, left: left, width: width };
+    }
+    return layout;
+}
+
+},{"phosphor-arrays":4,"phosphor-domutil":7,"phosphor-properties":10,"phosphor-signaling":12,"phosphor-widget":24}],17:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_boxpanel_1 = require('phosphor-boxpanel');
+var phosphor_properties_1 = require('phosphor-properties');
+var phosphor_signaling_1 = require('phosphor-signaling');
+var phosphor_stackedpanel_1 = require('phosphor-stackedpanel');
+var tabbar_1 = require('./tabbar');
+/**
+ * `p-TabPanel`: the class name added to TabPanel instances.
+ */
+exports.TAB_PANEL_CLASS = 'p-TabPanel';
+/**
+ * A panel which provides a tabbed layout for child widgets.
+ *
+ * The `TabPanel` provides a convenient combination of a `TabBar` and
+ * a `StackedPanel` which allows the user to toggle between widgets by
+ * selecting the tab associated with a widget.
+ *
+ * #### Notes
+ * Widgets should be added to a `TabPanel` using the `<prefix>Widget`
+ * methods, **not** the `<prefix>Child` methods. The children of a
+ * `TabPanel` should **not** be manipulated directly by user code.
+ */
+var TabPanel = (function (_super) {
+    __extends(TabPanel, _super);
+    /**
+     * Construct a new tab panel.
+     */
+    function TabPanel() {
+        _super.call(this);
+        this.addClass(exports.TAB_PANEL_CLASS);
+        var tabs = new tabbar_1.TabBar();
+        tabs.tabMoved.connect(this._onTabMoved, this);
+        tabs.tabSelected.connect(this._onTabSelected, this);
+        tabs.tabCloseRequested.connect(this._onTabCloseRequested, this);
+        var stack = new phosphor_stackedpanel_1.StackedPanel();
+        stack.currentChanged.connect(this._onCurrentChanged, this);
+        stack.widgetRemoved.connect(this._onWidgetRemoved, this);
+        phosphor_boxpanel_1.BoxPanel.setStretch(tabs, 0);
+        phosphor_boxpanel_1.BoxPanel.setStretch(stack, 1);
+        this.direction = phosphor_boxpanel_1.BoxPanel.TopToBottom;
+        this.spacing = 0;
+        this._tabs = tabs;
+        this._stack = stack;
+        this.addChild(tabs);
+        this.addChild(stack);
+    }
+    /**
+     * Get the tab for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @returns The tab for the given widget.
+     *
+     * #### Notes
+     * This is a pure delegate for the [[tabProperty]].
+     */
+    TabPanel.getTab = function (widget) {
+        return TabPanel.tabProperty.get(widget);
+    };
+    /**
+     * Set the tab for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @param tab - The tab to use for the widget.
+     *
+     * #### Notes
+     * This is a pure delegate for the [[tabProperty]].
+     */
+    TabPanel.setTab = function (widget, tab) {
+        TabPanel.tabProperty.set(widget, tab);
+    };
+    /**
+     * Dispose of the resources held by the widget.
+     */
+    TabPanel.prototype.dispose = function () {
+        this._tabs = null;
+        this._stack = null;
+        _super.prototype.dispose.call(this);
+    };
+    Object.defineProperty(TabPanel.prototype, "currentChanged", {
+        /**
+         * A signal emitted when the current widget is changed.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentChangedSignal]].
+         */
+        get: function () {
+            return TabPanel.currentChangedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabPanel.prototype, "currentWidget", {
+        /**
+         * Get the currently selected widget.
+         */
+        get: function () {
+            return this._stack.currentWidget;
+        },
+        /**
+         * Set the currently selected widget.
+         */
+        set: function (widget) {
+            var i = this._stack.childIndex(widget);
+            this._tabs.selectedTab = this._tabs.tabAt(i);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabPanel.prototype, "tabsMovable", {
+        /**
+         * Get whether the tabs are movable by the user.
+         */
+        get: function () {
+            return this._tabs.tabsMovable;
+        },
+        /**
+         * Set whether the tabs are movable by the user.
+         */
+        set: function (movable) {
+            this._tabs.tabsMovable = movable;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabPanel.prototype, "widgets", {
+        /**
+         * Get a shallow copy of the array of widgets.
+         *
+         * #### Notes
+         * When only iterating over the widgets, it can be faster to use
+         * the widget query methods, which do not perform a copy.
+         *
+         * **See also:** [[widgetCount]], [[widgetAt]]
+         */
+        get: function () {
+            return this._stack.children;
+        },
+        /**
+         * Set the widgets for the tab panel.
+         *
+         * #### Notes
+         * This will clear the current widgets and add the specified widgets.
+         * Depending on the desired outcome, it can be more efficient to use
+         * one of the widget manipulation methods.
+         *
+         * **See also:** [[addWidget]], [[insertWidget]], [[removeWidget]]
+         */
+        set: function (widgets) {
+            var _this = this;
+            this.clearWidgets();
+            widgets.forEach(function (widget) { return _this.addWidget(widget); });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TabPanel.prototype, "widgetCount", {
+        /**
+         * Get the number of widgets in the tab panel.
+         *
+         * #### Notes
+         * This is a read-only property.
+         *
+         * **See also:** [[widgets]], [[widgetAt]]
+         */
+        get: function () {
+            return this._stack.childCount;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Get the widget at a specific index.
+     *
+     * @param index - The index of the widget of interest.
+     *
+     * @returns The widget widget at the specified index, or `undefined`
+     *   if the index is out of range.
+     *
+     * **See also:** [[widgetCount]], [[widgetIndex]]
+     */
+    TabPanel.prototype.widgetAt = function (index) {
+        return this._stack.childAt(index);
+    };
+    /**
+     * Get the index of a specific widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @returns The index of the specified widget, or `-1` if the widget
+     *   is not contained in the tab panel.
+     *
+     * **See also:** [[widgetCount]], [[widgetAt]]
+     */
+    TabPanel.prototype.widgetIndex = function (widget) {
+        return this._stack.childIndex(widget);
+    };
+    /**
+     * Add a widget to the end of the panel.
+     *
+     * @param widget - The widget to add to the panel.
+     *
+     * @returns The new index of the widget.
+     *
+     * #### Notes
+     * If the widget already exists in the panel, it will first be
+     * removed.
+     *
+     * The `TabPanel.tab` attached property *must* be set with the
+     * tab to use for the widget, or an error will be thrown. This
+     * can be set via `TabPanel.setTab`.
+     *
+     * The `TabPanel.tab` attached property is assumed to remain
+     * constant while the widget is contained by the tab panel.
+     *
+     * **See also:** [[insertWidget]], [[moveWidget]]
+     */
+    TabPanel.prototype.addWidget = function (widget) {
+        return this.insertWidget(this.widgetCount, widget);
+    };
+    /**
+     * Insert a widget into the panel at the given index.
+     *
+     * @param index - The target index for the widget. This will be
+     *   clamped to the bounds of the widgets.
+     *
+     * @param widget - The widget to insert into the panel.
+     *
+     * @returns The new index of the widget.
+     *
+     * #### Notes
+     * If the widget already exists in the panel, it will first be
+     * removed.
+     *
+     * The `TabPanel.tab` attached property *must* be set with the
+     * tab to use for the widget, or an error will be thrown. This
+     * can be set via `TabPanel.setTab`.
+     *
+     * The `TabPanel.tab` attached property is assumed to remain
+     * constant while the widget is contained by the tab panel.
+     *
+     * **See also:** [[addWidget]], [[moveWidget]]
+     */
+    TabPanel.prototype.insertWidget = function (index, widget) {
+        var tab = TabPanel.getTab(widget);
+        if (!tab)
+            throw new Error('`TabPanel.tab` property not set');
+        var i = this._stack.insertChild(index, widget);
+        return this._tabs.insertTab(i, tab);
+    };
+    /**
+     * Move a widget from one index to another.
+     *
+     * @param fromIndex - The index of the widget of interest.
+     *
+     * @param toIndex - The target index for the widget.
+     *
+     * @returns 'true' if the widget was moved, or `false` if either
+     *   of the given indices are out of range.
+     *
+     * #### Notes
+     * This can be more efficient than re-inserting an existing widget.
+     *
+     * **See also:** [[addWidget]], [[insertWidget]]
+     */
+    TabPanel.prototype.moveWidget = function (fromIndex, toIndex) {
+        return this._tabs.moveTab(fromIndex, toIndex);
+    };
+    /**
+     * Remove the widget at a specific index.
+     *
+     * @param index - The index of the widget of interest.
+     *
+     * @returns The removed widget, or `undefined` if the index
+     *   is out of range.
+     *
+     * **See also:** [[removeWidget]], [[clearWidgets]]
+     */
+    TabPanel.prototype.removeWidgetAt = function (index) {
+        return this._stack.removeChildAt(index);
+    };
+    /**
+     * Remove a specific widget from the panel.
+     *
+     * @param child - The widget of interest.
+     *
+     * @returns The index which the widget occupied, or `-1` if the
+     *   widget is not contained in the tab panel.
+     *
+     * **See also:** [[removeWidgetAt]], [[clearWidgets]]
+     */
+    TabPanel.prototype.removeWidget = function (widget) {
+        return this._stack.removeChild(widget);
+    };
+    /**
+     * Remove all widgets from the tab panel.
+     *
+     * **See also:** [[removeWidget]], [[removeWidgetAt]]
+     */
+    TabPanel.prototype.clearWidgets = function () {
+        this._stack.clearChildren();
+    };
+    /**
+     * Handle the `tabMoved` signal from the tab bar.
+     */
+    TabPanel.prototype._onTabMoved = function (sender, args) {
+        this._stack.moveChild(args.fromIndex, args.toIndex);
+    };
+    /**
+     * Handle the `tabSelected` signal from the tab bar.
+     */
+    TabPanel.prototype._onTabSelected = function (sender, args) {
+        this._stack.currentWidget = this._stack.childAt(args.index);
+    };
+    /**
+     * Handle the `tabCloseRequested` signal from the tab bar.
+     */
+    TabPanel.prototype._onTabCloseRequested = function (sender, args) {
+        this._stack.childAt(args.index).close();
+    };
+    /**
+     * Handle the `currentChanged` signal from the stacked panel.
+     */
+    TabPanel.prototype._onCurrentChanged = function (sender, args) {
+        this.currentChanged.emit(args);
+    };
+    /**
+     * Handle the `widgetRemoved` signal from the stacked panel.
+     */
+    TabPanel.prototype._onWidgetRemoved = function (sender, args) {
+        this._tabs.removeTabAt(args.index);
+    };
+    /**
+     * A signal emitted when the current widget is changed.
+     *
+     * **See also:** [[currentChanged]]
+     */
+    TabPanel.currentChangedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * The property descriptor for the tab attached property.
+     *
+     * This controls the tab used for a widget in a tab panel.
+     *
+     * #### Notes
+     * If the tab for a widget is changed, the new tab will not be
+     * reflected until the widget is re-inserted into the tab panel.
+     * However, in-place changes to the tab's properties **will** be
+     * reflected.
+     *
+     * **See also:** [[getTab]], [[setTab]]
+     */
+    TabPanel.tabProperty = new phosphor_properties_1.Property({
+        value: null,
+        coerce: function (owner, value) { return value || null; },
+    });
+    return TabPanel;
+})(phosphor_boxpanel_1.BoxPanel);
+exports.TabPanel = TabPanel;
+
+},{"./tabbar":16,"phosphor-boxpanel":19,"phosphor-properties":10,"phosphor-signaling":12,"phosphor-stackedpanel":22}],18:[function(require,module,exports){
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
+},{"browserify-css":3}],19:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -2709,82 +4237,82 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var arrays = require('phosphor-arrays');
 var phosphor_boxengine_1 = require('phosphor-boxengine');
-var phosphor_domutil_1 = require('phosphor-domutil');
 var phosphor_messaging_1 = require('phosphor-messaging');
-var phosphor_nodewrapper_1 = require('phosphor-nodewrapper');
 var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
- * `p-SplitPanel`: the class name added to SplitPanel instances.
+ * `p-BoxPanel`: the class name added to BoxPanel instances.
  */
-exports.SPLIT_PANEL_CLASS = 'p-SplitPanel';
+exports.BOX_PANEL_CLASS = 'p-BoxPanel';
 /**
- * `p-SplitHandle`: the class name for a split handle.
+ * `p-mod-left-to-right`: the class name added to ltr box panels.
  */
-exports.SPLIT_HANDLE_CLASS = 'p-SplitHandle';
+exports.LTR_CLASS = 'p-mod-left-to-right';
 /**
- * `p-SplitHandle-overlay`: the class name for a split handle overlay.
+ * `p-mod-right-to-left`: the class name added to rtl box panels.
  */
-exports.OVERLAY_CLASS = 'p-SplitHandle-overlay';
+exports.RTL_CLASS = 'p-mod-right-to-left';
 /**
- * `p-mod-horizontal`: the class name added to horizontal panels and handles.
+ * `p-mod-top-to-bottom`: the class name added to ttb box panels.
  */
-exports.HORIZONTAL_CLASS = 'p-mod-horizontal';
+exports.TTB_CLASS = 'p-mod-top-to-bottom';
 /**
- * `p-mod-vertical`: the class name added to vertical panels and handles.
+ * `p-mod-bottom-to-top`: the class name added to btt box panels.
  */
-exports.VERTICAL_CLASS = 'p-mod-vertical';
+exports.BTT_CLASS = 'p-mod-bottom-to-top';
 /**
- * `p-mod-hidden`: The class name added to hidden split handles.
+ * The layout direction of a box panel.
  */
-exports.HIDDEN_CLASS = 'p-mod-hidden';
-/**
- * The layout orientation of a split panel.
- */
-(function (Orientation) {
+(function (Direction) {
     /**
-     * Left-to-right horizontal orientation.
+     * Left to right direction.
      */
-    Orientation[Orientation["Horizontal"] = 0] = "Horizontal";
+    Direction[Direction["LeftToRight"] = 0] = "LeftToRight";
     /**
-     * Top-to-bottom vertical orientation.
+     * Right to left direction.
      */
-    Orientation[Orientation["Vertical"] = 1] = "Vertical";
-})(exports.Orientation || (exports.Orientation = {}));
-var Orientation = exports.Orientation;
+    Direction[Direction["RightToLeft"] = 1] = "RightToLeft";
+    /**
+     * Top to bottom direction.
+     */
+    Direction[Direction["TopToBottom"] = 2] = "TopToBottom";
+    /**
+     * Bottom to top direction.
+     */
+    Direction[Direction["BottomToTop"] = 3] = "BottomToTop";
+})(exports.Direction || (exports.Direction = {}));
+var Direction = exports.Direction;
 /**
- * A widget which arranges its children into resizable sections.
+ * A widget which arranges its children in a single row or column.
  */
-var SplitPanel = (function (_super) {
-    __extends(SplitPanel, _super);
+var BoxPanel = (function (_super) {
+    __extends(BoxPanel, _super);
     /**
-     * Construct a new split panel.
+     * Construct a new box panel.
      */
-    function SplitPanel() {
+    function BoxPanel() {
         _super.call(this);
         this._fixedSpace = 0;
-        this._pendingSizes = false;
         this._sizers = [];
-        this._pressData = null;
-        this.addClass(exports.SPLIT_PANEL_CLASS);
-        this.addClass(exports.HORIZONTAL_CLASS);
+        this.addClass(exports.BOX_PANEL_CLASS);
+        this.addClass(exports.TTB_CLASS);
     }
     /**
-     * Get the split panel stretch factor for the given widget.
+     * Get the box panel stretch factor for the given widget.
      *
      * @param widget - The widget of interest.
      *
-     * @returns The split panel stretch factor for the widget.
+     * @returns The box panel stretch factor for the widget.
      *
      * #### Notes
      * This is a pure delegate to the [[stretchProperty]].
      */
-    SplitPanel.getStretch = function (widget) {
-        return SplitPanel.stretchProperty.get(widget);
+    BoxPanel.getStretch = function (widget) {
+        return BoxPanel.stretchProperty.get(widget);
     };
     /**
-     * Set the split panel stretch factor for the given widget.
+     * Set the box panel stretch factor for the given widget.
      *
      * @param widget - The widget of interest.
      *
@@ -2793,121 +4321,93 @@ var SplitPanel = (function (_super) {
      * #### Notes
      * This is a pure delegate to the [[stretchProperty]].
      */
-    SplitPanel.setStretch = function (widget, value) {
-        SplitPanel.stretchProperty.set(widget, value);
+    BoxPanel.setStretch = function (widget, value) {
+        BoxPanel.stretchProperty.set(widget, value);
+    };
+    /**
+     * Get the box panel size basis for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @returns The box panel size basis for the widget.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[sizeBasisProperty]].
+     */
+    BoxPanel.getSizeBasis = function (widget) {
+        return BoxPanel.sizeBasisProperty.get(widget);
+    };
+    /**
+     * Set the box panel size basis for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @param value - The value for the size basis.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[sizeBasisProperty]].
+     */
+    BoxPanel.setSizeBasis = function (widget, value) {
+        BoxPanel.sizeBasisProperty.set(widget, value);
     };
     /**
      * Dispose of the resources held by the panel.
      */
-    SplitPanel.prototype.dispose = function () {
-        this._releaseMouse();
+    BoxPanel.prototype.dispose = function () {
         this._sizers.length = 0;
         _super.prototype.dispose.call(this);
     };
-    Object.defineProperty(SplitPanel.prototype, "orientation", {
+    Object.defineProperty(BoxPanel.prototype, "direction", {
         /**
-         * Get the orientation of the split panel.
+         * Get the layout direction for the box panel.
          *
          * #### Notes
-         * This is a pure delegate to the [[orientationProperty]].
+         * This is a pure delegate to the [[directionProperty]].
          */
         get: function () {
-            return SplitPanel.orientationProperty.get(this);
+            return BoxPanel.directionProperty.get(this);
         },
         /**
-         * Set the orientation of the split panel.
+         * Set the layout direction for the box panel.
          *
          * #### Notes
-         * This is a pure delegate to the [[orientationProperty]].
+         * This is a pure delegate to the [[directionProperty]].
          */
         set: function (value) {
-            SplitPanel.orientationProperty.set(this, value);
+            BoxPanel.directionProperty.set(this, value);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitPanel.prototype, "handleSize", {
+    Object.defineProperty(BoxPanel.prototype, "spacing", {
         /**
-         * Get the size of the split handles.
+         * Get the inter-element spacing for the box panel.
          *
          * #### Notes
-         * This is a pure delegate to the [[handleSizeProperty]].
+         * This is a pure delegate to the [[spacingProperty]].
          */
         get: function () {
-            return SplitPanel.handleSizeProperty.get(this);
+            return BoxPanel.spacingProperty.get(this);
         },
         /**
-         * Set the the size of the split handles.
+         * Set the inter-element spacing for the box panel.
          *
          * #### Notes
-         * This is a pure delegate to the [[handleSizeProperty]].
+         * This is a pure delegate to the [[spacingProperty]].
          */
-        set: function (size) {
-            SplitPanel.handleSizeProperty.set(this, size);
+        set: function (value) {
+            BoxPanel.spacingProperty.set(this, value);
         },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Get the normalized sizes of the widgets in the panel.
-     *
-     * @returns The normalized sizes of the widgets in the panel.
-     */
-    SplitPanel.prototype.sizes = function () {
-        return normalize(this._sizers.map(function (sizer) { return sizer.size; }));
-    };
-    /**
-     * Set the relative sizes for the child widgets in the panel.
-     *
-     * @param sizes - The relative sizes for the children in the panel.
-     *   These values will be normalized to the available layout space.
-     *
-     * #### Notes
-     * Extra values are ignored, too few will yield an undefined layout.
-     */
-    SplitPanel.prototype.setSizes = function (sizes) {
-        var normed = normalize(sizes);
-        for (var i = 0, n = this._sizers.length; i < n; ++i) {
-            var hint = Math.max(0, normed[i] || 0);
-            var sizer = this._sizers[i];
-            sizer.sizeHint = hint;
-            sizer.size = hint;
-        }
-        this._pendingSizes = true;
-        this.update();
-    };
-    /**
-     * Handle the DOM events for the split panel.
-     *
-     * @param event - The DOM event sent to the panel.
-     *
-     * #### Notes
-     * This method implements the DOM `EventListener` interface and is
-     * called in response to events on the panel's DOM node. It should
-     * not be called directly by user code.
-     */
-    SplitPanel.prototype.handleEvent = function (event) {
-        switch (event.type) {
-            case 'mousedown':
-                this._evtMouseDown(event);
-                break;
-            case 'mouseup':
-                this._evtMouseUp(event);
-                break;
-            case 'mousemove':
-                this._evtMouseMove(event);
-                break;
-        }
-    };
     /**
      * A message handler invoked on a `'child-added'` message.
      */
-    SplitPanel.prototype.onChildAdded = function (msg) {
+    BoxPanel.prototype.onChildAdded = function (msg) {
         phosphor_properties_1.Property.getChanged(msg.child).connect(this._onPropertyChanged, this);
-        var sizer = createSizer(averageSize(this._sizers));
-        arrays.insert(this._sizers, msg.currentIndex, sizer);
+        arrays.insert(this._sizers, msg.currentIndex, new phosphor_boxengine_1.BoxSizer());
         this.node.appendChild(msg.child.node);
-        this.node.appendChild(getHandle(msg.child).node);
         if (this.isAttached)
             phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
@@ -2915,58 +4415,50 @@ var SplitPanel = (function (_super) {
     /**
      * A message handler invoked on a `'child-removed'` message.
      */
-    SplitPanel.prototype.onChildRemoved = function (msg) {
+    BoxPanel.prototype.onChildRemoved = function (msg) {
         phosphor_properties_1.Property.getChanged(msg.child).disconnect(this._onPropertyChanged, this);
         arrays.removeAt(this._sizers, msg.previousIndex);
         if (this.isAttached)
             phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
         this.node.removeChild(msg.child.node);
-        this.node.removeChild(getHandle(msg.child).node);
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
         msg.child.clearOffsetGeometry();
     };
     /**
      * A message handler invoked on a `'child-moved'` message.
      */
-    SplitPanel.prototype.onChildMoved = function (msg) {
+    BoxPanel.prototype.onChildMoved = function (msg) {
         arrays.move(this._sizers, msg.previousIndex, msg.currentIndex);
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        this.update();
     };
     /**
      * A message handler invoked on an `'after-show'` message.
      */
-    SplitPanel.prototype.onAfterShow = function (msg) {
+    BoxPanel.prototype.onAfterShow = function (msg) {
         this.update(true);
     };
     /**
      * A message handler invoked on an `'after-attach'` message.
      */
-    SplitPanel.prototype.onAfterAttach = function (msg) {
-        this.node.addEventListener('mousedown', this);
+    BoxPanel.prototype.onAfterAttach = function (msg) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'before-detach'` message.
-     */
-    SplitPanel.prototype.onBeforeDetach = function (msg) {
-        this.node.removeEventListener('mousedown', this);
     };
     /**
      * A message handler invoked on a `'child-shown'` message.
      */
-    SplitPanel.prototype.onChildShown = function (msg) {
+    BoxPanel.prototype.onChildShown = function (msg) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
      * A message handler invoked on a `'child-hidden'` message.
      */
-    SplitPanel.prototype.onChildHidden = function (msg) {
+    BoxPanel.prototype.onChildHidden = function (msg) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
      * A message handler invoked on a `'resize'` message.
      */
-    SplitPanel.prototype.onResize = function (msg) {
+    BoxPanel.prototype.onResize = function (msg) {
         if (this.isVisible) {
             if (msg.width < 0 || msg.height < 0) {
                 var rect = this.offsetRect;
@@ -2980,7 +4472,7 @@ var SplitPanel = (function (_super) {
     /**
      * A message handler invoked on an `'update-request'` message.
      */
-    SplitPanel.prototype.onUpdateRequest = function (msg) {
+    BoxPanel.prototype.onUpdateRequest = function (msg) {
         if (this.isVisible) {
             var rect = this.offsetRect;
             this._layoutChildren(rect.width, rect.height);
@@ -2989,7 +4481,7 @@ var SplitPanel = (function (_super) {
     /**
      * A message handler invoked on a `'layout-request'` message.
      */
-    SplitPanel.prototype.onLayoutRequest = function (msg) {
+    BoxPanel.prototype.onLayoutRequest = function (msg) {
         if (this.isAttached) {
             this._setupGeometry();
         }
@@ -2997,46 +4489,35 @@ var SplitPanel = (function (_super) {
     /**
      * Update the size constraints of the panel.
      */
-    SplitPanel.prototype._setupGeometry = function () {
-        // Update the handles and track the visible widget count.
+    BoxPanel.prototype._setupGeometry = function () {
+        // Compute the visible item count.
         var visibleCount = 0;
-        var orientation = this.orientation;
-        var lastVisibleHandle = null;
         for (var i = 0, n = this.childCount; i < n; ++i) {
-            var widget = this.childAt(i);
-            var handle = getHandle(widget);
-            handle.hidden = widget.hidden;
-            handle.orientation = orientation;
-            if (!handle.hidden) {
-                lastVisibleHandle = handle;
+            if (!this.childAt(i).hidden)
                 visibleCount++;
-            }
         }
-        // Hide the last visible handle and update the fixed space.
-        if (lastVisibleHandle)
-            lastVisibleHandle.hidden = true;
-        this._fixedSpace = this.handleSize * Math.max(0, visibleCount - 1);
-        // Compute new size constraints for the split panel.
+        // Update the fixed space for the visible items.
+        this._fixedSpace = this.spacing * Math.max(0, visibleCount - 1);
+        // Update the sizers and compute the new size limits.
         var minW = 0;
         var minH = 0;
         var maxW = Infinity;
         var maxH = Infinity;
-        if (orientation === Orientation.Horizontal) {
+        var dir = this.direction;
+        if (dir === Direction.LeftToRight || dir === Direction.RightToLeft) {
             minW = this._fixedSpace;
             maxW = visibleCount > 0 ? minW : maxW;
             for (var i = 0, n = this.childCount; i < n; ++i) {
                 var widget = this.childAt(i);
                 var sizer = this._sizers[i];
-                if (sizer.size > 0) {
-                    sizer.sizeHint = sizer.size;
-                }
                 if (widget.hidden) {
                     sizer.minSize = 0;
                     sizer.maxSize = 0;
                     continue;
                 }
                 var limits = widget.sizeLimits;
-                sizer.stretch = SplitPanel.getStretch(widget);
+                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
+                sizer.stretch = BoxPanel.getStretch(widget);
                 sizer.minSize = limits.minWidth;
                 sizer.maxSize = limits.maxWidth;
                 minW += limits.minWidth;
@@ -3051,16 +4532,14 @@ var SplitPanel = (function (_super) {
             for (var i = 0, n = this.childCount; i < n; ++i) {
                 var widget = this.childAt(i);
                 var sizer = this._sizers[i];
-                if (sizer.size > 0) {
-                    sizer.sizeHint = sizer.size;
-                }
                 if (widget.hidden) {
                     sizer.minSize = 0;
                     sizer.maxSize = 0;
                     continue;
                 }
                 var limits = widget.sizeLimits;
-                sizer.stretch = SplitPanel.getStretch(widget);
+                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
+                sizer.stretch = BoxPanel.getStretch(widget);
                 sizer.minSize = limits.minHeight;
                 sizer.maxSize = limits.maxHeight;
                 minH += limits.minHeight;
@@ -3086,7 +4565,7 @@ var SplitPanel = (function (_super) {
     /**
      * Layout the children using the given offset width and height.
      */
-    SplitPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
+    BoxPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
         // Bail early if their are no children to arrange.
         if (this.childCount === 0) {
             return;
@@ -3097,20 +4576,10 @@ var SplitPanel = (function (_super) {
         var left = box.paddingLeft;
         var width = offsetWidth - box.horizontalSum;
         var height = offsetHeight - box.verticalSum;
-        // Fetch whether the orientation is horizontal.
-        var horizontal = this.orientation === Orientation.Horizontal;
-        // Update the sizer hints if there is a pending `setSizes`.
-        if (this._pendingSizes) {
-            var space = horizontal ? width : height;
-            var adjusted = Math.max(0, space - this._fixedSpace);
-            for (var i = 0, n = this._sizers.length; i < n; ++i) {
-                this._sizers[i].sizeHint *= adjusted;
-            }
-            this._pendingSizes = false;
-        }
         // Distribute the layout space and layout the items.
-        var handleSize = this.handleSize;
-        if (horizontal) {
+        var dir = this.direction;
+        var spacing = this.spacing;
+        if (dir === Direction.LeftToRight) {
             phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
             for (var i = 0, n = this.childCount; i < n; ++i) {
                 var widget = this.childAt(i);
@@ -3118,16 +4587,11 @@ var SplitPanel = (function (_super) {
                     continue;
                 }
                 var size = this._sizers[i].size;
-                var hStyle = getHandle(widget).node.style;
                 widget.setOffsetGeometry(left, top, size, height);
-                hStyle.top = top + 'px';
-                hStyle.left = left + size + 'px';
-                hStyle.width = handleSize + 'px';
-                hStyle.height = height + 'px';
-                left += size + handleSize;
+                left += size + spacing;
             }
         }
-        else {
+        else if (dir === Direction.TopToBottom) {
             phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
             for (var i = 0, n = this.childCount; i < n; ++i) {
                 var widget = this.childAt(i);
@@ -3135,183 +4599,95 @@ var SplitPanel = (function (_super) {
                     continue;
                 }
                 var size = this._sizers[i].size;
-                var hStyle = getHandle(widget).node.style;
                 widget.setOffsetGeometry(left, top, width, size);
-                hStyle.top = top + size + 'px';
-                hStyle.left = left + 'px';
-                hStyle.width = width + 'px';
-                hStyle.height = handleSize + 'px';
-                top += size + handleSize;
+                top += size + spacing;
+            }
+        }
+        else if (dir === Direction.RightToLeft) {
+            left += width;
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left - size, top, size, height);
+                left -= size + spacing;
+            }
+        }
+        else {
+            top += height;
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left, top - size, width, size);
+                top -= size + spacing;
             }
         }
     };
     /**
-     * Handle the `'mousedown'` event for the split panel.
-     */
-    SplitPanel.prototype._evtMouseDown = function (event) {
-        if (event.button !== 0) {
-            return;
-        }
-        var index = this._findHandleIndex(event.target);
-        if (index === -1) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        document.addEventListener('mouseup', this, true);
-        document.addEventListener('mousemove', this, true);
-        var delta;
-        var node = getHandle(this.childAt(index)).node;
-        if (this.orientation === Orientation.Horizontal) {
-            delta = event.clientX - node.getBoundingClientRect().left;
-        }
-        else {
-            delta = event.clientY - node.getBoundingClientRect().top;
-        }
-        var override = phosphor_domutil_1.overrideCursor(window.getComputedStyle(node).cursor);
-        this._pressData = { index: index, delta: delta, override: override };
-    };
-    /**
-     * Handle the `'mouseup'` event for the split panel.
-     */
-    SplitPanel.prototype._evtMouseUp = function (event) {
-        if (event.button !== 0) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        this._releaseMouse();
-    };
-    /**
-     * Handle the `'mousemove'` event for the split panel.
-     */
-    SplitPanel.prototype._evtMouseMove = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        var pos;
-        var data = this._pressData;
-        var rect = this.node.getBoundingClientRect();
-        if (this.orientation === Orientation.Horizontal) {
-            pos = event.clientX - data.delta - rect.left;
-        }
-        else {
-            pos = event.clientY - data.delta - rect.top;
-        }
-        this._moveHandle(data.index, pos);
-    };
-    /**
-     * Release the mouse grab for the split panel.
-     */
-    SplitPanel.prototype._releaseMouse = function () {
-        if (!this._pressData) {
-            return;
-        }
-        this._pressData.override.dispose();
-        this._pressData = null;
-        document.removeEventListener('mouseup', this, true);
-        document.removeEventListener('mousemove', this, true);
-    };
-    /**
-     * Move a splitter handle to the specified client position.
-     */
-    SplitPanel.prototype._moveHandle = function (index, pos) {
-        // Bail if the handle is invalid or hidden.
-        var widget = this.childAt(index);
-        if (!widget) {
-            return;
-        }
-        var handle = getHandle(widget);
-        if (handle.hidden) {
-            return;
-        }
-        // Compute the delta movement for the handle.
-        var delta;
-        if (this.orientation === Orientation.Horizontal) {
-            delta = pos - handle.node.offsetLeft;
-        }
-        else {
-            delta = pos - handle.node.offsetTop;
-        }
-        if (delta === 0) {
-            return;
-        }
-        // Prevent item resizing unless needed.
-        for (var i = 0, n = this._sizers.length; i < n; ++i) {
-            var sizer = this._sizers[i];
-            if (sizer.size > 0)
-                sizer.sizeHint = sizer.size;
-        }
-        // Adjust the sizers to reflect the movement.
-        if (delta > 0) {
-            growSizer(this._sizers, index, delta);
-        }
-        else {
-            shrinkSizer(this._sizers, index, -delta);
-        }
-        // Update the layout of the widget items. The message is posted
-        // instead of sent because the mouse move event frequency can
-        // outpace the browser's ability to layout, leading to choppy
-        // handle movement, especially on IE. Posting ensures we don't
-        // try to layout faster than the browser can handle.
-        this.update();
-    };
-    /**
-     * Find the index of the split handle which contains the given target.
-     */
-    SplitPanel.prototype._findHandleIndex = function (target) {
-        for (var i = 0, n = this.childCount; i < n; ++i) {
-            var handle = getHandle(this.childAt(i));
-            if (handle.node.contains(target))
-                return i;
-        }
-        return -1;
-    };
-    /**
      * The change handler for the [[orientationProperty]].
      */
-    SplitPanel.prototype._onOrientationChanged = function (old, value) {
-        this.toggleClass(exports.HORIZONTAL_CLASS, value === Orientation.Horizontal);
-        this.toggleClass(exports.VERTICAL_CLASS, value === Orientation.Vertical);
+    BoxPanel.prototype._onDirectionChanged = function (old, value) {
+        this.toggleClass(exports.LTR_CLASS, value === Direction.LeftToRight);
+        this.toggleClass(exports.RTL_CLASS, value === Direction.RightToLeft);
+        this.toggleClass(exports.TTB_CLASS, value === Direction.TopToBottom);
+        this.toggleClass(exports.BTT_CLASS, value === Direction.BottomToTop);
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
      * The handler for the child property changed signal.
      */
-    SplitPanel.prototype._onPropertyChanged = function (sender, args) {
-        if (args.property === SplitPanel.stretchProperty) {
-            phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    BoxPanel.prototype._onPropertyChanged = function (sender, args) {
+        switch (args.property) {
+            case BoxPanel.stretchProperty:
+            case BoxPanel.sizeBasisProperty:
+                phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
         }
     };
     /**
-     * A convenience alias of the `Horizontal` [[Orientation]].
+     * A convenience alias of the `LeftToRight` [[Direction]].
      */
-    SplitPanel.Horizontal = Orientation.Horizontal;
+    BoxPanel.LeftToRight = Direction.LeftToRight;
     /**
-     * A convenience alias of the `Vertical` [[Orientation]].
+     * A convenience alias of the `RightToLeft` [[Direction]].
      */
-    SplitPanel.Vertical = Orientation.Vertical;
+    BoxPanel.RightToLeft = Direction.RightToLeft;
     /**
-     * The property descriptor for the split panel orientation.
-     *
-     * The controls whether the child widgets are arranged lef-to-right
-     * (`Horizontal` the default) or top-to-bottom (`Vertical`).
-     *
-     * **See also:** [[orientation]]
+     * A convenience alias of the `TopToBottom` [[Direction]].
      */
-    SplitPanel.orientationProperty = new phosphor_properties_1.Property({
-        value: Orientation.Horizontal,
-        changed: function (owner, old, value) { return owner._onOrientationChanged(old, value); },
+    BoxPanel.TopToBottom = Direction.TopToBottom;
+    /**
+     * A convenience alias of the `BottomToTop` [[Direction]].
+     */
+    BoxPanel.BottomToTop = Direction.BottomToTop;
+    /**
+     * The property descriptor for the box panel layout direction.
+     *
+     * The controls the arrangement of child widgets within the panel.
+     * The default value is `TopToBottom`.
+     *
+     * **See also:** [[direction]]
+     */
+    BoxPanel.directionProperty = new phosphor_properties_1.Property({
+        value: Direction.TopToBottom,
+        changed: function (owner, old, value) { return owner._onDirectionChanged(old, value); },
     });
     /**
-     * The property descriptor for the split panel handle size.
+     * The property descriptor for the box panel spacing.
      *
-     * The controls the size of the split handles placed between the
-     * children of the panel, in pixels. The default value is `3`.
+     * The controls the fixed spacing between the child widgets, in
+     * pixels. The default value is `8`.
      *
-     * **See also:** [[handleSize]]
+     * **See also:** [[spacing]]
      */
-    SplitPanel.handleSizeProperty = new phosphor_properties_1.Property({
-        value: 3,
+    BoxPanel.spacingProperty = new phosphor_properties_1.Property({
+        value: 8,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
         changed: function (owner) { return phosphor_messaging_1.postMessage(owner, phosphor_widget_1.MSG_LAYOUT_REQUEST); },
     });
@@ -3319,224 +4695,34 @@ var SplitPanel = (function (_super) {
      * The property descriptor for a widget stretch factor.
      *
      * This is an attached property which controls how much a child widget
-     * stretches or shrinks relative to its siblings when the split panel
-     * is resized. The default value is `0`.
+     * stretches or shrinks relative to its siblings when the box panel is
+     * resized. The default value is `0`.
      *
      * **See also:** [[getStretch]], [[setStretch]]
      */
-    SplitPanel.stretchProperty = new phosphor_properties_1.Property({
+    BoxPanel.stretchProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
     });
-    return SplitPanel;
+    /**
+     * The property descriptor for a widget size basis.
+     *
+     * This is an attached property which controls the preferred size of
+     * a child widget. The widget will be initialized to this size before
+     * being expanded or shrunk to fit the available layout space. The
+     * default value is `0`.
+     *
+     * **See also:** [[getSizeBasis]], [[setSizeBasis]]
+     */
+    BoxPanel.sizeBasisProperty = new phosphor_properties_1.Property({
+        value: 0,
+        coerce: function (owner, value) { return Math.max(0, value | 0); },
+    });
+    return BoxPanel;
 })(phosphor_widget_1.Widget);
-exports.SplitPanel = SplitPanel;
-/**
- * A class which manages a handle node for a split panel.
- */
-var SplitHandle = (function (_super) {
-    __extends(SplitHandle, _super);
-    /**
-     * Construct a new split handle.
-     */
-    function SplitHandle() {
-        _super.call(this);
-        this._hidden = false;
-        this._orientation = Orientation.Horizontal;
-        this.addClass(exports.SPLIT_HANDLE_CLASS);
-        this.addClass(exports.HORIZONTAL_CLASS);
-    }
-    /**
-     * Create the DOM node for a split handle.
-     */
-    SplitHandle.createNode = function () {
-        var node = document.createElement('div');
-        var overlay = document.createElement('div');
-        overlay.className = exports.OVERLAY_CLASS;
-        node.appendChild(overlay);
-        return node;
-    };
-    Object.defineProperty(SplitHandle.prototype, "hidden", {
-        /**
-         * Get whether the handle is hidden.
-         */
-        get: function () {
-            return this._hidden;
-        },
-        /**
-         * Set whether the handle is hidden.
-         */
-        set: function (hidden) {
-            if (hidden === this._hidden) {
-                return;
-            }
-            this._hidden = hidden;
-            this.toggleClass(exports.HIDDEN_CLASS, hidden);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SplitHandle.prototype, "orientation", {
-        /**
-         * Get the orientation of the handle.
-         */
-        get: function () {
-            return this._orientation;
-        },
-        /**
-         * Set the orientation of the handle.
-         */
-        set: function (value) {
-            if (value === this._orientation) {
-                return;
-            }
-            this._orientation = value;
-            this.toggleClass(exports.HORIZONTAL_CLASS, value === Orientation.Horizontal);
-            this.toggleClass(exports.VERTICAL_CLASS, value === Orientation.Vertical);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return SplitHandle;
-})(phosphor_nodewrapper_1.NodeWrapper);
-/**
- * A private attached property for the split handle for a widget.
- */
-var splitHandleProperty = new phosphor_properties_1.Property({
-    create: function (owner) { return new SplitHandle(); },
-});
-/**
- * Lookup the split handle for the given widget.
- */
-function getHandle(widget) {
-    return splitHandleProperty.get(widget);
-}
-/**
- * Create a new box sizer with the given size hint.
- */
-function createSizer(size) {
-    var sizer = new phosphor_boxengine_1.BoxSizer();
-    sizer.sizeHint = size | 0;
-    return sizer;
-}
-/**
- * Compute the average size of the given box sizers.
- */
-function averageSize(sizers) {
-    var sum = sizers.reduce(function (v, s) { return v + s.size; }, 0);
-    return sum > 0 ? sum / sizers.length : 0;
-}
-/**
- * Grow a sizer to the right by a positive delta and adjust neighbors.
- */
-function growSizer(sizers, index, delta) {
-    var growLimit = 0;
-    for (var i = 0; i <= index; ++i) {
-        var sizer = sizers[i];
-        growLimit += sizer.maxSize - sizer.size;
-    }
-    var shrinkLimit = 0;
-    for (var i = index + 1, n = sizers.length; i < n; ++i) {
-        var sizer = sizers[i];
-        shrinkLimit += sizer.size - sizer.minSize;
-    }
-    delta = Math.min(delta, growLimit, shrinkLimit);
-    var grow = delta;
-    for (var i = index; i >= 0 && grow > 0; --i) {
-        var sizer = sizers[i];
-        var limit = sizer.maxSize - sizer.size;
-        if (limit >= grow) {
-            sizer.sizeHint = sizer.size + grow;
-            grow = 0;
-        }
-        else {
-            sizer.sizeHint = sizer.size + limit;
-            grow -= limit;
-        }
-    }
-    var shrink = delta;
-    for (var i = index + 1, n = sizers.length; i < n && shrink > 0; ++i) {
-        var sizer = sizers[i];
-        var limit = sizer.size - sizer.minSize;
-        if (limit >= shrink) {
-            sizer.sizeHint = sizer.size - shrink;
-            shrink = 0;
-        }
-        else {
-            sizer.sizeHint = sizer.size - limit;
-            shrink -= limit;
-        }
-    }
-}
-/**
- * Shrink a sizer to the left by a positive delta and adjust neighbors.
- */
-function shrinkSizer(sizers, index, delta) {
-    var growLimit = 0;
-    for (var i = index + 1, n = sizers.length; i < n; ++i) {
-        var sizer = sizers[i];
-        growLimit += sizer.maxSize - sizer.size;
-    }
-    var shrinkLimit = 0;
-    for (var i = 0; i <= index; ++i) {
-        var sizer = sizers[i];
-        shrinkLimit += sizer.size - sizer.minSize;
-    }
-    delta = Math.min(delta, growLimit, shrinkLimit);
-    var grow = delta;
-    for (var i = index + 1, n = sizers.length; i < n && grow > 0; ++i) {
-        var sizer = sizers[i];
-        var limit = sizer.maxSize - sizer.size;
-        if (limit >= grow) {
-            sizer.sizeHint = sizer.size + grow;
-            grow = 0;
-        }
-        else {
-            sizer.sizeHint = sizer.size + limit;
-            grow -= limit;
-        }
-    }
-    var shrink = delta;
-    for (var i = index; i >= 0 && shrink > 0; --i) {
-        var sizer = sizers[i];
-        var limit = sizer.size - sizer.minSize;
-        if (limit >= shrink) {
-            sizer.sizeHint = sizer.size - shrink;
-            shrink = 0;
-        }
-        else {
-            sizer.sizeHint = sizer.size - limit;
-            shrink -= limit;
-        }
-    }
-}
-/**
- * Normalize an array of positive values.
- */
-function normalize(values) {
-    var n = values.length;
-    if (n === 0) {
-        return [];
-    }
-    var sum = 0;
-    for (var i = 0; i < n; ++i) {
-        sum += values[i];
-    }
-    var result = new Array(n);
-    if (sum === 0) {
-        for (var i = 0; i < n; ++i) {
-            result[i] = 1 / n;
-        }
-    }
-    else {
-        for (var i = 0; i < n; ++i) {
-            result[i] = values[i] / sum;
-        }
-    }
-    return result;
-}
+exports.BoxPanel = BoxPanel;
 
-},{"./index.css":13,"phosphor-arrays":4,"phosphor-boxengine":15,"phosphor-domutil":7,"phosphor-messaging":8,"phosphor-nodewrapper":9,"phosphor-properties":10,"phosphor-widget":17}],15:[function(require,module,exports){
+},{"./index.css":18,"phosphor-arrays":4,"phosphor-boxengine":20,"phosphor-messaging":8,"phosphor-properties":10,"phosphor-widget":24}],20:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3866,9 +5052,254 @@ function initSizer(sizer) {
     sizer.done = false;
 }
 
-},{}],16:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;
+},{"browserify-css":3}],22:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_messaging_1 = require('phosphor-messaging');
+var phosphor_properties_1 = require('phosphor-properties');
+var phosphor_signaling_1 = require('phosphor-signaling');
+var phosphor_widget_1 = require('phosphor-widget');
+require('./index.css');
+/**
+ * `p-StackedPanel`: the class name added to StackedPanel instances.
+ */
+exports.STACKED_PANEL_CLASS = 'p-StackedPanel';
+/**
+ * A layout widget where only one child widget is visible at a time.
+ */
+var StackedPanel = (function (_super) {
+    __extends(StackedPanel, _super);
+    /**
+     * Construct a new stacked panel.
+     */
+    function StackedPanel() {
+        _super.call(this);
+        this.addClass(exports.STACKED_PANEL_CLASS);
+    }
+    Object.defineProperty(StackedPanel.prototype, "currentChanged", {
+        /**
+         * A signal emitted when the current widget is changed.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentChangedSignal]].
+         */
+        get: function () {
+            return StackedPanel.currentChangedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StackedPanel.prototype, "widgetRemoved", {
+        /**
+         * A signal emitted when a widget is removed from the panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[widgetRemovedSignal]].
+         */
+        get: function () {
+            return StackedPanel.widgetRemovedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StackedPanel.prototype, "currentWidget", {
+        /**
+         * Get the current panel widget.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentWidgetProperty]].
+         */
+        get: function () {
+            return StackedPanel.currentWidgetProperty.get(this);
+        },
+        /**
+         * Set the current panel widget.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentWidgetProperty]].
+         */
+        set: function (widget) {
+            StackedPanel.currentWidgetProperty.set(this, widget);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * A message handler invoked on a `'child-added'` message.
+     */
+    StackedPanel.prototype.onChildAdded = function (msg) {
+        msg.child.hidden = true;
+        this.node.appendChild(msg.child.node);
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
+    };
+    /**
+     * A message handler invoked on a `'child-removed'` message.
+     */
+    StackedPanel.prototype.onChildRemoved = function (msg) {
+        if (msg.child === this.currentWidget)
+            this.currentWidget = null;
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
+        this.node.removeChild(msg.child.node);
+        msg.child.clearOffsetGeometry();
+        this.widgetRemoved.emit({ index: msg.previousIndex, widget: msg.child });
+    };
+    /**
+     * A message handler invoked on a `'child-moved'` message.
+     */
+    StackedPanel.prototype.onChildMoved = function (msg) { };
+    /**
+     * A message handler invoked on an `'after-show'` message.
+     */
+    StackedPanel.prototype.onAfterShow = function (msg) {
+        this.update(true);
+    };
+    /**
+     * A message handler invoked on an `'after-attach'` message.
+     */
+    StackedPanel.prototype.onAfterAttach = function (msg) {
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'resize'` message.
+     */
+    StackedPanel.prototype.onResize = function (msg) {
+        if (this.isVisible) {
+            if (msg.width < 0 || msg.height < 0) {
+                var rect = this.offsetRect;
+                this._layoutChildren(rect.width, rect.height);
+            }
+            else {
+                this._layoutChildren(msg.width, msg.height);
+            }
+        }
+    };
+    /**
+     * A message handler invoked on an `'update-request'` message.
+     */
+    StackedPanel.prototype.onUpdateRequest = function (msg) {
+        if (this.isVisible) {
+            var rect = this.offsetRect;
+            this._layoutChildren(rect.width, rect.height);
+        }
+    };
+    /**
+     * A message handler invoked on a `'layout-request'` message.
+     */
+    StackedPanel.prototype.onLayoutRequest = function (msg) {
+        if (this.isAttached) {
+            this._setupGeometry();
+        }
+    };
+    /**
+     * Update the size constraints of the panel.
+     */
+    StackedPanel.prototype._setupGeometry = function () {
+        // Compute the new size limits.
+        var minW = 0;
+        var minH = 0;
+        var maxW = Infinity;
+        var maxH = Infinity;
+        var widget = this.currentWidget;
+        if (widget) {
+            var limits = widget.sizeLimits;
+            minW = limits.minWidth;
+            minH = limits.minHeight;
+            maxW = limits.maxWidth;
+            maxH = limits.maxHeight;
+        }
+        // Add the box sizing to the size constraints.
+        var box = this.boxSizing;
+        minW += box.horizontalSum;
+        minH += box.verticalSum;
+        maxW += box.horizontalSum;
+        maxH += box.verticalSum;
+        // Update the panel's size constraints.
+        this.setSizeLimits(minW, minH, maxW, maxH);
+        // Notifiy the parent that it should relayout.
+        if (this.parent)
+            phosphor_messaging_1.sendMessage(this.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        // Update the layout for the child widgets.
+        this.update(true);
+    };
+    /**
+     * Layout the children using the given offset width and height.
+     */
+    StackedPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
+        // Bail early if there is no current widget.
+        var widget = this.currentWidget;
+        if (!widget) {
+            return;
+        }
+        // Compute the actual layout bounds adjusted for border and padding.
+        var box = this.boxSizing;
+        var top = box.paddingTop;
+        var left = box.paddingLeft;
+        var width = offsetWidth - box.horizontalSum;
+        var height = offsetHeight - box.verticalSum;
+        // Update the current widget's layout geometry.
+        widget.setOffsetGeometry(left, top, width, height);
+    };
+    /**
+     * The change handler for the [[currentWidgetProperty]].
+     */
+    StackedPanel.prototype._onCurrentWidgetChanged = function (old, val) {
+        if (old)
+            old.hidden = true;
+        if (val)
+            val.hidden = false;
+        // Ideally, the layout request would be posted in order to take
+        // advantage of message compression, but some browsers repaint
+        // before the message gets processed, resulting in jitter. So,
+        // the layout request is sent and processed immediately.
+        phosphor_messaging_1.sendMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        this.currentChanged.emit({ index: this.childIndex(val), widget: val });
+    };
+    /**
+     * A signal emitted when the current widget is changed.
+     *
+     * **See also:** [[currentChanged]]
+     */
+    StackedPanel.currentChangedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * A signal emitted when a widget is removed from the panel.
+     *
+     * **See also:** [[widgetRemoved]]
+     */
+    StackedPanel.widgetRemovedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * The property descriptor for the current widget.
+     *
+     * This controls which child widget is visible.
+     *
+     * **See also:** [[currentWidget]]
+     */
+    StackedPanel.currentWidgetProperty = new phosphor_properties_1.Property({
+        value: null,
+        coerce: function (owner, val) { return (val && val.parent === owner) ? val : null; },
+        changed: function (owner, old, val) { return owner._onCurrentWidgetChanged(old, val); },
+    });
+    return StackedPanel;
+})(phosphor_widget_1.Widget);
+exports.StackedPanel = StackedPanel;
+
+},{"./index.css":21,"phosphor-messaging":8,"phosphor-properties":10,"phosphor-signaling":12,"phosphor-widget":24}],23:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-Widget {\n  box-sizing: border-box;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  overflow: hidden;\n  cursor: default;\n}\n.p-Widget.p-mod-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-widget/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],17:[function(require,module,exports){
+},{"browserify-css":3}],24:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -5156,4 +6587,4 @@ function sendToShown(array, msg) {
     }
 }
 
-},{"./index.css":16,"phosphor-arrays":4,"phosphor-domutil":7,"phosphor-messaging":8,"phosphor-nodewrapper":9,"phosphor-properties":10,"phosphor-signaling":12}]},{},[2]);
+},{"./index.css":23,"phosphor-arrays":4,"phosphor-domutil":7,"phosphor-messaging":8,"phosphor-nodewrapper":9,"phosphor-properties":10,"phosphor-signaling":12}]},{},[2]);

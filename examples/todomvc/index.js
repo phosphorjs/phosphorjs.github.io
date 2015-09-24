@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var phosphor_splitpanel_1 = require('phosphor-splitpanel');
+var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
@@ -67,6 +67,13 @@ var CodeMirrorWidget = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    CodeMirrorWidget.prototype.loadTarget = function (target) {
+        var doc = this._editor.getDoc();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', target);
+        xhr.onreadystatechange = function () { return doc.setValue(xhr.responseText); };
+        xhr.send();
+    };
     CodeMirrorWidget.prototype.onAfterAttach = function (msg) {
         this._editor.refresh();
     };
@@ -90,24 +97,26 @@ function main() {
         lineNumbers: true,
         tabSize: 2,
     });
-    // Set the stretch factors for the widgets.
-    phosphor_splitpanel_1.SplitPanel.setStretch(cm, 0);
-    phosphor_splitpanel_1.SplitPanel.setStretch(todo, 1);
-    // Setup the main split panel
-    var split = new phosphor_splitpanel_1.SplitPanel();
-    split.id = 'main';
-    split.handleSize = 0;
-    split.children = [cm, todo];
-    split.setSizes([1, 1.5]);
-    // Initialize the CodeMirror text to the contents of this file.
-    var doc = cm.editor.getDoc();
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', './index.ts');
-    xhr.onreadystatechange = function () { return doc.setValue(xhr.responseText); };
-    xhr.send();
-    // Attach the main split panel to the body.
-    phosphor_widget_1.attachWidget(split, document.body);
-    // Update the main panel on window resize.
-    window.onresize = function () { return split.update(); };
+    // Create the CodeMirror widget with a typescript mode.
+    var cmSource = new CodeMirrorWidget({
+        mode: 'text/typescript',
+        lineNumbers: true,
+        tabSize: 2,
+    });
+    cmSource.loadTarget('./index.ts');
+    var cmCss = new CodeMirrorWidget({
+        mode: 'text/css',
+        lineNumbers: true,
+        tabSize: 2,
+    });
+    cmCss.loadTarget('./index.css');
+    phosphor_tabs_1.TabPanel.setTab(todo, new phosphor_tabs_1.Tab('Demo'));
+    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
+    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    var panel = new phosphor_tabs_1.TabPanel();
+    panel.id = 'main';
+    panel.widgets = [todo, cmSource, cmCss];
+    phosphor_widget_1.attachWidget(panel, document.body);
+    window.onresize = function () { return panel.update(); };
 }
 window.onload = main;
