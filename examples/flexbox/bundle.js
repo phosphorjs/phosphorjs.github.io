@@ -20,8 +20,6 @@ var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
  * A widget which uses CSS flexbox to layout its children.
- *
- * **See Also:** './index.css'
  */
 var MyVBox = (function (_super) {
     __extends(MyVBox, _super);

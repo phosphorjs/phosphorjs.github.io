@@ -87,17 +87,12 @@ var CodeMirrorWidget = (function (_super) {
     };
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
+/**
+ * The main application entry point.
+ */
 function main() {
-    // Create Todo widget with a new Todo model
     var model = new app.TodoModel('react-todos');
     var todo = new TodoWidget(model);
-    // Create the CodeMirror widget with a typescript mode.
-    var cm = new CodeMirrorWidget({
-        mode: 'text/typescript',
-        lineNumbers: true,
-        tabSize: 2,
-    });
-    // Create the CodeMirror widget with a typescript mode.
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
