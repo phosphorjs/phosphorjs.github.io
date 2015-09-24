@@ -109,8 +109,9 @@ function main() {
     var blue1 = createContent('blue');
     var blue2 = createContent('blue');
     var blue3 = createContent('blue');
+    var blue4 = createContent('blue');
     var split = new phosphor_splitpanel_1.SplitPanel();
-    split.children = [blue1, blue2, blue3];
+    split.children = [blue1, blue2, blue3, blue4];
     var box = new MyVBox();
     box.children = [red, split, yellow, green];
     var cmSource = new CodeMirrorWidget({
