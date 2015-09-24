@@ -14,17 +14,21 @@ body {
 
 #main {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
 }
 
 
 .TodoWidget {
   overflow: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
+}
+
+
+.todoapp {
+  margin-bottom: 10px;
 }
 
 
@@ -81,7 +85,6 @@ body {
 
 
 .p-TabPanel > .p-StackedPanel {
-  padding: 10px;
   background: white;
   border: 1px solid #C0C0C0;
   border-top: none;

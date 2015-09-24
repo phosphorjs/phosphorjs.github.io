@@ -103,19 +103,13 @@ class CodeMirrorWidget extends Widget {
 }
 
 
+/**
+ * The main application entry point.
+ */
 function main(): void {
-  // Create Todo widget with a new Todo model
   var model = new app.TodoModel('react-todos');
   var todo = new TodoWidget(model);
 
-  // Create the CodeMirror widget with a typescript mode.
-  var cm = new CodeMirrorWidget({
-    mode: 'text/typescript',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-
-  // Create the CodeMirror widget with a typescript mode.
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
@@ -142,5 +136,6 @@ function main(): void {
 
   window.onresize = () => panel.update();
 }
+
 
 window.onload = main;

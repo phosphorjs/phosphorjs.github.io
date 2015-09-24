@@ -28,10 +28,9 @@ import './index.css';
 
 /**
  * A widget which uses CSS flexbox to layout its children.
- *
- * **See Also:** './index.css'
  */
 class MyVBox extends Widget {
+
   constructor() {
     super();
     this.addClass('my-vbox');
