@@ -21,14 +21,7 @@ body {
 }
 
 
-.CodeMirrorWidget {
-  min-width: 400px;
-}
-
-
 .TodoWidget {
-  overflow: auto;
-  min-width: 400px;
   padding-left: 10px;
   padding-right: 10px;
 }
