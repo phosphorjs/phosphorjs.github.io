@@ -96,6 +96,7 @@ function main(): void {
   var y3 = createContent('Yellow');
 
   var panel = new DockPanel();
+  panel.addClass('mainDock');
 
   panel.addWidget(r1);
 
