@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "tsc && browserify -t browserify-css index.js -o bundle.js",
+    "postinstall": "npm dedupe"
+  },
+  "dependencies": {
+    "phosphor-menus": "^0.9.4",
+    "phosphor-messaging": "^1.0.4",
+    "phosphor-tabs": "^0.9.5",
+    "phosphor-widget": "^0.9.9"
+  },
+  "devDependencies": {
+    "browserify": "^11.1.0",
+    "browserify-css": "^0.7.1",
+    "typescript": "^1.6"
+  }
+}

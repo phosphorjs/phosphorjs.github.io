@@ -1,0 +1,201 @@
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+#main {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+
+
+.p-TabBar {
+  min-height: 24px;
+}
+
+
+.p-TabBar-content {
+  bottom: 1px;
+  align-items: flex-end;
+}
+
+
+.p-TabBar-content > .p-Tab {
+  flex-basis: 125px;
+  max-height: 21px;
+  margin-left: -1px;
+  border: 1px solid #C0C0C0;
+  border-bottom: none;
+  padding: 0px 10px;
+  background: #E5E5E5;
+  font: 12px Helvetica, Arial, sans-serif;
+}
+
+
+.p-TabBar-content > .p-Tab.p-mod-first {
+  margin-left: 0;
+}
+
+
+.p-TabBar-content > .p-Tab.p-mod-selected {
+  min-height: 24px;
+  background: white;
+  transform: translateY(1px);
+}
+
+
+.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {
+  background: #F0F0F0;
+}
+
+
+.p-TabBar-content > .p-Tab > span {
+  line-height: 21px;
+}
+
+
+.p-TabBar-footer {
+  display: block;
+  height: 1px;
+  background: #C0C0C0;
+}
+
+
+.p-TabPanel > .p-StackedPanel {
+  padding: 10px;
+  background: white;
+  border: 1px solid #C0C0C0;
+  border-top: none;
+}
+
+
+
+.p-Menu {
+  background: white;
+  color: rgba(0, 0, 0, 0.87);
+  border: 1px solid #C0C0C0;
+  font: 12px Helvetica, Arial, sans-serif;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.p-Menu-item.p-mod-active {
+  background: #E5E5E5;
+}
+
+
+.p-Menu-item.p-mod-disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+
+.p-Menu-item.p-mod-separator-type > span::after {
+  border-top: 1px solid #DDDDDD;
+}
+
+
+.p-Menu-item-icon::before,
+.p-Menu-item-submenu-icon::before {
+  font-family: FontAwesome;
+}
+
+
+.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {
+  content: '\f00c';
+}
+
+
+.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu-icon::before {
+  content: '\f0da';
+}
+
+
+.p-Menu-item.copy > .p-Menu-item-icon::before {
+  content: '\f0c5';
+}
+
+
+.p-Menu-item.cut > .p-Menu-item-icon::before {
+  content: '\f0c4';
+}
+
+
+.p-Menu-item.paste > .p-Menu-item-icon::before {
+  content: '\f0ea';
+}
+
+
+.p-Menu-item.close > .p-Menu-item-icon::before {
+  content: '\f00d';
+}
+
+
+.p-Menu-item.undo > .p-Menu-item-icon::before {
+  content: '\f0e2';
+}
+
+
+.p-Menu-item.repeat > .p-Menu-item-icon::before {
+  content: '\f01e';
+}
+
+
+.p-MenuBar {
+  min-height: 24px;
+  padding-left: 5px;
+  background: #FAFAFA;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid #DDDDDD;
+  font: 13px Helvetica, Arial, sans-serif;
+}
+
+
+.p-MenuBar-menu {
+  transform: translateY(-1px);
+}
+
+
+.p-MenuBar-item {
+  padding: 4px 8px;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+
+
+.p-MenuBar-item.p-mod-active {
+  background: #E5E5E5;
+}
+
+
+.p-MenuBar-item.p-mod-disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+
+.p-MenuBar-item.p-mod-separator-type {
+  margin: 2px;
+  padding: 0;
+  border: none;
+  border-left: 1px solid #DDDDDD;
+}
+
+
+.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {
+  z-index: 1000000;
+  background: white;
+  border-left: 1px solid #C0C0C0;
+  border-right: 1px solid #C0C0C0;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+}
