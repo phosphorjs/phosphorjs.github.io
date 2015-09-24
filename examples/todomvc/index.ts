@@ -12,10 +12,6 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  SplitPanel
-} from 'phosphor-splitpanel';
-
-import {
   Tab, TabPanel
 } from 'phosphor-tabs';
 
