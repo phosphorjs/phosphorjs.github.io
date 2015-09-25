@@ -6,7 +6,6 @@
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
 body {
-  font-family: sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -14,15 +13,10 @@ body {
 
 #main {
   position: absolute;
-  top: 35px;
+  top: 10px;
   left: 10px;
   right: 10px;
   bottom: 10px;
-}
-
-
-.ContextArea {
-  padding-left: 10px;
 }
 
 
@@ -79,10 +73,12 @@ body {
 
 
 .p-TabPanel > .p-StackedPanel {
+  padding: 10px;
   background: white;
   border: 1px solid #C0C0C0;
   border-top: none;
 }
+
 
 .p-Tab.p-mod-closable > .p-Tab-close-icon {
   margin-left: 4px;
@@ -92,4 +88,34 @@ body {
 .p-Tab.p-mod-closable > .p-Tab-close-icon:before {
   content: '\f00d';
   font-family: FontAwesome;
+}
+
+
+.CodeMirrorWidget {
+  border: 1px solid #C0C0C0;
+}
+
+
+.content {
+  border: 1px solid black;
+}
+
+
+.red {
+  background: #E74C3C;
+}
+
+
+.yellow {
+  background: #F1C40F;
+}
+
+
+.green {
+  background: #27AE60;
+}
+
+
+.blue {
+  background: #3498DB;
 }
