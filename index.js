@@ -60,6 +60,7 @@ function configureFiles(files, metalsmith, done) {
           'Phosphor + Flexbox': 'flexbox',
           'DockPanel': 'dockpanel',
           'Menus': 'menus',
+          'Tabs' : 'tabs',
         };
       } else {
         file.template = 'page.hbt';
