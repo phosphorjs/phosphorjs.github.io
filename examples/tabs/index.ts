@@ -61,30 +61,61 @@ class CodeMirrorWidget extends Widget {
 }
 
 
-class ExampleTab extends Widget {
-  constructor() {
+/**
+ * A widget which disposes itself when closed.
+ *
+ * By default, a widget will only remove itself from the hierarchy.
+ */
+class ContentWidget extends Widget {
+
+  constructor(title: string) {
     super();
-    var tab = new Tab('Example');
+    this.addClass('content');
+    this.addClass(title.toLowerCase());
+
+    var tab = new Tab(title);
     tab.closable = true;
     TabPanel.setTab(this, tab);
+  }
+
+  protected onCloseRequest(msg: Message): void {
+    this.dispose();
   }
 }
 
 
+/**
+ * A title generator function.
+ */
+var nextTitle = (() => {
+  var i = 0;
+  var titles = ['Red', 'Yellow', 'Green', 'Blue'];
+  return () => titles[i++ % titles.length];
+})();
+
+
+/**
+ * Add a new content widget the the given tab panel.
+ */
+function addContent(panel: TabPanel): void {
+  var content = new ContentWidget(nextTitle());
+  panel.addWidget(new ContentWidget(nextTitle()));
+}
+
+
+/**
+ * The main application entry point.
+ */
 function main(): void {
   var panel = new TabPanel();
   panel.id = 'main';
 
   var btn = document.createElement('button');
-  var text = document.createTextNode('Click to add a Tab');
-  btn.appendChild(text);
-  btn.onclick = () => {
-      panel.addWidget(new ExampleTab());
-  }
+  btn.textContent = 'Add New Tab';
+  btn.onclick = () => addContent(panel);
 
-  var contextArea = new Widget();
-  contextArea.addClass('ContextArea');
-  contextArea.node.appendChild(btn);
+  var demoArea = new Widget();
+  demoArea.node.appendChild(btn);
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
@@ -100,15 +131,16 @@ function main(): void {
   });
   cmCss.loadTarget('./index.css');
 
-  TabPanel.setTab(contextArea, new Tab('Demo'));
+  TabPanel.setTab(demoArea, new Tab('Demo'));
   TabPanel.setTab(cmSource, new Tab('Source'));
   TabPanel.setTab(cmCss, new Tab('CSS'));
 
-  panel.widgets = [contextArea, cmSource, cmCss];
+  panel.widgets = [demoArea, cmSource, cmCss];
 
   attachWidget(panel, document.body);
 
   window.onresize = () => panel.update();
 }
+
 
 window.onload = main;
