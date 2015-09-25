@@ -87,7 +87,7 @@ function main(): void {
   contextArea.node.appendChild(btn);
 
   var cmSource = new CodeMirrorWidget({
-    mode: 'text/css',
+    mode: 'text/typescript',
     lineNumbers:true,
     tabSize: 2
   });
