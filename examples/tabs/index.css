@@ -83,3 +83,13 @@ body {
   border: 1px solid #C0C0C0;
   border-top: none;
 }
+
+.p-Tab.p-mod-closable > .p-Tab-close-icon {
+  margin-left: 4px;
+}
+
+
+.p-Tab.p-mod-closable > .p-Tab-close-icon:before {
+  content: '\f00d';
+  font-family: FontAwesome;
+}
