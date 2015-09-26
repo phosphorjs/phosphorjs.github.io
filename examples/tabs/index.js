@@ -84,7 +84,7 @@ var nextTitle = (function () {
  */
 function addContent(panel) {
     var content = new ContentWidget(nextTitle());
-    panel.addWidget(new ContentWidget(nextTitle()));
+    panel.addWidget(content);
 }
 /**
  * The main application entry point.

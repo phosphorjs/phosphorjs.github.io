@@ -3045,7 +3045,7 @@ function removeFromSendersList(conn) {
 }
 
 },{}],14:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-SplitPanel {\n  position: relative;\n}\n.p-SplitPanel > .p-Widget {\n  position: absolute;\n  z-index: 0;\n}\n.p-SplitHandle {\n  box-sizing: border-box;\n  position: absolute;\n  z-index: 1;\n}\n.p-SplitHandle.p-mod-hidden {\n  display: none;\n}\n.p-SplitHandle.p-mod-horizontal {\n  cursor: ew-resize;\n}\n.p-SplitHandle.p-mod-vertical {\n  cursor: ns-resize;\n}\n.p-SplitHandle-overlay {\n  box-sizing: border-box;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.p-SplitHandle.p-mod-horizontal > .p-SplitHandle-overlay {\n  min-width: 7px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n.p-SplitHandle.p-mod-vertical > .p-SplitHandle-overlay {\n  min-height: 7px;\n  top: 50%;\n  transform: translateY(-50%);\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-splitpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-SplitPanel {\n  position: relative;\n}\n.p-SplitPanel > .p-Widget {\n  position: absolute;\n  z-index: 0;\n}\n.p-SplitHandle {\n  box-sizing: border-box;\n  position: absolute;\n  z-index: 1;\n}\n.p-SplitHandle.p-mod-hidden {\n  display: none;\n}\n.p-SplitHandle.p-mod-horizontal {\n  cursor: ew-resize;\n}\n.p-SplitHandle.p-mod-vertical {\n  cursor: ns-resize;\n}\n.p-SplitHandle-overlay {\n  box-sizing: border-box;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.p-SplitHandle.p-mod-horizontal > .p-SplitHandle-overlay {\n  min-width: 7px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n.p-SplitHandle.p-mod-vertical > .p-SplitHandle-overlay {\n  min-height: 7px;\n  top: 50%;\n  transform: translateY(-50%);\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-splitpanel/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],15:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -3256,7 +3256,6 @@ var SplitPanel = (function (_super) {
      * A message handler invoked on a `'child-added'` message.
      */
     SplitPanel.prototype.onChildAdded = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).connect(this._onPropertyChanged, this);
         var sizer = createSizer(averageSize(this._sizers));
         arrays.insert(this._sizers, msg.currentIndex, sizer);
         this.node.appendChild(msg.child.node);
@@ -3269,7 +3268,6 @@ var SplitPanel = (function (_super) {
      * A message handler invoked on a `'child-removed'` message.
      */
     SplitPanel.prototype.onChildRemoved = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).disconnect(this._onPropertyChanged, this);
         arrays.removeAt(this._sizers, msg.previousIndex);
         if (this.isAttached)
             phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
@@ -3628,14 +3626,6 @@ var SplitPanel = (function (_super) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
-     * The handler for the child property changed signal.
-     */
-    SplitPanel.prototype._onPropertyChanged = function (sender, args) {
-        if (args.property === SplitPanel.stretchProperty) {
-            phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        }
-    };
-    /**
      * A convenience alias of the `Horizontal` [[Orientation]].
      */
     SplitPanel.Horizontal = Orientation.Horizontal;
@@ -3680,6 +3670,7 @@ var SplitPanel = (function (_super) {
     SplitPanel.stretchProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onStretchChanged,
     });
     return SplitPanel;
 })(phosphor_widget_1.Widget);
@@ -3763,6 +3754,14 @@ var splitHandleProperty = new phosphor_properties_1.Property({
  */
 function getHandle(widget) {
     return splitHandleProperty.get(widget);
+}
+/**
+ * The change handler for the stretch attached property.
+ */
+function onStretchChanged(child, old, value) {
+    if (child.parent instanceof SplitPanel) {
+        phosphor_messaging_1.postMessage(child.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    }
 }
 /**
  * Create a new box sizer with the given size hint.
@@ -3890,7 +3889,7 @@ function normalize(values) {
 }
 
 },{"./index.css":14,"phosphor-arrays":4,"phosphor-boxengine":5,"phosphor-domutil":8,"phosphor-messaging":9,"phosphor-nodewrapper":10,"phosphor-properties":11,"phosphor-widget":26}],16:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],17:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -5409,7 +5408,7 @@ var TabPanel = (function (_super) {
 exports.TabPanel = TabPanel;
 
 },{"./tabbar":19,"phosphor-boxpanel":22,"phosphor-properties":11,"phosphor-signaling":13,"phosphor-stackedpanel":24}],21:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],22:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -5594,7 +5593,6 @@ var BoxPanel = (function (_super) {
      * A message handler invoked on a `'child-added'` message.
      */
     BoxPanel.prototype.onChildAdded = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).connect(this._onPropertyChanged, this);
         arrays.insert(this._sizers, msg.currentIndex, new phosphor_boxengine_1.BoxSizer());
         this.node.appendChild(msg.child.node);
         if (this.isAttached)
@@ -5605,7 +5603,6 @@ var BoxPanel = (function (_super) {
      * A message handler invoked on a `'child-removed'` message.
      */
     BoxPanel.prototype.onChildRemoved = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).disconnect(this._onPropertyChanged, this);
         arrays.removeAt(this._sizers, msg.previousIndex);
         if (this.isAttached)
             phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
@@ -5830,16 +5827,6 @@ var BoxPanel = (function (_super) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
-     * The handler for the child property changed signal.
-     */
-    BoxPanel.prototype._onPropertyChanged = function (sender, args) {
-        switch (args.property) {
-            case BoxPanel.stretchProperty:
-            case BoxPanel.sizeBasisProperty:
-                phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        }
-    };
-    /**
      * A convenience alias of the `LeftToRight` [[Direction]].
      */
     BoxPanel.LeftToRight = Direction.LeftToRight;
@@ -5892,6 +5879,7 @@ var BoxPanel = (function (_super) {
     BoxPanel.stretchProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
     });
     /**
      * The property descriptor for a widget size basis.
@@ -5906,10 +5894,19 @@ var BoxPanel = (function (_super) {
     BoxPanel.sizeBasisProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
     });
     return BoxPanel;
 })(phosphor_widget_1.Widget);
 exports.BoxPanel = BoxPanel;
+/**
+ * The change handler for the attached child properties.
+ */
+function onChildPropertyChanged(child) {
+    if (child.parent instanceof BoxPanel) {
+        phosphor_messaging_1.postMessage(child.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    }
+}
 
 },{"./index.css":21,"phosphor-arrays":4,"phosphor-boxengine":5,"phosphor-messaging":9,"phosphor-properties":11,"phosphor-widget":26}],23:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;

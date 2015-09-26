@@ -2696,7 +2696,7 @@ function removeFromSendersList(conn) {
 }
 
 },{}],13:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],14:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -4215,7 +4215,7 @@ var TabPanel = (function (_super) {
 exports.TabPanel = TabPanel;
 
 },{"./tabbar":16,"phosphor-boxpanel":19,"phosphor-properties":10,"phosphor-signaling":12,"phosphor-stackedpanel":22}],18:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],19:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -4400,7 +4400,6 @@ var BoxPanel = (function (_super) {
      * A message handler invoked on a `'child-added'` message.
      */
     BoxPanel.prototype.onChildAdded = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).connect(this._onPropertyChanged, this);
         arrays.insert(this._sizers, msg.currentIndex, new phosphor_boxengine_1.BoxSizer());
         this.node.appendChild(msg.child.node);
         if (this.isAttached)
@@ -4411,7 +4410,6 @@ var BoxPanel = (function (_super) {
      * A message handler invoked on a `'child-removed'` message.
      */
     BoxPanel.prototype.onChildRemoved = function (msg) {
-        phosphor_properties_1.Property.getChanged(msg.child).disconnect(this._onPropertyChanged, this);
         arrays.removeAt(this._sizers, msg.previousIndex);
         if (this.isAttached)
             phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
@@ -4636,16 +4634,6 @@ var BoxPanel = (function (_super) {
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
     /**
-     * The handler for the child property changed signal.
-     */
-    BoxPanel.prototype._onPropertyChanged = function (sender, args) {
-        switch (args.property) {
-            case BoxPanel.stretchProperty:
-            case BoxPanel.sizeBasisProperty:
-                phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        }
-    };
-    /**
      * A convenience alias of the `LeftToRight` [[Direction]].
      */
     BoxPanel.LeftToRight = Direction.LeftToRight;
@@ -4698,6 +4686,7 @@ var BoxPanel = (function (_super) {
     BoxPanel.stretchProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
     });
     /**
      * The property descriptor for a widget size basis.
@@ -4712,10 +4701,19 @@ var BoxPanel = (function (_super) {
     BoxPanel.sizeBasisProperty = new phosphor_properties_1.Property({
         value: 0,
         coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
     });
     return BoxPanel;
 })(phosphor_widget_1.Widget);
 exports.BoxPanel = BoxPanel;
+/**
+ * The change handler for the attached child properties.
+ */
+function onChildPropertyChanged(child) {
+    if (child.parent instanceof BoxPanel) {
+        phosphor_messaging_1.postMessage(child.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    }
+}
 
 },{"./index.css":18,"phosphor-arrays":4,"phosphor-boxengine":20,"phosphor-messaging":8,"phosphor-properties":10,"phosphor-widget":24}],20:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
