@@ -99,7 +99,7 @@ var nextTitle = (() => {
  */
 function addContent(panel: TabPanel): void {
   var content = new ContentWidget(nextTitle());
-  panel.addWidget(new ContentWidget(nextTitle()));
+  panel.addWidget(content);
 }
 
 
