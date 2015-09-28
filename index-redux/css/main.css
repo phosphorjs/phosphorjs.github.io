@@ -1,8 +1,8 @@
 /*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
 
 html {
-    background-color: #121B22;
-    color: #e0ffe5;
+    background-color: #F4FFF7;
+    color: #112236;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -86,7 +86,8 @@ body {
 .header-container,
 .footer-container,
 .main aside {
-    background: #0A1013;
+    background-color: #112236;
+    border-bottom: 3px solid #0FCB63;
 }
 
 header {
@@ -104,7 +105,9 @@ section {
 }
 
 aside {
+    color: #f4fff7;
     text-align: center;
+    border-radius: 3px;
 }
 
 aside .logo {
@@ -121,7 +124,7 @@ aside .logo {
 
 h1, h2, h3, h4 {
     font-family: 'Nunito', sans-serif;
-    color: #19F28A;
+    color: #112236;
     font-weight: 300;
     letter-spacing: 0.055em;
 }
@@ -130,18 +133,23 @@ h1 {
     margin: 0.5rem 0;
 }
 
-article h1 {
-    color: #E0FFE5;
+h1.title {
+    color: #19F28A;
 }
 
 h2 {
     font-size: 1.65rem;
     margin-bottom: 0.3rem;
+    color: #04A43C;
+}
+
+aside h2 {
+    color: #19F28A;
 }
 
 h3 {
     font-style: italic;
-    margin: -0.75em 0 0.75em;
+    margin: -0.15em 0 0.75em;
 }
 
 p {
