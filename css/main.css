@@ -1,7 +1,7 @@
 /*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
 
 html {
-    background-color: #F4FFF7;
+    background-color: #F4F7F7;
     color: #112236;
     font-size: 1em;
     line-height: 1.4;
@@ -76,7 +76,7 @@ body {
 }
 
 .logo {
-    background: url(../img/phosphorjs.svg) no-repeat top left; 
+    background: url(../img/phosphorjs.svg) no-repeat top left;
     height: 2em;
     width: 2em;
     float: left;
@@ -86,7 +86,7 @@ body {
 .header-container,
 .footer-container,
 .main aside {
-    background-color: #112236;
+    background-color: #0C1010;
     border-bottom: 3px solid #0FCB63;
 }
 
@@ -166,8 +166,12 @@ aside p, aside li, footer p, footer li {
     color: #F4FFF7;
 }
 
-.nobull { 
-    list-style: none; list-style-type: none; 
+.nobull {
+    list-style: none; list-style-type: none;
+}
+
+.nobull a:hover {
+    color: #04A43C;
 }
 
 a {
@@ -176,7 +180,6 @@ a {
 }
 
 a:hover {
-    text-shadow: 2px 2px 2px #19F28A;
     text-decoration: none;
 }
 
@@ -184,7 +187,9 @@ a:hover > h1, a:hover > h2, a:hover > h3, a:hover > h4 {
     text-shadow: none;
 }
 
-    color: #f4fff7;
+.header-container nav a:hover {
+    text-shadow: 0px 0px 3px #19F28A;
+}
 
 /* ==============
     MOBILE: Menu
