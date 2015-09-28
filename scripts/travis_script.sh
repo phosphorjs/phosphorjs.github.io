@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-node index.js
+mkdir build
+cp -r index-redux/* build/.
 
 cd examples
 for D in *; do
