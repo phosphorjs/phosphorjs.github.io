@@ -129,6 +129,12 @@ h1 {
     margin: 0.25em 0;
 }
 
+h3 {
+    font-style: italic;
+    margin: -0.75em 0 0.75em;
+}
+}
+
 a {
     text-decoration: none;
 }
