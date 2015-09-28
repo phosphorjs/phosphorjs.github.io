@@ -1,8 +1,8 @@
 /*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
 
 html {
-    background-color: #121B22;
-    color: #e0ffe5;
+    background-color: #F4FFF7;
+    color: #112236;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -86,7 +86,8 @@ body {
 .header-container,
 .footer-container,
 .main aside {
-    background: #0A1013;
+    background-color: #112236;
+    border-bottom: 3px solid #0FCB63;
 }
 
 header {
@@ -105,6 +106,7 @@ section {
 
 aside {
     text-align: center;
+    border-radius: 3px;
 }
 
 aside .logo {
@@ -121,7 +123,7 @@ aside .logo {
 
 h1, h2, h3, h4 {
     font-family: 'Nunito', sans-serif;
-    color: #19F28A;
+    color: #112236;
     font-weight: 300;
     letter-spacing: 0.055em;
 }
@@ -130,14 +132,23 @@ h1 {
     margin: 0.5rem 0;
 }
 
+h1.title {
+    color: #19F28A;
+}
+
 h2 {
     font-size: 1.65rem;
     margin-bottom: 0.3rem;
+    color: #04A43C;
+}
+
+aside h2 {
+    color: #19F28A;
 }
 
 h3 {
     font-style: italic;
-    margin: -0.75em 0 0.75em;
+    margin: -0.15em 0 0.75em;
 }
 
 p {
@@ -148,24 +159,32 @@ p, li {
     font-size: 1.2rem;
     letter-spacing: 0.06em;
     line-height: 1.5em;
+    color: #112236;
 }
 
-.nobull { list-style: none; list-style-type: none; }
+aside p, aside li, footer p, footer li {
+    color: #F4FFF7;
+}
+
+.nobull { 
+    list-style: none; list-style-type: none; 
+}
 
 a {
     text-decoration: none;
-    color: #e0ffe5;
+    color: #112236;
 }
 
-ul a {
-    color: #e0ffe5;
-}
-
-ul a:hover {
-    color: white;
+a:hover {
+    text-shadow: 2px 2px 2px #19F28A;
     text-decoration: none;
-    text-shadow: 2px 4px 6px #19F28A;
 }
+
+a:hover > h1, a:hover > h2, a:hover > h3, a:hover > h4 {
+    text-shadow: none;
+}
+
+    color: #f4fff7;
 
 /* ==============
     MOBILE: Menu
@@ -178,16 +197,11 @@ nav ul {
 }
 
 nav a {
+    color: #F4FFF7;
     display: block;
     padding: 0.5em 0;
     text-align: center;
     text-transform: uppercase;
-}
-
-nav a:hover {
-    color: white;
-    text-decoration: none;
-    text-shadow: 2px 4px 6px #19F28A;
 }
 
 /* ==============
@@ -231,7 +245,8 @@ nav a:hover {
 
     nav ul {
         float: right;
-        width: 90%
+        width: 90%;
+        margin: -0.01em 0 0.35em;
     }
     nav a {
         float: left;
