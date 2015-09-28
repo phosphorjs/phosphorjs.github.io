@@ -130,6 +130,10 @@ h1 {
     margin: 0.5rem 0;
 }
 
+article h1 {
+    color: #E0FFE5;
+}
+
 h2 {
     font-size: 1.65rem;
     margin-bottom: 0.3rem;
@@ -150,21 +154,23 @@ p, li {
     line-height: 1.5em;
 }
 
-.nobull { list-style: none; list-style-type: none; }
+.nobull { 
+    list-style: none; list-style-type: none; 
+}
 
 a {
     text-decoration: none;
     color: #e0ffe5;
 }
 
-ul a {
-    color: #e0ffe5;
+a:hover {
+    color: white;
+    text-shadow: 2px 2px 2px #19F28A;
+    text-decoration: none;
 }
 
-ul a:hover {
-    color: white;
-    text-decoration: none;
-    text-shadow: 2px 4px 6px #19F28A;
+a:hover > h1, a:hover > h2, a:hover > h3, a:hover > h4 {
+    text-shadow: none;
 }
 
 /* ==============
@@ -182,12 +188,6 @@ nav a {
     padding: 0.5em 0;
     text-align: center;
     text-transform: uppercase;
-}
-
-nav a:hover {
-    color: white;
-    text-decoration: none;
-    text-shadow: 2px 4px 6px #19F28A;
 }
 
 /* ==============
