@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu-icon::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu-icon::before {\n  content: '\\f0da';\n}\n.p-Menu-item.copy > .p-Menu-item-icon::before {\n  content: '\\f0c5';\n}\n.p-Menu-item.cut > .p-Menu-item-icon::before {\n  content: '\\f0c4';\n}\n.p-Menu-item.paste > .p-Menu-item-icon::before {\n  content: '\\f0ea';\n}\n.p-Menu-item.close > .p-Menu-item-icon::before {\n  content: '\\f00d';\n}\n.p-Menu-item.undo > .p-Menu-item-icon::before {\n  content: '\\f0e2';\n}\n.p-Menu-item.repeat > .p-Menu-item-icon::before {\n  content: '\\f01e';\n}\n.p-MenuBar {\n  min-height: 24px;\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n"; (require("browserify-css").createStyle(css, { "href": "index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu-icon::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu-icon::before {\n  content: '\\f0da';\n}\n.p-Menu-item.copy > .p-Menu-item-icon::before {\n  content: '\\f0c5';\n}\n.p-Menu-item.cut > .p-Menu-item-icon::before {\n  content: '\\f0c4';\n}\n.p-Menu-item.paste > .p-Menu-item-icon::before {\n  content: '\\f0ea';\n}\n.p-Menu-item.close > .p-Menu-item-icon::before {\n  content: '\\f00d';\n}\n.p-Menu-item.undo > .p-Menu-item-icon::before {\n  content: '\\f0e2';\n}\n.p-Menu-item.repeat > .p-Menu-item-icon::before {\n  content: '\\f01e';\n}\n.p-MenuBar {\n  min-height: 24px;\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n"; (require("browserify-css").createStyle(css, { "href": "menus/index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -355,7 +355,7 @@ function main() {
 }
 window.onload = main;
 
-},{"./index.css":1,"phosphor-menus":9,"phosphor-tabs":20,"phosphor-widget":30}],3:[function(require,module,exports){
+},{"./index.css":1,"phosphor-menus":12,"phosphor-tabs":25,"phosphor-widget":30}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -1101,6 +1101,837 @@ exports.upperBound = upperBound;
 |----------------------------------------------------------------------------*/
 'use strict';
 /**
+ * The sizer object for the [[boxCalc]] function.
+ *
+ * A box sizer holds the geometry information for an object along the
+ * layout orientation. An array of box sizers representing a line of
+ * objects is passed to [[boxCalc]] along with the amount of space
+ * available for layout. The algorithm will update the [[size]] of
+ * each box sizer with its computed size.
+ *
+ * #### Notes
+ * For best performance, this class should be treated as a raw data
+ * struct. It should not typically be subclassed.
+ */
+var BoxSizer = (function () {
+    function BoxSizer() {
+        /**
+         * The preferred size for the sizer.
+         *
+         * The sizer will be given this initial size subject to its size
+         * bounds. The sizer will not deviate from this size unless such
+         * deviation is required to fit into the available layout space.
+         *
+         * #### Notes
+         * There is no limit to this value, but it will be clamped to the
+         * bounds defined by [[minSize]] and [[maxSize]].
+         *
+         * The default value is `0`.
+         */
+        this.sizeHint = 0;
+        /**
+         * The minimum size of the sizer.
+         *
+         * The sizer will never be sized less than this value, even if
+         * it means the sizer will overflow the available layout space.
+         *
+         * #### Notes
+         * It is assumed that this value lies in the range `[0, Infinity)`
+         * and that it is `<=` to [[maxSize]]. Failure to adhere to this
+         * constraint will yield undefined results.
+         *
+         * The default value is `0`.
+         */
+        this.minSize = 0;
+        /**
+         * The maximum size of the sizer.
+         *
+         * The sizer will never be sized greater than this value, even if
+         * it means the sizer will underflow the available layout space.
+         *
+         * #### Notes
+         * It is assumed that this value lies in the range `[0, Infinity]`
+         * and that it is `>=` to [[minSize]]. Failure to adhere to this
+         * constraint will yield undefined results.
+         *
+         * The default value is `Infinity`.
+         */
+        this.maxSize = Infinity;
+        /**
+         * The stretch factor for the sizer.
+         *
+         * This controls how much the sizer stretches relative to its sibling
+         * sizers when layout space is distributed. A stretch factor of zero
+         * is special and will cause the sizer to only be resized after all
+         * other sizers with a stretch factor greater than zero have been
+         * resized to their limits.
+         *
+         * #### Notes
+         * It is assumed that this value is an integer that lies in the range
+         * `[0, Infinity)`. Failure to adhere to this constraint will yield
+         * undefined results.
+         *
+         * The default value is `1`.
+         */
+        this.stretch = 1;
+        /**
+         * The computed size of the sizer.
+         *
+         * This value is the output of a call to [[boxCalc]]. It represents
+         * the computed size for the object along the layout orientation,
+         * and will always lie in the range `[minSize, maxSize]`.
+         *
+         * #### Notes
+         * This value is output only. Changing the value will have no effect.
+         */
+        this.size = 0;
+        /**
+         * An internal storage property for the layout algorithm.
+         *
+         * #### Notes
+         * This value is used as temporary storage by the layout algorithm.
+         * Changing the value will have no effect.
+         */
+        this.done = false;
+    }
+    return BoxSizer;
+})();
+exports.BoxSizer = BoxSizer;
+/**
+ * Compute the optimal layout sizes for an array of box sizers.
+ *
+ * This distributes the available layout space among the box sizers
+ * according to the following algorithm:
+ *
+ * 1. Initialize the sizers's size to its size hint and compute the
+ *    sums for each of size hint, min size, and max size.
+ *
+ * 2. If the total size hint equals the available space, return.
+ *
+ * 3. If the available space is less than the total min size, set all
+ *    sizers to their min size and return.
+ *
+ * 4. If the available space is greater than the total max size, set
+ *    all sizers to their max size and return.
+ *
+ * 5. If the layout space is less than the total size hint, distribute
+ *    the negative delta as follows:
+ *
+ *    a. Shrink each sizer with a stretch factor greater than zero by
+ *       an amount proportional to the negative space and the sum of
+ *       stretch factors. If the sizer reaches its min size, remove
+ *       it and its stretch factor from the computation.
+ *
+ *    b. If after adjusting all stretch sizers there remains negative
+ *       space, distribute the space equally among the sizers with a
+ *       stretch factor of zero. If a sizer reaches its min size,
+ *       remove it from the computation.
+ *
+ * 6. If the layout space is greater than the total size hint,
+ *    distribute the positive delta as follows:
+ *
+ *    a. Expand each sizer with a stretch factor greater than zero by
+ *       an amount proportional to the postive space and the sum of
+ *       stretch factors. If the sizer reaches its max size, remove
+ *       it and its stretch factor from the computation.
+ *
+ *    b. If after adjusting all stretch sizers there remains positive
+ *       space, distribute the space equally among the sizers with a
+ *       stretch factor of zero. If a sizer reaches its max size,
+ *       remove it from the computation.
+ *
+ * 7. return
+ *
+ * @param sizers - The sizers for a particular layout line.
+ *
+ * @param space - The available layout space for the sizers.
+ *
+ * #### Notes
+ * This function can be called at any time to recompute the layout
+ * sizing for an existing array of sizers. The previously computed
+ * results will have no effect on the new output. It is therefore
+ * not necessary to create new sizers on each resize event.
+ */
+function boxCalc(sizers, space) {
+    // Bail early if there is nothing to do.
+    var count = sizers.length;
+    if (count === 0) {
+        return;
+    }
+    // Setup the size and stretch counters.
+    var totalMin = 0;
+    var totalMax = 0;
+    var totalSize = 0;
+    var totalStretch = 0;
+    var stretchCount = 0;
+    // Setup the sizers and compute the totals.
+    for (var i = 0; i < count; ++i) {
+        var sizer = sizers[i];
+        initSizer(sizer);
+        totalSize += sizer.size;
+        totalMin += sizer.minSize;
+        totalMax += sizer.maxSize;
+        if (sizer.stretch > 0) {
+            totalStretch += sizer.stretch;
+            stretchCount++;
+        }
+    }
+    // If the space is equal to the total size, return.
+    if (space === totalSize) {
+        return;
+    }
+    // If the space is less than the total min, minimize each sizer.
+    if (space <= totalMin) {
+        for (var i = 0; i < count; ++i) {
+            var sizer = sizers[i];
+            sizer.size = sizer.minSize;
+        }
+        return;
+    }
+    // If the space is greater than the total max, maximize each sizer.
+    if (space >= totalMax) {
+        for (var i = 0; i < count; ++i) {
+            var sizer = sizers[i];
+            sizer.size = sizer.maxSize;
+        }
+        return;
+    }
+    // The loops below perform sub-pixel precision sizing. A near zero
+    // value is used for compares instead of zero to ensure that the
+    // loop terminates when the subdivided space is reasonably small.
+    var nearZero = 0.01;
+    // A counter which is decremented each time a sizer is resized to
+    // its limit. This ensures the loops terminate even if there is
+    // space remaining to distribute.
+    var notDoneCount = count;
+    // Distribute negative delta space.
+    if (space < totalSize) {
+        // Shrink each stretchable sizer by an amount proportional to its
+        // stretch factor. If a sizer reaches its min size it's marked as
+        // done. The loop progresses in phases where each sizer is given
+        // a chance to consume its fair share for the pass, regardless of
+        // whether a sizer before it reached its limit. This continues
+        // until the stretchable sizers or the free space is exhausted.
+        var freeSpace = totalSize - space;
+        while (stretchCount > 0 && freeSpace > nearZero) {
+            var distSpace = freeSpace;
+            var distStretch = totalStretch;
+            for (var i = 0; i < count; ++i) {
+                var sizer = sizers[i];
+                if (sizer.done || sizer.stretch === 0) {
+                    continue;
+                }
+                var amt = sizer.stretch * distSpace / distStretch;
+                if (sizer.size - amt <= sizer.minSize) {
+                    freeSpace -= sizer.size - sizer.minSize;
+                    totalStretch -= sizer.stretch;
+                    sizer.size = sizer.minSize;
+                    sizer.done = true;
+                    notDoneCount--;
+                    stretchCount--;
+                }
+                else {
+                    freeSpace -= amt;
+                    sizer.size -= amt;
+                }
+            }
+        }
+        // Distribute any remaining space evenly among the non-stretchable
+        // sizers. This progresses in phases in the same manner as above.
+        while (notDoneCount > 0 && freeSpace > nearZero) {
+            var amt = freeSpace / notDoneCount;
+            for (var i = 0; i < count; ++i) {
+                var sizer = sizers[i];
+                if (sizer.done) {
+                    continue;
+                }
+                if (sizer.size - amt <= sizer.minSize) {
+                    freeSpace -= sizer.size - sizer.minSize;
+                    sizer.size = sizer.minSize;
+                    sizer.done = true;
+                    notDoneCount--;
+                }
+                else {
+                    freeSpace -= amt;
+                    sizer.size -= amt;
+                }
+            }
+        }
+    }
+    else {
+        // Expand each stretchable sizer by an amount proportional to its
+        // stretch factor. If a sizer reaches its max size it's marked as
+        // done. The loop progresses in phases where each sizer is given
+        // a chance to consume its fair share for the pass, regardless of
+        // whether a sizer before it reached its limit. This continues
+        // until the stretchable sizers or the free space is exhausted.
+        var freeSpace = space - totalSize;
+        while (stretchCount > 0 && freeSpace > nearZero) {
+            var distSpace = freeSpace;
+            var distStretch = totalStretch;
+            for (var i = 0; i < count; ++i) {
+                var sizer = sizers[i];
+                if (sizer.done || sizer.stretch === 0) {
+                    continue;
+                }
+                var amt = sizer.stretch * distSpace / distStretch;
+                if (sizer.size + amt >= sizer.maxSize) {
+                    freeSpace -= sizer.maxSize - sizer.size;
+                    totalStretch -= sizer.stretch;
+                    sizer.size = sizer.maxSize;
+                    sizer.done = true;
+                    notDoneCount--;
+                    stretchCount--;
+                }
+                else {
+                    freeSpace -= amt;
+                    sizer.size += amt;
+                }
+            }
+        }
+        // Distribute any remaining space evenly among the non-stretchable
+        // sizers. This progresses in phases in the same manner as above.
+        while (notDoneCount > 0 && freeSpace > nearZero) {
+            var amt = freeSpace / notDoneCount;
+            for (var i = 0; i < count; ++i) {
+                var sizer = sizers[i];
+                if (sizer.done) {
+                    continue;
+                }
+                if (sizer.size + amt >= sizer.maxSize) {
+                    freeSpace -= sizer.maxSize - sizer.size;
+                    sizer.size = sizer.maxSize;
+                    sizer.done = true;
+                    notDoneCount--;
+                }
+                else {
+                    freeSpace -= amt;
+                    sizer.size += amt;
+                }
+            }
+        }
+    }
+}
+exports.boxCalc = boxCalc;
+/**
+ * (Re)initialize a box sizer's data for a layout pass.
+ */
+function initSizer(sizer) {
+    sizer.size = Math.max(sizer.minSize, Math.min(sizer.sizeHint, sizer.maxSize));
+    sizer.done = false;
+}
+
+},{}],6:[function(require,module,exports){
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
+},{"browserify-css":3}],7:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var arrays = require('phosphor-arrays');
+var phosphor_boxengine_1 = require('phosphor-boxengine');
+var phosphor_messaging_1 = require('phosphor-messaging');
+var phosphor_properties_1 = require('phosphor-properties');
+var phosphor_widget_1 = require('phosphor-widget');
+require('./index.css');
+/**
+ * `p-BoxPanel`: the class name added to BoxPanel instances.
+ */
+exports.BOX_PANEL_CLASS = 'p-BoxPanel';
+/**
+ * `p-mod-left-to-right`: the class name added to ltr box panels.
+ */
+exports.LTR_CLASS = 'p-mod-left-to-right';
+/**
+ * `p-mod-right-to-left`: the class name added to rtl box panels.
+ */
+exports.RTL_CLASS = 'p-mod-right-to-left';
+/**
+ * `p-mod-top-to-bottom`: the class name added to ttb box panels.
+ */
+exports.TTB_CLASS = 'p-mod-top-to-bottom';
+/**
+ * `p-mod-bottom-to-top`: the class name added to btt box panels.
+ */
+exports.BTT_CLASS = 'p-mod-bottom-to-top';
+/**
+ * The layout direction of a box panel.
+ */
+(function (Direction) {
+    /**
+     * Left to right direction.
+     */
+    Direction[Direction["LeftToRight"] = 0] = "LeftToRight";
+    /**
+     * Right to left direction.
+     */
+    Direction[Direction["RightToLeft"] = 1] = "RightToLeft";
+    /**
+     * Top to bottom direction.
+     */
+    Direction[Direction["TopToBottom"] = 2] = "TopToBottom";
+    /**
+     * Bottom to top direction.
+     */
+    Direction[Direction["BottomToTop"] = 3] = "BottomToTop";
+})(exports.Direction || (exports.Direction = {}));
+var Direction = exports.Direction;
+/**
+ * A widget which arranges its children in a single row or column.
+ */
+var BoxPanel = (function (_super) {
+    __extends(BoxPanel, _super);
+    /**
+     * Construct a new box panel.
+     */
+    function BoxPanel() {
+        _super.call(this);
+        this._fixedSpace = 0;
+        this._sizers = [];
+        this.addClass(exports.BOX_PANEL_CLASS);
+        this.addClass(exports.TTB_CLASS);
+    }
+    /**
+     * Get the box panel stretch factor for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @returns The box panel stretch factor for the widget.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[stretchProperty]].
+     */
+    BoxPanel.getStretch = function (widget) {
+        return BoxPanel.stretchProperty.get(widget);
+    };
+    /**
+     * Set the box panel stretch factor for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @param value - The value for the stretch factor.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[stretchProperty]].
+     */
+    BoxPanel.setStretch = function (widget, value) {
+        BoxPanel.stretchProperty.set(widget, value);
+    };
+    /**
+     * Get the box panel size basis for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @returns The box panel size basis for the widget.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[sizeBasisProperty]].
+     */
+    BoxPanel.getSizeBasis = function (widget) {
+        return BoxPanel.sizeBasisProperty.get(widget);
+    };
+    /**
+     * Set the box panel size basis for the given widget.
+     *
+     * @param widget - The widget of interest.
+     *
+     * @param value - The value for the size basis.
+     *
+     * #### Notes
+     * This is a pure delegate to the [[sizeBasisProperty]].
+     */
+    BoxPanel.setSizeBasis = function (widget, value) {
+        BoxPanel.sizeBasisProperty.set(widget, value);
+    };
+    /**
+     * Dispose of the resources held by the panel.
+     */
+    BoxPanel.prototype.dispose = function () {
+        this._sizers.length = 0;
+        _super.prototype.dispose.call(this);
+    };
+    Object.defineProperty(BoxPanel.prototype, "direction", {
+        /**
+         * Get the layout direction for the box panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[directionProperty]].
+         */
+        get: function () {
+            return BoxPanel.directionProperty.get(this);
+        },
+        /**
+         * Set the layout direction for the box panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[directionProperty]].
+         */
+        set: function (value) {
+            BoxPanel.directionProperty.set(this, value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BoxPanel.prototype, "spacing", {
+        /**
+         * Get the inter-element spacing for the box panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[spacingProperty]].
+         */
+        get: function () {
+            return BoxPanel.spacingProperty.get(this);
+        },
+        /**
+         * Set the inter-element spacing for the box panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[spacingProperty]].
+         */
+        set: function (value) {
+            BoxPanel.spacingProperty.set(this, value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * A message handler invoked on a `'child-added'` message.
+     */
+    BoxPanel.prototype.onChildAdded = function (msg) {
+        arrays.insert(this._sizers, msg.currentIndex, new phosphor_boxengine_1.BoxSizer());
+        this.node.appendChild(msg.child.node);
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'child-removed'` message.
+     */
+    BoxPanel.prototype.onChildRemoved = function (msg) {
+        arrays.removeAt(this._sizers, msg.previousIndex);
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
+        this.node.removeChild(msg.child.node);
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        msg.child.clearOffsetGeometry();
+    };
+    /**
+     * A message handler invoked on a `'child-moved'` message.
+     */
+    BoxPanel.prototype.onChildMoved = function (msg) {
+        arrays.move(this._sizers, msg.previousIndex, msg.currentIndex);
+        this.update();
+    };
+    /**
+     * A message handler invoked on an `'after-show'` message.
+     */
+    BoxPanel.prototype.onAfterShow = function (msg) {
+        this.update(true);
+    };
+    /**
+     * A message handler invoked on an `'after-attach'` message.
+     */
+    BoxPanel.prototype.onAfterAttach = function (msg) {
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'child-shown'` message.
+     */
+    BoxPanel.prototype.onChildShown = function (msg) {
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'child-hidden'` message.
+     */
+    BoxPanel.prototype.onChildHidden = function (msg) {
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'resize'` message.
+     */
+    BoxPanel.prototype.onResize = function (msg) {
+        if (this.isVisible) {
+            if (msg.width < 0 || msg.height < 0) {
+                var rect = this.offsetRect;
+                this._layoutChildren(rect.width, rect.height);
+            }
+            else {
+                this._layoutChildren(msg.width, msg.height);
+            }
+        }
+    };
+    /**
+     * A message handler invoked on an `'update-request'` message.
+     */
+    BoxPanel.prototype.onUpdateRequest = function (msg) {
+        if (this.isVisible) {
+            var rect = this.offsetRect;
+            this._layoutChildren(rect.width, rect.height);
+        }
+    };
+    /**
+     * A message handler invoked on a `'layout-request'` message.
+     */
+    BoxPanel.prototype.onLayoutRequest = function (msg) {
+        if (this.isAttached) {
+            this._setupGeometry();
+        }
+    };
+    /**
+     * Update the size constraints of the panel.
+     */
+    BoxPanel.prototype._setupGeometry = function () {
+        // Compute the visible item count.
+        var visibleCount = 0;
+        for (var i = 0, n = this.childCount; i < n; ++i) {
+            if (!this.childAt(i).hidden)
+                visibleCount++;
+        }
+        // Update the fixed space for the visible items.
+        this._fixedSpace = this.spacing * Math.max(0, visibleCount - 1);
+        // Update the sizers and compute the new size limits.
+        var minW = 0;
+        var minH = 0;
+        var maxW = Infinity;
+        var maxH = Infinity;
+        var dir = this.direction;
+        if (dir === Direction.LeftToRight || dir === Direction.RightToLeft) {
+            minW = this._fixedSpace;
+            maxW = visibleCount > 0 ? minW : maxW;
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                var sizer = this._sizers[i];
+                if (widget.hidden) {
+                    sizer.minSize = 0;
+                    sizer.maxSize = 0;
+                    continue;
+                }
+                var limits = widget.sizeLimits;
+                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
+                sizer.stretch = BoxPanel.getStretch(widget);
+                sizer.minSize = limits.minWidth;
+                sizer.maxSize = limits.maxWidth;
+                minW += limits.minWidth;
+                maxW += limits.maxWidth;
+                minH = Math.max(minH, limits.minHeight);
+                maxH = Math.min(maxH, limits.maxHeight);
+            }
+        }
+        else {
+            minH = this._fixedSpace;
+            maxH = visibleCount > 0 ? minH : maxH;
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                var sizer = this._sizers[i];
+                if (widget.hidden) {
+                    sizer.minSize = 0;
+                    sizer.maxSize = 0;
+                    continue;
+                }
+                var limits = widget.sizeLimits;
+                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
+                sizer.stretch = BoxPanel.getStretch(widget);
+                sizer.minSize = limits.minHeight;
+                sizer.maxSize = limits.maxHeight;
+                minH += limits.minHeight;
+                maxH += limits.maxHeight;
+                minW = Math.max(minW, limits.minWidth);
+                maxW = Math.min(maxW, limits.maxWidth);
+            }
+        }
+        // Add the box sizing to the size constraints.
+        var box = this.boxSizing;
+        minW += box.horizontalSum;
+        minH += box.verticalSum;
+        maxW += box.horizontalSum;
+        maxH += box.verticalSum;
+        // Update the panel's size constraints.
+        this.setSizeLimits(minW, minH, maxW, maxH);
+        // Notifiy the parent that it should relayout.
+        if (this.parent)
+            phosphor_messaging_1.sendMessage(this.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        // Update the layout for the child widgets.
+        this.update(true);
+    };
+    /**
+     * Layout the children using the given offset width and height.
+     */
+    BoxPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
+        // Bail early if their are no children to arrange.
+        if (this.childCount === 0) {
+            return;
+        }
+        // Compute the actual layout bounds adjusted for border and padding.
+        var box = this.boxSizing;
+        var top = box.paddingTop;
+        var left = box.paddingLeft;
+        var width = offsetWidth - box.horizontalSum;
+        var height = offsetHeight - box.verticalSum;
+        // Distribute the layout space and layout the items.
+        var dir = this.direction;
+        var spacing = this.spacing;
+        if (dir === Direction.LeftToRight) {
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left, top, size, height);
+                left += size + spacing;
+            }
+        }
+        else if (dir === Direction.TopToBottom) {
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left, top, width, size);
+                top += size + spacing;
+            }
+        }
+        else if (dir === Direction.RightToLeft) {
+            left += width;
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left - size, top, size, height);
+                left -= size + spacing;
+            }
+        }
+        else {
+            top += height;
+            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
+            for (var i = 0, n = this.childCount; i < n; ++i) {
+                var widget = this.childAt(i);
+                if (widget.hidden) {
+                    continue;
+                }
+                var size = this._sizers[i].size;
+                widget.setOffsetGeometry(left, top - size, width, size);
+                top -= size + spacing;
+            }
+        }
+    };
+    /**
+     * The change handler for the [[orientationProperty]].
+     */
+    BoxPanel.prototype._onDirectionChanged = function (old, value) {
+        this.toggleClass(exports.LTR_CLASS, value === Direction.LeftToRight);
+        this.toggleClass(exports.RTL_CLASS, value === Direction.RightToLeft);
+        this.toggleClass(exports.TTB_CLASS, value === Direction.TopToBottom);
+        this.toggleClass(exports.BTT_CLASS, value === Direction.BottomToTop);
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A convenience alias of the `LeftToRight` [[Direction]].
+     */
+    BoxPanel.LeftToRight = Direction.LeftToRight;
+    /**
+     * A convenience alias of the `RightToLeft` [[Direction]].
+     */
+    BoxPanel.RightToLeft = Direction.RightToLeft;
+    /**
+     * A convenience alias of the `TopToBottom` [[Direction]].
+     */
+    BoxPanel.TopToBottom = Direction.TopToBottom;
+    /**
+     * A convenience alias of the `BottomToTop` [[Direction]].
+     */
+    BoxPanel.BottomToTop = Direction.BottomToTop;
+    /**
+     * The property descriptor for the box panel layout direction.
+     *
+     * The controls the arrangement of child widgets within the panel.
+     * The default value is `TopToBottom`.
+     *
+     * **See also:** [[direction]]
+     */
+    BoxPanel.directionProperty = new phosphor_properties_1.Property({
+        value: Direction.TopToBottom,
+        changed: function (owner, old, value) { return owner._onDirectionChanged(old, value); },
+    });
+    /**
+     * The property descriptor for the box panel spacing.
+     *
+     * The controls the fixed spacing between the child widgets, in
+     * pixels. The default value is `8`.
+     *
+     * **See also:** [[spacing]]
+     */
+    BoxPanel.spacingProperty = new phosphor_properties_1.Property({
+        value: 8,
+        coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: function (owner) { return phosphor_messaging_1.postMessage(owner, phosphor_widget_1.MSG_LAYOUT_REQUEST); },
+    });
+    /**
+     * The property descriptor for a widget stretch factor.
+     *
+     * This is an attached property which controls how much a child widget
+     * stretches or shrinks relative to its siblings when the box panel is
+     * resized. The default value is `0`.
+     *
+     * **See also:** [[getStretch]], [[setStretch]]
+     */
+    BoxPanel.stretchProperty = new phosphor_properties_1.Property({
+        value: 0,
+        coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
+    });
+    /**
+     * The property descriptor for a widget size basis.
+     *
+     * This is an attached property which controls the preferred size of
+     * a child widget. The widget will be initialized to this size before
+     * being expanded or shrunk to fit the available layout space. The
+     * default value is `0`.
+     *
+     * **See also:** [[getSizeBasis]], [[setSizeBasis]]
+     */
+    BoxPanel.sizeBasisProperty = new phosphor_properties_1.Property({
+        value: 0,
+        coerce: function (owner, value) { return Math.max(0, value | 0); },
+        changed: onChildPropertyChanged,
+    });
+    return BoxPanel;
+})(phosphor_widget_1.Widget);
+exports.BoxPanel = BoxPanel;
+/**
+ * The change handler for the attached child properties.
+ */
+function onChildPropertyChanged(child) {
+    if (child.parent instanceof BoxPanel) {
+        phosphor_messaging_1.postMessage(child.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    }
+}
+
+},{"./index.css":6,"phosphor-arrays":4,"phosphor-boxengine":5,"phosphor-messaging":17,"phosphor-properties":19,"phosphor-widget":30}],8:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+/**
  * A disposable object which delegates to a callback.
  */
 var DisposableDelegate = (function () {
@@ -1230,9 +2061,9 @@ var DisposableSet = (function () {
 })();
 exports.DisposableSet = DisposableSet;
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody.p-mod-override-cursor * {\n  cursor: inherit !important;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-domutil/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],7:[function(require,module,exports){
+},{"browserify-css":3}],10:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -1401,9 +2232,9 @@ function sizeLimits(node) {
 }
 exports.sizeLimits = sizeLimits;
 
-},{"./index.css":6,"phosphor-disposable":5}],8:[function(require,module,exports){
+},{"./index.css":9,"phosphor-disposable":8}],11:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-Menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  margin: 0;\n  padding: 3px 0px;\n  white-space: nowrap;\n  overflow-x: hidden;\n  overflow-y: auto;\n  z-index: 100000;\n}\n.p-Menu-content {\n  display: table;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  border-spacing: 0;\n}\n.p-Menu-item {\n  display: table-row;\n}\n.p-Menu-item.p-mod-hidden,\n.p-Menu-item.p-mod-force-hidden {\n  display: none;\n}\n.p-Menu-item > span {\n  display: table-cell;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n.p-Menu-item-icon {\n  width: 21px;\n  padding-left: 2px;\n  padding-right: 2px;\n  text-align: center;\n}\n.p-Menu-item-text {\n  padding-left: 2px;\n  padding-right: 35px;\n}\n.p-Menu-item-shortcut {\n  text-align: right;\n}\n.p-Menu-item-submenu-icon {\n  width: 16px;\n  text-align: center;\n}\n.p-Menu-item.p-mod-separator-type > span {\n  padding: 0;\n  height: 9px;\n  line-height: 0;\n  text-indent: 100%;\n  overflow: hidden;\n  whitespace: nowrap;\n  vertical-align: top;\n  /* https://bugzilla.mozilla.org/show_bug.cgi?id=634489 */\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  content: '';\n  display: block;\n  position: relative;\n  top: 4px;\n}\n.p-MenuBar-content {\n  display: flex;\n  flex-direction: row;\n}\n.p-MenuBar-item {\n  box-sizing: border-box;\n}\n.p-MenuBar-item.p-mod-hidden,\n.p-MenuBar-item.p-mod-force-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-menus/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],9:[function(require,module,exports){
+},{"browserify-css":3}],12:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -1421,7 +2252,7 @@ __export(require('./menubase'));
 __export(require('./menuitem'));
 require('./index.css');
 
-},{"./index.css":8,"./menu":10,"./menubar":11,"./menubase":12,"./menuitem":13}],10:[function(require,module,exports){
+},{"./index.css":11,"./menu":13,"./menubar":14,"./menubase":15,"./menuitem":16}],13:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -2256,7 +3087,7 @@ function openSubmenu(menu, item) {
     showMenu(menu, x, y);
 }
 
-},{"./menubase":12,"./menuitem":13,"phosphor-domutil":7,"phosphor-signaling":18,"phosphor-widget":30}],11:[function(require,module,exports){
+},{"./menubase":15,"./menuitem":16,"phosphor-domutil":10,"phosphor-signaling":21,"phosphor-widget":30}],14:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -2836,7 +3667,7 @@ function hitTestMenus(menu, x, y) {
     return false;
 }
 
-},{"./menubase":12,"./menuitem":13,"phosphor-domutil":7,"phosphor-properties":16}],12:[function(require,module,exports){
+},{"./menubase":15,"./menuitem":16,"phosphor-domutil":10,"phosphor-properties":19}],15:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3058,7 +3889,7 @@ function isSelectable(item) {
     return !item.hidden && !item.disabled && !item.isSeparatorType;
 }
 
-},{"phosphor-arrays":4,"phosphor-properties":16,"phosphor-widget":30}],13:[function(require,module,exports){
+},{"phosphor-arrays":4,"phosphor-properties":19,"phosphor-widget":30}],16:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3505,7 +4336,7 @@ function coerceMenuItemType(item, value) {
     return 'normal';
 }
 
-},{"./menu":10,"phosphor-properties":16}],14:[function(require,module,exports){
+},{"./menu":13,"phosphor-properties":19}],17:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3890,7 +4721,7 @@ var MessageDispatcher = (function () {
     return MessageDispatcher;
 })();
 
-},{"phosphor-queue":17}],15:[function(require,module,exports){
+},{"phosphor-queue":20}],18:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -4015,7 +4846,7 @@ var NodeWrapper = (function () {
 })();
 exports.NodeWrapper = NodeWrapper;
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -4242,7 +5073,7 @@ function lookupHash(owner) {
     return hash;
 }
 
-},{"phosphor-signaling":18}],17:[function(require,module,exports){
+},{"phosphor-signaling":21}],20:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -4598,7 +5429,7 @@ var Queue = (function () {
 })();
 exports.Queue = Queue;
 
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -5035,9 +5866,254 @@ function removeFromSendersList(conn) {
     conn.nextSender = null;
 }
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;
+},{"browserify-css":3}],23:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_messaging_1 = require('phosphor-messaging');
+var phosphor_properties_1 = require('phosphor-properties');
+var phosphor_signaling_1 = require('phosphor-signaling');
+var phosphor_widget_1 = require('phosphor-widget');
+require('./index.css');
+/**
+ * `p-StackedPanel`: the class name added to StackedPanel instances.
+ */
+exports.STACKED_PANEL_CLASS = 'p-StackedPanel';
+/**
+ * A layout widget where only one child widget is visible at a time.
+ */
+var StackedPanel = (function (_super) {
+    __extends(StackedPanel, _super);
+    /**
+     * Construct a new stacked panel.
+     */
+    function StackedPanel() {
+        _super.call(this);
+        this.addClass(exports.STACKED_PANEL_CLASS);
+    }
+    Object.defineProperty(StackedPanel.prototype, "currentChanged", {
+        /**
+         * A signal emitted when the current widget is changed.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentChangedSignal]].
+         */
+        get: function () {
+            return StackedPanel.currentChangedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StackedPanel.prototype, "widgetRemoved", {
+        /**
+         * A signal emitted when a widget is removed from the panel.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[widgetRemovedSignal]].
+         */
+        get: function () {
+            return StackedPanel.widgetRemovedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StackedPanel.prototype, "currentWidget", {
+        /**
+         * Get the current panel widget.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentWidgetProperty]].
+         */
+        get: function () {
+            return StackedPanel.currentWidgetProperty.get(this);
+        },
+        /**
+         * Set the current panel widget.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[currentWidgetProperty]].
+         */
+        set: function (widget) {
+            StackedPanel.currentWidgetProperty.set(this, widget);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * A message handler invoked on a `'child-added'` message.
+     */
+    StackedPanel.prototype.onChildAdded = function (msg) {
+        msg.child.hidden = true;
+        this.node.appendChild(msg.child.node);
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
+    };
+    /**
+     * A message handler invoked on a `'child-removed'` message.
+     */
+    StackedPanel.prototype.onChildRemoved = function (msg) {
+        if (msg.child === this.currentWidget)
+            this.currentWidget = null;
+        if (this.isAttached)
+            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
+        this.node.removeChild(msg.child.node);
+        msg.child.clearOffsetGeometry();
+        this.widgetRemoved.emit({ index: msg.previousIndex, widget: msg.child });
+    };
+    /**
+     * A message handler invoked on a `'child-moved'` message.
+     */
+    StackedPanel.prototype.onChildMoved = function (msg) { };
+    /**
+     * A message handler invoked on an `'after-show'` message.
+     */
+    StackedPanel.prototype.onAfterShow = function (msg) {
+        this.update(true);
+    };
+    /**
+     * A message handler invoked on an `'after-attach'` message.
+     */
+    StackedPanel.prototype.onAfterAttach = function (msg) {
+        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+    };
+    /**
+     * A message handler invoked on a `'resize'` message.
+     */
+    StackedPanel.prototype.onResize = function (msg) {
+        if (this.isVisible) {
+            if (msg.width < 0 || msg.height < 0) {
+                var rect = this.offsetRect;
+                this._layoutChildren(rect.width, rect.height);
+            }
+            else {
+                this._layoutChildren(msg.width, msg.height);
+            }
+        }
+    };
+    /**
+     * A message handler invoked on an `'update-request'` message.
+     */
+    StackedPanel.prototype.onUpdateRequest = function (msg) {
+        if (this.isVisible) {
+            var rect = this.offsetRect;
+            this._layoutChildren(rect.width, rect.height);
+        }
+    };
+    /**
+     * A message handler invoked on a `'layout-request'` message.
+     */
+    StackedPanel.prototype.onLayoutRequest = function (msg) {
+        if (this.isAttached) {
+            this._setupGeometry();
+        }
+    };
+    /**
+     * Update the size constraints of the panel.
+     */
+    StackedPanel.prototype._setupGeometry = function () {
+        // Compute the new size limits.
+        var minW = 0;
+        var minH = 0;
+        var maxW = Infinity;
+        var maxH = Infinity;
+        var widget = this.currentWidget;
+        if (widget) {
+            var limits = widget.sizeLimits;
+            minW = limits.minWidth;
+            minH = limits.minHeight;
+            maxW = limits.maxWidth;
+            maxH = limits.maxHeight;
+        }
+        // Add the box sizing to the size constraints.
+        var box = this.boxSizing;
+        minW += box.horizontalSum;
+        minH += box.verticalSum;
+        maxW += box.horizontalSum;
+        maxH += box.verticalSum;
+        // Update the panel's size constraints.
+        this.setSizeLimits(minW, minH, maxW, maxH);
+        // Notifiy the parent that it should relayout.
+        if (this.parent)
+            phosphor_messaging_1.sendMessage(this.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        // Update the layout for the child widgets.
+        this.update(true);
+    };
+    /**
+     * Layout the children using the given offset width and height.
+     */
+    StackedPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
+        // Bail early if there is no current widget.
+        var widget = this.currentWidget;
+        if (!widget) {
+            return;
+        }
+        // Compute the actual layout bounds adjusted for border and padding.
+        var box = this.boxSizing;
+        var top = box.paddingTop;
+        var left = box.paddingLeft;
+        var width = offsetWidth - box.horizontalSum;
+        var height = offsetHeight - box.verticalSum;
+        // Update the current widget's layout geometry.
+        widget.setOffsetGeometry(left, top, width, height);
+    };
+    /**
+     * The change handler for the [[currentWidgetProperty]].
+     */
+    StackedPanel.prototype._onCurrentWidgetChanged = function (old, val) {
+        if (old)
+            old.hidden = true;
+        if (val)
+            val.hidden = false;
+        // Ideally, the layout request would be posted in order to take
+        // advantage of message compression, but some browsers repaint
+        // before the message gets processed, resulting in jitter. So,
+        // the layout request is sent and processed immediately.
+        phosphor_messaging_1.sendMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
+        this.currentChanged.emit({ index: this.childIndex(val), widget: val });
+    };
+    /**
+     * A signal emitted when the current widget is changed.
+     *
+     * **See also:** [[currentChanged]]
+     */
+    StackedPanel.currentChangedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * A signal emitted when a widget is removed from the panel.
+     *
+     * **See also:** [[widgetRemoved]]
+     */
+    StackedPanel.widgetRemovedSignal = new phosphor_signaling_1.Signal();
+    /**
+     * The property descriptor for the current widget.
+     *
+     * This controls which child widget is visible.
+     *
+     * **See also:** [[currentWidget]]
+     */
+    StackedPanel.currentWidgetProperty = new phosphor_properties_1.Property({
+        value: null,
+        coerce: function (owner, val) { return (val && val.parent === owner) ? val : null; },
+        changed: function (owner, old, val) { return owner._onCurrentWidgetChanged(old, val); },
+    });
+    return StackedPanel;
+})(phosphor_widget_1.Widget);
+exports.StackedPanel = StackedPanel;
+
+},{"./index.css":22,"phosphor-messaging":17,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":30}],24:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],20:[function(require,module,exports){
+},{"browserify-css":3}],25:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -5054,7 +6130,7 @@ __export(require('./tabbar'));
 __export(require('./tabpanel'));
 require('./index.css');
 
-},{"./index.css":19,"./tab":21,"./tabbar":22,"./tabpanel":23}],21:[function(require,module,exports){
+},{"./index.css":24,"./tab":26,"./tabbar":27,"./tabpanel":28}],26:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -5187,7 +6263,7 @@ var Tab = (function (_super) {
 })(phosphor_nodewrapper_1.NodeWrapper);
 exports.Tab = Tab;
 
-},{"phosphor-nodewrapper":15}],22:[function(require,module,exports){
+},{"phosphor-nodewrapper":18}],27:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -6181,7 +7257,7 @@ function snapTabLayout(tabs) {
     return layout;
 }
 
-},{"phosphor-arrays":4,"phosphor-domutil":7,"phosphor-properties":16,"phosphor-signaling":18,"phosphor-widget":30}],23:[function(require,module,exports){
+},{"phosphor-arrays":4,"phosphor-domutil":10,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":30}],28:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -6554,1083 +7630,7 @@ var TabPanel = (function (_super) {
 })(phosphor_boxpanel_1.BoxPanel);
 exports.TabPanel = TabPanel;
 
-},{"./tabbar":22,"phosphor-boxpanel":25,"phosphor-properties":16,"phosphor-signaling":18,"phosphor-stackedpanel":28}],24:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-BoxPanel {\n  position: relative;\n}\n.p-BoxPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-boxpanel/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],25:[function(require,module,exports){
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-'use strict';
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var arrays = require('phosphor-arrays');
-var phosphor_boxengine_1 = require('phosphor-boxengine');
-var phosphor_messaging_1 = require('phosphor-messaging');
-var phosphor_properties_1 = require('phosphor-properties');
-var phosphor_widget_1 = require('phosphor-widget');
-require('./index.css');
-/**
- * `p-BoxPanel`: the class name added to BoxPanel instances.
- */
-exports.BOX_PANEL_CLASS = 'p-BoxPanel';
-/**
- * `p-mod-left-to-right`: the class name added to ltr box panels.
- */
-exports.LTR_CLASS = 'p-mod-left-to-right';
-/**
- * `p-mod-right-to-left`: the class name added to rtl box panels.
- */
-exports.RTL_CLASS = 'p-mod-right-to-left';
-/**
- * `p-mod-top-to-bottom`: the class name added to ttb box panels.
- */
-exports.TTB_CLASS = 'p-mod-top-to-bottom';
-/**
- * `p-mod-bottom-to-top`: the class name added to btt box panels.
- */
-exports.BTT_CLASS = 'p-mod-bottom-to-top';
-/**
- * The layout direction of a box panel.
- */
-(function (Direction) {
-    /**
-     * Left to right direction.
-     */
-    Direction[Direction["LeftToRight"] = 0] = "LeftToRight";
-    /**
-     * Right to left direction.
-     */
-    Direction[Direction["RightToLeft"] = 1] = "RightToLeft";
-    /**
-     * Top to bottom direction.
-     */
-    Direction[Direction["TopToBottom"] = 2] = "TopToBottom";
-    /**
-     * Bottom to top direction.
-     */
-    Direction[Direction["BottomToTop"] = 3] = "BottomToTop";
-})(exports.Direction || (exports.Direction = {}));
-var Direction = exports.Direction;
-/**
- * A widget which arranges its children in a single row or column.
- */
-var BoxPanel = (function (_super) {
-    __extends(BoxPanel, _super);
-    /**
-     * Construct a new box panel.
-     */
-    function BoxPanel() {
-        _super.call(this);
-        this._fixedSpace = 0;
-        this._sizers = [];
-        this.addClass(exports.BOX_PANEL_CLASS);
-        this.addClass(exports.TTB_CLASS);
-    }
-    /**
-     * Get the box panel stretch factor for the given widget.
-     *
-     * @param widget - The widget of interest.
-     *
-     * @returns The box panel stretch factor for the widget.
-     *
-     * #### Notes
-     * This is a pure delegate to the [[stretchProperty]].
-     */
-    BoxPanel.getStretch = function (widget) {
-        return BoxPanel.stretchProperty.get(widget);
-    };
-    /**
-     * Set the box panel stretch factor for the given widget.
-     *
-     * @param widget - The widget of interest.
-     *
-     * @param value - The value for the stretch factor.
-     *
-     * #### Notes
-     * This is a pure delegate to the [[stretchProperty]].
-     */
-    BoxPanel.setStretch = function (widget, value) {
-        BoxPanel.stretchProperty.set(widget, value);
-    };
-    /**
-     * Get the box panel size basis for the given widget.
-     *
-     * @param widget - The widget of interest.
-     *
-     * @returns The box panel size basis for the widget.
-     *
-     * #### Notes
-     * This is a pure delegate to the [[sizeBasisProperty]].
-     */
-    BoxPanel.getSizeBasis = function (widget) {
-        return BoxPanel.sizeBasisProperty.get(widget);
-    };
-    /**
-     * Set the box panel size basis for the given widget.
-     *
-     * @param widget - The widget of interest.
-     *
-     * @param value - The value for the size basis.
-     *
-     * #### Notes
-     * This is a pure delegate to the [[sizeBasisProperty]].
-     */
-    BoxPanel.setSizeBasis = function (widget, value) {
-        BoxPanel.sizeBasisProperty.set(widget, value);
-    };
-    /**
-     * Dispose of the resources held by the panel.
-     */
-    BoxPanel.prototype.dispose = function () {
-        this._sizers.length = 0;
-        _super.prototype.dispose.call(this);
-    };
-    Object.defineProperty(BoxPanel.prototype, "direction", {
-        /**
-         * Get the layout direction for the box panel.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[directionProperty]].
-         */
-        get: function () {
-            return BoxPanel.directionProperty.get(this);
-        },
-        /**
-         * Set the layout direction for the box panel.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[directionProperty]].
-         */
-        set: function (value) {
-            BoxPanel.directionProperty.set(this, value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BoxPanel.prototype, "spacing", {
-        /**
-         * Get the inter-element spacing for the box panel.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[spacingProperty]].
-         */
-        get: function () {
-            return BoxPanel.spacingProperty.get(this);
-        },
-        /**
-         * Set the inter-element spacing for the box panel.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[spacingProperty]].
-         */
-        set: function (value) {
-            BoxPanel.spacingProperty.set(this, value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * A message handler invoked on a `'child-added'` message.
-     */
-    BoxPanel.prototype.onChildAdded = function (msg) {
-        arrays.insert(this._sizers, msg.currentIndex, new phosphor_boxengine_1.BoxSizer());
-        this.node.appendChild(msg.child.node);
-        if (this.isAttached)
-            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'child-removed'` message.
-     */
-    BoxPanel.prototype.onChildRemoved = function (msg) {
-        arrays.removeAt(this._sizers, msg.previousIndex);
-        if (this.isAttached)
-            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
-        this.node.removeChild(msg.child.node);
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        msg.child.clearOffsetGeometry();
-    };
-    /**
-     * A message handler invoked on a `'child-moved'` message.
-     */
-    BoxPanel.prototype.onChildMoved = function (msg) {
-        arrays.move(this._sizers, msg.previousIndex, msg.currentIndex);
-        this.update();
-    };
-    /**
-     * A message handler invoked on an `'after-show'` message.
-     */
-    BoxPanel.prototype.onAfterShow = function (msg) {
-        this.update(true);
-    };
-    /**
-     * A message handler invoked on an `'after-attach'` message.
-     */
-    BoxPanel.prototype.onAfterAttach = function (msg) {
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'child-shown'` message.
-     */
-    BoxPanel.prototype.onChildShown = function (msg) {
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'child-hidden'` message.
-     */
-    BoxPanel.prototype.onChildHidden = function (msg) {
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'resize'` message.
-     */
-    BoxPanel.prototype.onResize = function (msg) {
-        if (this.isVisible) {
-            if (msg.width < 0 || msg.height < 0) {
-                var rect = this.offsetRect;
-                this._layoutChildren(rect.width, rect.height);
-            }
-            else {
-                this._layoutChildren(msg.width, msg.height);
-            }
-        }
-    };
-    /**
-     * A message handler invoked on an `'update-request'` message.
-     */
-    BoxPanel.prototype.onUpdateRequest = function (msg) {
-        if (this.isVisible) {
-            var rect = this.offsetRect;
-            this._layoutChildren(rect.width, rect.height);
-        }
-    };
-    /**
-     * A message handler invoked on a `'layout-request'` message.
-     */
-    BoxPanel.prototype.onLayoutRequest = function (msg) {
-        if (this.isAttached) {
-            this._setupGeometry();
-        }
-    };
-    /**
-     * Update the size constraints of the panel.
-     */
-    BoxPanel.prototype._setupGeometry = function () {
-        // Compute the visible item count.
-        var visibleCount = 0;
-        for (var i = 0, n = this.childCount; i < n; ++i) {
-            if (!this.childAt(i).hidden)
-                visibleCount++;
-        }
-        // Update the fixed space for the visible items.
-        this._fixedSpace = this.spacing * Math.max(0, visibleCount - 1);
-        // Update the sizers and compute the new size limits.
-        var minW = 0;
-        var minH = 0;
-        var maxW = Infinity;
-        var maxH = Infinity;
-        var dir = this.direction;
-        if (dir === Direction.LeftToRight || dir === Direction.RightToLeft) {
-            minW = this._fixedSpace;
-            maxW = visibleCount > 0 ? minW : maxW;
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                var sizer = this._sizers[i];
-                if (widget.hidden) {
-                    sizer.minSize = 0;
-                    sizer.maxSize = 0;
-                    continue;
-                }
-                var limits = widget.sizeLimits;
-                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
-                sizer.stretch = BoxPanel.getStretch(widget);
-                sizer.minSize = limits.minWidth;
-                sizer.maxSize = limits.maxWidth;
-                minW += limits.minWidth;
-                maxW += limits.maxWidth;
-                minH = Math.max(minH, limits.minHeight);
-                maxH = Math.min(maxH, limits.maxHeight);
-            }
-        }
-        else {
-            minH = this._fixedSpace;
-            maxH = visibleCount > 0 ? minH : maxH;
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                var sizer = this._sizers[i];
-                if (widget.hidden) {
-                    sizer.minSize = 0;
-                    sizer.maxSize = 0;
-                    continue;
-                }
-                var limits = widget.sizeLimits;
-                sizer.sizeHint = BoxPanel.getSizeBasis(widget);
-                sizer.stretch = BoxPanel.getStretch(widget);
-                sizer.minSize = limits.minHeight;
-                sizer.maxSize = limits.maxHeight;
-                minH += limits.minHeight;
-                maxH += limits.maxHeight;
-                minW = Math.max(minW, limits.minWidth);
-                maxW = Math.min(maxW, limits.maxWidth);
-            }
-        }
-        // Add the box sizing to the size constraints.
-        var box = this.boxSizing;
-        minW += box.horizontalSum;
-        minH += box.verticalSum;
-        maxW += box.horizontalSum;
-        maxH += box.verticalSum;
-        // Update the panel's size constraints.
-        this.setSizeLimits(minW, minH, maxW, maxH);
-        // Notifiy the parent that it should relayout.
-        if (this.parent)
-            phosphor_messaging_1.sendMessage(this.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        // Update the layout for the child widgets.
-        this.update(true);
-    };
-    /**
-     * Layout the children using the given offset width and height.
-     */
-    BoxPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
-        // Bail early if their are no children to arrange.
-        if (this.childCount === 0) {
-            return;
-        }
-        // Compute the actual layout bounds adjusted for border and padding.
-        var box = this.boxSizing;
-        var top = box.paddingTop;
-        var left = box.paddingLeft;
-        var width = offsetWidth - box.horizontalSum;
-        var height = offsetHeight - box.verticalSum;
-        // Distribute the layout space and layout the items.
-        var dir = this.direction;
-        var spacing = this.spacing;
-        if (dir === Direction.LeftToRight) {
-            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                if (widget.hidden) {
-                    continue;
-                }
-                var size = this._sizers[i].size;
-                widget.setOffsetGeometry(left, top, size, height);
-                left += size + spacing;
-            }
-        }
-        else if (dir === Direction.TopToBottom) {
-            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                if (widget.hidden) {
-                    continue;
-                }
-                var size = this._sizers[i].size;
-                widget.setOffsetGeometry(left, top, width, size);
-                top += size + spacing;
-            }
-        }
-        else if (dir === Direction.RightToLeft) {
-            left += width;
-            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, width - this._fixedSpace));
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                if (widget.hidden) {
-                    continue;
-                }
-                var size = this._sizers[i].size;
-                widget.setOffsetGeometry(left - size, top, size, height);
-                left -= size + spacing;
-            }
-        }
-        else {
-            top += height;
-            phosphor_boxengine_1.boxCalc(this._sizers, Math.max(0, height - this._fixedSpace));
-            for (var i = 0, n = this.childCount; i < n; ++i) {
-                var widget = this.childAt(i);
-                if (widget.hidden) {
-                    continue;
-                }
-                var size = this._sizers[i].size;
-                widget.setOffsetGeometry(left, top - size, width, size);
-                top -= size + spacing;
-            }
-        }
-    };
-    /**
-     * The change handler for the [[orientationProperty]].
-     */
-    BoxPanel.prototype._onDirectionChanged = function (old, value) {
-        this.toggleClass(exports.LTR_CLASS, value === Direction.LeftToRight);
-        this.toggleClass(exports.RTL_CLASS, value === Direction.RightToLeft);
-        this.toggleClass(exports.TTB_CLASS, value === Direction.TopToBottom);
-        this.toggleClass(exports.BTT_CLASS, value === Direction.BottomToTop);
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A convenience alias of the `LeftToRight` [[Direction]].
-     */
-    BoxPanel.LeftToRight = Direction.LeftToRight;
-    /**
-     * A convenience alias of the `RightToLeft` [[Direction]].
-     */
-    BoxPanel.RightToLeft = Direction.RightToLeft;
-    /**
-     * A convenience alias of the `TopToBottom` [[Direction]].
-     */
-    BoxPanel.TopToBottom = Direction.TopToBottom;
-    /**
-     * A convenience alias of the `BottomToTop` [[Direction]].
-     */
-    BoxPanel.BottomToTop = Direction.BottomToTop;
-    /**
-     * The property descriptor for the box panel layout direction.
-     *
-     * The controls the arrangement of child widgets within the panel.
-     * The default value is `TopToBottom`.
-     *
-     * **See also:** [[direction]]
-     */
-    BoxPanel.directionProperty = new phosphor_properties_1.Property({
-        value: Direction.TopToBottom,
-        changed: function (owner, old, value) { return owner._onDirectionChanged(old, value); },
-    });
-    /**
-     * The property descriptor for the box panel spacing.
-     *
-     * The controls the fixed spacing between the child widgets, in
-     * pixels. The default value is `8`.
-     *
-     * **See also:** [[spacing]]
-     */
-    BoxPanel.spacingProperty = new phosphor_properties_1.Property({
-        value: 8,
-        coerce: function (owner, value) { return Math.max(0, value | 0); },
-        changed: function (owner) { return phosphor_messaging_1.postMessage(owner, phosphor_widget_1.MSG_LAYOUT_REQUEST); },
-    });
-    /**
-     * The property descriptor for a widget stretch factor.
-     *
-     * This is an attached property which controls how much a child widget
-     * stretches or shrinks relative to its siblings when the box panel is
-     * resized. The default value is `0`.
-     *
-     * **See also:** [[getStretch]], [[setStretch]]
-     */
-    BoxPanel.stretchProperty = new phosphor_properties_1.Property({
-        value: 0,
-        coerce: function (owner, value) { return Math.max(0, value | 0); },
-        changed: onChildPropertyChanged,
-    });
-    /**
-     * The property descriptor for a widget size basis.
-     *
-     * This is an attached property which controls the preferred size of
-     * a child widget. The widget will be initialized to this size before
-     * being expanded or shrunk to fit the available layout space. The
-     * default value is `0`.
-     *
-     * **See also:** [[getSizeBasis]], [[setSizeBasis]]
-     */
-    BoxPanel.sizeBasisProperty = new phosphor_properties_1.Property({
-        value: 0,
-        coerce: function (owner, value) { return Math.max(0, value | 0); },
-        changed: onChildPropertyChanged,
-    });
-    return BoxPanel;
-})(phosphor_widget_1.Widget);
-exports.BoxPanel = BoxPanel;
-/**
- * The change handler for the attached child properties.
- */
-function onChildPropertyChanged(child) {
-    if (child.parent instanceof BoxPanel) {
-        phosphor_messaging_1.postMessage(child.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    }
-}
-
-},{"./index.css":24,"phosphor-arrays":4,"phosphor-boxengine":26,"phosphor-messaging":14,"phosphor-properties":16,"phosphor-widget":30}],26:[function(require,module,exports){
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-'use strict';
-/**
- * The sizer object for the [[boxCalc]] function.
- *
- * A box sizer holds the geometry information for an object along the
- * layout orientation. An array of box sizers representing a line of
- * objects is passed to [[boxCalc]] along with the amount of space
- * available for layout. The algorithm will update the [[size]] of
- * each box sizer with its computed size.
- *
- * #### Notes
- * For best performance, this class should be treated as a raw data
- * struct. It should not typically be subclassed.
- */
-var BoxSizer = (function () {
-    function BoxSizer() {
-        /**
-         * The preferred size for the sizer.
-         *
-         * The sizer will be given this initial size subject to its size
-         * bounds. The sizer will not deviate from this size unless such
-         * deviation is required to fit into the available layout space.
-         *
-         * #### Notes
-         * There is no limit to this value, but it will be clamped to the
-         * bounds defined by [[minSize]] and [[maxSize]].
-         *
-         * The default value is `0`.
-         */
-        this.sizeHint = 0;
-        /**
-         * The minimum size of the sizer.
-         *
-         * The sizer will never be sized less than this value, even if
-         * it means the sizer will overflow the available layout space.
-         *
-         * #### Notes
-         * It is assumed that this value lies in the range `[0, Infinity)`
-         * and that it is `<=` to [[maxSize]]. Failure to adhere to this
-         * constraint will yield undefined results.
-         *
-         * The default value is `0`.
-         */
-        this.minSize = 0;
-        /**
-         * The maximum size of the sizer.
-         *
-         * The sizer will never be sized greater than this value, even if
-         * it means the sizer will underflow the available layout space.
-         *
-         * #### Notes
-         * It is assumed that this value lies in the range `[0, Infinity]`
-         * and that it is `>=` to [[minSize]]. Failure to adhere to this
-         * constraint will yield undefined results.
-         *
-         * The default value is `Infinity`.
-         */
-        this.maxSize = Infinity;
-        /**
-         * The stretch factor for the sizer.
-         *
-         * This controls how much the sizer stretches relative to its sibling
-         * sizers when layout space is distributed. A stretch factor of zero
-         * is special and will cause the sizer to only be resized after all
-         * other sizers with a stretch factor greater than zero have been
-         * resized to their limits.
-         *
-         * #### Notes
-         * It is assumed that this value is an integer that lies in the range
-         * `[0, Infinity)`. Failure to adhere to this constraint will yield
-         * undefined results.
-         *
-         * The default value is `1`.
-         */
-        this.stretch = 1;
-        /**
-         * The computed size of the sizer.
-         *
-         * This value is the output of a call to [[boxCalc]]. It represents
-         * the computed size for the object along the layout orientation,
-         * and will always lie in the range `[minSize, maxSize]`.
-         *
-         * #### Notes
-         * This value is output only. Changing the value will have no effect.
-         */
-        this.size = 0;
-        /**
-         * An internal storage property for the layout algorithm.
-         *
-         * #### Notes
-         * This value is used as temporary storage by the layout algorithm.
-         * Changing the value will have no effect.
-         */
-        this.done = false;
-    }
-    return BoxSizer;
-})();
-exports.BoxSizer = BoxSizer;
-/**
- * Compute the optimal layout sizes for an array of box sizers.
- *
- * This distributes the available layout space among the box sizers
- * according to the following algorithm:
- *
- * 1. Initialize the sizers's size to its size hint and compute the
- *    sums for each of size hint, min size, and max size.
- *
- * 2. If the total size hint equals the available space, return.
- *
- * 3. If the available space is less than the total min size, set all
- *    sizers to their min size and return.
- *
- * 4. If the available space is greater than the total max size, set
- *    all sizers to their max size and return.
- *
- * 5. If the layout space is less than the total size hint, distribute
- *    the negative delta as follows:
- *
- *    a. Shrink each sizer with a stretch factor greater than zero by
- *       an amount proportional to the negative space and the sum of
- *       stretch factors. If the sizer reaches its min size, remove
- *       it and its stretch factor from the computation.
- *
- *    b. If after adjusting all stretch sizers there remains negative
- *       space, distribute the space equally among the sizers with a
- *       stretch factor of zero. If a sizer reaches its min size,
- *       remove it from the computation.
- *
- * 6. If the layout space is greater than the total size hint,
- *    distribute the positive delta as follows:
- *
- *    a. Expand each sizer with a stretch factor greater than zero by
- *       an amount proportional to the postive space and the sum of
- *       stretch factors. If the sizer reaches its max size, remove
- *       it and its stretch factor from the computation.
- *
- *    b. If after adjusting all stretch sizers there remains positive
- *       space, distribute the space equally among the sizers with a
- *       stretch factor of zero. If a sizer reaches its max size,
- *       remove it from the computation.
- *
- * 7. return
- *
- * @param sizers - The sizers for a particular layout line.
- *
- * @param space - The available layout space for the sizers.
- *
- * #### Notes
- * This function can be called at any time to recompute the layout
- * sizing for an existing array of sizers. The previously computed
- * results will have no effect on the new output. It is therefore
- * not necessary to create new sizers on each resize event.
- */
-function boxCalc(sizers, space) {
-    // Bail early if there is nothing to do.
-    var count = sizers.length;
-    if (count === 0) {
-        return;
-    }
-    // Setup the size and stretch counters.
-    var totalMin = 0;
-    var totalMax = 0;
-    var totalSize = 0;
-    var totalStretch = 0;
-    var stretchCount = 0;
-    // Setup the sizers and compute the totals.
-    for (var i = 0; i < count; ++i) {
-        var sizer = sizers[i];
-        initSizer(sizer);
-        totalSize += sizer.size;
-        totalMin += sizer.minSize;
-        totalMax += sizer.maxSize;
-        if (sizer.stretch > 0) {
-            totalStretch += sizer.stretch;
-            stretchCount++;
-        }
-    }
-    // If the space is equal to the total size, return.
-    if (space === totalSize) {
-        return;
-    }
-    // If the space is less than the total min, minimize each sizer.
-    if (space <= totalMin) {
-        for (var i = 0; i < count; ++i) {
-            var sizer = sizers[i];
-            sizer.size = sizer.minSize;
-        }
-        return;
-    }
-    // If the space is greater than the total max, maximize each sizer.
-    if (space >= totalMax) {
-        for (var i = 0; i < count; ++i) {
-            var sizer = sizers[i];
-            sizer.size = sizer.maxSize;
-        }
-        return;
-    }
-    // The loops below perform sub-pixel precision sizing. A near zero
-    // value is used for compares instead of zero to ensure that the
-    // loop terminates when the subdivided space is reasonably small.
-    var nearZero = 0.01;
-    // A counter which is decremented each time a sizer is resized to
-    // its limit. This ensures the loops terminate even if there is
-    // space remaining to distribute.
-    var notDoneCount = count;
-    // Distribute negative delta space.
-    if (space < totalSize) {
-        // Shrink each stretchable sizer by an amount proportional to its
-        // stretch factor. If a sizer reaches its min size it's marked as
-        // done. The loop progresses in phases where each sizer is given
-        // a chance to consume its fair share for the pass, regardless of
-        // whether a sizer before it reached its limit. This continues
-        // until the stretchable sizers or the free space is exhausted.
-        var freeSpace = totalSize - space;
-        while (stretchCount > 0 && freeSpace > nearZero) {
-            var distSpace = freeSpace;
-            var distStretch = totalStretch;
-            for (var i = 0; i < count; ++i) {
-                var sizer = sizers[i];
-                if (sizer.done || sizer.stretch === 0) {
-                    continue;
-                }
-                var amt = sizer.stretch * distSpace / distStretch;
-                if (sizer.size - amt <= sizer.minSize) {
-                    freeSpace -= sizer.size - sizer.minSize;
-                    totalStretch -= sizer.stretch;
-                    sizer.size = sizer.minSize;
-                    sizer.done = true;
-                    notDoneCount--;
-                    stretchCount--;
-                }
-                else {
-                    freeSpace -= amt;
-                    sizer.size -= amt;
-                }
-            }
-        }
-        // Distribute any remaining space evenly among the non-stretchable
-        // sizers. This progresses in phases in the same manner as above.
-        while (notDoneCount > 0 && freeSpace > nearZero) {
-            var amt = freeSpace / notDoneCount;
-            for (var i = 0; i < count; ++i) {
-                var sizer = sizers[i];
-                if (sizer.done) {
-                    continue;
-                }
-                if (sizer.size - amt <= sizer.minSize) {
-                    freeSpace -= sizer.size - sizer.minSize;
-                    sizer.size = sizer.minSize;
-                    sizer.done = true;
-                    notDoneCount--;
-                }
-                else {
-                    freeSpace -= amt;
-                    sizer.size -= amt;
-                }
-            }
-        }
-    }
-    else {
-        // Expand each stretchable sizer by an amount proportional to its
-        // stretch factor. If a sizer reaches its max size it's marked as
-        // done. The loop progresses in phases where each sizer is given
-        // a chance to consume its fair share for the pass, regardless of
-        // whether a sizer before it reached its limit. This continues
-        // until the stretchable sizers or the free space is exhausted.
-        var freeSpace = space - totalSize;
-        while (stretchCount > 0 && freeSpace > nearZero) {
-            var distSpace = freeSpace;
-            var distStretch = totalStretch;
-            for (var i = 0; i < count; ++i) {
-                var sizer = sizers[i];
-                if (sizer.done || sizer.stretch === 0) {
-                    continue;
-                }
-                var amt = sizer.stretch * distSpace / distStretch;
-                if (sizer.size + amt >= sizer.maxSize) {
-                    freeSpace -= sizer.maxSize - sizer.size;
-                    totalStretch -= sizer.stretch;
-                    sizer.size = sizer.maxSize;
-                    sizer.done = true;
-                    notDoneCount--;
-                    stretchCount--;
-                }
-                else {
-                    freeSpace -= amt;
-                    sizer.size += amt;
-                }
-            }
-        }
-        // Distribute any remaining space evenly among the non-stretchable
-        // sizers. This progresses in phases in the same manner as above.
-        while (notDoneCount > 0 && freeSpace > nearZero) {
-            var amt = freeSpace / notDoneCount;
-            for (var i = 0; i < count; ++i) {
-                var sizer = sizers[i];
-                if (sizer.done) {
-                    continue;
-                }
-                if (sizer.size + amt >= sizer.maxSize) {
-                    freeSpace -= sizer.maxSize - sizer.size;
-                    sizer.size = sizer.maxSize;
-                    sizer.done = true;
-                    notDoneCount--;
-                }
-                else {
-                    freeSpace -= amt;
-                    sizer.size += amt;
-                }
-            }
-        }
-    }
-}
-exports.boxCalc = boxCalc;
-/**
- * (Re)initialize a box sizer's data for a layout pass.
- */
-function initSizer(sizer) {
-    sizer.size = Math.max(sizer.minSize, Math.min(sizer.sizeHint, sizer.maxSize));
-    sizer.done = false;
-}
-
-},{}],27:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],28:[function(require,module,exports){
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-'use strict';
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var phosphor_messaging_1 = require('phosphor-messaging');
-var phosphor_properties_1 = require('phosphor-properties');
-var phosphor_signaling_1 = require('phosphor-signaling');
-var phosphor_widget_1 = require('phosphor-widget');
-require('./index.css');
-/**
- * `p-StackedPanel`: the class name added to StackedPanel instances.
- */
-exports.STACKED_PANEL_CLASS = 'p-StackedPanel';
-/**
- * A layout widget where only one child widget is visible at a time.
- */
-var StackedPanel = (function (_super) {
-    __extends(StackedPanel, _super);
-    /**
-     * Construct a new stacked panel.
-     */
-    function StackedPanel() {
-        _super.call(this);
-        this.addClass(exports.STACKED_PANEL_CLASS);
-    }
-    Object.defineProperty(StackedPanel.prototype, "currentChanged", {
-        /**
-         * A signal emitted when the current widget is changed.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[currentChangedSignal]].
-         */
-        get: function () {
-            return StackedPanel.currentChangedSignal.bind(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StackedPanel.prototype, "widgetRemoved", {
-        /**
-         * A signal emitted when a widget is removed from the panel.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[widgetRemovedSignal]].
-         */
-        get: function () {
-            return StackedPanel.widgetRemovedSignal.bind(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StackedPanel.prototype, "currentWidget", {
-        /**
-         * Get the current panel widget.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[currentWidgetProperty]].
-         */
-        get: function () {
-            return StackedPanel.currentWidgetProperty.get(this);
-        },
-        /**
-         * Set the current panel widget.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[currentWidgetProperty]].
-         */
-        set: function (widget) {
-            StackedPanel.currentWidgetProperty.set(this, widget);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * A message handler invoked on a `'child-added'` message.
-     */
-    StackedPanel.prototype.onChildAdded = function (msg) {
-        msg.child.hidden = true;
-        this.node.appendChild(msg.child.node);
-        if (this.isAttached)
-            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_AFTER_ATTACH);
-    };
-    /**
-     * A message handler invoked on a `'child-removed'` message.
-     */
-    StackedPanel.prototype.onChildRemoved = function (msg) {
-        if (msg.child === this.currentWidget)
-            this.currentWidget = null;
-        if (this.isAttached)
-            phosphor_messaging_1.sendMessage(msg.child, phosphor_widget_1.MSG_BEFORE_DETACH);
-        this.node.removeChild(msg.child.node);
-        msg.child.clearOffsetGeometry();
-        this.widgetRemoved.emit({ index: msg.previousIndex, widget: msg.child });
-    };
-    /**
-     * A message handler invoked on a `'child-moved'` message.
-     */
-    StackedPanel.prototype.onChildMoved = function (msg) { };
-    /**
-     * A message handler invoked on an `'after-show'` message.
-     */
-    StackedPanel.prototype.onAfterShow = function (msg) {
-        this.update(true);
-    };
-    /**
-     * A message handler invoked on an `'after-attach'` message.
-     */
-    StackedPanel.prototype.onAfterAttach = function (msg) {
-        phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-    };
-    /**
-     * A message handler invoked on a `'resize'` message.
-     */
-    StackedPanel.prototype.onResize = function (msg) {
-        if (this.isVisible) {
-            if (msg.width < 0 || msg.height < 0) {
-                var rect = this.offsetRect;
-                this._layoutChildren(rect.width, rect.height);
-            }
-            else {
-                this._layoutChildren(msg.width, msg.height);
-            }
-        }
-    };
-    /**
-     * A message handler invoked on an `'update-request'` message.
-     */
-    StackedPanel.prototype.onUpdateRequest = function (msg) {
-        if (this.isVisible) {
-            var rect = this.offsetRect;
-            this._layoutChildren(rect.width, rect.height);
-        }
-    };
-    /**
-     * A message handler invoked on a `'layout-request'` message.
-     */
-    StackedPanel.prototype.onLayoutRequest = function (msg) {
-        if (this.isAttached) {
-            this._setupGeometry();
-        }
-    };
-    /**
-     * Update the size constraints of the panel.
-     */
-    StackedPanel.prototype._setupGeometry = function () {
-        // Compute the new size limits.
-        var minW = 0;
-        var minH = 0;
-        var maxW = Infinity;
-        var maxH = Infinity;
-        var widget = this.currentWidget;
-        if (widget) {
-            var limits = widget.sizeLimits;
-            minW = limits.minWidth;
-            minH = limits.minHeight;
-            maxW = limits.maxWidth;
-            maxH = limits.maxHeight;
-        }
-        // Add the box sizing to the size constraints.
-        var box = this.boxSizing;
-        minW += box.horizontalSum;
-        minH += box.verticalSum;
-        maxW += box.horizontalSum;
-        maxH += box.verticalSum;
-        // Update the panel's size constraints.
-        this.setSizeLimits(minW, minH, maxW, maxH);
-        // Notifiy the parent that it should relayout.
-        if (this.parent)
-            phosphor_messaging_1.sendMessage(this.parent, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        // Update the layout for the child widgets.
-        this.update(true);
-    };
-    /**
-     * Layout the children using the given offset width and height.
-     */
-    StackedPanel.prototype._layoutChildren = function (offsetWidth, offsetHeight) {
-        // Bail early if there is no current widget.
-        var widget = this.currentWidget;
-        if (!widget) {
-            return;
-        }
-        // Compute the actual layout bounds adjusted for border and padding.
-        var box = this.boxSizing;
-        var top = box.paddingTop;
-        var left = box.paddingLeft;
-        var width = offsetWidth - box.horizontalSum;
-        var height = offsetHeight - box.verticalSum;
-        // Update the current widget's layout geometry.
-        widget.setOffsetGeometry(left, top, width, height);
-    };
-    /**
-     * The change handler for the [[currentWidgetProperty]].
-     */
-    StackedPanel.prototype._onCurrentWidgetChanged = function (old, val) {
-        if (old)
-            old.hidden = true;
-        if (val)
-            val.hidden = false;
-        // Ideally, the layout request would be posted in order to take
-        // advantage of message compression, but some browsers repaint
-        // before the message gets processed, resulting in jitter. So,
-        // the layout request is sent and processed immediately.
-        phosphor_messaging_1.sendMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
-        this.currentChanged.emit({ index: this.childIndex(val), widget: val });
-    };
-    /**
-     * A signal emitted when the current widget is changed.
-     *
-     * **See also:** [[currentChanged]]
-     */
-    StackedPanel.currentChangedSignal = new phosphor_signaling_1.Signal();
-    /**
-     * A signal emitted when a widget is removed from the panel.
-     *
-     * **See also:** [[widgetRemoved]]
-     */
-    StackedPanel.widgetRemovedSignal = new phosphor_signaling_1.Signal();
-    /**
-     * The property descriptor for the current widget.
-     *
-     * This controls which child widget is visible.
-     *
-     * **See also:** [[currentWidget]]
-     */
-    StackedPanel.currentWidgetProperty = new phosphor_properties_1.Property({
-        value: null,
-        coerce: function (owner, val) { return (val && val.parent === owner) ? val : null; },
-        changed: function (owner, old, val) { return owner._onCurrentWidgetChanged(old, val); },
-    });
-    return StackedPanel;
-})(phosphor_widget_1.Widget);
-exports.StackedPanel = StackedPanel;
-
-},{"./index.css":27,"phosphor-messaging":14,"phosphor-properties":16,"phosphor-signaling":18,"phosphor-widget":30}],29:[function(require,module,exports){
+},{"./tabbar":27,"phosphor-boxpanel":7,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-stackedpanel":23}],29:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-Widget {\n  box-sizing: border-box;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  overflow: hidden;\n  cursor: default;\n}\n.p-Widget.p-mod-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-widget/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],30:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
@@ -8920,4 +8920,4 @@ function sendToShown(array, msg) {
     }
 }
 
-},{"./index.css":29,"phosphor-arrays":4,"phosphor-domutil":7,"phosphor-messaging":14,"phosphor-nodewrapper":15,"phosphor-properties":16,"phosphor-signaling":18}]},{},[2]);
+},{"./index.css":29,"phosphor-arrays":4,"phosphor-domutil":10,"phosphor-messaging":17,"phosphor-nodewrapper":18,"phosphor-properties":19,"phosphor-signaling":21}]},{},[2]);
