@@ -2,7 +2,7 @@
 
 html {
     background-color: #121B22;
-    color: #BFFFDC;
+    color: #e0ffe5;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -75,6 +75,14 @@ body {
     letter-spacing: 0.03em;
 }
 
+.logo {
+    background: url(../img/phosphorjs.svg) no-repeat top left; 
+    height: 2em;
+    width: 2em;
+    float: left;
+    margin-right: 0.75em;
+}
+
 .header-container,
 .footer-container,
 .main aside {
@@ -82,15 +90,13 @@ body {
 }
 
 header {
-    padding: 0.7em 0;
+    padding: 0.7em 0 0.4em;
 }
 
-.logo {
-    background: url(../img/phosphorjs.svg) no-repeat top left; 
-    height: 4em;
-    width: 4em;
-    float: left;
-    margin-right: 0.75em;
+header .logo {
+    height: 3.5em;
+    width: 3.5em;
+    margin-top: 0.3em;
 }
 
 section {
@@ -109,38 +115,50 @@ aside .logo {
     width: 8em;
 }
 
-aside p {
-    font-size: 1.15em;
-    letter-spacing: 0.04em;
-    line-height: 1.75em;
-}
-
 /* ===================
     ALL: Typography
    =================== */
 
 h1, h2, h3, h4 {
+    font-family: 'Nunito', sans-serif;
     color: #19F28A;
-    font-weight: 200;
-    letter-spacing: 0.05em;
+    font-weight: 300;
+    letter-spacing: 0.055em;
 }
 
 h1 {
-    margin: 0.25em 0;
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1.65rem;
+    margin-bottom: 0.3rem;
 }
 
 h3 {
     font-style: italic;
     margin: -0.75em 0 0.75em;
 }
+
+p {
+    margin-top: 0;
 }
+
+p, li {
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    line-height: 1.5em;
+}
+
+.nobull { list-style: none; list-style-type: none; }
 
 a {
     text-decoration: none;
+    color: #e0ffe5;
 }
 
 ul a {
-    color: #BFFFDC;
+    color: #e0ffe5;
 }
 
 ul a:hover {
@@ -163,9 +181,7 @@ nav a {
     display: block;
     padding: 0.5em 0;
     text-align: center;
-    text-decoration: none;
     text-transform: uppercase;
-    color: white;
 }
 
 nav a:hover {
@@ -187,7 +203,6 @@ nav a:hover {
 }
 
 .main aside {
-    color: white;
     padding: 1em 2.5em;
 }
 
@@ -256,8 +271,8 @@ nav a:hover {
 
     nav {
         float: right;
-        margin-top: 0.8em;
-        width: 40%;
+        margin: 0.2em 0;
+        width: 50%;
     }
 
 /* ============
