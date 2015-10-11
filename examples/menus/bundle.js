@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu-icon::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu-icon::before {\n  content: '\\f0da';\n}\n.p-Menu-item.copy > .p-Menu-item-icon::before {\n  content: '\\f0c5';\n}\n.p-Menu-item.cut > .p-Menu-item-icon::before {\n  content: '\\f0c4';\n}\n.p-Menu-item.paste > .p-Menu-item-icon::before {\n  content: '\\f0ea';\n}\n.p-Menu-item.close > .p-Menu-item-icon::before {\n  content: '\\f00d';\n}\n.p-Menu-item.undo > .p-Menu-item-icon::before {\n  content: '\\f0e2';\n}\n.p-Menu-item.repeat > .p-Menu-item-icon::before {\n  content: '\\f01e';\n}\n.p-MenuBar {\n  min-height: 24px;\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n"; (require("browserify-css").createStyle(css, { "href": "menus/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-content {\n  bottom: 1px;\n  align-items: flex-end;\n}\n.p-TabBar-content > .p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-TabBar-content > .p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-TabBar-content > .p-Tab.p-mod-selected {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {\n  background: #F0F0F0;\n}\n.p-TabBar-content > .p-Tab > span {\n  line-height: 21px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-submenu > .p-Menu-item-submenu::before {\n  content: '\\f0da';\n}\n.p-Menu-item.copy > .p-Menu-item-icon::before {\n  content: '\\f0c5';\n}\n.p-Menu-item.cut > .p-Menu-item-icon::before {\n  content: '\\f0c4';\n}\n.p-Menu-item.paste > .p-Menu-item-icon::before {\n  content: '\\f0ea';\n}\n.p-Menu-item.close > .p-Menu-item-icon::before {\n  content: '\\f00d';\n}\n.p-Menu-item.undo > .p-Menu-item-icon::before {\n  content: '\\f0e2';\n}\n.p-Menu-item.repeat > .p-Menu-item-icon::before {\n  content: '\\f01e';\n}\n.p-MenuBar {\n  min-height: 24px;\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n"; (require("browserify-css").createStyle(css, { "href": "menus/index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -1444,26 +1444,6 @@ var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
- * `p-BoxPanel`: the class name added to BoxPanel instances.
- */
-exports.BOX_PANEL_CLASS = 'p-BoxPanel';
-/**
- * `p-mod-left-to-right`: the class name added to ltr box panels.
- */
-exports.LTR_CLASS = 'p-mod-left-to-right';
-/**
- * `p-mod-right-to-left`: the class name added to rtl box panels.
- */
-exports.RTL_CLASS = 'p-mod-right-to-left';
-/**
- * `p-mod-top-to-bottom`: the class name added to ttb box panels.
- */
-exports.TTB_CLASS = 'p-mod-top-to-bottom';
-/**
- * `p-mod-bottom-to-top`: the class name added to btt box panels.
- */
-exports.BTT_CLASS = 'p-mod-bottom-to-top';
-/**
  * The layout direction of a box panel.
  */
 (function (Direction) {
@@ -1497,8 +1477,8 @@ var BoxPanel = (function (_super) {
         _super.call(this);
         this._fixedSpace = 0;
         this._sizers = [];
-        this.addClass(exports.BOX_PANEL_CLASS);
-        this.addClass(exports.TTB_CLASS);
+        this.addClass(BoxPanel.p_BoxPanel);
+        this.addClass(BoxPanel.p_mod_top_to_bottom);
     }
     /**
      * Get the box panel stretch factor for the given widget.
@@ -1834,12 +1814,32 @@ var BoxPanel = (function (_super) {
      * The change handler for the [[orientationProperty]].
      */
     BoxPanel.prototype._onDirectionChanged = function (old, value) {
-        this.toggleClass(exports.LTR_CLASS, value === Direction.LeftToRight);
-        this.toggleClass(exports.RTL_CLASS, value === Direction.RightToLeft);
-        this.toggleClass(exports.TTB_CLASS, value === Direction.TopToBottom);
-        this.toggleClass(exports.BTT_CLASS, value === Direction.BottomToTop);
+        this.toggleClass(BoxPanel.p_mod_left_to_right, value === Direction.LeftToRight);
+        this.toggleClass(BoxPanel.p_mod_right_to_left, value === Direction.RightToLeft);
+        this.toggleClass(BoxPanel.p_mod_top_to_bottom, value === Direction.TopToBottom);
+        this.toggleClass(BoxPanel.p_mod_bottom_to_top, value === Direction.BottomToTop);
         phosphor_messaging_1.postMessage(this, phosphor_widget_1.MSG_LAYOUT_REQUEST);
     };
+    /**
+     * The class name added to BoxPanel instances.
+     */
+    BoxPanel.p_BoxPanel = 'p-BoxPanel';
+    /**
+     * The class name added to left-to-right box panels.
+     */
+    BoxPanel.p_mod_left_to_right = 'p-mod-left-to-right';
+    /**
+     * The class name added to right-to-left box panels.
+     */
+    BoxPanel.p_mod_right_to_left = 'p-mod-right-to-left';
+    /**
+     * The class name added to top-to-bottom box panels.
+     */
+    BoxPanel.p_mod_top_to_bottom = 'p-mod-top-to-bottom';
+    /**
+     * The class name added to bottom-to-top box panels.
+     */
+    BoxPanel.p_mod_bottom_to_top = 'p-mod-bottom-to-top';
     /**
      * A convenience alias of the `LeftToRight` [[Direction]].
      */
@@ -2062,7 +2062,7 @@ var DisposableSet = (function () {
 exports.DisposableSet = DisposableSet;
 
 },{}],9:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody.p-mod-override-cursor * {\n  cursor: inherit !important;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-domutil/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\nbody.p-mod-override-cursor * {\n  cursor: inherit !important;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-domutil/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],10:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -2233,7 +2233,7 @@ function sizeLimits(node) {
 exports.sizeLimits = sizeLimits;
 
 },{"./index.css":9,"phosphor-disposable":8}],11:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-Menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  margin: 0;\n  padding: 3px 0px;\n  white-space: nowrap;\n  overflow-x: hidden;\n  overflow-y: auto;\n  z-index: 100000;\n}\n.p-Menu-content {\n  display: table;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  border-spacing: 0;\n}\n.p-Menu-item {\n  display: table-row;\n}\n.p-Menu-item.p-mod-hidden,\n.p-Menu-item.p-mod-force-hidden {\n  display: none;\n}\n.p-Menu-item > span {\n  display: table-cell;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n.p-Menu-item-icon {\n  width: 21px;\n  padding-left: 2px;\n  padding-right: 2px;\n  text-align: center;\n}\n.p-Menu-item-text {\n  padding-left: 2px;\n  padding-right: 35px;\n}\n.p-Menu-item-shortcut {\n  text-align: right;\n}\n.p-Menu-item-submenu-icon {\n  width: 16px;\n  text-align: center;\n}\n.p-Menu-item.p-mod-separator-type > span {\n  padding: 0;\n  height: 9px;\n  line-height: 0;\n  text-indent: 100%;\n  overflow: hidden;\n  whitespace: nowrap;\n  vertical-align: top;\n  /* https://bugzilla.mozilla.org/show_bug.cgi?id=634489 */\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  content: '';\n  display: block;\n  position: relative;\n  top: 4px;\n}\n.p-MenuBar-content {\n  display: flex;\n  flex-direction: row;\n}\n.p-MenuBar-item {\n  box-sizing: border-box;\n}\n.p-MenuBar-item.p-mod-hidden,\n.p-MenuBar-item.p-mod-force-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-menus/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-Menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  margin: 0;\n  padding: 3px 0px;\n  white-space: nowrap;\n  overflow-x: hidden;\n  overflow-y: auto;\n  z-index: 100000;\n}\n.p-Menu-content {\n  display: table;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  border-spacing: 0;\n}\n.p-Menu-item {\n  display: table-row;\n}\n.p-Menu-item.p-mod-hidden,\n.p-Menu-item.p-mod-force-hidden {\n  display: none;\n}\n.p-Menu-item > span {\n  display: table-cell;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n.p-Menu-item-icon {\n  width: 21px;\n  padding-left: 2px;\n  padding-right: 2px;\n  text-align: center;\n}\n.p-Menu-item-text {\n  padding-left: 2px;\n  padding-right: 35px;\n}\n.p-Menu-item-shortcut {\n  text-align: right;\n}\n.p-Menu-item-submenu {\n  width: 16px;\n  text-align: center;\n}\n.p-Menu-item.p-mod-separator-type > span {\n  padding: 0;\n  height: 9px;\n  line-height: 0;\n  text-indent: 100%;\n  overflow: hidden;\n  whitespace: nowrap;\n  vertical-align: top;\n  /* https://bugzilla.mozilla.org/show_bug.cgi?id=634489 */\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  content: '';\n  display: block;\n  position: relative;\n  top: 4px;\n}\n.p-MenuBar-content {\n  display: flex;\n  flex-direction: row;\n}\n.p-MenuBar-item {\n  box-sizing: border-box;\n}\n.p-MenuBar-item.p-mod-hidden,\n.p-MenuBar-item.p-mod-force-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-menus/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],12:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -2272,66 +2272,6 @@ var phosphor_widget_1 = require('phosphor-widget');
 var menubase_1 = require('./menubase');
 var menuitem_1 = require('./menuitem');
 /**
- * `p-Menu`: the class name added to Menu instances.
- */
-exports.MENU_CLASS = 'p-Menu';
-/**
- * `p-Menu-content`: the class name added to a menu content node.
- */
-exports.CONTENT_CLASS = 'p-Menu-content';
-/**
- * `p-Menu-item`: the class name assigned to a menu item.
- */
-exports.MENU_ITEM_CLASS = 'p-Menu-item';
-/**
- * `p-Menu-item-icon`: the class name added to a menu item icon cell.
- */
-exports.ICON_CLASS = 'p-Menu-item-icon';
-/**
- * `p-Menu-item-text`: the class name added to a menu item text cell.
- */
-exports.TEXT_CLASS = 'p-Menu-item-text';
-/**
- * `p-Menu-item-shortcut`: the class name added to a menu item shortcut cell.
- */
-exports.SHORTCUT_CLASS = 'p-Menu-item-shortcut';
-/**
- * `p-Menu-item-submenu-icon`: the class name added to a menu item submenu icon cell.
- */
-exports.SUBMENU_ICON_CLASS = 'p-Menu-item-submenu-icon';
-/**
- * `p-mod`: the class name added to a check type menu item.
- */
-exports.CHECK_TYPE_CLASS = 'p-mod-check-type';
-/**
- * `p-mod`: the class name added to a separator type menu item.
- */
-exports.SEPARATOR_TYPE_CLASS = 'p-mod-separator-type';
-/**
- * `p-mod`: the class name added to active menu items.
- */
-exports.ACTIVE_CLASS = 'p-mod-active';
-/**
- * `p-mod`: the class name added to a disabled menu item.
- */
-exports.DISABLED_CLASS = 'p-mod-disabled';
-/**
- * `p-mod`: the class name added to a hidden menu item.
- */
-exports.HIDDEN_CLASS = 'p-mod-hidden';
-/**
- * `p-mod`: the class name added to a force hidden menu item.
- */
-exports.FORCE_HIDDEN_CLASS = 'p-mod-force-hidden';
-/**
- * `p-mod`: the class name added to a checked menu item.
- */
-exports.CHECKED_CLASS = 'p-mod-checked';
-/**
- * `p-mod`: the class name added to a menu item with a submenu.
- */
-exports.HAS_SUBMENU_CLASS = 'p-mod-has-submenu';
-/**
  * The delay, in ms, for opening a submenu.
  */
 var OPEN_DELAY = 300;
@@ -2362,7 +2302,7 @@ var Menu = (function (_super) {
         this._parentMenu = null;
         this._childMenu = null;
         this._childItem = null;
-        this.addClass(exports.MENU_CLASS);
+        this.addClass(Menu.p_Menu);
     }
     /**
      * Create the DOM node for a menu.
@@ -2370,7 +2310,7 @@ var Menu = (function (_super) {
     Menu.createNode = function () {
         var node = document.createElement('div');
         var content = document.createElement('div');
-        content.className = exports.CONTENT_CLASS;
+        content.className = Menu.p_Menu_content;
         node.appendChild(content);
         return node;
     };
@@ -2579,9 +2519,9 @@ var Menu = (function (_super) {
         var oldNode = this._itemNodeAt(old);
         var newNode = this._itemNodeAt(index);
         if (oldNode)
-            oldNode.classList.remove(exports.ACTIVE_CLASS);
+            oldNode.classList.remove(Menu.p_mod_active);
         if (newNode)
-            newNode.classList.add(exports.ACTIVE_CLASS);
+            newNode.classList.add(Menu.p_mod_active);
     };
     /**
      * A method invoked when a menu item should be opened.
@@ -2640,7 +2580,7 @@ var Menu = (function (_super) {
             if (!items[k1].isSeparatorType) {
                 break;
             }
-            nodes[k1].classList.add(exports.FORCE_HIDDEN_CLASS);
+            nodes[k1].classList.add(Menu.p_mod_force_hidden);
         }
         // Force hide the trailing visible separators.
         for (var k2 = count - 1; k2 >= 0; --k2) {
@@ -2650,7 +2590,7 @@ var Menu = (function (_super) {
             if (!items[k2].isSeparatorType) {
                 break;
             }
-            nodes[k2].classList.add(exports.FORCE_HIDDEN_CLASS);
+            nodes[k2].classList.add(Menu.p_mod_force_hidden);
         }
         // Force hide the remaining consecutive visible separators.
         var hide = false;
@@ -2659,7 +2599,7 @@ var Menu = (function (_super) {
                 continue;
             }
             if (hide && items[k1].isSeparatorType) {
-                nodes[k1].classList.add(exports.FORCE_HIDDEN_CLASS);
+                nodes[k1].classList.add(Menu.p_mod_force_hidden);
             }
             else {
                 hide = items[k1].isSeparatorType;
@@ -2941,6 +2881,62 @@ var Menu = (function (_super) {
         return Array.prototype.indexOf.call(content.children, node);
     };
     /**
+     * The class name added to Menu instances.
+     */
+    Menu.p_Menu = 'p-Menu';
+    /**
+     * The class name added to a menu content node.
+     */
+    Menu.p_Menu_content = 'p-Menu-content';
+    /**
+     * The class name added to a menu item node.
+     */
+    Menu.p_Menu_item = 'p-Menu-item';
+    /**
+     * The class name added to a menu item icon cell.
+     */
+    Menu.p_Menu_item_icon = 'p-Menu-item-icon';
+    /**
+     * The class name added to a menu item text cell.
+     */
+    Menu.p_Menu_item_text = 'p-Menu-item-text';
+    /**
+     * The class name added to a menu item shortcut cell.
+     */
+    Menu.p_Menu_item_shortcut = 'p-Menu-item-shortcut';
+    /**
+     * The class name added to a menu item submenu cell.
+     */
+    Menu.p_Menu_item_submenu = 'p-Menu-item-submenu';
+    /**
+     * The modifier class name added to a check type menu item.
+     */
+    Menu.p_mod_check_type = 'p-mod-check-type';
+    /**
+     * The modifier class name added to a separator type menu item.
+     */
+    Menu.p_mod_separator_type = 'p-mod-separator-type';
+    /**
+     * The modifier class name added to active menu items.
+     */
+    Menu.p_mod_active = 'p-mod-active';
+    /**
+     * The modifier class name added to a disabled menu item.
+     */
+    Menu.p_mod_disabled = 'p-mod-disabled';
+    /**
+     * The modifier class name added to a force hidden menu item.
+     */
+    Menu.p_mod_force_hidden = 'p-mod-force-hidden';
+    /**
+     * The modifier class name added to a checked menu item.
+     */
+    Menu.p_mod_checked = 'p-mod-checked';
+    /**
+     * The modifier class name added to a menu item with a submenu.
+     */
+    Menu.p_mod_submenu = 'p-mod-submenu';
+    /**
      * A signal emitted when the menu is closed.
      *
      * **See also:** [[closed]]
@@ -2959,24 +2955,24 @@ function createMenuItem(template) {
  * Create the complete DOM node class name for a MenuItem.
  */
 function createItemClassName(item) {
-    var parts = [exports.MENU_ITEM_CLASS];
+    var parts = [Menu.p_Menu_item];
     if (item.isCheckType) {
-        parts.push(exports.CHECK_TYPE_CLASS);
+        parts.push(Menu.p_mod_check_type);
     }
     else if (item.isSeparatorType) {
-        parts.push(exports.SEPARATOR_TYPE_CLASS);
+        parts.push(Menu.p_mod_separator_type);
     }
     if (item.checked) {
-        parts.push(exports.CHECKED_CLASS);
+        parts.push(Menu.p_mod_checked);
     }
     if (item.disabled) {
-        parts.push(exports.DISABLED_CLASS);
+        parts.push(Menu.p_mod_disabled);
     }
     if (item.hidden) {
-        parts.push(exports.HIDDEN_CLASS);
+        parts.push(Menu.p_mod_hidden);
     }
     if (item.submenu) {
-        parts.push(exports.HAS_SUBMENU_CLASS);
+        parts.push(Menu.p_mod_submenu);
     }
     if (item.className) {
         parts.push(item.className);
@@ -2993,10 +2989,10 @@ function createItemNode(item) {
     var shortcut = document.createElement('span');
     var submenu = document.createElement('span');
     node.className = createItemClassName(item);
-    icon.className = exports.ICON_CLASS;
-    text.className = exports.TEXT_CLASS;
-    shortcut.className = exports.SHORTCUT_CLASS;
-    submenu.className = exports.SUBMENU_ICON_CLASS;
+    icon.className = Menu.p_Menu_item_icon;
+    text.className = Menu.p_Menu_item_text;
+    shortcut.className = Menu.p_Menu_item_shortcut;
+    submenu.className = Menu.p_Menu_item_submenu;
     if (!item.isSeparatorType) {
         text.textContent = item.text.replace(/&/g, '');
         shortcut.textContent = item.shortcut;
@@ -3106,50 +3102,6 @@ var phosphor_properties_1 = require('phosphor-properties');
 var menubase_1 = require('./menubase');
 var menuitem_1 = require('./menuitem');
 /**
- * `p-MenuBar`: the class name added to a menu bar widget.
- */
-exports.MENU_BAR_CLASS = 'p-MenuBar';
-/**
- * `p-MenuBar-content`: the class name assigned to a content node.
- */
-exports.CONTENT_CLASS = 'p-MenuBar-content';
-/**
- * `p-MenuBar-menu`: the class name added to an open menu.
- */
-exports.MENU_CLASS = 'p-MenuBar-menu';
-/**
- * `p-MenuBar-item`: the class name assigned to a menu item.
- */
-exports.MENU_ITEM_CLASS = 'p-MenuBar-item';
-/**
- * `p-MenuBar-item-icon`: the class name added to an item icon cell.
- */
-exports.ICON_CLASS = 'p-MenuBar-item-icon';
-/**
- * `p-MenuBar-item-text`: the class name added to an item text cell.
- */
-exports.TEXT_CLASS = 'p-MenuBar-item-text';
-/**
- * `p-mod-separator-type`: the class name added to a separator item.
- */
-exports.SEPARATOR_TYPE_CLASS = 'p-mod-separator-type';
-/**
- * `p-mod-active`: the class name added to an active menu bar and item.
- */
-exports.ACTIVE_CLASS = 'p-mod-active';
-/**
- * `p-mod-disabled`: the class name added to a disabled item.
- */
-exports.DISABLED_CLASS = 'p-mod-disabled';
-/**
- * `p-mod-hidden`: the class name added to a hidden item.
- */
-exports.HIDDEN_CLASS = 'p-mod-hidden';
-/**
- * `p-mod-force-hidden`: the class name added to a force hidden item.
- */
-exports.FORCE_HIDDEN_CLASS = 'p-mod-force-hidden';
-/**
  * A widget which displays menu items as a menu bar.
  *
  * #### Notes
@@ -3165,7 +3117,7 @@ var MenuBar = (function (_super) {
         _super.call(this);
         this._active = false;
         this._childMenu = null;
-        this.addClass(exports.MENU_BAR_CLASS);
+        this.addClass(MenuBar.p_MenuBar);
     }
     /**
      * Create the DOM node for a menu bar.
@@ -3173,7 +3125,7 @@ var MenuBar = (function (_super) {
     MenuBar.createNode = function () {
         var node = document.createElement('div');
         var content = document.createElement('div');
-        content.className = exports.CONTENT_CLASS;
+        content.className = MenuBar.p_MenuBar_content;
         node.appendChild(content);
         return node;
     };
@@ -3265,9 +3217,9 @@ var MenuBar = (function (_super) {
         var oldNode = this._itemNodeAt(old);
         var newNode = this._itemNodeAt(index);
         if (oldNode)
-            oldNode.classList.remove(exports.ACTIVE_CLASS);
+            oldNode.classList.remove(MenuBar.p_mod_active);
         if (newNode)
-            newNode.classList.add(exports.ACTIVE_CLASS);
+            newNode.classList.add(MenuBar.p_mod_active);
     };
     /**
      * A method invoked when a menu item should be opened.
@@ -3317,7 +3269,7 @@ var MenuBar = (function (_super) {
             if (!items[k1].isSeparatorType) {
                 break;
             }
-            nodes[k1].classList.add(exports.FORCE_HIDDEN_CLASS);
+            nodes[k1].classList.add(MenuBar.p_mod_force_hidden);
         }
         // Force hide the trailing visible separators.
         for (var k2 = count - 1; k2 >= 0; --k2) {
@@ -3327,7 +3279,7 @@ var MenuBar = (function (_super) {
             if (!items[k2].isSeparatorType) {
                 break;
             }
-            nodes[k2].classList.add(exports.FORCE_HIDDEN_CLASS);
+            nodes[k2].classList.add(MenuBar.p_mod_force_hidden);
         }
         // Force hide the remaining consecutive visible separators.
         var hide = false;
@@ -3336,7 +3288,7 @@ var MenuBar = (function (_super) {
                 continue;
             }
             if (hide && items[k1].isSeparatorType) {
-                nodes[k1].classList.add(exports.FORCE_HIDDEN_CLASS);
+                nodes[k1].classList.add(MenuBar.p_mod_force_hidden);
             }
             else {
                 hide = items[k1].isSeparatorType;
@@ -3501,7 +3453,7 @@ var MenuBar = (function (_super) {
     MenuBar.prototype._openChildMenu = function (menu, node) {
         var rect = node.getBoundingClientRect();
         this._childMenu = menu;
-        menu.addClass(exports.MENU_CLASS);
+        menu.addClass(MenuBar.p_MenuBar_menu);
         menu.open(rect.left, rect.bottom, false, true);
         menu.closed.connect(this._onMenuClosed, this);
     };
@@ -3513,7 +3465,7 @@ var MenuBar = (function (_super) {
         if (menu) {
             this._childMenu = null;
             menu.closed.disconnect(this._onMenuClosed, this);
-            menu.removeClass(exports.MENU_CLASS);
+            menu.removeClass(MenuBar.p_MenuBar_menu);
             menu.close(true);
         }
     };
@@ -3529,7 +3481,7 @@ var MenuBar = (function (_super) {
             return;
         }
         this._active = true;
-        this.addClass(exports.ACTIVE_CLASS);
+        this.addClass(MenuBar.p_mod_active);
         setTimeout(function () {
             _this.node.removeEventListener('mousedown', _this);
             document.addEventListener('mousedown', _this, true);
@@ -3549,7 +3501,7 @@ var MenuBar = (function (_super) {
             return;
         }
         this._active = false;
-        this.removeClass(exports.ACTIVE_CLASS);
+        this.removeClass(MenuBar.p_mod_active);
         setTimeout(function () {
             _this.node.addEventListener('mousedown', _this);
             document.removeEventListener('mousedown', _this, true);
@@ -3592,7 +3544,7 @@ var MenuBar = (function (_super) {
      */
     MenuBar.prototype._onMenuClosed = function (sender) {
         sender.closed.disconnect(this._onMenuClosed, this);
-        sender.removeClass(exports.MENU_CLASS);
+        sender.removeClass(MenuBar.p_MenuBar_menu);
         this._childMenu = null;
         this._reset();
     };
@@ -3602,6 +3554,46 @@ var MenuBar = (function (_super) {
     MenuBar.prototype._onItemChanged = function (sender) {
         this.update();
     };
+    /**
+     * The class name added to a menu bar widget.
+     */
+    MenuBar.p_MenuBar = 'p-MenuBar';
+    /**
+     * The class name added to a menu bar content node.
+     */
+    MenuBar.p_MenuBar_content = 'p-MenuBar-content';
+    /**
+     * The class name added to an open menu bar menu.
+     */
+    MenuBar.p_MenuBar_menu = 'p-MenuBar-menu';
+    /**
+     * The class name added to a menu item node.
+     */
+    MenuBar.p_MenuBar_item = 'p-MenuBar-item';
+    /**
+     * The class name added to a menu item icon cell.
+     */
+    MenuBar.p_MenuBar_item_icon = 'p-MenuBar-item-icon';
+    /**
+     * The class name added to a menu item text cell.
+     */
+    MenuBar.p_MenuBar_item_text = 'p-MenuBar-item-text';
+    /**
+     * The modifier class name added to a separator type menu item.
+     */
+    MenuBar.p_mod_separator_type = 'p-mod-separator-type';
+    /**
+     * The modifier class name added to an active menu bar and menu item.
+     */
+    MenuBar.p_mod_active = 'p-mod-active';
+    /**
+     * The modifier class name added to a disabled menu item.
+     */
+    MenuBar.p_mod_disabled = 'p-mod-disabled';
+    /**
+     * The modifier class name added to a force hidden menu item.
+     */
+    MenuBar.p_mod_force_hidden = 'p-mod-force-hidden';
     return MenuBar;
 })(menubase_1.MenuBase);
 exports.MenuBar = MenuBar;
@@ -3615,15 +3607,15 @@ function createMenuItem(template) {
  * Create the complete DOM node class name for a MenuItem.
  */
 function createItemClassName(item) {
-    var parts = [exports.MENU_ITEM_CLASS];
+    var parts = [MenuBar.p_MenuBar_item];
     if (item.isSeparatorType) {
-        parts.push(exports.SEPARATOR_TYPE_CLASS);
+        parts.push(MenuBar.p_mod_separator_type);
     }
     if (item.disabled) {
-        parts.push(exports.DISABLED_CLASS);
+        parts.push(MenuBar.p_mod_disabled);
     }
     if (item.hidden) {
-        parts.push(exports.HIDDEN_CLASS);
+        parts.push(MenuBar.p_mod_hidden);
     }
     if (item.className) {
         parts.push(item.className);
@@ -3638,8 +3630,8 @@ function createItemNode(item) {
     var icon = document.createElement('span');
     var text = document.createElement('span');
     node.className = createItemClassName(item);
-    icon.className = exports.ICON_CLASS;
-    text.className = exports.TEXT_CLASS;
+    icon.className = MenuBar.p_MenuBar_item_icon;
+    text.className = MenuBar.p_MenuBar_item_text;
     if (!item.isSeparatorType) {
         text.textContent = item.text.replace(/&/g, '');
     }
@@ -4200,8 +4192,8 @@ var MenuItem = (function () {
     /**
      * The property descriptor for the menu item text.
      *
-     * The text may have an ampersand `&` before the character
-     * to use as the mnemonic for the menu item.
+     * The text may have an ampersand `&` before the character to use
+     * as the mnemonic for the menu item.
      *
      * **See also:** [[text]]
      */
@@ -4900,6 +4892,7 @@ var Property = (function () {
         this._coerce = options.coerce;
         this._compare = options.compare;
         this._changed = options.changed;
+        this._metadata = options.metadata || {};
     }
     /**
      * Get a bound [[changedSignal]] for a given property owner.
@@ -4915,6 +4908,19 @@ var Property = (function () {
     Property.getChanged = function (owner) {
         return Property.changedSignal.bind(owner);
     };
+    Object.defineProperty(Property.prototype, "metadata", {
+        /**
+         * Get the metadata for the property.
+         *
+         * #### Notes
+         * This is a read-only property.
+         */
+        get: function () {
+            return this._metadata;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Get the current value of the property for a given owner.
      *
@@ -5867,7 +5873,7 @@ function removeFromSendersList(conn) {
 }
 
 },{}],22:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-StackedPanel {\n  position: relative;\n}\n.p-StackedPanel > .p-Widget {\n  position: absolute;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-stackedpanel/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],23:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -5888,10 +5894,6 @@ var phosphor_signaling_1 = require('phosphor-signaling');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
- * `p-StackedPanel`: the class name added to StackedPanel instances.
- */
-exports.STACKED_PANEL_CLASS = 'p-StackedPanel';
-/**
  * A layout widget where only one child widget is visible at a time.
  */
 var StackedPanel = (function (_super) {
@@ -5901,7 +5903,7 @@ var StackedPanel = (function (_super) {
      */
     function StackedPanel() {
         _super.call(this);
-        this.addClass(exports.STACKED_PANEL_CLASS);
+        this.addClass(StackedPanel.p_StackedPanel);
     }
     Object.defineProperty(StackedPanel.prototype, "currentChanged", {
         /**
@@ -6084,6 +6086,10 @@ var StackedPanel = (function (_super) {
         this.currentChanged.emit({ index: this.childIndex(val), widget: val });
     };
     /**
+     * The class name added to StackedPanel instances.
+     */
+    StackedPanel.p_StackedPanel = 'p-StackedPanel';
+    /**
      * A signal emitted when the current widget is changed.
      *
      * **See also:** [[currentChanged]]
@@ -6112,7 +6118,7 @@ var StackedPanel = (function (_super) {
 exports.StackedPanel = StackedPanel;
 
 },{"./index.css":22,"phosphor-messaging":17,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":30}],24:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close-icon {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-content {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  display: flex;\n  flex-direction: row;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging > .p-TabBar-content > .p-Tab.p-mod-active {\n  transition: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],25:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -6146,30 +6152,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var phosphor_nodewrapper_1 = require('phosphor-nodewrapper');
 /**
- * `p-Tab`: the class name added to Tab instances.
- */
-exports.TAB_CLASS = 'p-Tab';
-/**
- * `p-Tab-text`: the class name assigned to a tab text node.
- */
-exports.TEXT_CLASS = 'p-Tab-text';
-/**
- * `p-Tab-icon`: the class name assigned to a tab icon node.
- */
-exports.ICON_CLASS = 'p-Tab-icon';
-/**
- * `p-Tab-close-icon`: the class name assigned to a tab close icon node.
- */
-exports.CLOSE_ICON_CLASS = 'p-Tab-close-icon';
-/**
- * `p-mod-selected`: the class name added to a selected tab.
- */
-exports.SELECTED_CLASS = 'p-mod-selected';
-/**
- * `p-mod-closable`: the class name added to a closable tab.
- */
-exports.CLOSABLE_CLASS = 'p-mod-closable';
-/**
  * An object which manages a node for a tab bar.
  */
 var Tab = (function (_super) {
@@ -6181,7 +6163,7 @@ var Tab = (function (_super) {
      */
     function Tab(text) {
         _super.call(this);
-        this.addClass(exports.TAB_CLASS);
+        this.addClass(Tab.p_Tab);
         if (text)
             this.text = text;
     }
@@ -6192,13 +6174,13 @@ var Tab = (function (_super) {
         var node = document.createElement('div');
         var icon = document.createElement('span');
         var text = document.createElement('span');
-        var closeIcon = document.createElement('span');
-        icon.className = exports.ICON_CLASS;
-        text.className = exports.TEXT_CLASS;
-        closeIcon.className = exports.CLOSE_ICON_CLASS;
+        var close = document.createElement('span');
+        icon.className = Tab.p_Tab_icon;
+        text.className = Tab.p_Tab_text;
+        close.className = Tab.p_Tab_close;
         node.appendChild(icon);
         node.appendChild(text);
-        node.appendChild(closeIcon);
+        node.appendChild(close);
         return node;
     };
     Object.defineProperty(Tab.prototype, "text", {
@@ -6222,13 +6204,13 @@ var Tab = (function (_super) {
          * Get whether the tab is selected.
          */
         get: function () {
-            return this.hasClass(exports.SELECTED_CLASS);
+            return this.hasClass(Tab.p_mod_selected);
         },
         /**
          * Set whether the tab is selected.
          */
         set: function (selected) {
-            this.toggleClass(exports.SELECTED_CLASS, selected);
+            this.toggleClass(Tab.p_mod_selected, selected);
         },
         enumerable: true,
         configurable: true
@@ -6238,13 +6220,13 @@ var Tab = (function (_super) {
          * Get whether the tab is closable.
          */
         get: function () {
-            return this.hasClass(exports.CLOSABLE_CLASS);
+            return this.hasClass(Tab.p_mod_closable);
         },
         /**
          * Set whether the tab is closable.
          */
         set: function (closable) {
-            this.toggleClass(exports.CLOSABLE_CLASS, closable);
+            this.toggleClass(Tab.p_mod_closable, closable);
         },
         enumerable: true,
         configurable: true
@@ -6259,6 +6241,30 @@ var Tab = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * The class name added to Tab instances.
+     */
+    Tab.p_Tab = 'p-Tab';
+    /**
+     * The class name added to a tab text node.
+     */
+    Tab.p_Tab_text = 'p-Tab-text';
+    /**
+     * The class name added to a tab icon node.
+     */
+    Tab.p_Tab_icon = 'p-Tab-icon';
+    /**
+     * The class name added to a tab close node.
+     */
+    Tab.p_Tab_close = 'p-Tab-close';
+    /**
+     * The class name added to a selected tab.
+     */
+    Tab.p_mod_selected = 'p-mod-selected';
+    /**
+     * The class name added to a closable tab.
+     */
+    Tab.p_mod_closable = 'p-mod-closable';
     return Tab;
 })(phosphor_nodewrapper_1.NodeWrapper);
 exports.Tab = Tab;
@@ -6282,38 +6288,6 @@ var phosphor_domutil_1 = require('phosphor-domutil');
 var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_signaling_1 = require('phosphor-signaling');
 var phosphor_widget_1 = require('phosphor-widget');
-/**
- * `p-TabBar`: the class name added to TabBar instances.
- */
-exports.TAB_BAR_CLASS = 'p-TabBar';
-/**
- * `p-TabBar-header`: the class name added to the tab bar header div.
- */
-exports.HEADER_CLASS = 'p-TabBar-header';
-/**
- * `p-TabBar-content`: the class name added to the tab bar content div.
- */
-exports.CONTENT_CLASS = 'p-TabBar-content';
-/**
- * `p-TabBar-footer`: the class name added to the tab bar footer div.
- */
-exports.FOOTER_CLASS = 'p-TabBar-footer';
-/**
- * `p-mod-dragging`: a class name added to the tab bar when dragging.
- */
-exports.DRAGGING_CLASS = 'p-mod-dragging';
-/**
- * `p-mod-active`: a class name added to the active drag tab.
- */
-exports.ACTIVE_CLASS = 'p-mod-active';
-/**
- * `p-mod-first`: a class name added to the first tab in the tab bar.
- */
-exports.FIRST_CLASS = 'p-mod-first';
-/**
- * `p-mod-last`: a class name adde to the last tab in the tab bar.
- */
-exports.LAST_CLASS = 'p-mod-last';
 /**
  * The start drag distance threshold.
  */
@@ -6343,7 +6317,7 @@ var TabBar = (function (_super) {
         this._tabs = [];
         this._previousTab = null;
         this._dragData = null;
-        this.addClass(exports.TAB_BAR_CLASS);
+        this.addClass(TabBar.p_TabBar);
     }
     /**
      * Create the DOM node for a tab bar.
@@ -6353,9 +6327,9 @@ var TabBar = (function (_super) {
         var header = document.createElement('div');
         var content = document.createElement('div');
         var footer = document.createElement('div');
-        header.className = exports.HEADER_CLASS;
-        content.className = exports.CONTENT_CLASS;
-        footer.className = exports.FOOTER_CLASS;
+        header.className = TabBar.p_TabBar_header;
+        content.className = TabBar.p_TabBar_content;
+        footer.className = TabBar.p_TabBar_footer;
         node.appendChild(header);
         node.appendChild(content);
         node.appendChild(footer);
@@ -6703,8 +6677,8 @@ var TabBar = (function (_super) {
         document.addEventListener('mouseup', this, true);
         document.addEventListener('mousemove', this, true);
         // Add the dragging style classes.
-        tab.addClass(exports.ACTIVE_CLASS);
-        this.addClass(exports.DRAGGING_CLASS);
+        tab.addClass(TabBar.p_mod_active);
+        this.addClass(TabBar.p_mod_dragging);
         // Update the drag tab position.
         this._updateDragPosition(clientX);
         return true;
@@ -6843,8 +6817,8 @@ var TabBar = (function (_super) {
             data.cursorGrab = phosphor_domutil_1.overrideCursor('default');
             data.dragActive = true;
             // Add the dragging style classes.
-            data.tab.addClass(exports.ACTIVE_CLASS);
-            this.addClass(exports.DRAGGING_CLASS);
+            data.tab.addClass(TabBar.p_mod_active);
+            this.addClass(TabBar.p_mod_dragging);
         }
         // Check to see if the detach threshold has been exceeded, and
         // emit the detach request signal the first time that occurrs.
@@ -6909,7 +6883,7 @@ var TabBar = (function (_super) {
         var adjustedLeft = Math.max(-data.tabLeft, Math.min(idealLeft, maxLeft));
         data.tab.node.style.left = adjustedLeft + 'px';
         // Remove the active class from the tab so it can be transitioned.
-        data.tab.removeClass(exports.ACTIVE_CLASS);
+        data.tab.removeClass(TabBar.p_mod_active);
         // Complete the release on a timer to allow the tab to transition.
         setTimeout(function () {
             // Bail if the drag data has been changed or released.
@@ -6924,8 +6898,8 @@ var TabBar = (function (_super) {
             }
             // Clear the cursor grab and drag styles.
             data.cursorGrab.dispose();
-            data.tab.removeClass(exports.ACTIVE_CLASS);
-            _this.removeClass(exports.DRAGGING_CLASS);
+            data.tab.removeClass(TabBar.p_mod_active);
+            _this.removeClass(TabBar.p_mod_dragging);
             // Finally, move the drag tab to its final index location.
             if (data.tabTargetIndex !== -1) {
                 _this._moveTab(data.tabIndex, data.tabTargetIndex);
@@ -6996,8 +6970,8 @@ var TabBar = (function (_super) {
         }
         // Clear the cursor grab and drag styles.
         data.cursorGrab.dispose();
-        data.tab.removeClass(exports.ACTIVE_CLASS);
-        this.removeClass(exports.DRAGGING_CLASS);
+        data.tab.removeClass(TabBar.p_mod_active);
+        this.removeClass(TabBar.p_mod_dragging);
     };
     /**
      * Insert a new tab into the tab bar at the given index.
@@ -7055,9 +7029,9 @@ var TabBar = (function (_super) {
         tab.selected = false;
         tab.node.style.left = '';
         tab.node.style.zIndex = '';
-        tab.removeClass(exports.ACTIVE_CLASS);
-        tab.removeClass(exports.FIRST_CLASS);
-        tab.removeClass(exports.LAST_CLASS);
+        tab.removeClass(TabBar.p_mod_active);
+        tab.removeClass(TabBar.p_mod_first);
+        tab.removeClass(TabBar.p_mod_last);
         // Update the selected tab. If the removed tab was the selected tab,
         // select the next best tab by starting with the previous tab, then
         // the next sibling, and finally the previous sibling. Otherwise,
@@ -7087,8 +7061,8 @@ var TabBar = (function (_super) {
         for (var i = 0, n = this._tabs.length, k = n - 1; i < n; ++i) {
             var tab = this._tabs[i];
             var style = tab.node.style;
-            tab.removeClass(exports.FIRST_CLASS);
-            tab.removeClass(exports.LAST_CLASS);
+            tab.removeClass(TabBar.p_mod_first);
+            tab.removeClass(TabBar.p_mod_last);
             style.order = i + '';
             if (tab === selectedTab) {
                 style.zIndex = n + '';
@@ -7097,8 +7071,8 @@ var TabBar = (function (_super) {
                 style.zIndex = k-- + '';
             }
         }
-        this._tabs[0].addClass(exports.FIRST_CLASS);
-        this._tabs[n - 1].addClass(exports.LAST_CLASS);
+        this._tabs[0].addClass(TabBar.p_mod_first);
+        this._tabs[n - 1].addClass(TabBar.p_mod_last);
     };
     /**
      * The change handler for the [[selectedTabProperty]].
@@ -7112,6 +7086,38 @@ var TabBar = (function (_super) {
         this._updateTabOrdering();
         this.tabSelected.emit({ index: this.tabIndex(tab), tab: tab });
     };
+    /**
+     * The class name added to TabBar instances.
+     */
+    TabBar.p_TabBar = 'p-TabBar';
+    /**
+     * The class name added to the tab bar header div.
+     */
+    TabBar.p_TabBar_header = 'p-TabBar-header';
+    /**
+     * The class name added to the tab bar content div.
+     */
+    TabBar.p_TabBar_content = 'p-TabBar-content';
+    /**
+     * The class name added to the tab bar footer div.
+     */
+    TabBar.p_TabBar_footer = 'p-TabBar-footer';
+    /**
+     * A class name added to the tab bar when dragging.
+     */
+    TabBar.p_mod_dragging = 'p-mod-dragging';
+    /**
+     * A class name added to the active drag tab.
+     */
+    TabBar.p_mod_active = 'p-mod-active';
+    /**
+     * A class name added to the first tab in the tab bar.
+     */
+    TabBar.p_mod_first = 'p-mod-first';
+    /**
+     * A class name adde to the last tab in the tab bar.
+     */
+    TabBar.p_mod_last = 'p-mod-last';
     /**
      * A signal emitted when a tab is moved.
      *
@@ -7277,10 +7283,6 @@ var phosphor_signaling_1 = require('phosphor-signaling');
 var phosphor_stackedpanel_1 = require('phosphor-stackedpanel');
 var tabbar_1 = require('./tabbar');
 /**
- * `p-TabPanel`: the class name added to TabPanel instances.
- */
-exports.TAB_PANEL_CLASS = 'p-TabPanel';
-/**
  * A panel which provides a tabbed layout for child widgets.
  *
  * The `TabPanel` provides a convenient combination of a `TabBar` and
@@ -7299,7 +7301,7 @@ var TabPanel = (function (_super) {
      */
     function TabPanel() {
         _super.call(this);
-        this.addClass(exports.TAB_PANEL_CLASS);
+        this.addClass(TabPanel.p_TabPanel);
         var tabs = new tabbar_1.TabBar();
         tabs.tabMoved.connect(this._onTabMoved, this);
         tabs.tabSelected.connect(this._onTabSelected, this);
@@ -7604,6 +7606,10 @@ var TabPanel = (function (_super) {
         this._tabs.removeTabAt(args.index);
     };
     /**
+     * The class name added to TabPanel instances.
+     */
+    TabPanel.p_TabPanel = 'p-TabPanel';
+    /**
      * A signal emitted when the current widget is changed.
      *
      * **See also:** [[currentChanged]]
@@ -7653,14 +7659,6 @@ var phosphor_nodewrapper_1 = require('phosphor-nodewrapper');
 var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_signaling_1 = require('phosphor-signaling');
 require('./index.css');
-/**
- * `p-Widget`: the class name added to Widget instances.
- */
-exports.WIDGET_CLASS = 'p-Widget';
-/**
- * `p-mod-hidden`: the class name added to hidden widgets.
- */
-exports.HIDDEN_CLASS = 'p-mod-hidden';
 /**
  * A singleton `'update-request'` message.
  *
@@ -7760,9 +7758,6 @@ var Widget = (function (_super) {
     __extends(Widget, _super);
     /**
      * Construct a new widget.
-     *
-     * #### Notes
-     * The [[WIDGET_CLASS]] is added to the widget during construction.
      */
     function Widget() {
         _super.call(this);
@@ -7772,7 +7767,7 @@ var Widget = (function (_super) {
         this._box = null;
         this._rect = null;
         this._limits = null;
-        this.addClass(exports.WIDGET_CLASS);
+        this.addClass(Widget.p_Widget);
     }
     /**
      * Dispose of the widget and its descendant widgets.
@@ -8624,6 +8619,14 @@ var Widget = (function (_super) {
      */
     Widget.prototype.onChildHidden = function (msg) { };
     /**
+     * The class name added to Widget instances.
+     */
+    Widget.p_Widget = 'p-Widget';
+    /**
+     * The modifier class name added to hidden widgets.
+     */
+    Widget.p_mod_hidden = 'p-mod-hidden';
+    /**
      * A signal emitted when the widget is disposed.
      *
      * **See also:** [[disposed]], [[isDisposed]]
@@ -8638,9 +8641,9 @@ var Widget = (function (_super) {
      * Hiding a widget will cause the widget and all of its descendants
      * to become not-visible.
      *
-     * This property will toggle the presence of [[HIDDEN_CLASS]] on a
-     * widget according to the property value. It will also dispatch
-     * `'after-show'` and `'before-hide'` messages as appropriate.
+     * This property will toggle the presence of [[p_mod_hidden]] on a
+     * widget. It will also dispatch `'after-show'` and `'before-hide'`
+     * messages as appropriate.
      *
      * The default property value is `false`.
      *
@@ -8887,13 +8890,13 @@ function onHiddenChanged(owner, old, hidden) {
         if (owner.isAttached && (!owner.parent || owner.parent.isVisible)) {
             phosphor_messaging_1.sendMessage(owner, exports.MSG_BEFORE_HIDE);
         }
-        owner.addClass(exports.HIDDEN_CLASS);
+        owner.addClass(Widget.p_mod_hidden);
         if (owner.parent) {
             phosphor_messaging_1.sendMessage(owner.parent, new ChildMessage('child-hidden', owner));
         }
     }
     else {
-        owner.removeClass(exports.HIDDEN_CLASS);
+        owner.removeClass(Widget.p_mod_hidden);
         if (owner.isAttached && (!owner.parent || owner.parent.isVisible)) {
             phosphor_messaging_1.sendMessage(owner, exports.MSG_AFTER_SHOW);
         }
