@@ -6,12 +6,12 @@
     "postinstall": "npm dedupe"
   },
   "dependencies": {
-    "phosphor-dockpanel": "^0.9.1",
-    "phosphor-menus": "^0.9.4",
-    "phosphor-messaging": "^1.0.4",
-    "phosphor-splitpanel": "^0.9.5",
-    "phosphor-tabs": "^0.9.6",
-    "phosphor-widget": "^0.9.9"
+    "phosphor-dockpanel": "^0.9.2",
+    "phosphor-menus": "^0.9.5",
+    "phosphor-messaging": "^1.0.5",
+    "phosphor-splitpanel": "^0.9.7",
+    "phosphor-tabs": "^0.9.7",
+    "phosphor-widget": "^0.9.11"
   },
   "devDependencies": {
     "browserify": "^11.2.0",

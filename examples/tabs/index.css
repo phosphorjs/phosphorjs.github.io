@@ -81,12 +81,12 @@ body {
 }
 
 
-.p-Tab.p-mod-closable > .p-Tab-close-icon {
+.p-Tab.p-mod-closable > .p-Tab-close {
   margin-left: 4px;
 }
 
 
-.p-Tab.p-mod-closable > .p-Tab-close-icon:before {
+.p-Tab.p-mod-closable > .p-Tab-close:before {
   content: '\f00d';
   font-family: FontAwesome;
 }

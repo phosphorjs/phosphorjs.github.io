@@ -112,7 +112,7 @@ body {
 
 
 .p-Menu-item-icon::before,
-.p-Menu-item-submenu-icon::before {
+.p-Menu-item-submenu::before {
   font-family: FontAwesome;
 }
 
@@ -122,7 +122,7 @@ body {
 }
 
 
-.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu-icon::before {
+.p-Menu-item.p-mod-submenu > .p-Menu-item-submenu::before {
   content: '\f0da';
 }
 
