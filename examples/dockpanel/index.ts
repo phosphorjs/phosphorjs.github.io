@@ -16,11 +16,11 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  Tab, TabPanel
+  TabPanel
 } from 'phosphor-tabs';
 
 import {
-  ResizeMessage, Widget, attachWidget
+  ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -73,9 +73,8 @@ function createContent(title: string): Widget {
   widget.addClass('content');
   widget.addClass(title.toLowerCase());
 
-  var tab = new Tab(title);
-  tab.closable = true;
-  DockPanel.setTab(widget, tab);
+  widget.title.text = title;
+  widget.title.closable = true;
 
   return widget;
 }
@@ -108,6 +107,7 @@ function main(): void {
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
+  cmSource.title.text = 'Source';
 
   var cmCss = new CodeMirrorWidget({
     mode: 'text/css',
@@ -115,26 +115,24 @@ function main(): void {
     tabSize: 2,
   });
   cmCss.loadTarget('./index.css');
+  cmCss.title.text = 'CSS';
 
-  DockPanel.setTab(cmSource, new Tab('Source'));
-  DockPanel.setTab(cmCss, new Tab('CSS'));
+  panel.insertLeft(cmSource);
+  panel.insertRight(b1, cmSource);
+  panel.insertBottom(y1, b1);
+  panel.insertLeft(g1, y1);
 
-  panel.addWidget(cmSource);
-  panel.addWidget(b1, DockPanel.SplitRight, cmSource);
-  panel.addWidget(y1, DockPanel.SplitBottom, b1);
-  panel.addWidget(g1, DockPanel.SplitLeft, y1);
+  panel.insertBottom(b2);
 
-  panel.addWidget(b2, DockPanel.SplitBottom);
+  panel.insertTabAfter(cmCss, cmSource);
+  panel.insertTabAfter(r1, cmCss);
+  panel.insertTabBefore(g2, b2);
+  panel.insertTabBefore(y2, g2);
+  panel.insertTabBefore(g3, y2);
+  panel.insertTabBefore(r2, b1);
+  panel.insertTabBefore(r3, y1);
 
-  panel.addWidget(cmCss, DockPanel.TabAfter, cmSource);
-  panel.addWidget(r1, DockPanel.TabAfter, cmCss);
-  panel.addWidget(g2, DockPanel.TabBefore, b2);
-  panel.addWidget(y2, DockPanel.TabBefore, g2);
-  panel.addWidget(g3, DockPanel.TabBefore, y2);
-  panel.addWidget(r2, DockPanel.TabBefore, b1);
-  panel.addWidget(r3, DockPanel.TabBefore, y1);
-
-  attachWidget(panel, document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => panel.update();
 }

@@ -12,11 +12,11 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  Tab, TabPanel
+  TabPanel
 } from 'phosphor-tabs';
 
 import {
-  ResizeMessage, Widget, attachWidget
+  ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -109,6 +109,7 @@ class CodeMirrorWidget extends Widget {
 function main(): void {
   var model = new app.TodoModel('react-todos');
   var todo = new TodoWidget(model);
+  todo.title.text = 'Demo';
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
@@ -116,6 +117,7 @@ function main(): void {
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
+  cmSource.title.text = 'Source';
 
   var cmCss = new CodeMirrorWidget({
     mode: 'text/css',
@@ -123,16 +125,13 @@ function main(): void {
     tabSize: 2,
   });
   cmCss.loadTarget('./index.css');
-
-  TabPanel.setTab(todo, new Tab('Demo'));
-  TabPanel.setTab(cmSource, new Tab('Source'));
-  TabPanel.setTab(cmCss, new Tab('CSS'));
+  cmCss.title.text = 'CSS';
 
   var panel = new TabPanel()
   panel.id = 'main';
-  panel.widgets = [todo, cmSource, cmCss];
+  panel.widgets.assign([todo, cmSource, cmCss]);
 
-  attachWidget(panel, document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => panel.update();
 }
