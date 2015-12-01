@@ -114,6 +114,7 @@ function main(): void {
   btn.onclick = () => addContent(panel);
 
   var demoArea = new Widget();
+  demoArea.title.text = 'Demo';
   demoArea.node.appendChild(btn);
 
   var cmSource = new CodeMirrorWidget({
