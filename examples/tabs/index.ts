@@ -12,11 +12,11 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  Tab, TabPanel
+  TabPanel
 } from 'phosphor-tabs';
 
 import {
-  ResizeMessage, Widget, attachWidget
+  ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -72,10 +72,8 @@ class ContentWidget extends Widget {
     super();
     this.addClass('content');
     this.addClass(title.toLowerCase());
-
-    var tab = new Tab(title);
-    tab.closable = true;
-    TabPanel.setTab(this, tab);
+    this.title.text = title;
+    this.title.closable = true;
   }
 
   protected onCloseRequest(msg: Message): void {
@@ -99,7 +97,7 @@ var nextTitle = (() => {
  */
 function addContent(panel: TabPanel): void {
   var content = new ContentWidget(nextTitle());
-  panel.addWidget(content);
+  panel.children.add(content);
 }
 
 
@@ -109,6 +107,7 @@ function addContent(panel: TabPanel): void {
 function main(): void {
   var panel = new TabPanel();
   panel.id = 'main';
+  panel.title.text = 'Demo';
 
   var btn = document.createElement('button');
   btn.textContent = 'Add New Tab';
@@ -123,6 +122,7 @@ function main(): void {
     tabSize: 2
   });
   cmSource.loadTarget('./index.ts');
+  cmSource.title.text = 'Source';
 
   var cmCss = new CodeMirrorWidget({
     mode: 'text/css',
@@ -130,14 +130,11 @@ function main(): void {
     tabSize: 2
   });
   cmCss.loadTarget('./index.css');
+  cmCss.title.text = 'CSS';
 
-  TabPanel.setTab(demoArea, new Tab('Demo'));
-  TabPanel.setTab(cmSource, new Tab('Source'));
-  TabPanel.setTab(cmCss, new Tab('CSS'));
+  panel.widgets.assign([demoArea, cmSource, cmCss]);
 
-  panel.widgets = [demoArea, cmSource, cmCss];
-
-  attachWidget(panel, document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => panel.update();
 }

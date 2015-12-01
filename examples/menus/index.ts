@@ -16,11 +16,11 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  Tab, TabPanel
+  TabPanel
 } from 'phosphor-tabs';
 
 import {
-  ResizeMessage, Widget, attachWidget
+  ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -343,6 +343,7 @@ function main(): void {
     '<h2>Right click this panel for a context menu.</h2>' +
     '<h3>Clicked Item: <span id="log-span"></span></h3>'
   );
+  contextArea.title.text = 'Demo';
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/javascript',
@@ -350,6 +351,7 @@ function main(): void {
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
+  cmSource.title.text = 'Source';
 
   var cmCss = new CodeMirrorWidget({
     mode: 'text/css',
@@ -357,10 +359,7 @@ function main(): void {
     tabSize: 2,
   });
   cmCss.loadTarget('./index.css');
-
-  TabPanel.setTab(contextArea, new Tab('Demo'));
-  TabPanel.setTab(cmSource, new Tab('Source'));
-  TabPanel.setTab(cmCss, new Tab('CSS'));
+  cmCss.title.text = 'CSS';
 
   var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
   contextArea.node.addEventListener('contextmenu', (event: MouseEvent) => {
@@ -374,10 +373,10 @@ function main(): void {
 
   var panel = new TabPanel();
   panel.id = 'main';
-  panel.widgets = [contextArea, cmSource, cmCss];
+  panel.children.assign([contextArea, cmSource, cmCss]);
 
-  attachWidget(menuBar, document.body);
-  attachWidget(panel, document.body);
+  Widget.attach(menuBar, document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => panel.update();
 }

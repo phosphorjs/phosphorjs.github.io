@@ -16,11 +16,11 @@ import {
 } from 'phosphor-splitpanel';
 
 import {
-  Tab, TabPanel
+  TabPanel
 } from 'phosphor-tabs';
 
 import {
-  ResizeMessage, Widget, attachWidget
+  Panel, ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -29,7 +29,7 @@ import './index.css';
 /**
  * A widget which uses CSS flexbox to layout its children.
  */
-class MyVBox extends Widget {
+class MyVBox extends Panel {
 
   constructor() {
     super();
@@ -124,10 +124,11 @@ function main(): void {
   var blue4 = createContent('blue');
 
   var split = new SplitPanel();
-  split.children = [blue1, blue2, blue3, blue4];
+  split.children.assign([blue1, blue2, blue3, blue4]);
 
   var box = new MyVBox();
-  box.children = [red, split, yellow, green];
+  box.children.assign([red, split, yellow, green]);
+  box.title.text = 'Demo';
 
   var cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
@@ -135,6 +136,7 @@ function main(): void {
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
+  cmSource.title.text = 'Source';
 
   var cmCss = new CodeMirrorWidget({
     mode: 'text/css',
@@ -142,16 +144,13 @@ function main(): void {
     tabSize: 2,
   });
   cmCss.loadTarget('./index.css');
-
-  TabPanel.setTab(box, new Tab('Demo'));
-  TabPanel.setTab(cmSource, new Tab('Source'));
-  TabPanel.setTab(cmCss, new Tab('CSS'));
+  cmCss.title.text = 'CSS';
 
   var panel = new TabPanel()
   panel.id = 'main';
-  panel.widgets = [box, cmSource, cmCss];
+  panel.widgets.assign([box, cmSource, cmCss]);
 
-  attachWidget(panel, document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => panel.update();
 }
