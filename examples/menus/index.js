@@ -320,21 +320,21 @@ function main() {
     contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.' +
         '<h2>Right click this panel for a context menu.</h2>' +
         '<h3>Clicked Item: <span id="log-span"></span></h3>');
+    contextArea.title.text = 'Demo';
     var cmSource = new CodeMirrorWidget({
         mode: 'text/javascript',
         lineNumbers: true,
         tabSize: 2,
     });
     cmSource.loadTarget('./index.ts');
+    cmSource.title.text = 'Source';
     var cmCss = new CodeMirrorWidget({
         mode: 'text/css',
         lineNumbers: true,
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    phosphor_tabs_1.TabPanel.setTab(contextArea, new phosphor_tabs_1.Tab('Demo'));
-    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
-    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    cmCss.title.text = 'CSS';
     var contextMenu = phosphor_menus_1.Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
     contextArea.node.addEventListener('contextmenu', function (event) {
         event.preventDefault();
@@ -345,9 +345,9 @@ function main() {
     var menuBar = phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.widgets = [contextArea, cmSource, cmCss];
-    phosphor_widget_1.attachWidget(menuBar, document.body);
-    phosphor_widget_1.attachWidget(panel, document.body);
+    panel.children.assign([contextArea, cmSource, cmCss]);
+    phosphor_widget_1.Widget.attach(menuBar, document.body);
+    phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }
 window.onload = main;

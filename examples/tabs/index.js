@@ -62,9 +62,8 @@ var ContentWidget = (function (_super) {
         _super.call(this);
         this.addClass('content');
         this.addClass(title.toLowerCase());
-        var tab = new phosphor_tabs_1.Tab(title);
-        tab.closable = true;
-        phosphor_tabs_1.TabPanel.setTab(this, tab);
+        this.title.text = title;
+        this.title.closable = true;
     }
     ContentWidget.prototype.onCloseRequest = function (msg) {
         this.dispose();
@@ -84,7 +83,7 @@ var nextTitle = (function () {
  */
 function addContent(panel) {
     var content = new ContentWidget(nextTitle());
-    panel.addWidget(content);
+    panel.children.add(content);
 }
 /**
  * The main application entry point.
@@ -92,6 +91,7 @@ function addContent(panel) {
 function main() {
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
+    panel.title.text = 'Demo';
     var btn = document.createElement('button');
     btn.textContent = 'Add New Tab';
     btn.onclick = function () { return addContent(panel); };
@@ -103,17 +103,16 @@ function main() {
         tabSize: 2
     });
     cmSource.loadTarget('./index.ts');
+    cmSource.title.text = 'Source';
     var cmCss = new CodeMirrorWidget({
         mode: 'text/css',
         lineNumbers: true,
         tabSize: 2
     });
     cmCss.loadTarget('./index.css');
-    phosphor_tabs_1.TabPanel.setTab(demoArea, new phosphor_tabs_1.Tab('Demo'));
-    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
-    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
-    panel.widgets = [demoArea, cmSource, cmCss];
-    phosphor_widget_1.attachWidget(panel, document.body);
+    cmCss.title.text = 'CSS';
+    panel.widgets.assign([demoArea, cmSource, cmCss]);
+    phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }
 window.onload = main;

@@ -93,25 +93,25 @@ var CodeMirrorWidget = (function (_super) {
 function main() {
     var model = new app.TodoModel('react-todos');
     var todo = new TodoWidget(model);
+    todo.title.text = 'Demo';
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
         tabSize: 2,
     });
     cmSource.loadTarget('./index.ts');
+    cmSource.title.text = 'Source';
     var cmCss = new CodeMirrorWidget({
         mode: 'text/css',
         lineNumbers: true,
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    phosphor_tabs_1.TabPanel.setTab(todo, new phosphor_tabs_1.Tab('Demo'));
-    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
-    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    cmCss.title.text = 'CSS';
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.widgets = [todo, cmSource, cmCss];
-    phosphor_widget_1.attachWidget(panel, document.body);
+    panel.widgets.assign([todo, cmSource, cmCss]);
+    phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }
 window.onload = main;

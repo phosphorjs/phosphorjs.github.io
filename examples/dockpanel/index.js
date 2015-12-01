@@ -12,7 +12,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var phosphor_dockpanel_1 = require('phosphor-dockpanel');
-var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
 require('./index.css');
 /**
@@ -59,9 +58,8 @@ function createContent(title) {
     var widget = new phosphor_widget_1.Widget();
     widget.addClass('content');
     widget.addClass(title.toLowerCase());
-    var tab = new phosphor_tabs_1.Tab(title);
-    tab.closable = true;
-    phosphor_dockpanel_1.DockPanel.setTab(widget, tab);
+    widget.title.text = title;
+    widget.title.closable = true;
     return widget;
 }
 /**
@@ -86,27 +84,27 @@ function main() {
         tabSize: 2,
     });
     cmSource.loadTarget('./index.ts');
+    cmSource.title.text = 'Source';
     var cmCss = new CodeMirrorWidget({
         mode: 'text/css',
         lineNumbers: true,
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    phosphor_dockpanel_1.DockPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
-    phosphor_dockpanel_1.DockPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
-    panel.addWidget(cmSource);
-    panel.addWidget(b1, phosphor_dockpanel_1.DockPanel.SplitRight, cmSource);
-    panel.addWidget(y1, phosphor_dockpanel_1.DockPanel.SplitBottom, b1);
-    panel.addWidget(g1, phosphor_dockpanel_1.DockPanel.SplitLeft, y1);
-    panel.addWidget(b2, phosphor_dockpanel_1.DockPanel.SplitBottom);
-    panel.addWidget(cmCss, phosphor_dockpanel_1.DockPanel.TabAfter, cmSource);
-    panel.addWidget(r1, phosphor_dockpanel_1.DockPanel.TabAfter, cmCss);
-    panel.addWidget(g2, phosphor_dockpanel_1.DockPanel.TabBefore, b2);
-    panel.addWidget(y2, phosphor_dockpanel_1.DockPanel.TabBefore, g2);
-    panel.addWidget(g3, phosphor_dockpanel_1.DockPanel.TabBefore, y2);
-    panel.addWidget(r2, phosphor_dockpanel_1.DockPanel.TabBefore, b1);
-    panel.addWidget(r3, phosphor_dockpanel_1.DockPanel.TabBefore, y1);
-    phosphor_widget_1.attachWidget(panel, document.body);
+    cmCss.title.text = 'CSS';
+    panel.insertLeft(cmSource);
+    panel.insertRight(b1, cmSource);
+    panel.insertBottom(y1, b1);
+    panel.insertLeft(g1, y1);
+    panel.insertBottom(b2);
+    panel.insertTabAfter(cmCss, cmSource);
+    panel.insertTabAfter(r1, cmCss);
+    panel.insertTabBefore(g2, b2);
+    panel.insertTabBefore(y2, g2);
+    panel.insertTabBefore(g3, y2);
+    panel.insertTabBefore(r2, b1);
+    panel.insertTabBefore(r3, y1);
+    phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }
 window.onload = main;

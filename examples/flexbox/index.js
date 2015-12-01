@@ -25,7 +25,7 @@ var MyVBox = (function (_super) {
         this.addClass('my-vbox');
     }
     return MyVBox;
-})(phosphor_widget_1.Widget);
+})(phosphor_widget_1.Panel);
 /**
  * A widget which logs its resize messages.
  */
@@ -109,28 +109,28 @@ function main() {
     var blue3 = createContent('blue');
     var blue4 = createContent('blue');
     var split = new phosphor_splitpanel_1.SplitPanel();
-    split.children = [blue1, blue2, blue3, blue4];
+    split.children.assign([blue1, blue2, blue3, blue4]);
     var box = new MyVBox();
-    box.children = [red, split, yellow, green];
+    box.children.assign([red, split, yellow, green]);
+    box.title.text = 'Demo';
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
         lineNumbers: true,
         tabSize: 2,
     });
     cmSource.loadTarget('./index.ts');
+    cmSource.title.text = 'Source';
     var cmCss = new CodeMirrorWidget({
         mode: 'text/css',
         lineNumbers: true,
         tabSize: 2,
     });
     cmCss.loadTarget('./index.css');
-    phosphor_tabs_1.TabPanel.setTab(box, new phosphor_tabs_1.Tab('Demo'));
-    phosphor_tabs_1.TabPanel.setTab(cmSource, new phosphor_tabs_1.Tab('Source'));
-    phosphor_tabs_1.TabPanel.setTab(cmCss, new phosphor_tabs_1.Tab('CSS'));
+    cmCss.title.text = 'CSS';
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.widgets = [box, cmSource, cmCss];
-    phosphor_widget_1.attachWidget(panel, document.body);
+    panel.widgets.assign([box, cmSource, cmCss]);
+    phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };
 }
 window.onload = main;
