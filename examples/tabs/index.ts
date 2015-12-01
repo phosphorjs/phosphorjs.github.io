@@ -108,6 +108,7 @@ function main(): void {
   var panel = new TabPanel();
   panel.id = 'main';
   panel.title.text = 'Demo';
+  panel.tabsMovable = true;
 
   var btn = document.createElement('button');
   btn.textContent = 'Add New Tab';
