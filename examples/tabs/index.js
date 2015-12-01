@@ -92,10 +92,12 @@ function main() {
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
     panel.title.text = 'Demo';
+    panel.tabsMovable = true;
     var btn = document.createElement('button');
     btn.textContent = 'Add New Tab';
     btn.onclick = function () { return addContent(panel); };
     var demoArea = new phosphor_widget_1.Widget();
+    demoArea.title.text = 'Demo';
     demoArea.node.appendChild(btn);
     var cmSource = new CodeMirrorWidget({
         mode: 'text/typescript',
