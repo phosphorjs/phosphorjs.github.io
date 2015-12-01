@@ -16,10 +16,6 @@ import {
 } from 'phosphor-messaging';
 
 import {
-  TabPanel
-} from 'phosphor-tabs';
-
-import {
   ResizeMessage, Widget
 } from 'phosphor-widget';
 

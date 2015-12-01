@@ -373,7 +373,7 @@ function main(): void {
 
   var panel = new TabPanel();
   panel.id = 'main';
-  panel.children.assign([contextArea, cmSource, cmCss]);
+  panel.widgets.assign([contextArea, cmSource, cmCss]);
 
   Widget.attach(menuBar, document.body);
   Widget.attach(panel, document.body);

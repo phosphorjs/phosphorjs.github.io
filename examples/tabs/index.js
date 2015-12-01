@@ -83,7 +83,7 @@ var nextTitle = (function () {
  */
 function addContent(panel) {
     var content = new ContentWidget(nextTitle());
-    panel.children.add(content);
+    panel.widgets.add(content);
 }
 /**
  * The main application entry point.

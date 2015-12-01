@@ -345,7 +345,7 @@ function main() {
     var menuBar = phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.children.assign([contextArea, cmSource, cmCss]);
+    panel.widgets.assign([contextArea, cmSource, cmCss]);
     phosphor_widget_1.Widget.attach(menuBar, document.body);
     phosphor_widget_1.Widget.attach(panel, document.body);
     window.onresize = function () { return panel.update(); };

@@ -32,13 +32,24 @@ body {
 }
 
 
-.p-TabBar-content {
+.p-TabBar-body {
   bottom: 1px;
+}
+
+
+.p-TabBar-footer {
+  display: block;
+  height: 1px;
+  background: #C0C0C0;
+}
+
+
+.p-TabBar-content {
   align-items: flex-end;
 }
 
 
-.p-TabBar-content > .p-Tab {
+.p-Tab {
   flex-basis: 125px;
   max-height: 21px;
   margin-left: -1px;
@@ -50,32 +61,27 @@ body {
 }
 
 
-.p-TabBar-content > .p-Tab.p-mod-first {
+.p-Tab.p-mod-first {
   margin-left: 0;
 }
 
 
-.p-TabBar-content > .p-Tab.p-mod-selected {
+.p-Tab.p-mod-current {
   min-height: 24px;
   background: white;
   transform: translateY(1px);
 }
 
 
-.p-TabBar-content > .p-Tab:hover:not(.p-mod-selected) {
+.p-Tab:hover:not(.p-mod-current) {
   background: #F0F0F0;
 }
 
 
-.p-TabBar-content > .p-Tab > span {
+.p-Tab-icon,
+.p-Tab-text,
+.p-Tab-close {
   line-height: 21px;
-}
-
-
-.p-TabBar-footer {
-  display: block;
-  height: 1px;
-  background: #C0C0C0;
 }
 
 
@@ -84,7 +90,6 @@ body {
   border: 1px solid #C0C0C0;
   border-top: none;
 }
-
 
 
 .p-Menu {
