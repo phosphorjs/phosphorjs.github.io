@@ -127,38 +127,8 @@ body {
 }
 
 
-.p-Menu-item.p-mod-submenu > .p-Menu-item-submenu::before {
+.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu::before {
   content: '\f0da';
-}
-
-
-.p-Menu-item.copy > .p-Menu-item-icon::before {
-  content: '\f0c5';
-}
-
-
-.p-Menu-item.cut > .p-Menu-item-icon::before {
-  content: '\f0c4';
-}
-
-
-.p-Menu-item.paste > .p-Menu-item-icon::before {
-  content: '\f0ea';
-}
-
-
-.p-Menu-item.close > .p-Menu-item-icon::before {
-  content: '\f00d';
-}
-
-
-.p-Menu-item.undo > .p-Menu-item-icon::before {
-  content: '\f0e2';
-}
-
-
-.p-Menu-item.repeat > .p-Menu-item-icon::before {
-  content: '\f01e';
 }
 
 
