@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var phosphor_command_1 = require('phosphor-command');
 var phosphor_menus_1 = require('phosphor-menus');
 var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
@@ -53,271 +54,312 @@ var CodeMirrorWidget = (function (_super) {
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
 /**
- * Log a message to the log element.
+ * A command which logs its arguments to the log span.
  */
-function log(value) {
+var logCmd = new phosphor_command_1.DelegateCommand(function (args) {
     var node = document.getElementById('log-span');
-    node.textContent = value;
+    node.textContent = args;
+});
+/**
+ * A simple disabled command.
+ */
+var disabledCmd = new phosphor_command_1.DelegateCommand(function () { });
+disabledCmd.enabled = false;
+/**
+ * A command which toggles its state when executed.
+ */
+var saveOnExitCmd = new phosphor_command_1.DelegateCommand(function () {
+    logCmd.execute('Save On Exit');
+    saveOnExitCmd.checked = !saveOnExitCmd.checked;
+});
+/**
+ * Create the example menu bar.
+ */
+function createMenuBar() {
+    var fileMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'New File',
+            shortcut: 'Ctrl+N',
+            command: logCmd,
+            commandArgs: 'New File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Open File',
+            shortcut: 'Ctrl+O',
+            command: logCmd,
+            commandArgs: 'Open File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Save File',
+            shortcut: 'Ctrl+S',
+            command: logCmd,
+            commandArgs: 'Save File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Save As...',
+            shortcut: 'Ctrl+Shift+S',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close File',
+            shortcut: 'Ctrl+W',
+            command: logCmd,
+            commandArgs: 'Close File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close All',
+            command: logCmd,
+            commandArgs: 'Close All'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'More...',
+            submenu: new phosphor_menus_1.Menu([
+                new phosphor_menus_1.MenuItem({
+                    text: 'One',
+                    command: logCmd,
+                    commandArgs: 'One'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Two',
+                    command: logCmd,
+                    commandArgs: 'Two'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Three',
+                    command: logCmd,
+                    commandArgs: 'Three'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Four',
+                    command: logCmd,
+                    commandArgs: 'Four'
+                })
+            ])
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Exit',
+            command: logCmd,
+            commandArgs: 'Exit'
+        })
+    ]);
+    var editMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: '&Undo',
+            icon: 'fa fa-undo',
+            shortcut: 'Ctrl+Z',
+            command: logCmd,
+            commandArgs: 'Undo'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Repeat',
+            icon: 'fa fa-repeat',
+            shortcut: 'Ctrl+Y',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Copy',
+            icon: 'fa fa-copy',
+            shortcut: 'Ctrl+C',
+            command: logCmd,
+            commandArgs: 'Copy'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Cu&t',
+            icon: 'fa fa-cut',
+            shortcut: 'Ctrl+X',
+            command: logCmd,
+            commandArgs: 'Cut'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Paste',
+            icon: 'fa fa-paste',
+            shortcut: 'Ctrl+V',
+            command: logCmd,
+            commandArgs: 'Paste'
+        })
+    ]);
+    var findMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'Find...',
+            shortcut: 'Ctrl+F',
+            command: logCmd,
+            commandArgs: 'Find...'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find Next',
+            shortcut: 'F3',
+            command: logCmd,
+            commandArgs: 'Find Next'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find Previous',
+            shortcut: 'Shift+F3',
+            command: logCmd,
+            commandArgs: 'Find Previous'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Replace...',
+            shortcut: 'Ctrl+H',
+            command: logCmd,
+            commandArgs: 'Replace...'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Replace Next',
+            shortcut: 'Ctrl+Shift+H',
+            command: logCmd,
+            commandArgs: 'Replace Next'
+        })
+    ]);
+    var helpMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'Documentation',
+            command: logCmd,
+            commandArgs: 'Documentation'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'About',
+            command: logCmd,
+            commandArgs: 'About'
+        })
+    ]);
+    return new phosphor_menus_1.MenuBar([
+        new phosphor_menus_1.MenuItem({
+            text: 'File',
+            submenu: fileMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Edit',
+            submenu: editMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find',
+            submenu: findMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'View',
+            type: phosphor_menus_1.MenuItem.Submenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Help',
+            submenu: helpMenu
+        })
+    ]);
 }
 /**
- * Log the text of a menu item to the log element.
+ * Create the example context menu.
  */
-function logItem(item) {
-    log(item.text.replace(/&/g, ''));
+function createContextMenu() {
+    return new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: '&Copy',
+            icon: 'fa fa-copy',
+            shortcut: 'Ctrl+C',
+            command: logCmd,
+            commandArgs: 'Copy'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Cu&t',
+            icon: 'fa fa-cut',
+            shortcut: 'Ctrl+X',
+            command: logCmd,
+            commandArgs: 'Cut'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Paste',
+            icon: 'fa fa-paste',
+            shortcut: 'Ctrl+V',
+            command: logCmd,
+            commandArgs: 'Paste'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&New Tab',
+            command: logCmd,
+            commandArgs: 'New Tab'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Close Tab',
+            command: logCmd,
+            commandArgs: 'Close Tab'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Check,
+            text: '&Save On Exit',
+            command: saveOnExitCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Task Manager',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'More...',
+            submenu: new phosphor_menus_1.Menu([
+                new phosphor_menus_1.MenuItem({
+                    text: 'One',
+                    command: logCmd,
+                    commandArgs: 'One'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Two',
+                    command: logCmd,
+                    commandArgs: 'Two'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Three',
+                    command: logCmd,
+                    commandArgs: 'Three'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Four',
+                    command: logCmd,
+                    commandArgs: 'Four'
+                })
+            ])
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close',
+            icon: 'fa fa-close',
+            command: logCmd,
+            commandArgs: 'Close'
+        })
+    ]);
 }
-/**
- * The template for the application menu bar.
- */
-var MENU_BAR_TEMPLATE = [
-    {
-        text: 'File',
-        submenu: [
-            {
-                text: 'New File',
-                shortcut: 'Ctrl+N',
-                handler: logItem
-            },
-            {
-                text: 'Open File',
-                shortcut: 'Ctrl+O',
-                handler: logItem
-            },
-            {
-                text: 'Save File',
-                shortcut: 'Ctrl+S',
-                handler: logItem
-            },
-            {
-                text: 'Save As...',
-                shortcut: 'Ctrl+Shift+S',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Close File',
-                shortcut: 'Ctrl+W',
-                handler: logItem
-            },
-            {
-                text: 'Close All Files',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'More...',
-                submenu: [
-                    {
-                        text: 'One',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Two',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Three',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Four',
-                        handler: logItem
-                    }
-                ]
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Exit',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'Edit',
-        submenu: [
-            {
-                text: '&Undo',
-                shortcut: 'Ctrl+Z',
-                className: 'undo',
-                handler: logItem
-            },
-            {
-                text: '&Repeat',
-                shortcut: 'Ctrl+Y',
-                className: 'repeat',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: '&Copy',
-                shortcut: 'Ctrl+C',
-                className: 'copy',
-                handler: logItem
-            },
-            {
-                text: 'Cu&t',
-                shortcut: 'Ctrl+X',
-                className: 'cut',
-                handler: logItem
-            },
-            {
-                text: '&Paste',
-                shortcut: 'Ctrl+V',
-                className: 'paste',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'Find',
-        submenu: [
-            {
-                text: 'Find...',
-                shortcut: 'Ctrl+F',
-                handler: logItem
-            },
-            {
-                text: 'Find Next',
-                shortcut: 'F3',
-                handler: logItem
-            },
-            {
-                text: 'Find Previous',
-                shortcut: 'Shift+F3',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Replace...',
-                shortcut: 'Ctrl+H',
-                handler: logItem
-            },
-            {
-                text: 'Replace Next',
-                shortcut: 'Ctrl+Shift+H',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'View',
-        disabled: true
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Help',
-        submenu: [
-            {
-                text: 'Documentation',
-                handler: logItem
-            },
-            {
-                text: 'About',
-                handler: logItem
-            }
-        ]
-    }
-];
-/**
- * The template for the application context menu.
- */
-var CONTEXT_MENU_TEMPLATE = [
-    {
-        text: '&Copy',
-        shortcut: 'Ctrl+C',
-        className: 'copy',
-        handler: logItem
-    },
-    {
-        text: 'Cu&t',
-        shortcut: 'Ctrl+X',
-        className: 'cut',
-        handler: logItem
-    },
-    {
-        text: '&Paste',
-        shortcut: 'Ctrl+V',
-        className: 'paste',
-        handler: logItem
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: '&New Tab',
-        handler: logItem
-    },
-    {
-        text: '&Close Tab',
-        handler: logItem
-    },
-    {
-        type: 'check',
-        checked: true,
-        text: '&Save On Exit',
-        handler: function (item) {
-            item.checked = !item.checked;
-            log('Save On Exit - ' + item.checked);
-        }
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Task Manager',
-        disabled: true
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'More...',
-        submenu: [
-            {
-                text: 'One',
-                handler: logItem
-            },
-            {
-                text: 'Two',
-                handler: logItem
-            },
-            {
-                text: 'Three',
-                handler: logItem
-            },
-            {
-                text: 'Four',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Close',
-        className: 'close',
-        handler: logItem
-    }
-];
 /**
  * The main application entry point.
  */
 function main() {
     var contextArea = new phosphor_widget_1.Widget();
     contextArea.addClass('ContextArea');
-    contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.' +
+    contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.</h2>' +
         '<h2>Right click this panel for a context menu.</h2>' +
         '<h3>Clicked Item: <span id="log-span"></span></h3>');
     contextArea.title.text = 'Demo';
@@ -335,14 +377,14 @@ function main() {
     });
     cmCss.loadTarget('./index.css');
     cmCss.title.text = 'CSS';
-    var contextMenu = phosphor_menus_1.Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+    var contextMenu = createContextMenu();
     contextArea.node.addEventListener('contextmenu', function (event) {
         event.preventDefault();
         var x = event.clientX;
         var y = event.clientY;
         contextMenu.popup(x, y);
     });
-    var menuBar = phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
+    var menuBar = createMenuBar();
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
     panel.widgets.assign([contextArea, cmSource, cmCss]);

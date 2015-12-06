@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-body {\n  bottom: 1px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabBar-content {\n  align-items: flex-end;\n}\n.p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-Tab.p-mod-current {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-Tab:hover:not(.p-mod-current) {\n  background: #F0F0F0;\n}\n.p-Tab-icon,\n.p-Tab-text,\n.p-Tab-close {\n  line-height: 21px;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-has-submenu > .p-Menu-item-submenu::before {\n  content: '\\f0da';\n}\n.p-MenuBar {\n  min-height: 24px;\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active > .p-MenuBar-content > .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n"; (require("browserify-css").createStyle(css, { "href": "menus/index.css"})); module.exports = css;
+var css = "/*-----------------------------------------------------------------------------\n| Copyright (c) 2014-2015, PhosphorJS Contributors\n|\n| Distributed under the terms of the BSD 3-Clause License.\n|\n| The full license is in the file LICENSE, distributed with this software.\n|----------------------------------------------------------------------------*/\nbody {\n  font-family: sans-serif;\n  margin: 0;\n  padding: 0;\n  background: #F5F6F7;\n}\n#main {\n  position: absolute;\n  top: 35px;\n  left: 10px;\n  right: 10px;\n  bottom: 10px;\n}\n.ContextArea {\n  padding-left: 10px;\n}\n.p-TabBar {\n  min-height: 24px;\n}\n.p-TabBar-body {\n  bottom: 1px;\n}\n.p-TabBar-footer {\n  display: block;\n  height: 1px;\n  background: #C0C0C0;\n}\n.p-TabBar-content {\n  align-items: flex-end;\n}\n.p-Tab {\n  flex-basis: 125px;\n  max-height: 21px;\n  margin-left: -1px;\n  border: 1px solid #C0C0C0;\n  border-bottom: none;\n  padding: 0px 10px;\n  background: #E5E5E5;\n  font: 12px Helvetica, Arial, sans-serif;\n}\n.p-Tab.p-mod-first {\n  margin-left: 0;\n}\n.p-Tab.p-mod-current {\n  min-height: 24px;\n  background: white;\n  transform: translateY(1px);\n}\n.p-Tab:hover:not(.p-mod-current) {\n  background: #F0F0F0;\n}\n.p-Tab-icon,\n.p-Tab-text,\n.p-Tab-close {\n  line-height: 21px;\n}\n.p-TabPanel > .p-StackedPanel {\n  background: white;\n  border: 1px solid #C0C0C0;\n  border-top: none;\n}\n.p-MenuBar {\n  padding-left: 5px;\n  background: #FEFEFE;\n  color: rgba(0, 0, 0, 0.87);\n  border-bottom: 1px solid #DDDDDD;\n  font: 13px Helvetica, Arial, sans-serif;\n}\n.p-MenuBar-menu {\n  transform: translateY(-1px);\n}\n.p-MenuBar-item {\n  padding: 4px 8px;\n  border-left: 1px solid transparent;\n  border-right: 1px solid transparent;\n}\n.p-MenuBar-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-MenuBar-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-MenuBar-item.p-mod-separator-type {\n  margin: 2px;\n  padding: 0;\n  border: none;\n  border-left: 1px solid #DDDDDD;\n}\n.p-MenuBar.p-mod-active .p-MenuBar-item.p-mod-active {\n  z-index: 1000000;\n  background: white;\n  border-left: 1px solid #C0C0C0;\n  border-right: 1px solid #C0C0C0;\n  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu {\n  background: white;\n  color: rgba(0, 0, 0, 0.87);\n  border: 1px solid #C0C0C0;\n  font: 12px Helvetica, Arial, sans-serif;\n  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);\n}\n.p-Menu-item.p-mod-active {\n  background: #E5E5E5;\n}\n.p-Menu-item.p-mod-disabled {\n  color: rgba(0, 0, 0, 0.26);\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  border-top: 1px solid #DDDDDD;\n}\n.p-Menu-item-icon::before,\n.p-Menu-item-submenu::before {\n  font-family: FontAwesome;\n}\n.p-Menu-item.p-mod-check-type.p-mod-checked > .p-Menu-item-icon::before {\n  content: '\\f00c';\n}\n.p-Menu-item.p-mod-submenu-type > .p-Menu-item-submenu::before {\n  content: '\\f0da';\n}\n"; (require("browserify-css").createStyle(css, { "href": "menus/index.css"})); module.exports = css;
 },{"browserify-css":3}],2:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var phosphor_command_1 = require('phosphor-command');
 var phosphor_menus_1 = require('phosphor-menus');
 var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
@@ -56,271 +57,312 @@ var CodeMirrorWidget = (function (_super) {
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
 /**
- * Log a message to the log element.
+ * A command which logs its arguments to the log span.
  */
-function log(value) {
+var logCmd = new phosphor_command_1.DelegateCommand(function (args) {
     var node = document.getElementById('log-span');
-    node.textContent = value;
+    node.textContent = args;
+});
+/**
+ * A simple disabled command.
+ */
+var disabledCmd = new phosphor_command_1.DelegateCommand(function () { });
+disabledCmd.enabled = false;
+/**
+ * A command which toggles its state when executed.
+ */
+var saveOnExitCmd = new phosphor_command_1.DelegateCommand(function () {
+    logCmd.execute('Save On Exit');
+    saveOnExitCmd.checked = !saveOnExitCmd.checked;
+});
+/**
+ * Create the example menu bar.
+ */
+function createMenuBar() {
+    var fileMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'New File',
+            shortcut: 'Ctrl+N',
+            command: logCmd,
+            commandArgs: 'New File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Open File',
+            shortcut: 'Ctrl+O',
+            command: logCmd,
+            commandArgs: 'Open File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Save File',
+            shortcut: 'Ctrl+S',
+            command: logCmd,
+            commandArgs: 'Save File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Save As...',
+            shortcut: 'Ctrl+Shift+S',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close File',
+            shortcut: 'Ctrl+W',
+            command: logCmd,
+            commandArgs: 'Close File'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close All',
+            command: logCmd,
+            commandArgs: 'Close All'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'More...',
+            submenu: new phosphor_menus_1.Menu([
+                new phosphor_menus_1.MenuItem({
+                    text: 'One',
+                    command: logCmd,
+                    commandArgs: 'One'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Two',
+                    command: logCmd,
+                    commandArgs: 'Two'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Three',
+                    command: logCmd,
+                    commandArgs: 'Three'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Four',
+                    command: logCmd,
+                    commandArgs: 'Four'
+                })
+            ])
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Exit',
+            command: logCmd,
+            commandArgs: 'Exit'
+        })
+    ]);
+    var editMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: '&Undo',
+            icon: 'fa fa-undo',
+            shortcut: 'Ctrl+Z',
+            command: logCmd,
+            commandArgs: 'Undo'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Repeat',
+            icon: 'fa fa-repeat',
+            shortcut: 'Ctrl+Y',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Copy',
+            icon: 'fa fa-copy',
+            shortcut: 'Ctrl+C',
+            command: logCmd,
+            commandArgs: 'Copy'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Cu&t',
+            icon: 'fa fa-cut',
+            shortcut: 'Ctrl+X',
+            command: logCmd,
+            commandArgs: 'Cut'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Paste',
+            icon: 'fa fa-paste',
+            shortcut: 'Ctrl+V',
+            command: logCmd,
+            commandArgs: 'Paste'
+        })
+    ]);
+    var findMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'Find...',
+            shortcut: 'Ctrl+F',
+            command: logCmd,
+            commandArgs: 'Find...'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find Next',
+            shortcut: 'F3',
+            command: logCmd,
+            commandArgs: 'Find Next'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find Previous',
+            shortcut: 'Shift+F3',
+            command: logCmd,
+            commandArgs: 'Find Previous'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Replace...',
+            shortcut: 'Ctrl+H',
+            command: logCmd,
+            commandArgs: 'Replace...'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Replace Next',
+            shortcut: 'Ctrl+Shift+H',
+            command: logCmd,
+            commandArgs: 'Replace Next'
+        })
+    ]);
+    var helpMenu = new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: 'Documentation',
+            command: logCmd,
+            commandArgs: 'Documentation'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'About',
+            command: logCmd,
+            commandArgs: 'About'
+        })
+    ]);
+    return new phosphor_menus_1.MenuBar([
+        new phosphor_menus_1.MenuItem({
+            text: 'File',
+            submenu: fileMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Edit',
+            submenu: editMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Find',
+            submenu: findMenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'View',
+            type: phosphor_menus_1.MenuItem.Submenu
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Help',
+            submenu: helpMenu
+        })
+    ]);
 }
 /**
- * Log the text of a menu item to the log element.
+ * Create the example context menu.
  */
-function logItem(item) {
-    log(item.text.replace(/&/g, ''));
+function createContextMenu() {
+    return new phosphor_menus_1.Menu([
+        new phosphor_menus_1.MenuItem({
+            text: '&Copy',
+            icon: 'fa fa-copy',
+            shortcut: 'Ctrl+C',
+            command: logCmd,
+            commandArgs: 'Copy'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Cu&t',
+            icon: 'fa fa-cut',
+            shortcut: 'Ctrl+X',
+            command: logCmd,
+            commandArgs: 'Cut'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Paste',
+            icon: 'fa fa-paste',
+            shortcut: 'Ctrl+V',
+            command: logCmd,
+            commandArgs: 'Paste'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&New Tab',
+            command: logCmd,
+            commandArgs: 'New Tab'
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: '&Close Tab',
+            command: logCmd,
+            commandArgs: 'Close Tab'
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Check,
+            text: '&Save On Exit',
+            command: saveOnExitCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Task Manager',
+            command: disabledCmd
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'More...',
+            submenu: new phosphor_menus_1.Menu([
+                new phosphor_menus_1.MenuItem({
+                    text: 'One',
+                    command: logCmd,
+                    commandArgs: 'One'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Two',
+                    command: logCmd,
+                    commandArgs: 'Two'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Three',
+                    command: logCmd,
+                    commandArgs: 'Three'
+                }),
+                new phosphor_menus_1.MenuItem({
+                    text: 'Four',
+                    command: logCmd,
+                    commandArgs: 'Four'
+                })
+            ])
+        }),
+        new phosphor_menus_1.MenuItem({
+            type: phosphor_menus_1.MenuItem.Separator
+        }),
+        new phosphor_menus_1.MenuItem({
+            text: 'Close',
+            icon: 'fa fa-close',
+            command: logCmd,
+            commandArgs: 'Close'
+        })
+    ]);
 }
-/**
- * The template for the application menu bar.
- */
-var MENU_BAR_TEMPLATE = [
-    {
-        text: 'File',
-        submenu: [
-            {
-                text: 'New File',
-                shortcut: 'Ctrl+N',
-                handler: logItem
-            },
-            {
-                text: 'Open File',
-                shortcut: 'Ctrl+O',
-                handler: logItem
-            },
-            {
-                text: 'Save File',
-                shortcut: 'Ctrl+S',
-                handler: logItem
-            },
-            {
-                text: 'Save As...',
-                shortcut: 'Ctrl+Shift+S',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Close File',
-                shortcut: 'Ctrl+W',
-                handler: logItem
-            },
-            {
-                text: 'Close All Files',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'More...',
-                submenu: [
-                    {
-                        text: 'One',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Two',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Three',
-                        handler: logItem
-                    },
-                    {
-                        text: 'Four',
-                        handler: logItem
-                    }
-                ]
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Exit',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'Edit',
-        submenu: [
-            {
-                text: '&Undo',
-                shortcut: 'Ctrl+Z',
-                className: 'undo',
-                handler: logItem
-            },
-            {
-                text: '&Repeat',
-                shortcut: 'Ctrl+Y',
-                className: 'repeat',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: '&Copy',
-                shortcut: 'Ctrl+C',
-                className: 'copy',
-                handler: logItem
-            },
-            {
-                text: 'Cu&t',
-                shortcut: 'Ctrl+X',
-                className: 'cut',
-                handler: logItem
-            },
-            {
-                text: '&Paste',
-                shortcut: 'Ctrl+V',
-                className: 'paste',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'Find',
-        submenu: [
-            {
-                text: 'Find...',
-                shortcut: 'Ctrl+F',
-                handler: logItem
-            },
-            {
-                text: 'Find Next',
-                shortcut: 'F3',
-                handler: logItem
-            },
-            {
-                text: 'Find Previous',
-                shortcut: 'Shift+F3',
-                handler: logItem
-            },
-            {
-                type: 'separator'
-            },
-            {
-                text: 'Replace...',
-                shortcut: 'Ctrl+H',
-                handler: logItem
-            },
-            {
-                text: 'Replace Next',
-                shortcut: 'Ctrl+Shift+H',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        text: 'View',
-        disabled: true
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Help',
-        submenu: [
-            {
-                text: 'Documentation',
-                handler: logItem
-            },
-            {
-                text: 'About',
-                handler: logItem
-            }
-        ]
-    }
-];
-/**
- * The template for the application context menu.
- */
-var CONTEXT_MENU_TEMPLATE = [
-    {
-        text: '&Copy',
-        shortcut: 'Ctrl+C',
-        className: 'copy',
-        handler: logItem
-    },
-    {
-        text: 'Cu&t',
-        shortcut: 'Ctrl+X',
-        className: 'cut',
-        handler: logItem
-    },
-    {
-        text: '&Paste',
-        shortcut: 'Ctrl+V',
-        className: 'paste',
-        handler: logItem
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: '&New Tab',
-        handler: logItem
-    },
-    {
-        text: '&Close Tab',
-        handler: logItem
-    },
-    {
-        type: 'check',
-        checked: true,
-        text: '&Save On Exit',
-        handler: function (item) {
-            item.checked = !item.checked;
-            log('Save On Exit - ' + item.checked);
-        }
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Task Manager',
-        disabled: true
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'More...',
-        submenu: [
-            {
-                text: 'One',
-                handler: logItem
-            },
-            {
-                text: 'Two',
-                handler: logItem
-            },
-            {
-                text: 'Three',
-                handler: logItem
-            },
-            {
-                text: 'Four',
-                handler: logItem
-            }
-        ]
-    },
-    {
-        type: 'separator'
-    },
-    {
-        text: 'Close',
-        className: 'close',
-        handler: logItem
-    }
-];
 /**
  * The main application entry point.
  */
 function main() {
     var contextArea = new phosphor_widget_1.Widget();
     contextArea.addClass('ContextArea');
-    contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.' +
+    contextArea.node.innerHTML = ('<h2>Notice the menu bar at the top of the document.</h2>' +
         '<h2>Right click this panel for a context menu.</h2>' +
         '<h3>Clicked Item: <span id="log-span"></span></h3>');
     contextArea.title.text = 'Demo';
@@ -338,14 +380,14 @@ function main() {
     });
     cmCss.loadTarget('./index.css');
     cmCss.title.text = 'CSS';
-    var contextMenu = phosphor_menus_1.Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+    var contextMenu = createContextMenu();
     contextArea.node.addEventListener('contextmenu', function (event) {
         event.preventDefault();
         var x = event.clientX;
         var y = event.clientY;
         contextMenu.popup(x, y);
     });
-    var menuBar = phosphor_menus_1.MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
+    var menuBar = createMenuBar();
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
     panel.widgets.assign([contextArea, cmSource, cmCss]);
@@ -355,7 +397,7 @@ function main() {
 }
 window.onload = main;
 
-},{"./index.css":1,"phosphor-menus":11,"phosphor-tabs":25,"phosphor-widget":31}],3:[function(require,module,exports){
+},{"./index.css":1,"phosphor-command":6,"phosphor-menus":11,"phosphor-tabs":25,"phosphor-widget":31}],3:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -1430,6 +1472,184 @@ function initSizer(sizer) {
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var phosphor_signaling_1 = require('phosphor-signaling');
+/**
+ * An abstract base class for implementing concrete commands.
+ */
+var Command = (function () {
+    function Command() {
+    }
+    Object.defineProperty(Command.prototype, "changed", {
+        /**
+         * A signal emitted when the command's state changes.
+         *
+         * #### Notes
+         * This should be emitted by a subclass as necessary.
+         *
+         * This is a pure delegate to the [[changedSignal]].
+         */
+        get: function () {
+            return Command.changedSignal.bind(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Test whether the command is enabled.
+     *
+     * @returns `true` if the command is enabled, `false` otherwise.
+     *
+     * #### Notes
+     * A subclass may reimplement this method as needed. If the state
+     * changes at runtime, the [[changed]] signal should be emitted.
+     *
+     * The default implementation of this method returns `true`.
+     */
+    Command.prototype.isEnabled = function () {
+        return true;
+    };
+    /**
+     * Test whether the command is checked.
+     *
+     * @returns `true` if the command is checked, `false` otherwise.
+     *
+     * #### Notes
+     * A subclass may reimplement this method as needed. If the state
+     * changes at runtime, the [[changed]] signal should be emitted.
+     *
+     * The default implementation of this method returns `false`.
+     */
+    Command.prototype.isChecked = function () {
+        return false;
+    };
+    /**
+     * A signal emitted when the command's state changes.
+     *
+     * **See also:** [[changed]]
+     */
+    Command.changedSignal = new phosphor_signaling_1.Signal();
+    return Command;
+})();
+exports.Command = Command;
+/**
+ * A concrete implementation of [[ICommand]].
+ *
+ * A `DelegateCommand` wraps a function to facilitate the creation of
+ * simple commands without requiring subclassing or extra boilerplate.
+ */
+var DelegateCommand = (function (_super) {
+    __extends(DelegateCommand, _super);
+    /**
+     * Construct a new delegate command.
+     *
+     * @param execute - The function which executes the command logic.
+     */
+    function DelegateCommand(execute) {
+        _super.call(this);
+        this._enabled = true;
+        this._checked = false;
+        this._execute = execute;
+    }
+    Object.defineProperty(DelegateCommand.prototype, "enabled", {
+        /**
+         * Get the enabled state of the delegate command.
+         */
+        get: function () {
+            return this._enabled;
+        },
+        /**
+         * Set the enabled state of the delegate command.
+         *
+         * #### Notes
+         * This will emit the [[changed]] signal if the state changes.
+         */
+        set: function (value) {
+            if (this._enabled === value) {
+                return;
+            }
+            this._enabled = value;
+            this.changed.emit(void 0);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DelegateCommand.prototype, "checked", {
+        /**
+         * Get the checked state of the delegate command.
+         */
+        get: function () {
+            return this._checked;
+        },
+        /**
+         * Set the checked state of the delegate command.
+         *
+         * #### Notes
+         * This will emit the [[changed]] signal if the state changes.
+         */
+        set: function (value) {
+            if (this._checked === value) {
+                return;
+            }
+            this._checked = value;
+            this.changed.emit(void 0);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Test whether the command is enabled.
+     *
+     * @returns `true` if the command is enabled, `false` otherwise.
+     *
+     * #### Notes
+     * This returns the command's [[enabled]] state.
+     */
+    DelegateCommand.prototype.isEnabled = function () {
+        return this._enabled;
+    };
+    /**
+     * Test whether the command is checked.
+     *
+     * @returns `true` if the command is checked, `false` otherwise.
+     *
+     * #### Notes
+     * This returns the command's [[checked]] state.
+     */
+    DelegateCommand.prototype.isChecked = function () {
+        return this._checked;
+    };
+    /**
+     * Execute the command with the specified arguments.
+     *
+     * @param args - The arguments for the command. The args should be
+     *   simple JSON types. If the command does not require arguments,
+     *   this may be `null`.
+     *
+     * #### Notes
+     * Calling `execute` when `isEnabled` returns `false` will result
+     * in undefined behavior.
+     */
+    DelegateCommand.prototype.execute = function (args) {
+        this._execute.call(void 0, args);
+    };
+    return DelegateCommand;
+})(Command);
+exports.DelegateCommand = DelegateCommand;
+
+},{"phosphor-signaling":21}],7:[function(require,module,exports){
+/*-----------------------------------------------------------------------------
+| Copyright (c) 2014-2015, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+'use strict';
 /**
  * A disposable object which delegates to a callback.
  */
@@ -1564,9 +1784,9 @@ var DisposableSet = (function () {
 })();
 exports.DisposableSet = DisposableSet;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\nbody.p-mod-override-cursor * {\n  cursor: inherit !important;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-domutil/lib/index.css"})); module.exports = css;
-},{"browserify-css":3}],8:[function(require,module,exports){
+},{"browserify-css":3}],9:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -1734,84 +1954,8 @@ function sizeLimits(node) {
 }
 exports.sizeLimits = sizeLimits;
 
-},{"./index.css":7,"phosphor-disposable":6}],9:[function(require,module,exports){
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
-|
-| Distributed under the terms of the BSD 3-Clause License.
-|
-| The full license is in the file LICENSE, distributed with this software.
-|----------------------------------------------------------------------------*/
-'use strict';
-/**
- * The class name added to collapsed separator nodes.
- */
-var COLLAPSED_CLASS = 'p-mod-collapsed';
-/**
- * Collapse leading, trailing, and consecutive visible separators.
- *
- * This function is **not** part of the public Phosphor API, and can
- * be removed at any time without warning. We mean it!.
- *
- * @param items - The array of menu items of interest. This should be
- *   the same length as the `nodes` array.
- *
- * @param nodes - The nodes representing the menu item. This should be
- *   the same length as the `items` array.
- */
-function collapseSeparators(items, nodes) {
-    // Collapse the leading visible separators.
-    var k1;
-    for (k1 = 0; k1 < items.length; ++k1) {
-        var item = items[k1];
-        var node = nodes[k1];
-        if (item.hidden) {
-            node.classList.remove(COLLAPSED_CLASS);
-            continue;
-        }
-        if (!item.isSeparatorType) {
-            node.classList.remove(COLLAPSED_CLASS);
-            break;
-        }
-        node.classList.add(COLLAPSED_CLASS);
-    }
-    // Collapse the trailing visible separators.
-    var k2;
-    for (k2 = items.length - 1; k2 >= 0; --k2) {
-        var item = items[k2];
-        var node = nodes[k2];
-        if (item.hidden) {
-            node.classList.remove(COLLAPSED_CLASS);
-            continue;
-        }
-        if (!item.isSeparatorType) {
-            node.classList.remove(COLLAPSED_CLASS);
-            break;
-        }
-        node.classList.add(COLLAPSED_CLASS);
-    }
-    // Collapse the remaining consecutive visible separators.
-    var collapse = false;
-    while (++k1 < k2) {
-        var item = items[k1];
-        var node = nodes[k1];
-        if (item.hidden) {
-            node.classList.remove(COLLAPSED_CLASS);
-            continue;
-        }
-        if (collapse && item.isSeparatorType) {
-            node.classList.add(COLLAPSED_CLASS);
-        }
-        else {
-            node.classList.remove(COLLAPSED_CLASS);
-            collapse = item.isSeparatorType;
-        }
-    }
-}
-exports.collapseSeparators = collapseSeparators;
-
-},{}],10:[function(require,module,exports){
-var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-Menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 3px 0px;\n  white-space: nowrap;\n  overflow-x: hidden;\n  overflow-y: auto;\n  z-index: 100000;\n}\n.p-Menu-content {\n  display: table;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  border-spacing: 0;\n  list-style-type: none;\n}\n.p-Menu-item {\n  display: table-row;\n}\n.p-Menu-item.p-mod-hidden,\n.p-Menu-item.p-mod-collapsed {\n  display: none;\n}\n.p-Menu-item > span {\n  display: table-cell;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n.p-Menu-item-icon {\n  width: 21px;\n  padding-left: 2px;\n  padding-right: 2px;\n  text-align: center;\n}\n.p-Menu-item-text {\n  padding-left: 2px;\n  padding-right: 35px;\n}\n.p-Menu-item-shortcut {\n  text-align: right;\n}\n.p-Menu-item-submenu {\n  width: 16px;\n  text-align: center;\n}\n.p-Menu-item.p-mod-separator-type > span {\n  padding: 0;\n  height: 9px;\n  line-height: 0;\n  text-indent: 100%;\n  overflow: hidden;\n  whitespace: nowrap;\n  vertical-align: top;\n  /* https://bugzilla.mozilla.org/show_bug.cgi?id=634489 */\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  content: '';\n  display: block;\n  position: relative;\n  top: 4px;\n}\n.p-MenuBar-content {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: row;\n  list-style-type: none;\n}\n.p-MenuBar-item {\n  box-sizing: border-box;\n}\n.p-MenuBar-item.p-mod-hidden,\n.p-MenuBar-item.p-mod-collapsed {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-menus/lib/index.css"})); module.exports = css;
+},{"./index.css":8,"phosphor-disposable":7}],10:[function(require,module,exports){
+var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-MenuBar-content {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: row;\n  list-style-type: none;\n}\n.p-MenuBar-item {\n  box-sizing: border-box;\n}\n.p-MenuBar-item.p-mod-hidden,\n.p-MenuBar-item.p-mod-collapsed {\n  display: none;\n}\n.p-Menu {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 3px 0px;\n  white-space: nowrap;\n  overflow-x: hidden;\n  overflow-y: auto;\n  z-index: 100000;\n}\n.p-Menu-content {\n  display: table;\n  width: 100%;\n  margin: 0;\n  padding: 0;\n  border-spacing: 0;\n  list-style-type: none;\n}\n.p-Menu-item {\n  display: table-row;\n}\n.p-Menu-item.p-mod-collapsed {\n  display: none;\n}\n.p-Menu-item > span {\n  display: table-cell;\n  padding-top: 4px;\n  padding-bottom: 4px;\n}\n.p-Menu-item-icon {\n  width: 21px;\n  padding-left: 2px;\n  padding-right: 2px;\n  text-align: center;\n}\n.p-Menu-item-text {\n  padding-left: 2px;\n  padding-right: 35px;\n}\n.p-Menu-item-shortcut {\n  text-align: right;\n}\n.p-Menu-item-submenu {\n  width: 16px;\n  text-align: center;\n}\n.p-Menu-item.p-mod-separator-type > span {\n  padding: 0;\n  height: 9px;\n  line-height: 0;\n  text-indent: 100%;\n  overflow: hidden;\n  whitespace: nowrap;\n  vertical-align: top;\n  /* https://bugzilla.mozilla.org/show_bug.cgi?id=634489 */\n}\n.p-Menu-item.p-mod-separator-type > span::after {\n  content: '';\n  display: block;\n  position: relative;\n  top: 4px;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-menus/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],11:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
@@ -1848,7 +1992,6 @@ var phosphor_domutil_1 = require('phosphor-domutil');
 var phosphor_messaging_1 = require('phosphor-messaging');
 var phosphor_signaling_1 = require('phosphor-signaling');
 var phosphor_widget_1 = require('phosphor-widget');
-var helpers_1 = require('./helpers');
 var menubase_1 = require('./menubase');
 var menuitem_1 = require('./menuitem');
 /**
@@ -1888,6 +2031,10 @@ var CHECK_TYPE_CLASS = 'p-mod-check-type';
  */
 var SEPARATOR_TYPE_CLASS = 'p-mod-separator-type';
 /**
+ * The class name added to a submenu type menu item.
+ */
+var SUBMENU_TYPE_CLASS = 'p-mod-submenu-type';
+/**
  * The class name added to active menu items.
  */
 var ACTIVE_CLASS = 'p-mod-active';
@@ -1896,17 +2043,9 @@ var ACTIVE_CLASS = 'p-mod-active';
  */
 var DISABLED_CLASS = 'p-mod-disabled';
 /**
- * The class name added to a hidden menu item.
- */
-var HIDDEN_CLASS = 'p-mod-hidden';
-/**
  * The class name added to a checked menu item.
  */
 var CHECKED_CLASS = 'p-mod-checked';
-/**
- * The class name added to a menu item with a submenu.
- */
-var HAS_SUBMENU_CLASS = 'p-mod-has-submenu';
 /**
  * The ms delay for opening a submenu.
  */
@@ -1926,8 +2065,14 @@ var Menu = (function (_super) {
     __extends(Menu, _super);
     /**
      * Construct a new menu.
+     *
+     * @param items - Optional menu items to initialize the menu.
+     *
+     * #### Notes
+     * Subclasses should not pass menu items to `super`. The subclass
+     * should set its own items after it has been fully initialized.
      */
-    function Menu() {
+    function Menu(items) {
         _super.call(this);
         this._openTimerId = 0;
         this._closeTimerId = 0;
@@ -1936,6 +2081,8 @@ var Menu = (function (_super) {
         this._childItem = null;
         this._nodes = [];
         this.addClass(MENU_CLASS);
+        if (items)
+            this.items = items;
     }
     /**
      * Create the DOM node for a menu.
@@ -1946,19 +2093,6 @@ var Menu = (function (_super) {
         content.className = CONTENT_CLASS;
         node.appendChild(content);
         return node;
-    };
-    /**
-     * A convenience method to create a menu from a template.
-     *
-     * @param array - The menu item templates for the menu.
-     *
-     * @returns A new menu created from the menu item templates.
-     */
-    Menu.fromTemplate = function (array) {
-        var items = array.map(function (tmpl) { return menuitem_1.MenuItem.fromTemplate(tmpl); });
-        var menu = new Menu();
-        menu.items = items;
-        return menu;
     };
     /**
      * Dispose of the resources held by the menu.
@@ -2137,7 +2271,8 @@ var Menu = (function (_super) {
                 this._evtMouseUp(event);
                 break;
             case 'contextmenu':
-                this._evtContextMenu(event);
+                event.preventDefault();
+                event.stopPropagation();
                 break;
             case 'keydown':
                 this._evtKeyDown(event);
@@ -2146,6 +2281,21 @@ var Menu = (function (_super) {
                 this._evtKeyPress(event);
                 break;
         }
+    };
+    /**
+     * Test whether a menu item is selectable.
+     *
+     * #### Notes
+     * This is a reimplementation of the base class method.
+     */
+    Menu.prototype.isSelectable = function (item) {
+        if (item.type === menuitem_1.MenuItem.Separator) {
+            return false;
+        }
+        if (item.type === menuitem_1.MenuItem.Submenu) {
+            return true;
+        }
+        return item.command ? item.command.isEnabled() : false;
     };
     /**
      * A method invoked when the menu items change.
@@ -2168,7 +2318,7 @@ var Menu = (function (_super) {
      * A method invoked when a menu item should be opened.
      */
     Menu.prototype.onOpenItem = function (index, item) {
-        if (this.isAttached) {
+        if (this.isAttached && item.submenu) {
             var ref = this._nodes[index] || this.node;
             this._openChildMenu(item, ref, false);
             this._childMenu.activateNextItem();
@@ -2179,9 +2329,10 @@ var Menu = (function (_super) {
      */
     Menu.prototype.onTriggerItem = function (index, item) {
         this.rootMenu.close();
-        var handler = item.handler;
-        if (handler)
-            handler(item);
+        var cmd = item.command;
+        var args = item.commandArgs;
+        if (cmd && cmd.isEnabled())
+            cmd.execute(args);
     };
     /**
      * A message handler invoked on an `'after-attach'` message.
@@ -2209,7 +2360,6 @@ var Menu = (function (_super) {
         // Fetch common variables.
         var items = this.items;
         var nodes = this._nodes;
-        var index = this.activeIndex;
         var content = this.contentNode;
         // Remove any excess item nodes.
         while (nodes.length > items.length) {
@@ -2226,15 +2376,13 @@ var Menu = (function (_super) {
         // Update the node state to match the menu items.
         for (var i = 0, n = items.length; i < n; ++i) {
             updateItemNode(items[i], nodes[i]);
-            if (i === index) {
-                nodes[i].classList.add(ACTIVE_CLASS);
-            }
-            else {
-                nodes[i].classList.remove(ACTIVE_CLASS);
-            }
         }
+        // Update the active item node.
+        var active = nodes[this.activeIndex];
+        if (active)
+            active.classList.add(ACTIVE_CLASS);
         // Collapse the neighboring separators.
-        helpers_1.collapseSeparators(items, nodes);
+        menubase_1.collapseSeparators(items, nodes);
     };
     /**
      * A message handler invoked on a `'close-request'` message.
@@ -2316,16 +2464,12 @@ var Menu = (function (_super) {
         }
     };
     /**
-     * Handle the `'contextmenu'` event for the menu bar.
-     */
-    Menu.prototype._evtContextMenu = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-    /**
      * Handle the `'mousedown'` event for the menu.
      *
      * This event listener is attached to the document for a popup menu.
+     *
+     * This allows the event to propagate so the element under the mouse
+     * can be focused without requiring a second click.
      */
     Menu.prototype._evtMouseDown = function (event) {
         var menu = this;
@@ -2511,26 +2655,25 @@ function createItemNode() {
  */
 function createItemClass(item) {
     var parts = [ITEM_CLASS];
-    if (item.isCheckType) {
-        parts.push(CHECK_TYPE_CLASS);
-    }
-    else if (item.isSeparatorType) {
-        parts.push(SEPARATOR_TYPE_CLASS);
-    }
-    if (item.checked) {
-        parts.push(CHECKED_CLASS);
-    }
-    if (item.disabled) {
-        parts.push(DISABLED_CLASS);
-    }
-    if (item.hidden) {
-        parts.push(HIDDEN_CLASS);
-    }
-    if (item.submenu) {
-        parts.push(HAS_SUBMENU_CLASS);
-    }
     if (item.className) {
         parts.push(item.className);
+    }
+    if (item.type === menuitem_1.MenuItem.Separator) {
+        parts.push(SEPARATOR_TYPE_CLASS);
+        return parts.join(' ');
+    }
+    if (item.type === menuitem_1.MenuItem.Submenu) {
+        parts.push(SUBMENU_TYPE_CLASS);
+        return parts.join(' ');
+    }
+    if (item.type === menuitem_1.MenuItem.Check) {
+        parts.push(CHECK_TYPE_CLASS);
+        if (item.command && item.command.isChecked()) {
+            parts.push(CHECKED_CLASS);
+        }
+    }
+    if (!item.command || !item.command.isEnabled()) {
+        parts.push(DISABLED_CLASS);
     }
     return parts.join(' ');
 }
@@ -2544,13 +2687,19 @@ function createIconClass(item) {
  * Create the text node content for a MenuItem.
  */
 function createTextContent(item) {
-    return item.isSeparatorType ? '' : item.text.replace(/&/g, '');
+    if (item.type === menuitem_1.MenuItem.Separator) {
+        return '';
+    }
+    return item.text.replace(/&/g, '');
 }
 /**
  * Create the shortcut text for a MenuItem.
  */
 function createShortcutText(item) {
-    return item.isSeparatorType ? '' : item.shortcut;
+    if (item.type === menuitem_1.MenuItem.Separator || item.type === menuitem_1.MenuItem.Submenu) {
+        return '';
+    }
+    return item.shortcut;
 }
 /**
  * Update the node state for a MenuItem.
@@ -2646,7 +2795,7 @@ function openSubmenu(menu, item) {
     showMenu(menu, x, y);
 }
 
-},{"./helpers":9,"./menubase":14,"./menuitem":15,"phosphor-domutil":8,"phosphor-messaging":16,"phosphor-signaling":21,"phosphor-widget":31}],13:[function(require,module,exports){
+},{"./menubase":14,"./menuitem":15,"phosphor-domutil":9,"phosphor-messaging":16,"phosphor-signaling":21,"phosphor-widget":31}],13:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -2661,7 +2810,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var phosphor_domutil_1 = require('phosphor-domutil');
-var helpers_1 = require('./helpers');
 var menubase_1 = require('./menubase');
 var menuitem_1 = require('./menuitem');
 /**
@@ -2711,13 +2859,21 @@ var MenuBar = (function (_super) {
     __extends(MenuBar, _super);
     /**
      * Construct a new menu bar.
+     *
+     * @param items - Optional menu items to initialize the menu bar.
+     *
+     * #### Notes
+     * Subclasses should not pass menu items to `super`. The subclass
+     * should set its own items after it has been fully initialized.
      */
-    function MenuBar() {
+    function MenuBar(items) {
         _super.call(this);
         this._active = false;
         this._childMenu = null;
         this._nodes = [];
         this.addClass(MENU_BAR_CLASS);
+        if (items)
+            this.items = items;
     }
     /**
      * Create the DOM node for a menu bar.
@@ -2728,19 +2884,6 @@ var MenuBar = (function (_super) {
         content.className = CONTENT_CLASS;
         node.appendChild(content);
         return node;
-    };
-    /**
-     * A convenience method to create a menu bar from a template.
-     *
-     * @param array - The menu item templates for the menu bar.
-     *
-     * @returns A new menu bar created from the menu item templates.
-     */
-    MenuBar.fromTemplate = function (array) {
-        var items = array.map(function (tmpl) { return menuitem_1.MenuItem.fromTemplate(tmpl); });
-        var bar = new MenuBar();
-        bar.items = items;
-        return bar;
     };
     /**
      * Dispose of the resources held by the menu bar.
@@ -2798,7 +2941,8 @@ var MenuBar = (function (_super) {
                 this._evtMouseLeave(event);
                 break;
             case 'contextmenu':
-                this._evtContextMenu(event);
+                event.preventDefault();
+                event.stopPropagation();
                 break;
             case 'keydown':
                 this._evtKeyDown(event);
@@ -2807,6 +2951,15 @@ var MenuBar = (function (_super) {
                 this._evtKeyPress(event);
                 break;
         }
+    };
+    /**
+     * Test whether a menu item is selectable.
+     *
+     * #### Notes
+     * This is a reimplementation of the base class method.
+     */
+    MenuBar.prototype.isSelectable = function (item) {
+        return !!item.submenu;
     };
     /**
      * A method invoked when the menu items change.
@@ -2844,7 +2997,7 @@ var MenuBar = (function (_super) {
      * A method invoked when a menu item should be opened.
      */
     MenuBar.prototype.onOpenItem = function (index, item) {
-        if (this.isAttached) {
+        if (this.isAttached && item.submenu) {
             var ref = this._nodes[index] || this.node;
             this._activate();
             this._closeChildMenu();
@@ -2883,7 +3036,6 @@ var MenuBar = (function (_super) {
         // Fetch common variables.
         var items = this.items;
         var nodes = this._nodes;
-        var index = this.activeIndex;
         var content = this.contentNode;
         // Remove any excess item nodes.
         while (nodes.length > items.length) {
@@ -2899,15 +3051,13 @@ var MenuBar = (function (_super) {
         // Update the node state to match the menu items.
         for (var i = 0, n = items.length; i < n; ++i) {
             updateItemNode(items[i], nodes[i]);
-            if (i === index) {
-                nodes[i].classList.add(ACTIVE_CLASS);
-            }
-            else {
-                nodes[i].classList.remove(ACTIVE_CLASS);
-            }
         }
+        // Update the active item node.
+        var active = nodes[this.activeIndex];
+        if (active)
+            active.classList.add(ACTIVE_CLASS);
         // Collapse the neighboring separators.
-        helpers_1.collapseSeparators(items, nodes);
+        menubase_1.collapseSeparators(items, nodes);
     };
     /**
      * Handle the `'mousedown'` event for the menu bar.
@@ -2978,13 +3128,6 @@ var MenuBar = (function (_super) {
     MenuBar.prototype._evtMouseLeave = function (event) {
         if (!this._active)
             this.activeIndex = -1;
-    };
-    /**
-     * Handle the `'contextmenu'` event for the menu bar.
-     */
-    MenuBar.prototype._evtContextMenu = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
     };
     /**
      * Handle the `'keydown'` event for the menu bar.
@@ -3123,6 +3266,7 @@ var MenuBar = (function (_super) {
      * Handle the `changed` signal from a menu item.
      */
     MenuBar.prototype._onItemChanged = function (sender, args) {
+        this._reset();
         this.update();
     };
     /**
@@ -3154,17 +3298,17 @@ function createItemNode() {
  */
 function createItemClass(item) {
     var parts = [ITEM_CLASS];
-    if (item.isSeparatorType) {
-        parts.push(SEPARATOR_TYPE_CLASS);
-    }
-    if (item.disabled) {
-        parts.push(DISABLED_CLASS);
-    }
-    if (item.hidden) {
-        parts.push(HIDDEN_CLASS);
-    }
     if (item.className) {
         parts.push(item.className);
+    }
+    if (item.type === menuitem_1.MenuItem.Separator) {
+        parts.push(SEPARATOR_TYPE_CLASS);
+    }
+    else if (item.type !== menuitem_1.MenuItem.Submenu) {
+        parts.push(HIDDEN_CLASS);
+    }
+    else if (!item.submenu) {
+        parts.push(DISABLED_CLASS);
     }
     return parts.join(' ');
 }
@@ -3178,7 +3322,8 @@ function createIconClass(item) {
  * Create the text node content for a MenuItem.
  */
 function createTextContent(item) {
-    return item.isSeparatorType ? '' : item.text.replace(/&/g, '');
+    var sep = item.type === menuitem_1.MenuItem.Separator;
+    return sep ? '' : item.text.replace(/&/g, '');
 }
 /**
  * Update the node state for a MenuItem.
@@ -3220,7 +3365,7 @@ function hitTestMenus(menu, x, y) {
     return false;
 }
 
-},{"./helpers":9,"./menubase":14,"./menuitem":15,"phosphor-domutil":8}],14:[function(require,module,exports){
+},{"./menubase":14,"./menuitem":15,"phosphor-domutil":9}],14:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3237,6 +3382,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 var arrays = require('phosphor-arrays');
 var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_widget_1 = require('phosphor-widget');
+var menuitem_1 = require('./menuitem');
+/**
+ * The class name added to collapsed separator nodes.
+ */
+var COLLAPSED_CLASS = 'p-mod-collapsed';
 /**
  * A base class for implementing widgets which display menu items.
  */
@@ -3298,9 +3448,11 @@ var MenuBase = (function (_super) {
      * wrap around at the end of the menu.
      */
     MenuBase.prototype.activateNextItem = function () {
+        var _this = this;
         var k = this.activeIndex + 1;
         var i = k >= this.items.length ? 0 : k;
-        this.activeIndex = arrays.findIndex(this.items, isSelectable, i, true);
+        var pred = function (item) { return _this.isSelectable(item); };
+        this.activeIndex = arrays.findIndex(this.items, pred, i, true);
     };
     /**
      * Activate the previous selectable menu item.
@@ -3311,9 +3463,11 @@ var MenuBase = (function (_super) {
      * wrap around at the front of the menu.
      */
     MenuBase.prototype.activatePreviousItem = function () {
+        var _this = this;
         var k = this.activeIndex;
         var i = k <= 0 ? this.items.length - 1 : k - 1;
-        this.activeIndex = arrays.rfindIndex(this.items, isSelectable, i, true);
+        var pred = function (item) { return _this.isSelectable(item); };
+        this.activeIndex = arrays.rfindIndex(this.items, pred, i, true);
     };
     /**
      * Activate the next selectable menu item with the given mnemonic.
@@ -3325,11 +3479,12 @@ var MenuBase = (function (_super) {
      * mnemonic matching is case-insensitive.
      */
     MenuBase.prototype.activateMnemonicItem = function (char) {
+        var _this = this;
         var c = char.toUpperCase();
         var k = this.activeIndex + 1;
         var i = k >= this.items.length ? 0 : k;
         this.activeIndex = arrays.findIndex(this.items, function (item) {
-            if (!isSelectable(item)) {
+            if (!_this.isSelectable(item)) {
                 return false;
             }
             var match = item.text.match(/&\w/);
@@ -3349,7 +3504,7 @@ var MenuBase = (function (_super) {
     MenuBase.prototype.openActiveItem = function () {
         var i = this.activeIndex;
         var item = this.items[i];
-        if (item && item.submenu) {
+        if (item && item.type === menuitem_1.MenuItem.Submenu) {
             this.onOpenItem(i, item);
         }
     };
@@ -3363,12 +3518,27 @@ var MenuBase = (function (_super) {
     MenuBase.prototype.triggerActiveItem = function () {
         var i = this.activeIndex;
         var item = this.items[i];
-        if (item && item.submenu) {
+        if (item && item.type === menuitem_1.MenuItem.Submenu) {
             this.onOpenItem(i, item);
         }
-        else if (item) {
+        else if (item && item.type !== menuitem_1.MenuItem.Separator) {
             this.onTriggerItem(i, item);
         }
+    };
+    /**
+     * Test whether an item is selectable.
+     *
+     * @param item - The menu item of interest.
+     *
+     * @returns `true` if the item is selectable, `false` otherwise.
+     *
+     * #### Notes
+     * Subclasses may reimplement this method as needed.
+     *
+     * The default implementation of this method ignores separators.
+     */
+    MenuBase.prototype.isSelectable = function (item) {
+        return item.type !== menuitem_1.MenuItem.Separator;
     };
     /**
      * The coerce handler for the [[activeIndexProperty]].
@@ -3379,7 +3549,7 @@ var MenuBase = (function (_super) {
     MenuBase.prototype.coerceActiveIndex = function (index) {
         var i = index | 0;
         var item = this.items[i];
-        return (item && isSelectable(item)) ? i : -1;
+        return (item && this.isSelectable(item)) ? i : -1;
     };
     /**
      * A method invoked when the menu items change.
@@ -3436,13 +3606,54 @@ var MenuBase = (function (_super) {
 })(phosphor_widget_1.Widget);
 exports.MenuBase = MenuBase;
 /**
- * Test whether a menu item is selectable.
+ * Collapse leading, trailing, and consecutive separators.
+ *
+ * @param items - The array of menu items of interest. This should be
+ *   the same length as the `nodes` array.
+ *
+ * @param nodes - The nodes representing the menu item. This should be
+ *   the same length as the `items` array.
  */
-function isSelectable(item) {
-    return !item.hidden && !item.disabled && !item.isSeparatorType;
+function collapseSeparators(items, nodes) {
+    // Collapse the leading separators.
+    var k1;
+    for (k1 = 0; k1 < items.length; ++k1) {
+        var item = items[k1];
+        var node = nodes[k1];
+        if (item.type !== menuitem_1.MenuItem.Separator) {
+            node.classList.remove(COLLAPSED_CLASS);
+            break;
+        }
+        node.classList.add(COLLAPSED_CLASS);
+    }
+    // Collapse the trailing separators.
+    var k2;
+    for (k2 = items.length - 1; k2 >= 0; --k2) {
+        var item = items[k2];
+        var node = nodes[k2];
+        if (item.type !== menuitem_1.MenuItem.Separator) {
+            node.classList.remove(COLLAPSED_CLASS);
+            break;
+        }
+        node.classList.add(COLLAPSED_CLASS);
+    }
+    // Collapse the remaining consecutive separators.
+    var collapse = false;
+    while (++k1 < k2) {
+        var item = items[k1];
+        var node = nodes[k1];
+        if (collapse && item.type === menuitem_1.MenuItem.Separator) {
+            node.classList.add(COLLAPSED_CLASS);
+        }
+        else {
+            node.classList.remove(COLLAPSED_CLASS);
+            collapse = item.type === menuitem_1.MenuItem.Separator;
+        }
+    }
 }
+exports.collapseSeparators = collapseSeparators;
 
-},{"phosphor-arrays":4,"phosphor-properties":19,"phosphor-widget":31}],15:[function(require,module,exports){
+},{"./menuitem":15,"phosphor-arrays":4,"phosphor-properties":19,"phosphor-widget":31}],15:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -3453,7 +3664,28 @@ function isSelectable(item) {
 'use strict';
 var phosphor_properties_1 = require('phosphor-properties');
 var phosphor_signaling_1 = require('phosphor-signaling');
-var menu_1 = require('./menu');
+/**
+ * An enum of the supported menu item types.
+ */
+(function (MenuItemType) {
+    /**
+     * A normal non-checkable menu item.
+     */
+    MenuItemType[MenuItemType["Normal"] = 0] = "Normal";
+    /**
+     * A checkable menu item.
+     */
+    MenuItemType[MenuItemType["Check"] = 1] = "Check";
+    /**
+     * A separator menu item.
+     */
+    MenuItemType[MenuItemType["Separator"] = 2] = "Separator";
+    /**
+     * A submenu menu item.
+     */
+    MenuItemType[MenuItemType["Submenu"] = 3] = "Submenu";
+})(exports.MenuItemType || (exports.MenuItemType = {}));
+var MenuItemType = exports.MenuItemType;
 /**
  * An item which can be added to a menu or menu bar.
  */
@@ -3465,25 +3697,8 @@ var MenuItem = (function () {
      */
     function MenuItem(options) {
         if (options)
-            initFromOptions(this, options);
+            initFrom(this, options);
     }
-    /**
-     * Create a menu item from a template.
-     *
-     * @param template - The template object for the menu item.
-     *
-     * @returns A new menu item created from the template.
-     *
-     * #### Notes
-     * If a submenu template is provided, the submenu will be created
-     * by calling `Menu.fromTemplate`. If a custom menu is necessary,
-     * use the `MenuItem` constructor directly.
-     */
-    MenuItem.fromTemplate = function (template) {
-        var item = new MenuItem();
-        initFromTemplate(item, template);
-        return item;
-    };
     Object.defineProperty(MenuItem.prototype, "changed", {
         /**
          * A signal emitted when the menu item state changes.
@@ -3503,8 +3718,6 @@ var MenuItem = (function () {
          *
          * #### Notes
          * This is a pure delegate to the [[typeProperty]].
-         *
-         * **See also:** [[isNormalType]], [[isCheckType]], [[isSeparatorType]]
          */
         get: function () {
             return MenuItem.typeProperty.get(this);
@@ -3567,88 +3780,26 @@ var MenuItem = (function () {
     });
     Object.defineProperty(MenuItem.prototype, "shortcut", {
         /**
-         * Get the shortcut key for the menu item (decoration only).
+         * Get the shortcut key for the menu item.
          *
          * #### Notes
+         * The shortcut string is for decoration only.
+         *
          * This is a pure delegate to the [[shortcutProperty]].
          */
         get: function () {
             return MenuItem.shortcutProperty.get(this);
         },
         /**
-         * Set the shortcut key for the menu item (decoration only).
+         * Set the shortcut key for the menu item.
          *
          * #### Notes
+         * The shortcut string is for decoration only.
+         *
          * This is a pure delegate to the [[shortcutProperty]].
          */
         set: function (value) {
             MenuItem.shortcutProperty.set(this, value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuItem.prototype, "disabled", {
-        /**
-         * Get whether the menu item is disabled.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[disabledProperty]].
-         */
-        get: function () {
-            return MenuItem.disabledProperty.get(this);
-        },
-        /**
-         * Set whether the menu item is disabled.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[disabledProperty]].
-         */
-        set: function (value) {
-            MenuItem.disabledProperty.set(this, value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuItem.prototype, "hidden", {
-        /**
-         * Get whether the menu item is hidden.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[hiddenProperty]].
-         */
-        get: function () {
-            return MenuItem.hiddenProperty.get(this);
-        },
-        /**
-         * Set whether the menu item is hidden.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[hiddenProperty]].
-         */
-        set: function (value) {
-            MenuItem.hiddenProperty.set(this, value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuItem.prototype, "checked", {
-        /**
-         * Get whether the menu item is checked.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[checkedProperty]].
-         */
-        get: function () {
-            return MenuItem.checkedProperty.get(this);
-        },
-        /**
-         * Set whether the menu item is checked.
-         *
-         * #### Notes
-         * This is a pure delegate to the [[checkedProperty]].
-         */
-        set: function (value) {
-            MenuItem.checkedProperty.set(this, value);
         },
         enumerable: true,
         configurable: true
@@ -3675,24 +3826,46 @@ var MenuItem = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MenuItem.prototype, "handler", {
+    Object.defineProperty(MenuItem.prototype, "command", {
         /**
-         * Get the handler for the menu item.
+         * Get the command for the menu item.
          *
          * #### Notes
-         * This is a pure delegate to the [[handlerProperty]].
+         * This is a pure delegate to the [[commandProperty]].
          */
         get: function () {
-            return MenuItem.handlerProperty.get(this);
+            return MenuItem.commandProperty.get(this);
         },
         /**
-         * Set the handler for the menu item.
+         * Set the command for the menu item.
          *
          * #### Notes
-         * This is a pure delegate to the [[handlerProperty]].
+         * This is a pure delegate to the [[commandProperty]].
          */
         set: function (value) {
-            MenuItem.handlerProperty.set(this, value);
+            MenuItem.commandProperty.set(this, value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MenuItem.prototype, "commandArgs", {
+        /**
+         * Get the command args for the menu item.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[commandArgsProperty]].
+         */
+        get: function () {
+            return MenuItem.commandArgsProperty.get(this);
+        },
+        /**
+         * Set the command args for the menu item.
+         *
+         * #### Notes
+         * This is a pure delegate to the [[commandArgsProperty]].
+         */
+        set: function (value) {
+            MenuItem.commandArgsProperty.set(this, value);
         },
         enumerable: true,
         configurable: true
@@ -3719,51 +3892,22 @@ var MenuItem = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MenuItem.prototype, "isNormalType", {
-        /**
-         * Test whether the menu item is a `'normal'` type.
-         *
-         * #### Notes
-         * This is a read-only property.
-         *
-         * **See also:** [[type]], [[isCheckType]], [[isSeparatorType]]
-         */
-        get: function () {
-            return this.type === 'normal';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuItem.prototype, "isCheckType", {
-        /**
-         * Test whether the menu item is a `'check'` type.
-         *
-         * #### Notes
-         * This is a read-only property.
-         *
-         * **See also:** [[type]], [[isNormalType]], [[isSeparatorType]]
-         */
-        get: function () {
-            return this.type === 'check';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuItem.prototype, "isSeparatorType", {
-        /**
-         * Test whether the menu item is a `'separator'` type.
-         *
-         * #### Notes
-         * This is a read-only property.
-         *
-         * **See also:** [[type]], [[isNormalType]], [[isCheckType]]
-         */
-        get: function () {
-            return this.type === 'separator';
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /**
+     * A convenience alias of the `Normal` [[MenuItemType]].
+     */
+    MenuItem.Normal = MenuItemType.Normal;
+    /**
+     * A convenience alias of the `Check` [[MenuItemType]].
+     */
+    MenuItem.Check = MenuItemType.Check;
+    /**
+     * A convenience alias of the `Separator` [[MenuItemType]].
+     */
+    MenuItem.Separator = MenuItemType.Separator;
+    /**
+     * A convenience alias of the `Submenu` [[MenuItemType]].
+     */
+    MenuItem.Submenu = MenuItemType.Submenu;
     /**
      * A signal emitted when the menu item state changes.
      *
@@ -3773,30 +3917,24 @@ var MenuItem = (function () {
     /**
      * The property descriptor for the menu item type.
      *
-     * Valid types are: `'normal'`, `'check'`, and `'separator'`.
-     *
      * #### Notes
-     * If an invalid type is provided, a warning will be logged and a
-     * `'normal'` type will be used instead.
+     * The default value is `MenuItemType.Normal`.
      *
-     * The default value is `'normal'`.
-     *
-     * Using a string for this value instead of an enum makes it easier
-     * to create menu items from a JSON specification. For the type-safe
-     * crowd, read-only getters are provided to assert the item type.
+     * If a [[submenu]] is specified, the type will be automatically set
+     * to the `Submenu` [[MenuItemType]].
      *
      * **See also:** [[type]]
      */
     MenuItem.typeProperty = new phosphor_properties_1.Property({
         name: 'type',
-        value: 'normal',
-        coerce: coerceMenuItemType,
-        changed: function (owner) { MenuItem.checkedProperty.coerce(owner); },
+        value: MenuItemType.Normal,
+        coerce: function (owner, value) { return owner.submenu ? MenuItemType.Submenu : value; },
         notify: MenuItem.changedSignal,
     });
     /**
      * The property descriptor for the menu item text.
      *
+     * #### Notes
      * The text may have an ampersand `&` before the character to use
      * as the mnemonic for the menu item.
      *
@@ -3810,6 +3948,7 @@ var MenuItem = (function () {
     /**
      * The property descriptor for the menu item icon class.
      *
+     * #### Notes
      * This will be added to the class name of the menu item icon node.
      *
      * Multiple class names can be separated with whitespace.
@@ -3824,6 +3963,11 @@ var MenuItem = (function () {
     /**
      * The property descriptor for the menu item shortcut.
      *
+     * #### Notes
+     * This shortcut is for display purposes only, it does not perform
+     * any actual keyboard event handling. Mapping a keyboard shortcut
+     * to a command must be handled by external code.
+     *
      * **See also:** [[shortcut]]
      */
     MenuItem.shortcutProperty = new phosphor_properties_1.Property({
@@ -3832,42 +3976,9 @@ var MenuItem = (function () {
         notify: MenuItem.changedSignal,
     });
     /**
-     * The property descriptor controlling the menu item disabled state.
-     *
-     * **See also:** [[disabled]]
-     */
-    MenuItem.disabledProperty = new phosphor_properties_1.Property({
-        name: 'disabled',
-        value: false,
-        notify: MenuItem.changedSignal,
-    });
-    /**
-     * The property descriptor controlling the menu item hidden state.
-     *
-     * **See also:** [[hidden]]
-     */
-    MenuItem.hiddenProperty = new phosphor_properties_1.Property({
-        name: 'hidden',
-        value: false,
-        notify: MenuItem.changedSignal,
-    });
-    /**
-     * The property descriptor controlling the menu item checked state.
-     *
-     * #### Notes
-     * Only a `'check'` type menu item can be checked.
-     *
-     * **See also:** [[checked]]
-     */
-    MenuItem.checkedProperty = new phosphor_properties_1.Property({
-        name: 'checked',
-        value: false,
-        coerce: function (owner, val) { return owner.type === 'check' ? val : false; },
-        notify: MenuItem.changedSignal,
-    });
-    /**
      * The property descriptor for the menu item class name.
      *
+     * #### Notes
      * This will be added to the class name of the menu item node.
      *
      * Multiple class names can be separated with whitespace.
@@ -3880,14 +3991,31 @@ var MenuItem = (function () {
         notify: MenuItem.changedSignal,
     });
     /**
-     * The property descriptor for the item handler.
+     * The property descriptor for the item command.
      *
-     * This callback will be invoked when the menu item is triggered.
+     * #### Notes
+     * This command will be executed when the menu item is clicked. The
+     * command also controls the checked and enabled state of the item.
      *
-     * **See also:** [[handler]]
+     * **See also:** [[command]]
      */
-    MenuItem.handlerProperty = new phosphor_properties_1.Property({
-        name: 'handler',
+    MenuItem.commandProperty = new phosphor_properties_1.Property({
+        name: 'command',
+        value: null,
+        coerce: function (owner, value) { return value || null; },
+        notify: MenuItem.changedSignal,
+    });
+    /**
+     * The property descriptor for the item command arguments.
+     *
+     * #### Notes
+     * This args object will be passed to the `execute` method of the
+     * menu item's `command` when the menu item is clicked.
+     *
+     * **See also:** [[commandArgs]]
+     */
+    MenuItem.commandArgsProperty = new phosphor_properties_1.Property({
+        name: 'commandArgs',
         value: null,
         coerce: function (owner, value) { return value || null; },
         notify: MenuItem.changedSignal,
@@ -3895,79 +4023,53 @@ var MenuItem = (function () {
     /**
      * The property descriptor for the menu item submenu.
      *
+     * #### Notes
+     * If a [[submenu]] is specified, the type will be automatically set
+     * to the `Submenu` [[MenuItemType]].
+     *
      * **See also:** [[submenu]]
      */
     MenuItem.submenuProperty = new phosphor_properties_1.Property({
         name: 'submenu',
         value: null,
         coerce: function (owner, value) { return value || null; },
+        changed: function (owner) { MenuItem.typeProperty.coerce(owner); },
         notify: MenuItem.changedSignal,
     });
     return MenuItem;
 })();
 exports.MenuItem = MenuItem;
 /**
- * Initialize a menu item from a common options object.
- */
-function initFromCommon(item, common) {
-    if (common.type !== void 0) {
-        item.type = common.type;
-    }
-    if (common.text !== void 0) {
-        item.text = common.text;
-    }
-    if (common.icon !== void 0) {
-        item.icon = common.icon;
-    }
-    if (common.shortcut !== void 0) {
-        item.shortcut = common.shortcut;
-    }
-    if (common.disabled !== void 0) {
-        item.disabled = common.disabled;
-    }
-    if (common.hidden !== void 0) {
-        item.hidden = common.hidden;
-    }
-    if (common.checked !== void 0) {
-        item.checked = common.checked;
-    }
-    if (common.className !== void 0) {
-        item.className = common.className;
-    }
-    if (common.handler !== void 0) {
-        item.handler = common.handler;
-    }
-}
-/**
- * Initialize a menu item from a template object.
- */
-function initFromTemplate(item, template) {
-    initFromCommon(item, template);
-    if (template.submenu !== void 0) {
-        item.submenu = menu_1.Menu.fromTemplate(template.submenu);
-    }
-}
-/**
  * Initialize a menu item from an options object.
  */
-function initFromOptions(item, options) {
-    initFromCommon(item, options);
+function initFrom(item, options) {
+    if (options.type !== void 0) {
+        item.type = options.type;
+    }
+    if (options.text !== void 0) {
+        item.text = options.text;
+    }
+    if (options.icon !== void 0) {
+        item.icon = options.icon;
+    }
+    if (options.shortcut !== void 0) {
+        item.shortcut = options.shortcut;
+    }
+    if (options.className !== void 0) {
+        item.className = options.className;
+    }
+    if (options.command !== void 0) {
+        item.command = options.command;
+    }
+    if (options.commandArgs !== void 0) {
+        item.commandArgs = options.commandArgs;
+    }
     if (options.submenu !== void 0) {
         item.submenu = options.submenu;
     }
 }
-/**
- * The coerce handler for the menu item type.
- */
-function coerceMenuItemType(owner, value) {
-    if (value === 'normal' || value === 'check' || value === 'separator') {
-        return value;
-    }
-    console.warn('invalid menu item type:', value);
-    return 'normal';
-}
 
-},{"./menu":12,"phosphor-properties":19,"phosphor-signaling":21}],16:[function(require,module,exports){
+},{"phosphor-properties":19,"phosphor-signaling":21}],16:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -6195,7 +6297,7 @@ function resetGeometry(widget) {
     style.height = '';
 }
 
-},{"./index.css":22,"phosphor-domutil":8,"phosphor-messaging":16,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":31}],24:[function(require,module,exports){
+},{"./index.css":22,"phosphor-domutil":9,"phosphor-messaging":16,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":31}],24:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-TabBar {\n  position: relative;\n  z-index: 0;\n}\n.p-TabBar-header {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  z-index: 0;\n}\n.p-TabBar-body {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n}\n.p-TabBar-footer {\n  display: none;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 1;\n}\n.p-TabBar-content {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  display: flex;\n  flex-direction: row;\n  list-style-type: none;\n}\n.p-Tab {\n  display: flex;\n  flex-direction: row;\n  box-sizing: border-box;\n  overflow: hidden;\n}\n.p-Tab-icon,\n.p-Tab-close {\n  flex: 0 0 auto;\n}\n.p-Tab-text {\n  flex: 1 1 auto;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.p-TabBar.p-mod-dragging .p-Tab {\n  position: relative;\n  left: 0;\n  transition: left 150ms ease;\n}\n.p-TabBar.p-mod-dragging .p-Tab.p-mod-dragging {\n  transition: none;\n}\n.p-TabPanel {\n  z-index: 0;\n}\n.p-TabPanel > .p-TabBar {\n  z-index: 1;\n}\n.p-TabPanel > .p-StackedPanel {\n  z-index: 0;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-tabs/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],25:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
@@ -7423,7 +7525,7 @@ function tearOffExceeded(rect, event) {
         (event.clientY >= rect.bottom + TEAR_OFF_THRESHOLD));
 }
 
-},{"phosphor-arrays":4,"phosphor-domutil":8,"phosphor-messaging":16,"phosphor-nodewrapper":17,"phosphor-observablelist":18,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":31}],27:[function(require,module,exports){
+},{"phosphor-arrays":4,"phosphor-domutil":9,"phosphor-messaging":16,"phosphor-nodewrapper":17,"phosphor-observablelist":18,"phosphor-properties":19,"phosphor-signaling":21,"phosphor-widget":31}],27:[function(require,module,exports){
 /*-----------------------------------------------------------------------------
 | Copyright (c) 2014-2015, PhosphorJS Contributors
 |
@@ -8204,7 +8306,7 @@ function onChildPropertyChanged(child) {
     }
 }
 
-},{"./index.css":28,"phosphor-arrays":4,"phosphor-boxengine":5,"phosphor-domutil":8,"phosphor-messaging":16,"phosphor-properties":19,"phosphor-widget":31}],30:[function(require,module,exports){
+},{"./index.css":28,"phosphor-arrays":4,"phosphor-boxengine":5,"phosphor-domutil":9,"phosphor-messaging":16,"phosphor-properties":19,"phosphor-widget":31}],30:[function(require,module,exports){
 var css = "/*-----------------------------------------------------------------------------\r\n| Copyright (c) 2014-2015, PhosphorJS Contributors\r\n|\r\n| Distributed under the terms of the BSD 3-Clause License.\r\n|\r\n| The full license is in the file LICENSE, distributed with this software.\r\n|----------------------------------------------------------------------------*/\n.p-Widget {\n  box-sizing: border-box;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  overflow: hidden;\n  cursor: default;\n}\n.p-Widget.p-mod-hidden {\n  display: none;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/phosphor-widget/lib/index.css"})); module.exports = css;
 },{"browserify-css":3}],31:[function(require,module,exports){
 /*-----------------------------------------------------------------------------

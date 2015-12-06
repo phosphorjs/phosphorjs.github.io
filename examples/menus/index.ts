@@ -8,6 +8,10 @@
 'use strict';
 
 import {
+  DelegateCommand
+} from 'phosphor-command';
+
+import {
   Menu, MenuBar, MenuItem
 } from 'phosphor-menus';
 
@@ -66,270 +70,317 @@ class CodeMirrorWidget extends Widget {
 
 
 /**
- * Log a message to the log element.
+ * A command which logs its arguments to the log span.
  */
-function log(value: string): void {
+const logCmd = new DelegateCommand(args => {
   var node = document.getElementById('log-span');
-  node.textContent = value;
+  node.textContent = args;
+});
+
+
+/**
+ * A simple disabled command.
+ */
+const disabledCmd = new DelegateCommand(() => { });
+disabledCmd.enabled = false;
+
+
+/**
+ * A command which toggles its state when executed.
+ */
+const saveOnExitCmd = new DelegateCommand(() => {
+  logCmd.execute('Save On Exit');
+  saveOnExitCmd.checked = !saveOnExitCmd.checked;
+});
+
+
+/**
+ * Create the example menu bar.
+ */
+function createMenuBar(): MenuBar {
+  let fileMenu = new Menu([
+    new MenuItem({
+      text: 'New File',
+      shortcut: 'Ctrl+N',
+      command: logCmd,
+      commandArgs: 'New File'
+    }),
+    new MenuItem({
+      text: 'Open File',
+      shortcut: 'Ctrl+O',
+      command: logCmd,
+      commandArgs: 'Open File'
+    }),
+    new MenuItem({
+      text: 'Save File',
+      shortcut: 'Ctrl+S',
+      command: logCmd,
+      commandArgs: 'Save File'
+    }),
+    new MenuItem({
+      text: 'Save As...',
+      shortcut: 'Ctrl+Shift+S',
+      command: disabledCmd
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Close File',
+      shortcut: 'Ctrl+W',
+      command: logCmd,
+      commandArgs: 'Close File'
+    }),
+    new MenuItem({
+      text: 'Close All',
+      command: logCmd,
+      commandArgs: 'Close All'
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'More...',
+      submenu: new Menu([
+        new MenuItem({
+          text: 'One',
+          command: logCmd,
+          commandArgs: 'One'
+        }),
+        new MenuItem({
+          text: 'Two',
+          command: logCmd,
+          commandArgs: 'Two'
+        }),
+        new MenuItem({
+          text: 'Three',
+          command: logCmd,
+          commandArgs: 'Three'
+        }),
+        new MenuItem({
+          text: 'Four',
+          command: logCmd,
+          commandArgs: 'Four'
+        })
+      ])
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Exit',
+      command: logCmd,
+      commandArgs: 'Exit'
+    })
+  ]);
+
+  let editMenu = new Menu([
+    new MenuItem({
+      text: '&Undo',
+      icon: 'fa fa-undo',
+      shortcut: 'Ctrl+Z',
+      command: logCmd,
+      commandArgs: 'Undo'
+    }),
+    new MenuItem({
+      text: '&Repeat',
+      icon: 'fa fa-repeat',
+      shortcut: 'Ctrl+Y',
+      command: disabledCmd
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: '&Copy',
+      icon: 'fa fa-copy',
+      shortcut: 'Ctrl+C',
+      command: logCmd,
+      commandArgs: 'Copy'
+    }),
+    new MenuItem({
+      text: 'Cu&t',
+      icon: 'fa fa-cut',
+      shortcut: 'Ctrl+X',
+      command: logCmd,
+      commandArgs: 'Cut'
+    }),
+    new MenuItem({
+      text: '&Paste',
+      icon: 'fa fa-paste',
+      shortcut: 'Ctrl+V',
+      command: logCmd,
+      commandArgs: 'Paste'
+    })
+  ]);
+
+  let findMenu = new Menu([
+    new MenuItem({
+      text: 'Find...',
+      shortcut: 'Ctrl+F',
+      command: logCmd,
+      commandArgs: 'Find...'
+    }),
+    new MenuItem({
+      text: 'Find Next',
+      shortcut: 'F3',
+      command: logCmd,
+      commandArgs: 'Find Next'
+    }),
+    new MenuItem({
+      text: 'Find Previous',
+      shortcut: 'Shift+F3',
+      command: logCmd,
+      commandArgs: 'Find Previous'
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Replace...',
+      shortcut: 'Ctrl+H',
+      command: logCmd,
+      commandArgs: 'Replace...'
+    }),
+    new MenuItem({
+      text: 'Replace Next',
+      shortcut: 'Ctrl+Shift+H',
+      command: logCmd,
+      commandArgs: 'Replace Next'
+    })
+  ]);
+
+  let helpMenu = new Menu([
+    new MenuItem({
+      text: 'Documentation',
+      command: logCmd,
+      commandArgs: 'Documentation'
+    }),
+    new MenuItem({
+      text: 'About',
+      command: logCmd,
+      commandArgs: 'About'
+    })
+  ]);
+
+  return new MenuBar([
+    new MenuItem({
+      text: 'File',
+      submenu: fileMenu
+    }),
+    new MenuItem({
+      text: 'Edit',
+      submenu: editMenu
+    }),
+    new MenuItem({
+      text: 'Find',
+      submenu: findMenu
+    }),
+    new MenuItem({
+      text: 'View',
+      type: MenuItem.Submenu
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Help',
+      submenu: helpMenu
+    })
+  ]);
 }
 
 
 /**
- * Log the text of a menu item to the log element.
+ * Create the example context menu.
  */
-function logItem(item: MenuItem): void {
-  log(item.text.replace(/&/g, ''));
+function createContextMenu(): Menu {
+  return new Menu([
+    new MenuItem({
+      text: '&Copy',
+      icon: 'fa fa-copy',
+      shortcut: 'Ctrl+C',
+      command: logCmd,
+      commandArgs: 'Copy'
+    }),
+    new MenuItem({
+      text: 'Cu&t',
+      icon: 'fa fa-cut',
+      shortcut: 'Ctrl+X',
+      command: logCmd,
+      commandArgs: 'Cut'
+    }),
+    new MenuItem({
+      text: '&Paste',
+      icon: 'fa fa-paste',
+      shortcut: 'Ctrl+V',
+      command: logCmd,
+      commandArgs: 'Paste'
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: '&New Tab',
+      command: logCmd,
+      commandArgs: 'New Tab'
+    }),
+    new MenuItem({
+      text: '&Close Tab',
+      command: logCmd,
+      commandArgs: 'Close Tab'
+    }),
+    new MenuItem({
+      type: MenuItem.Check,
+      text: '&Save On Exit',
+      command: saveOnExitCmd
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Task Manager',
+      command: disabledCmd
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'More...',
+      submenu: new Menu([
+        new MenuItem({
+          text: 'One',
+          command: logCmd,
+          commandArgs: 'One'
+        }),
+        new MenuItem({
+          text: 'Two',
+          command: logCmd,
+          commandArgs: 'Two'
+        }),
+        new MenuItem({
+          text: 'Three',
+          command: logCmd,
+          commandArgs: 'Three'
+        }),
+        new MenuItem({
+          text: 'Four',
+          command: logCmd,
+          commandArgs: 'Four'
+        })
+      ])
+    }),
+    new MenuItem({
+      type: MenuItem.Separator
+    }),
+    new MenuItem({
+      text: 'Close',
+      icon: 'fa fa-close',
+      command: logCmd,
+      commandArgs: 'Close'
+    })
+  ]);
 }
-
-
-/**
- * The template for the application menu bar.
- */
-var MENU_BAR_TEMPLATE = [
-  {
-    text: 'File',
-    submenu: [
-      {
-        text: 'New File',
-        shortcut: 'Ctrl+N',
-        handler: logItem
-      },
-      {
-        text: 'Open File',
-        shortcut: 'Ctrl+O',
-        handler: logItem
-      },
-      {
-        text: 'Save File',
-        shortcut: 'Ctrl+S',
-        handler: logItem
-      },
-      {
-        text: 'Save As...',
-        shortcut: 'Ctrl+Shift+S',
-        handler: logItem
-      },
-      {
-        type: 'separator'
-      },
-      {
-        text: 'Close File',
-        shortcut: 'Ctrl+W',
-        handler: logItem
-      },
-      {
-        text: 'Close All Files',
-        handler: logItem
-      },
-      {
-        type: 'separator'
-      },
-      {
-        text: 'More...',
-        submenu: [
-          {
-            text: 'One',
-            handler: logItem
-          },
-          {
-            text: 'Two',
-            handler: logItem
-          },
-          {
-            text: 'Three',
-            handler: logItem
-          },
-          {
-            text: 'Four',
-            handler: logItem
-          }
-        ]
-      },
-      {
-        type: 'separator'
-      },
-      {
-        text: 'Exit',
-        handler: logItem
-      }
-    ]
-  },
-  {
-    text: 'Edit',
-    submenu: [
-      {
-        text: '&Undo',
-        shortcut: 'Ctrl+Z',
-        className: 'undo',
-        handler: logItem
-      },
-      {
-        text: '&Repeat',
-        shortcut: 'Ctrl+Y',
-        className: 'repeat',
-        handler: logItem
-      },
-      {
-        type: 'separator'
-      },
-      {
-        text: '&Copy',
-        shortcut: 'Ctrl+C',
-        className: 'copy',
-        handler: logItem
-      },
-      {
-        text: 'Cu&t',
-        shortcut: 'Ctrl+X',
-        className: 'cut',
-        handler: logItem
-      },
-      {
-        text: '&Paste',
-        shortcut: 'Ctrl+V',
-        className: 'paste',
-        handler: logItem
-      }
-    ]
-  },
-  {
-    text: 'Find',
-    submenu: [
-      {
-        text: 'Find...',
-        shortcut: 'Ctrl+F',
-        handler: logItem
-      },
-      {
-        text: 'Find Next',
-        shortcut: 'F3',
-        handler: logItem
-      },
-      {
-        text: 'Find Previous',
-        shortcut: 'Shift+F3',
-        handler: logItem
-      },
-      {
-        type: 'separator'
-      },
-      {
-        text: 'Replace...',
-        shortcut: 'Ctrl+H',
-        handler: logItem
-      },
-      {
-        text: 'Replace Next',
-        shortcut: 'Ctrl+Shift+H',
-        handler: logItem
-      }
-    ]
-  },
-  {
-    text: 'View',
-    disabled: true
-  },
-  {
-    type: 'separator'
-  },
-  {
-    text: 'Help',
-    submenu: [
-      {
-        text: 'Documentation',
-        handler: logItem
-      },
-      {
-        text: 'About',
-        handler: logItem
-      }
-    ]
-  }
-];
-
-
-/**
- * The template for the application context menu.
- */
-var CONTEXT_MENU_TEMPLATE = [
-  {
-    text: '&Copy',
-    shortcut: 'Ctrl+C',
-    className: 'copy',
-    handler: logItem
-  },
-  {
-    text: 'Cu&t',
-    shortcut: 'Ctrl+X',
-    className: 'cut',
-    handler: logItem
-  },
-  {
-    text: '&Paste',
-    shortcut: 'Ctrl+V',
-    className: 'paste',
-    handler: logItem
-  },
-  {
-    type: 'separator'
-  },
-  {
-    text: '&New Tab',
-    handler: logItem
-  },
-  {
-    text: '&Close Tab',
-    handler: logItem
-  },
-  {
-    type: 'check',
-    checked: true,
-    text: '&Save On Exit',
-    handler: (item: MenuItem) => {
-      item.checked = !item.checked;
-      log('Save On Exit - ' + item.checked);
-    }
-  },
-  {
-    type: 'separator'
-  },
-  {
-    text: 'Task Manager',
-    disabled: true
-  },
-  {
-    type: 'separator'
-  },
-  {
-    text: 'More...',
-    submenu: [
-      {
-        text: 'One',
-        handler: logItem
-      },
-      {
-        text: 'Two',
-        handler: logItem
-      },
-      {
-        text: 'Three',
-        handler: logItem
-      },
-      {
-        text: 'Four',
-        handler: logItem
-      }
-    ]
-  },
-  {
-    type: 'separator'
-  },
-  {
-    text: 'Close',
-    className: 'close',
-    handler: logItem
-  }
-];
 
 
 /**
@@ -339,7 +390,7 @@ function main(): void {
   var contextArea = new Widget();
   contextArea.addClass('ContextArea');
   contextArea.node.innerHTML = (
-    '<h2>Notice the menu bar at the top of the document.' +
+    '<h2>Notice the menu bar at the top of the document.</h2>' +
     '<h2>Right click this panel for a context menu.</h2>' +
     '<h3>Clicked Item: <span id="log-span"></span></h3>'
   );
@@ -361,7 +412,7 @@ function main(): void {
   cmCss.loadTarget('./index.css');
   cmCss.title.text = 'CSS';
 
-  var contextMenu = Menu.fromTemplate(CONTEXT_MENU_TEMPLATE);
+  var contextMenu = createContextMenu();
   contextArea.node.addEventListener('contextmenu', (event: MouseEvent) => {
     event.preventDefault();
     var x = event.clientX;
@@ -369,7 +420,7 @@ function main(): void {
     contextMenu.popup(x, y);
   });
 
-  var menuBar = MenuBar.fromTemplate(MENU_BAR_TEMPLATE);
+  var menuBar = createMenuBar();
 
   var panel = new TabPanel();
   panel.id = 'main';
