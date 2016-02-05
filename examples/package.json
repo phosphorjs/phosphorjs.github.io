@@ -1,18 +1,25 @@
 {
   "private": true,
   "scripts": {
-    "clean": "rimraf */*.js",
-    "build": "./build.sh",
+    "build": "npm run build:dockpanel && npm run build:flexbox && npm run build:menus && npm run build:tabs && npm run build:todomvc",
+    "build:dockpanel": "tsc --project dockpanel && webpack --config dockpanel/webpack.conf.js",
+    "build:flexbox": "tsc --project flexbox && webpack --config flexbox/webpack.conf.js",
+    "build:menus": "tsc --project menus && webpack --config menus/webpack.conf.js",
+    "build:tabs": "tsc --project tabs && webpack --config tabs/webpack.conf.js",
+    "build:todomvc": "tsc --project todomvc && webpack --config todomvc/webpack.conf.js",
     "postinstall": "npm dedupe"
   },
   "dependencies": {
-    "phosphor-command": "^0.5.0",
+    "css-loader": "^0.23.1",
     "phosphor-dockpanel": "^0.9.3",
     "phosphor-menus": "^1.0.0-beta",
     "phosphor-messaging": "^1.0.5",
+    "phosphor-panel": "^1.0.0-rc.1",
     "phosphor-splitpanel": "^1.0.0-beta",
     "phosphor-tabs": "^1.0.0-beta.3",
-    "phosphor-widget": "^1.0.0-beta.1"
+    "phosphor-widget": "^1.0.0-beta.1",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.13"
   },
   "devDependencies": {
     "browserify": "^11.2.0",

@@ -128,9 +128,9 @@ function main(): void {
   panel.insertTabBefore(r2, b1);
   panel.insertTabBefore(r3, y1);
 
-  Widget.attach(panel, document.body);
+  panel.attach(document.body);
 
-  window.onresize = () => panel.update();
+  window.onresize = () => { panel.update() };
 }
 
 

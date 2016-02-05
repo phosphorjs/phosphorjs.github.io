@@ -12,6 +12,10 @@ import {
 } from 'phosphor-messaging';
 
 import {
+  Panel
+} from 'phosphor-panel';
+
+import {
   SplitPanel
 } from 'phosphor-splitpanel';
 
@@ -20,7 +24,7 @@ import {
 } from 'phosphor-tabs';
 
 import {
-  Panel, ResizeMessage, Widget
+  ResizeMessage, Widget
 } from 'phosphor-widget';
 
 import './index.css';
@@ -124,10 +128,16 @@ function main(): void {
   var blue4 = createContent('blue');
 
   var split = new SplitPanel();
-  split.children.assign([blue1, blue2, blue3, blue4]);
+  split.addChild(blue1);
+  split.addChild(blue2);
+  split.addChild(blue3);
+  split.addChild(blue4);
 
   var box = new MyVBox();
-  box.children.assign([red, split, yellow, green]);
+  box.addChild(red);
+  box.addChild(split);
+  box.addChild(yellow);
+  box.addChild(green);
   box.title.text = 'Demo';
 
   var cmSource = new CodeMirrorWidget({
@@ -148,11 +158,13 @@ function main(): void {
 
   var panel = new TabPanel()
   panel.id = 'main';
-  panel.widgets.assign([box, cmSource, cmCss]);
+  panel.addChild(box);
+  panel.addChild(cmSource);
+  panel.addChild(cmCss);
 
-  Widget.attach(panel, document.body);
+  panel.attach(document.body);
 
-  window.onresize = () => panel.update();
+  window.onresize = () => { panel.update() };
 }
 
 

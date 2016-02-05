@@ -8,10 +8,6 @@
 'use strict';
 
 import {
-  DelegateCommand
-} from 'phosphor-command';
-
-import {
   Menu, MenuBar, MenuItem
 } from 'phosphor-menus';
 
@@ -70,28 +66,21 @@ class CodeMirrorWidget extends Widget {
 
 
 /**
- * A command which logs its arguments to the log span.
+ * A handler which logs the item text to the log span.
  */
-const logCmd = new DelegateCommand(args => {
+function logHandler(item: MenuItem): void {
   var node = document.getElementById('log-span');
-  node.textContent = args;
-});
+  node.textContent = item.text.replace(/&/g, '');
+}
 
 
 /**
- * A simple disabled command.
+ * A handler which toggles the item state when executed.
  */
-const disabledCmd = new DelegateCommand(() => { });
-disabledCmd.enabled = false;
-
-
-/**
- * A command which toggles its state when executed.
- */
-const saveOnExitCmd = new DelegateCommand(() => {
-  logCmd.execute('Save On Exit');
-  saveOnExitCmd.checked = !saveOnExitCmd.checked;
-});
+function saveOnExitHandler(item: MenuItem): void {
+  logHandler(item);
+  item.checked = !item.checked;
+}
 
 
 /**
@@ -102,25 +91,22 @@ function createMenuBar(): MenuBar {
     new MenuItem({
       text: 'New File',
       shortcut: 'Ctrl+N',
-      command: logCmd,
-      commandArgs: 'New File'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Open File',
       shortcut: 'Ctrl+O',
-      command: logCmd,
-      commandArgs: 'Open File'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Save File',
       shortcut: 'Ctrl+S',
-      command: logCmd,
-      commandArgs: 'Save File'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Save As...',
       shortcut: 'Ctrl+Shift+S',
-      command: disabledCmd
+      disabled: true
     }),
     new MenuItem({
       type: MenuItem.Separator
@@ -128,13 +114,11 @@ function createMenuBar(): MenuBar {
     new MenuItem({
       text: 'Close File',
       shortcut: 'Ctrl+W',
-      command: logCmd,
-      commandArgs: 'Close File'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Close All',
-      command: logCmd,
-      commandArgs: 'Close All'
+      handler: logHandler
     }),
     new MenuItem({
       type: MenuItem.Separator
@@ -144,23 +128,19 @@ function createMenuBar(): MenuBar {
       submenu: new Menu([
         new MenuItem({
           text: 'One',
-          command: logCmd,
-          commandArgs: 'One'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Two',
-          command: logCmd,
-          commandArgs: 'Two'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Three',
-          command: logCmd,
-          commandArgs: 'Three'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Four',
-          command: logCmd,
-          commandArgs: 'Four'
+          handler: logHandler
         })
       ])
     }),
@@ -169,8 +149,7 @@ function createMenuBar(): MenuBar {
     }),
     new MenuItem({
       text: 'Exit',
-      command: logCmd,
-      commandArgs: 'Exit'
+      handler: logHandler
     })
   ]);
 
@@ -179,14 +158,13 @@ function createMenuBar(): MenuBar {
       text: '&Undo',
       icon: 'fa fa-undo',
       shortcut: 'Ctrl+Z',
-      command: logCmd,
-      commandArgs: 'Undo'
+      handler: logHandler
     }),
     new MenuItem({
       text: '&Repeat',
       icon: 'fa fa-repeat',
       shortcut: 'Ctrl+Y',
-      command: disabledCmd
+      disabled: true
     }),
     new MenuItem({
       type: MenuItem.Separator
@@ -195,22 +173,19 @@ function createMenuBar(): MenuBar {
       text: '&Copy',
       icon: 'fa fa-copy',
       shortcut: 'Ctrl+C',
-      command: logCmd,
-      commandArgs: 'Copy'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Cu&t',
       icon: 'fa fa-cut',
       shortcut: 'Ctrl+X',
-      command: logCmd,
-      commandArgs: 'Cut'
+      handler: logHandler
     }),
     new MenuItem({
       text: '&Paste',
       icon: 'fa fa-paste',
       shortcut: 'Ctrl+V',
-      command: logCmd,
-      commandArgs: 'Paste'
+      handler: logHandler
     })
   ]);
 
@@ -218,20 +193,17 @@ function createMenuBar(): MenuBar {
     new MenuItem({
       text: 'Find...',
       shortcut: 'Ctrl+F',
-      command: logCmd,
-      commandArgs: 'Find...'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Find Next',
       shortcut: 'F3',
-      command: logCmd,
-      commandArgs: 'Find Next'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Find Previous',
       shortcut: 'Shift+F3',
-      command: logCmd,
-      commandArgs: 'Find Previous'
+      handler: logHandler
     }),
     new MenuItem({
       type: MenuItem.Separator
@@ -239,27 +211,23 @@ function createMenuBar(): MenuBar {
     new MenuItem({
       text: 'Replace...',
       shortcut: 'Ctrl+H',
-      command: logCmd,
-      commandArgs: 'Replace...'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Replace Next',
       shortcut: 'Ctrl+Shift+H',
-      command: logCmd,
-      commandArgs: 'Replace Next'
+      handler: logHandler
     })
   ]);
 
   let helpMenu = new Menu([
     new MenuItem({
       text: 'Documentation',
-      command: logCmd,
-      commandArgs: 'Documentation'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'About',
-      command: logCmd,
-      commandArgs: 'About'
+      handler: logHandler
     })
   ]);
 
@@ -300,47 +268,42 @@ function createContextMenu(): Menu {
       text: '&Copy',
       icon: 'fa fa-copy',
       shortcut: 'Ctrl+C',
-      command: logCmd,
-      commandArgs: 'Copy'
+      handler: logHandler
     }),
     new MenuItem({
       text: 'Cu&t',
       icon: 'fa fa-cut',
       shortcut: 'Ctrl+X',
-      command: logCmd,
-      commandArgs: 'Cut'
+      handler: logHandler
     }),
     new MenuItem({
       text: '&Paste',
       icon: 'fa fa-paste',
       shortcut: 'Ctrl+V',
-      command: logCmd,
-      commandArgs: 'Paste'
+      handler: logHandler
     }),
     new MenuItem({
       type: MenuItem.Separator
     }),
     new MenuItem({
       text: '&New Tab',
-      command: logCmd,
-      commandArgs: 'New Tab'
+      handler: logHandler
     }),
     new MenuItem({
       text: '&Close Tab',
-      command: logCmd,
-      commandArgs: 'Close Tab'
+      handler: logHandler
     }),
     new MenuItem({
       type: MenuItem.Check,
       text: '&Save On Exit',
-      command: saveOnExitCmd
+      handler: saveOnExitHandler
     }),
     new MenuItem({
       type: MenuItem.Separator
     }),
     new MenuItem({
       text: 'Task Manager',
-      command: disabledCmd
+      disabled: true
     }),
     new MenuItem({
       type: MenuItem.Separator
@@ -350,23 +313,19 @@ function createContextMenu(): Menu {
       submenu: new Menu([
         new MenuItem({
           text: 'One',
-          command: logCmd,
-          commandArgs: 'One'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Two',
-          command: logCmd,
-          commandArgs: 'Two'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Three',
-          command: logCmd,
-          commandArgs: 'Three'
+          handler: logHandler
         }),
         new MenuItem({
           text: 'Four',
-          command: logCmd,
-          commandArgs: 'Four'
+          handler: logHandler
         })
       ])
     }),
@@ -376,8 +335,7 @@ function createContextMenu(): Menu {
     new MenuItem({
       text: 'Close',
       icon: 'fa fa-close',
-      command: logCmd,
-      commandArgs: 'Close'
+      handler: logHandler
     })
   ]);
 }
@@ -424,12 +382,14 @@ function main(): void {
 
   var panel = new TabPanel();
   panel.id = 'main';
-  panel.widgets.assign([contextArea, cmSource, cmCss]);
+  panel.addChild(contextArea);
+  panel.addChild(cmSource);
+  panel.addChild(cmCss);
 
-  Widget.attach(menuBar, document.body);
-  Widget.attach(panel, document.body);
+  menuBar.attach(document.body);
+  panel.attach(document.body);
 
-  window.onresize = () => panel.update();
+  window.onresize = () => { panel.update() };
 }
 
 
