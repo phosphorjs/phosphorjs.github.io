@@ -11,7 +11,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var phosphor_command_1 = require('phosphor-command');
 var phosphor_menus_1 = require('phosphor-menus');
 var phosphor_tabs_1 = require('phosphor-tabs');
 var phosphor_widget_1 = require('phosphor-widget');
@@ -54,24 +53,19 @@ var CodeMirrorWidget = (function (_super) {
     return CodeMirrorWidget;
 })(phosphor_widget_1.Widget);
 /**
- * A command which logs its arguments to the log span.
+ * A handler which logs the item text to the log span.
  */
-var logCmd = new phosphor_command_1.DelegateCommand(function (args) {
+function logHandler(item) {
     var node = document.getElementById('log-span');
-    node.textContent = args;
-});
+    node.textContent = item.text.replace(/&/g, '');
+}
 /**
- * A simple disabled command.
+ * A handler which toggles the item state when executed.
  */
-var disabledCmd = new phosphor_command_1.DelegateCommand(function () { });
-disabledCmd.enabled = false;
-/**
- * A command which toggles its state when executed.
- */
-var saveOnExitCmd = new phosphor_command_1.DelegateCommand(function () {
-    logCmd.execute('Save On Exit');
-    saveOnExitCmd.checked = !saveOnExitCmd.checked;
-});
+function saveOnExitHandler(item) {
+    logHandler(item);
+    item.checked = !item.checked;
+}
 /**
  * Create the example menu bar.
  */
@@ -80,25 +74,22 @@ function createMenuBar() {
         new phosphor_menus_1.MenuItem({
             text: 'New File',
             shortcut: 'Ctrl+N',
-            command: logCmd,
-            commandArgs: 'New File'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Open File',
             shortcut: 'Ctrl+O',
-            command: logCmd,
-            commandArgs: 'Open File'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Save File',
             shortcut: 'Ctrl+S',
-            command: logCmd,
-            commandArgs: 'Save File'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Save As...',
             shortcut: 'Ctrl+Shift+S',
-            command: disabledCmd
+            disabled: true
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
@@ -106,13 +97,11 @@ function createMenuBar() {
         new phosphor_menus_1.MenuItem({
             text: 'Close File',
             shortcut: 'Ctrl+W',
-            command: logCmd,
-            commandArgs: 'Close File'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Close All',
-            command: logCmd,
-            commandArgs: 'Close All'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
@@ -122,23 +111,19 @@ function createMenuBar() {
             submenu: new phosphor_menus_1.Menu([
                 new phosphor_menus_1.MenuItem({
                     text: 'One',
-                    command: logCmd,
-                    commandArgs: 'One'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Two',
-                    command: logCmd,
-                    commandArgs: 'Two'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Three',
-                    command: logCmd,
-                    commandArgs: 'Three'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Four',
-                    command: logCmd,
-                    commandArgs: 'Four'
+                    handler: logHandler
                 })
             ])
         }),
@@ -147,8 +132,7 @@ function createMenuBar() {
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Exit',
-            command: logCmd,
-            commandArgs: 'Exit'
+            handler: logHandler
         })
     ]);
     var editMenu = new phosphor_menus_1.Menu([
@@ -156,14 +140,13 @@ function createMenuBar() {
             text: '&Undo',
             icon: 'fa fa-undo',
             shortcut: 'Ctrl+Z',
-            command: logCmd,
-            commandArgs: 'Undo'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: '&Repeat',
             icon: 'fa fa-repeat',
             shortcut: 'Ctrl+Y',
-            command: disabledCmd
+            disabled: true
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
@@ -172,42 +155,36 @@ function createMenuBar() {
             text: '&Copy',
             icon: 'fa fa-copy',
             shortcut: 'Ctrl+C',
-            command: logCmd,
-            commandArgs: 'Copy'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Cu&t',
             icon: 'fa fa-cut',
             shortcut: 'Ctrl+X',
-            command: logCmd,
-            commandArgs: 'Cut'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: '&Paste',
             icon: 'fa fa-paste',
             shortcut: 'Ctrl+V',
-            command: logCmd,
-            commandArgs: 'Paste'
+            handler: logHandler
         })
     ]);
     var findMenu = new phosphor_menus_1.Menu([
         new phosphor_menus_1.MenuItem({
             text: 'Find...',
             shortcut: 'Ctrl+F',
-            command: logCmd,
-            commandArgs: 'Find...'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Find Next',
             shortcut: 'F3',
-            command: logCmd,
-            commandArgs: 'Find Next'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Find Previous',
             shortcut: 'Shift+F3',
-            command: logCmd,
-            commandArgs: 'Find Previous'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
@@ -215,26 +192,22 @@ function createMenuBar() {
         new phosphor_menus_1.MenuItem({
             text: 'Replace...',
             shortcut: 'Ctrl+H',
-            command: logCmd,
-            commandArgs: 'Replace...'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Replace Next',
             shortcut: 'Ctrl+Shift+H',
-            command: logCmd,
-            commandArgs: 'Replace Next'
+            handler: logHandler
         })
     ]);
     var helpMenu = new phosphor_menus_1.Menu([
         new phosphor_menus_1.MenuItem({
             text: 'Documentation',
-            command: logCmd,
-            commandArgs: 'Documentation'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'About',
-            command: logCmd,
-            commandArgs: 'About'
+            handler: logHandler
         })
     ]);
     return new phosphor_menus_1.MenuBar([
@@ -272,47 +245,42 @@ function createContextMenu() {
             text: '&Copy',
             icon: 'fa fa-copy',
             shortcut: 'Ctrl+C',
-            command: logCmd,
-            commandArgs: 'Copy'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Cu&t',
             icon: 'fa fa-cut',
             shortcut: 'Ctrl+X',
-            command: logCmd,
-            commandArgs: 'Cut'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: '&Paste',
             icon: 'fa fa-paste',
             shortcut: 'Ctrl+V',
-            command: logCmd,
-            commandArgs: 'Paste'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
         }),
         new phosphor_menus_1.MenuItem({
             text: '&New Tab',
-            command: logCmd,
-            commandArgs: 'New Tab'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             text: '&Close Tab',
-            command: logCmd,
-            commandArgs: 'Close Tab'
+            handler: logHandler
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Check,
             text: '&Save On Exit',
-            command: saveOnExitCmd
+            handler: saveOnExitHandler
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
         }),
         new phosphor_menus_1.MenuItem({
             text: 'Task Manager',
-            command: disabledCmd
+            disabled: true
         }),
         new phosphor_menus_1.MenuItem({
             type: phosphor_menus_1.MenuItem.Separator
@@ -322,23 +290,19 @@ function createContextMenu() {
             submenu: new phosphor_menus_1.Menu([
                 new phosphor_menus_1.MenuItem({
                     text: 'One',
-                    command: logCmd,
-                    commandArgs: 'One'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Two',
-                    command: logCmd,
-                    commandArgs: 'Two'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Three',
-                    command: logCmd,
-                    commandArgs: 'Three'
+                    handler: logHandler
                 }),
                 new phosphor_menus_1.MenuItem({
                     text: 'Four',
-                    command: logCmd,
-                    commandArgs: 'Four'
+                    handler: logHandler
                 })
             ])
         }),
@@ -348,8 +312,7 @@ function createContextMenu() {
         new phosphor_menus_1.MenuItem({
             text: 'Close',
             icon: 'fa fa-close',
-            command: logCmd,
-            commandArgs: 'Close'
+            handler: logHandler
         })
     ]);
 }
@@ -387,9 +350,11 @@ function main() {
     var menuBar = createMenuBar();
     var panel = new phosphor_tabs_1.TabPanel();
     panel.id = 'main';
-    panel.widgets.assign([contextArea, cmSource, cmCss]);
-    phosphor_widget_1.Widget.attach(menuBar, document.body);
-    phosphor_widget_1.Widget.attach(panel, document.body);
-    window.onresize = function () { return panel.update(); };
+    panel.addChild(contextArea);
+    panel.addChild(cmSource);
+    panel.addChild(cmCss);
+    menuBar.attach(document.body);
+    panel.attach(document.body);
+    window.onresize = function () { panel.update(); };
 }
 window.onload = main;

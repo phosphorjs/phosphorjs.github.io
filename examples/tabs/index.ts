@@ -97,7 +97,7 @@ var nextTitle = (() => {
  */
 function addContent(panel: TabPanel): void {
   var content = new ContentWidget(nextTitle());
-  panel.widgets.add(content);
+  panel.addChild(content);
 }
 
 
@@ -134,11 +134,13 @@ function main(): void {
   cmCss.loadTarget('./index.css');
   cmCss.title.text = 'CSS';
 
-  panel.widgets.assign([demoArea, cmSource, cmCss]);
+  panel.addChild(demoArea);
+  panel.addChild(cmSource);
+  panel.addChild(cmCss);
 
-  Widget.attach(panel, document.body);
+  panel.attach(document.body);
 
-  window.onresize = () => panel.update();
+  window.onresize = () => { panel.update(); };
 }
 
 

@@ -104,7 +104,7 @@ function main() {
     panel.insertTabBefore(g3, y2);
     panel.insertTabBefore(r2, b1);
     panel.insertTabBefore(r3, y1);
-    phosphor_widget_1.Widget.attach(panel, document.body);
-    window.onresize = function () { return panel.update(); };
+    panel.attach(document.body);
+    window.onresize = function () { panel.update(); };
 }
 window.onload = main;

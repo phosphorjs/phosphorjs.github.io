@@ -83,7 +83,7 @@ var nextTitle = (function () {
  */
 function addContent(panel) {
     var content = new ContentWidget(nextTitle());
-    panel.widgets.add(content);
+    panel.addChild(content);
 }
 /**
  * The main application entry point.
@@ -113,8 +113,10 @@ function main() {
     });
     cmCss.loadTarget('./index.css');
     cmCss.title.text = 'CSS';
-    panel.widgets.assign([demoArea, cmSource, cmCss]);
-    phosphor_widget_1.Widget.attach(panel, document.body);
-    window.onresize = function () { return panel.update(); };
+    panel.addChild(demoArea);
+    panel.addChild(cmSource);
+    panel.addChild(cmCss);
+    panel.attach(document.body);
+    window.onresize = function () { panel.update(); };
 }
 window.onload = main;

@@ -129,11 +129,13 @@ function main(): void {
 
   var panel = new TabPanel()
   panel.id = 'main';
-  panel.widgets.assign([todo, cmSource, cmCss]);
+  panel.addChild(todo);
+  panel.addChild(cmSource);
+  panel.addChild(cmCss);
 
-  Widget.attach(panel, document.body);
+  panel.attach(document.body);
 
-  window.onresize = () => panel.update();
+  window.onresize = () => { panel.update(); };
 }
 
 
