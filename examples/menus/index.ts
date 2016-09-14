@@ -1,29 +1,46 @@
 /*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
+| Copyright (c) 2014-2016, PhosphorJS Contributors
 |
 | Distributed under the terms of the BSD 3-Clause License.
 |
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
-'use strict';
-
-import {
-  Menu, MenuBar, MenuItem
-} from 'phosphor-menus';
 
 import {
   Message
-} from 'phosphor-messaging';
+} from 'phosphor/lib/core/messaging';
+
+import {
+  CommandRegistry
+} from 'phosphor/lib/ui/commandregistry';
+
+import {
+  Keymap
+} from 'phosphor/lib/ui/keymap';
+
+import {
+  Menu
+} from 'phosphor/lib/ui/menu';
+
+import {
+  MenuBar
+} from 'phosphor/lib/ui/menubar';
 
 import {
   TabPanel
-} from 'phosphor-tabs';
+} from 'phosphor/lib/ui/tabpanel';
 
 import {
   ResizeMessage, Widget
-} from 'phosphor-widget';
+} from 'phosphor/lib/ui/widget';
 
-import './index.css';
+
+import 'phosphor/styles/base.css';
+import '../index.css';
+
+
+const commands = new CommandRegistry();
+const keymap = new Keymap({ commands });
 
 
 /**
@@ -42,8 +59,8 @@ class CodeMirrorWidget extends Widget {
   }
 
   loadTarget(target: string): void {
-    var doc = this._editor.getDoc();
-    var xhr = new XMLHttpRequest();
+    let doc = this._editor.getDoc();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', target);
     xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
     xhr.send();
@@ -65,331 +82,234 @@ class CodeMirrorWidget extends Widget {
 }
 
 
-/**
- * A handler which logs the item text to the log span.
- */
-function logHandler(item: MenuItem): void {
-  var node = document.getElementById('log-span');
-  node.textContent = item.text.replace(/&/g, '');
+function createMenu(): Menu {
+  let sub1 = new Menu({ commands, keymap });
+  sub1.title.label = 'More...';
+  sub1.title.mnemonic = 0;
+  sub1.addItem({ command: 'example:one' });
+  sub1.addItem({ command: 'example:two' });
+  sub1.addItem({ command: 'example:three' });
+  sub1.addItem({ command: 'example:four' });
+
+  let sub2 = new Menu({ commands, keymap });
+  sub2.title.label = 'More...';
+  sub2.title.mnemonic = 0;
+  sub2.addItem({ command: 'example:one' });
+  sub2.addItem({ command: 'example:two' });
+  sub2.addItem({ command: 'example:three' });
+  sub2.addItem({ command: 'example:four' });
+  sub2.addItem({ type: 'submenu', menu: sub1 });
+
+  let root = new Menu({ commands, keymap });
+  root.addItem({ command: 'example:copy' });
+  root.addItem({ command: 'example:cut' });
+  root.addItem({ command: 'example:paste' });
+  root.addItem({ type: 'separator' });
+  root.addItem({ command: 'example:new-tab' });
+  root.addItem({ command: 'example:close-tab' });
+  root.addItem({ command: 'example:save-on-exit' });
+  root.addItem({ type: 'separator' });
+  root.addItem({ command: 'example:open-task-manager' });
+  root.addItem({ type: 'separator' });
+  root.addItem({ type: 'submenu', menu: sub2 });
+  root.addItem({ type: 'separator' });
+  root.addItem({ command: 'example:close' });
+
+  return root;
 }
 
 
-/**
- * A handler which toggles the item state when executed.
- */
-function saveOnExitHandler(item: MenuItem): void {
-  logHandler(item);
-  item.checked = !item.checked;
-}
-
-
-/**
- * Create the example menu bar.
- */
-function createMenuBar(): MenuBar {
-  let fileMenu = new Menu([
-    new MenuItem({
-      text: 'New File',
-      shortcut: 'Ctrl+N',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Open File',
-      shortcut: 'Ctrl+O',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Save File',
-      shortcut: 'Ctrl+S',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Save As...',
-      shortcut: 'Ctrl+Shift+S',
-      disabled: true
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Close File',
-      shortcut: 'Ctrl+W',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Close All',
-      handler: logHandler
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'More...',
-      submenu: new Menu([
-        new MenuItem({
-          text: 'One',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Two',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Three',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Four',
-          handler: logHandler
-        })
-      ])
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Exit',
-      handler: logHandler
-    })
-  ]);
-
-  let editMenu = new Menu([
-    new MenuItem({
-      text: '&Undo',
-      icon: 'fa fa-undo',
-      shortcut: 'Ctrl+Z',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: '&Repeat',
-      icon: 'fa fa-repeat',
-      shortcut: 'Ctrl+Y',
-      disabled: true
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: '&Copy',
-      icon: 'fa fa-copy',
-      shortcut: 'Ctrl+C',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Cu&t',
-      icon: 'fa fa-cut',
-      shortcut: 'Ctrl+X',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: '&Paste',
-      icon: 'fa fa-paste',
-      shortcut: 'Ctrl+V',
-      handler: logHandler
-    })
-  ]);
-
-  let findMenu = new Menu([
-    new MenuItem({
-      text: 'Find...',
-      shortcut: 'Ctrl+F',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Find Next',
-      shortcut: 'F3',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Find Previous',
-      shortcut: 'Shift+F3',
-      handler: logHandler
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Replace...',
-      shortcut: 'Ctrl+H',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Replace Next',
-      shortcut: 'Ctrl+Shift+H',
-      handler: logHandler
-    })
-  ]);
-
-  let helpMenu = new Menu([
-    new MenuItem({
-      text: 'Documentation',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'About',
-      handler: logHandler
-    })
-  ]);
-
-  return new MenuBar([
-    new MenuItem({
-      text: 'File',
-      submenu: fileMenu
-    }),
-    new MenuItem({
-      text: 'Edit',
-      submenu: editMenu
-    }),
-    new MenuItem({
-      text: 'Find',
-      submenu: findMenu
-    }),
-    new MenuItem({
-      text: 'View',
-      type: MenuItem.Submenu
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Help',
-      submenu: helpMenu
-    })
-  ]);
-}
-
-
-/**
- * Create the example context menu.
- */
-function createContextMenu(): Menu {
-  return new Menu([
-    new MenuItem({
-      text: '&Copy',
-      icon: 'fa fa-copy',
-      shortcut: 'Ctrl+C',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: 'Cu&t',
-      icon: 'fa fa-cut',
-      shortcut: 'Ctrl+X',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: '&Paste',
-      icon: 'fa fa-paste',
-      shortcut: 'Ctrl+V',
-      handler: logHandler
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: '&New Tab',
-      handler: logHandler
-    }),
-    new MenuItem({
-      text: '&Close Tab',
-      handler: logHandler
-    }),
-    new MenuItem({
-      type: MenuItem.Check,
-      text: '&Save On Exit',
-      handler: saveOnExitHandler
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Task Manager',
-      disabled: true
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'More...',
-      submenu: new Menu([
-        new MenuItem({
-          text: 'One',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Two',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Three',
-          handler: logHandler
-        }),
-        new MenuItem({
-          text: 'Four',
-          handler: logHandler
-        })
-      ])
-    }),
-    new MenuItem({
-      type: MenuItem.Separator
-    }),
-    new MenuItem({
-      text: 'Close',
-      icon: 'fa fa-close',
-      handler: logHandler
-    })
-  ]);
-}
-
-
-/**
- * The main application entry point.
- */
 function main(): void {
-  var contextArea = new Widget();
+
+  commands.addCommand('example:cut', {
+    label: 'Cut',
+    mnemonic: 1,
+    icon: 'fa fa-cut',
+    execute: () => {
+      console.log('Cut');
+    }
+  });
+
+  commands.addCommand('example:copy', {
+    label: 'Copy',
+    mnemonic: 0,
+    icon: 'fa fa-copy',
+    execute: () => {
+      console.log('Copy');
+    }
+  });
+
+  commands.addCommand('example:paste', {
+    label: 'Paste',
+    mnemonic: 0,
+    icon: 'fa fa-paste',
+    execute: () => {
+      console.log('Paste');
+    }
+  });
+
+  commands.addCommand('example:new-tab', {
+    label: 'New Tab',
+    mnemonic: 0,
+    caption: 'Open a new tab',
+    execute: () => {
+      console.log('New Tab');
+    }
+  });
+
+  commands.addCommand('example:close-tab', {
+    label: 'Close Tab',
+    mnemonic: 2,
+    caption: 'Close the current tab',
+    execute: () => {
+      console.log('Close Tab');
+    }
+  });
+
+  commands.addCommand('example:save-on-exit', {
+    label: 'Save on Exit',
+    mnemonic: 0,
+    caption: 'Toggle the save on exit flag',
+    execute: () => {
+      console.log('Save on Exit');
+    }
+  });
+
+  commands.addCommand('example:open-task-manager', {
+    label: 'Task Manager',
+    mnemonic: 5,
+    isEnabled: () => false,
+    execute: () => { }
+  });
+
+  commands.addCommand('example:close', {
+    label: 'Close',
+    mnemonic: 0,
+    icon: 'fa fa-close',
+    execute: () => {
+      console.log('Close');
+    }
+  });
+
+  commands.addCommand('example:one', {
+    label: 'One',
+    execute: () => {
+      console.log('One');
+    }
+  });
+
+  commands.addCommand('example:two', {
+    label: 'Two',
+    execute: () => {
+      console.log('Two');
+    }
+  });
+
+  commands.addCommand('example:three', {
+    label: 'Three',
+    execute: () => {
+      console.log('Three');
+    }
+  });
+
+  commands.addCommand('example:four', {
+    label: 'Four',
+    execute: () => {
+      console.log('Four');
+    }
+  });
+
+  keymap.addBinding({
+    keys: ['Accel X'],
+    selector: 'body',
+    command: 'example:cut'
+  });
+
+  keymap.addBinding({
+    keys: ['Accel C'],
+    selector: 'body',
+    command: 'example:copy'
+  });
+
+  keymap.addBinding({
+    keys: ['Accel V'],
+    selector: 'body',
+    command: 'example:paste'
+  });
+
+  keymap.addBinding({
+    keys: ['Accel J', 'Accel J'],
+    selector: 'body',
+    command: 'example:new-tab'
+  });
+
+  keymap.addBinding({
+    keys: ['Accel M'],
+    selector: 'body',
+    command: 'example:open-task-manager'
+  });
+
+  let contextArea = new Widget();
   contextArea.addClass('ContextArea');
   contextArea.node.innerHTML = (
     '<h2>Notice the menu bar at the top of the document.</h2>' +
     '<h2>Right click this panel for a context menu.</h2>' +
     '<h3>Clicked Item: <span id="log-span"></span></h3>'
   );
-  contextArea.title.text = 'Demo';
+  contextArea.title.label = 'Demo';
 
-  var cmSource = new CodeMirrorWidget({
+  let cmSource = new CodeMirrorWidget({
     mode: 'text/javascript',
     lineNumbers: true,
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
-  cmSource.title.text = 'Source';
+  cmSource.title.label = 'Source';
 
-  var cmCss = new CodeMirrorWidget({
+  let cmCss = new CodeMirrorWidget({
     mode: 'text/css',
     lineNumbers: true,
     tabSize: 2,
   });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.text = 'CSS';
+  cmCss.loadTarget('../index.css');
+  cmCss.title.label = 'CSS';
 
-  var contextMenu = createContextMenu();
+  let menu1 = createMenu();
+  menu1.title.label = 'File';
+  menu1.title.mnemonic = 0;
+
+  let menu2 = createMenu();
+  menu2.title.label = 'Edit';
+  menu2.title.mnemonic = 0;
+
+  let menu3 = createMenu();
+  menu3.title.label = 'View';
+  menu3.title.mnemonic = 0;
+
+  let contextMenu = createMenu();
+
+  let bar = new MenuBar({ keymap });
+  bar.addMenu(menu1);
+  bar.addMenu(menu2);
+  bar.addMenu(menu3);
+
   contextArea.node.addEventListener('contextmenu', (event: MouseEvent) => {
     event.preventDefault();
-    var x = event.clientX;
-    var y = event.clientY;
-    contextMenu.popup(x, y);
+    let x = event.clientX;
+    let y = event.clientY;
+    contextMenu.open(x, y);
   });
 
-  var menuBar = createMenuBar();
-
-  var panel = new TabPanel();
+  let panel = new TabPanel();
   panel.id = 'main';
-  panel.addChild(contextArea);
-  panel.addChild(cmSource);
-  panel.addChild(cmCss);
+  panel.addWidget(contextArea);
+  panel.addWidget(cmSource);
+  panel.addWidget(cmCss);
 
-  menuBar.attach(document.body);
-  panel.attach(document.body);
+  Widget.attach(bar, document.body);
+  Widget.attach(panel, document.body);
 
-  window.onresize = () => { panel.update() };
+  window.onresize = () => { panel.update(); };
 }
 
 
