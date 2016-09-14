@@ -1,25 +1,25 @@
 /*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
+| Copyright (c) 2014-2016, PhosphorJS Contributors
 |
 | Distributed under the terms of the BSD 3-Clause License.
 |
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
-'use strict';
-
-import {
-  DockPanel
-} from 'phosphor-dockpanel';
 
 import {
   Message
-} from 'phosphor-messaging';
+} from 'phosphor/lib/core/messaging';
+
+import {
+  DockPanel
+} from 'phosphor/lib/ui/dockpanel';
 
 import {
   ResizeMessage, Widget
-} from 'phosphor-widget';
+} from 'phosphor/lib/ui/widget';
 
-import './index.css';
+import 'phosphor/styles/base.css';
+import '../index.css';
 
 
 /**
@@ -38,8 +38,8 @@ class CodeMirrorWidget extends Widget {
   }
 
   loadTarget(target: string): void {
-    var doc = this._editor.getDoc();
-    var xhr = new XMLHttpRequest();
+    let doc = this._editor.getDoc();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', target);
     xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
     xhr.send();
@@ -65,11 +65,11 @@ class CodeMirrorWidget extends Widget {
  * Create a placeholder content widget.
  */
 function createContent(title: string): Widget {
-  var widget = new Widget();
+  let widget = new Widget();
   widget.addClass('content');
   widget.addClass(title.toLowerCase());
 
-  widget.title.text = title;
+  widget.title.label = title;
   widget.title.closable = true;
 
   return widget;
@@ -80,57 +80,59 @@ function createContent(title: string): Widget {
  * The main application entry point.
  */
 function main(): void {
-  var r1 = createContent('Red');
-  var r2 = createContent('Red');
-  var r3 = createContent('Red');
+  let r1 = createContent('Red');
+  let r2 = createContent('Red');
+  let r3 = createContent('Red');
 
-  var b1 = createContent('Blue');
-  var b2 = createContent('Blue');
+  let b1 = createContent('Blue');
+  let b2 = createContent('Blue');
 
-  var g1 = createContent('Green');
-  var g2 = createContent('Green');
-  var g3 = createContent('Green');
+  let g1 = createContent('Green');
+  let g2 = createContent('Green');
+  let g3 = createContent('Green');
 
-  var y1 = createContent('Yellow');
-  var y2 = createContent('Yellow');
+  let y1 = createContent('Yellow');
+  let y2 = createContent('Yellow');
 
-  var panel = new DockPanel();
+  let panel = new DockPanel();
   panel.id = 'main';
 
-  var cmSource = new CodeMirrorWidget({
+  let cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
-  cmSource.title.text = 'Source';
+  cmSource.title.label = 'Source';
 
-  var cmCss = new CodeMirrorWidget({
+  let cmCss = new CodeMirrorWidget({
     mode: 'text/css',
     lineNumbers: true,
     tabSize: 2,
   });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.text = 'CSS';
+  cmCss.loadTarget('../index.css');
+  cmCss.title.label = 'CSS';
 
-  panel.insertLeft(cmSource);
-  panel.insertRight(b1, cmSource);
-  panel.insertBottom(y1, b1);
-  panel.insertLeft(g1, y1);
+  panel.addWidget(cmSource);
+  panel.addWidget(b1, { ref: cmSource, mode: 'split-right' });
+  panel.addWidget(y1, { ref: b1, mode: 'split-bottom' });
+  panel.addWidget(g1, { ref: y1, mode: 'split-left' });
 
-  panel.insertBottom(b2);
+  panel.addWidget(b2, { mode: 'split-bottom' });
 
-  panel.insertTabAfter(cmCss, cmSource);
-  panel.insertTabAfter(r1, cmCss);
-  panel.insertTabBefore(g2, b2);
-  panel.insertTabBefore(y2, g2);
-  panel.insertTabBefore(g3, y2);
-  panel.insertTabBefore(r2, b1);
-  panel.insertTabBefore(r3, y1);
+  panel.addWidget(cmCss, { ref: cmSource, mode: 'tab-after' });
+  panel.addWidget(r1, { ref: cmCss, mode: 'tab-after' });
+  panel.addWidget(g2, { ref: b2, mode: 'tab-before' });
+  panel.addWidget(y2, { ref: g2, mode: 'tab-before' });
+  panel.addWidget(g3, { ref: y2, mode: 'tab-before' });
+  panel.addWidget(r2, { ref: b1, mode: 'tab-before' });
+  panel.addWidget(r3, { ref: y1, mode: 'tab-before' });
 
-  panel.attach(document.body);
+  panel.activateWidget(cmSource);
 
-  window.onresize = () => { panel.update() };
+  Widget.attach(panel, document.body);
+
+  window.onresize = () => { panel.update(); };
 }
 
 
