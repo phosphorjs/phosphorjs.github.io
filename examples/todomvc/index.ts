@@ -5,25 +5,26 @@
 |
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
-'use strict';
 
 import {
   Message
-} from 'phosphor-messaging';
+} from 'phosphor/lib/core/messaging';
 
 import {
   TabPanel
-} from 'phosphor-tabs';
+} from 'phosphor/lib/ui/tabpanel';
 
 import {
   ResizeMessage, Widget
-} from 'phosphor-widget';
+} from 'phosphor/lib/ui/widget';
 
-import './index.css';
+
+import 'phosphor/styles/base.css';
+import '../index.css';
 
 
 // Declare the untyped Todo-App namespace.
-declare var app: any;
+declare let app: any;
 
 
 /**
@@ -31,17 +32,10 @@ declare var app: any;
  */
 class TodoWidget extends Widget {
 
-  static createNode(): HTMLElement {
-    var node = document.createElement('div');
-    var app = document.createElement('div');
-    app.className = 'todoapp';
-    node.appendChild(app);
-    return node;
-  }
-
   constructor(model: any) {
     super();
     this.addClass('TodoWidget');
+    this.addClass('todoapp');
     this._model = model;
   }
 
@@ -55,9 +49,8 @@ class TodoWidget extends Widget {
   }
 
   protected onUpdateRequest(msg: Message): void {
-    var data = { model: this._model };
-    var host = this.node.firstChild as Element;
-    React.render(React.createElement(app.TodoApp, data), host);
+    let data = { model: this._model };
+    React.render(React.createElement(app.TodoApp, data), this.node);
   }
 
   private _model: any;
@@ -80,8 +73,8 @@ class CodeMirrorWidget extends Widget {
   }
 
   loadTarget(target: string): void {
-    var doc = this._editor.getDoc();
-    var xhr = new XMLHttpRequest();
+    let doc = this._editor.getDoc();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', target);
     xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
     xhr.send();
@@ -107,33 +100,24 @@ class CodeMirrorWidget extends Widget {
  * The main application entry point.
  */
 function main(): void {
-  var model = new app.TodoModel('react-todos');
-  var todo = new TodoWidget(model);
-  todo.title.text = 'Demo';
+  let model = new app.TodoModel('react-todos');
+  let todo = new TodoWidget(model);
+  todo.title.label = 'Demo';
 
-  var cmSource = new CodeMirrorWidget({
+  let cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
-  cmSource.title.text = 'Source';
+  cmSource.title.label = 'Source';
 
-  var cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.text = 'CSS';
-
-  var panel = new TabPanel()
+  let panel = new TabPanel();
   panel.id = 'main';
-  panel.addChild(todo);
-  panel.addChild(cmSource);
-  panel.addChild(cmCss);
+  panel.addWidget(todo);
+  panel.addWidget(cmSource);
 
-  panel.attach(document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => { panel.update(); };
 }
