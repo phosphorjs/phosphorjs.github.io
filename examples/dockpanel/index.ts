@@ -104,31 +104,21 @@ function main(): void {
   });
   cmSource.loadTarget('./index.ts');
   cmSource.title.label = 'Source';
-
-  let cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-  cmCss.loadTarget('../index.css');
-  cmCss.title.label = 'CSS';
+  cmSource.title.closable = true;
 
   panel.addWidget(cmSource);
-  panel.addWidget(b1, { ref: cmSource, mode: 'split-right' });
+  panel.addWidget(b1, { ref: cmSource, mode: 'tab-after' });
   panel.addWidget(y1, { ref: b1, mode: 'split-bottom' });
   panel.addWidget(g1, { ref: y1, mode: 'split-left' });
 
   panel.addWidget(b2, { mode: 'split-bottom' });
 
-  panel.addWidget(cmCss, { ref: cmSource, mode: 'tab-after' });
-  panel.addWidget(r1, { ref: cmCss, mode: 'tab-after' });
+  panel.addWidget(r1, { ref: g1, mode: 'tab-after' });
   panel.addWidget(g2, { ref: b2, mode: 'tab-before' });
   panel.addWidget(y2, { ref: g2, mode: 'tab-before' });
   panel.addWidget(g3, { ref: y2, mode: 'tab-before' });
   panel.addWidget(r2, { ref: b1, mode: 'tab-before' });
   panel.addWidget(r3, { ref: y1, mode: 'tab-before' });
-
-  panel.activateWidget(cmSource);
 
   Widget.attach(panel, document.body);
 

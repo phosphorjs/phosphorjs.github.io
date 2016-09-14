@@ -149,19 +149,11 @@ function main(): void {
   cmSource.loadTarget('./index.ts');
   cmSource.title.label = 'Source';
 
-  let cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.label = 'CSS';
 
   let panel = new TabPanel();
   panel.id = 'main';
   panel.addWidget(box);
   panel.addWidget(cmSource);
-  panel.addWidget(cmCss);
 
   Widget.attach(panel, document.body);
 

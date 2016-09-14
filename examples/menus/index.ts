@@ -119,6 +119,17 @@ function createMenu(): Menu {
 }
 
 
+/**
+ * A handler which logs the item text to the log span.
+ */
+function logHandler(value: string): void {
+  let node = document.getElementById('log-span');
+  node.textContent = value.replace(/&/g, '');
+  console.log(value);
+}
+
+
+
 function main(): void {
 
   commands.addCommand('example:cut', {
@@ -126,7 +137,7 @@ function main(): void {
     mnemonic: 1,
     icon: 'fa fa-cut',
     execute: () => {
-      console.log('Cut');
+      logHandler('Cut');
     }
   });
 
@@ -135,7 +146,7 @@ function main(): void {
     mnemonic: 0,
     icon: 'fa fa-copy',
     execute: () => {
-      console.log('Copy');
+      logHandler('Copy');
     }
   });
 
@@ -144,7 +155,7 @@ function main(): void {
     mnemonic: 0,
     icon: 'fa fa-paste',
     execute: () => {
-      console.log('Paste');
+      logHandler('Paste');
     }
   });
 
@@ -153,7 +164,7 @@ function main(): void {
     mnemonic: 0,
     caption: 'Open a new tab',
     execute: () => {
-      console.log('New Tab');
+      logHandler('New Tab');
     }
   });
 
@@ -162,7 +173,7 @@ function main(): void {
     mnemonic: 2,
     caption: 'Close the current tab',
     execute: () => {
-      console.log('Close Tab');
+      logHandler('Close Tab');
     }
   });
 
@@ -171,7 +182,7 @@ function main(): void {
     mnemonic: 0,
     caption: 'Toggle the save on exit flag',
     execute: () => {
-      console.log('Save on Exit');
+      logHandler('Save on Exit');
     }
   });
 
@@ -187,35 +198,35 @@ function main(): void {
     mnemonic: 0,
     icon: 'fa fa-close',
     execute: () => {
-      console.log('Close');
+      logHandler('Close');
     }
   });
 
   commands.addCommand('example:one', {
     label: 'One',
     execute: () => {
-      console.log('One');
+      logHandler('One');
     }
   });
 
   commands.addCommand('example:two', {
     label: 'Two',
     execute: () => {
-      console.log('Two');
+      logHandler('Two');
     }
   });
 
   commands.addCommand('example:three', {
     label: 'Three',
     execute: () => {
-      console.log('Three');
+      logHandler('Three');
     }
   });
 
   commands.addCommand('example:four', {
     label: 'Four',
     execute: () => {
-      console.log('Four');
+      logHandler('Four');
     }
   });
 
@@ -266,14 +277,6 @@ function main(): void {
   cmSource.loadTarget('./index.ts');
   cmSource.title.label = 'Source';
 
-  let cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-  cmCss.loadTarget('../index.css');
-  cmCss.title.label = 'CSS';
-
   let menu1 = createMenu();
   menu1.title.label = 'File';
   menu1.title.mnemonic = 0;
@@ -304,7 +307,6 @@ function main(): void {
   panel.id = 'main';
   panel.addWidget(contextArea);
   panel.addWidget(cmSource);
-  panel.addWidget(cmCss);
 
   Widget.attach(bar, document.body);
   Widget.attach(panel, document.body);
