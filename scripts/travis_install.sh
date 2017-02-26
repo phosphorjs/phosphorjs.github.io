@@ -1,5 +1,5 @@
 #!/bin/bash
 git checkout source
 
-cd examples
-npm install
+# cd examples
+# npm install
