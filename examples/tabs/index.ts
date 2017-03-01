@@ -9,17 +9,18 @@
 
 import {
   Message
-} from 'phosphor-messaging';
+} from 'phosphor/lib/core/messaging';
 
 import {
   TabPanel
-} from 'phosphor-tabs';
+} from 'phosphor/lib/ui/tabpanel';
 
 import {
   ResizeMessage, Widget
-} from 'phosphor-widget';
+} from 'phosphor/lib/ui/widget';
 
-import './index.css';
+import 'phosphor/styles/base.css';
+import '../index.css';
 
 
 /**
@@ -38,8 +39,8 @@ class CodeMirrorWidget extends Widget {
   }
 
   loadTarget(target: string): void {
-    var doc = this._editor.getDoc();
-    var xhr = new XMLHttpRequest();
+    let doc = this._editor.getDoc();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', target);
     xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
     xhr.send();
@@ -72,7 +73,7 @@ class ContentWidget extends Widget {
     super();
     this.addClass('content');
     this.addClass(title.toLowerCase());
-    this.title.text = title;
+    this.title.label = title;
     this.title.closable = true;
   }
 
@@ -85,9 +86,9 @@ class ContentWidget extends Widget {
 /**
  * A title generator function.
  */
-var nextTitle = (() => {
-  var i = 0;
-  var titles = ['Red', 'Yellow', 'Green', 'Blue'];
+let nextTitle = (() => {
+  let i = 0;
+  let titles = ['Red', 'Yellow', 'Green', 'Blue'];
   return () => titles[i++ % titles.length];
 })();
 
@@ -96,8 +97,8 @@ var nextTitle = (() => {
  * Add a new content widget the the given tab panel.
  */
 function addContent(panel: TabPanel): void {
-  var content = new ContentWidget(nextTitle());
-  panel.addChild(content);
+  let content = new ContentWidget(nextTitle());
+  panel.addWidget(content);
 }
 
 
@@ -105,40 +106,31 @@ function addContent(panel: TabPanel): void {
  * The main application entry point.
  */
 function main(): void {
-  var panel = new TabPanel();
+  let panel = new TabPanel();
   panel.id = 'main';
-  panel.title.text = 'Demo';
+  panel.title.label = 'Demo';
   panel.tabsMovable = true;
 
-  var btn = document.createElement('button');
+  let btn = document.createElement('button');
   btn.textContent = 'Add New Tab';
   btn.onclick = () => addContent(panel);
 
-  var demoArea = new Widget();
-  demoArea.title.text = 'Demo';
+  let demoArea = new Widget();
+  demoArea.title.label = 'Demo';
   demoArea.node.appendChild(btn);
 
-  var cmSource = new CodeMirrorWidget({
+  let cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
-    lineNumbers:true,
-    tabSize: 2
-  });
-  cmSource.loadTarget('./index.ts');
-  cmSource.title.text = 'Source';
-
-  var cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
     lineNumbers: true,
     tabSize: 2
   });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.text = 'CSS';
+  cmSource.loadTarget('./index.ts');
+  cmSource.title.label = 'Source';
 
-  panel.addChild(demoArea);
-  panel.addChild(cmSource);
-  panel.addChild(cmCss);
+  panel.addWidget(demoArea);
+  panel.addWidget(cmSource);
 
-  panel.attach(document.body);
+  Widget.attach(panel, document.body);
 
   window.onresize = () => { panel.update(); };
 }

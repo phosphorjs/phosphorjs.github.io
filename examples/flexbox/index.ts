@@ -1,32 +1,33 @@
 /*-----------------------------------------------------------------------------
-| Copyright (c) 2014-2015, PhosphorJS Contributors
+| Copyright (c) 2014-2016, PhosphorJS Contributors
 |
 | Distributed under the terms of the BSD 3-Clause License.
 |
 | The full license is in the file LICENSE, distributed with this software.
 |----------------------------------------------------------------------------*/
-'use strict';
 
 import {
   Message
-} from 'phosphor-messaging';
+} from 'phosphor/lib/core/messaging';
 
 import {
   Panel
-} from 'phosphor-panel';
+} from 'phosphor/lib/ui/panel';
 
 import {
   SplitPanel
-} from 'phosphor-splitpanel';
+} from 'phosphor/lib/ui/splitpanel';
 
 import {
   TabPanel
-} from 'phosphor-tabs';
+} from 'phosphor/lib/ui/tabpanel';
 
 import {
   ResizeMessage, Widget
-} from 'phosphor-widget';
+} from 'phosphor/lib/ui/widget';
 
+import 'phosphor/styles/base.css';
+import '../index.css';
 import './index.css';
 
 
@@ -57,8 +58,8 @@ class MyResizeWidget extends Widget {
   // unknown when the parent is a widget which uses CSS to layout
   // its children.
   protected onResize(msg: ResizeMessage): void {
-    var w = msg.width;
-    var h = msg.height;
+    let w = msg.width;
+    let h = msg.height;
     console.log(this.node.className, 'width:', w, 'height:', h);
   }
 }
@@ -80,8 +81,8 @@ class CodeMirrorWidget extends Widget {
   }
 
   loadTarget(target: string): void {
-    var doc = this._editor.getDoc();
-    var xhr = new XMLHttpRequest();
+    let doc = this._editor.getDoc();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', target);
     xhr.onreadystatechange = () => doc.setValue(xhr.responseText);
     xhr.send();
@@ -107,7 +108,7 @@ class CodeMirrorWidget extends Widget {
  * Create a placeholder content widget.
  */
 function createContent(name: string): Widget {
-  var widget = new MyResizeWidget();
+  let widget = new MyResizeWidget();
   widget.addClass('content');
   widget.addClass(name);
   return widget;
@@ -118,53 +119,45 @@ function createContent(name: string): Widget {
  * The main application entry point.
  */
 function main(): void {
-  var red = createContent('red');
-  var yellow = createContent('yellow');
-  var green = createContent('green');
+  let red = createContent('red');
+  let yellow = createContent('yellow');
+  let green = createContent('green');
 
-  var blue1 = createContent('blue');
-  var blue2 = createContent('blue');
-  var blue3 = createContent('blue');
-  var blue4 = createContent('blue');
+  let blue1 = createContent('blue');
+  let blue2 = createContent('blue');
+  let blue3 = createContent('blue');
+  let blue4 = createContent('blue');
 
-  var split = new SplitPanel();
-  split.addChild(blue1);
-  split.addChild(blue2);
-  split.addChild(blue3);
-  split.addChild(blue4);
+  let split = new SplitPanel();
+  split.addWidget(blue1);
+  split.addWidget(blue2);
+  split.addWidget(blue3);
+  split.addWidget(blue4);
 
-  var box = new MyVBox();
-  box.addChild(red);
-  box.addChild(split);
-  box.addChild(yellow);
-  box.addChild(green);
-  box.title.text = 'Demo';
+  let box = new MyVBox();
+  box.addWidget(red);
+  box.addWidget(split);
+  box.addWidget(yellow);
+  box.addWidget(green);
+  box.title.label = 'Demo';
 
-  var cmSource = new CodeMirrorWidget({
+  let cmSource = new CodeMirrorWidget({
     mode: 'text/typescript',
     lineNumbers: true,
     tabSize: 2,
   });
   cmSource.loadTarget('./index.ts');
-  cmSource.title.text = 'Source';
+  cmSource.title.label = 'Source';
 
-  var cmCss = new CodeMirrorWidget({
-    mode: 'text/css',
-    lineNumbers: true,
-    tabSize: 2,
-  });
-  cmCss.loadTarget('./index.css');
-  cmCss.title.text = 'CSS';
 
-  var panel = new TabPanel()
+  let panel = new TabPanel();
   panel.id = 'main';
-  panel.addChild(box);
-  panel.addChild(cmSource);
-  panel.addChild(cmCss);
+  panel.addWidget(box);
+  panel.addWidget(cmSource);
 
-  panel.attach(document.body);
+  Widget.attach(panel, document.body);
 
-  window.onresize = () => { panel.update() };
+  window.onresize = () => { panel.update(); };
 }
 
 
