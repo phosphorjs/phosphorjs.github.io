@@ -1,7 +1,4 @@
-PhosphorJS Website
-------------------
+The website and docs for PhosphorJS.
 
-https://phosphorjs.github.io
-
-The main branch of this repository is `source`.
-The `master` branch hosts the github pages.
+If you are interested in contributing or creating your own Phosphor app, 
+feel free to reach out on https://gitter.im/phosphorjs/phosphor or https://gitter.im/jupyterlab/jupyterlab.
